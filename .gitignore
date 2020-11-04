@@ -1,0 +1,10 @@
+# gradle project ignores
+.gradle/
+build/
+
+# Android Studio project ignores
+.idea/
+*.iml
+captures/
+out/
+local.properties
