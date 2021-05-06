@@ -29,6 +29,8 @@ kotlin {
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
 
         frameworkName = "GodToolsToolParser"
+
+        ios.deploymentTarget = "11.0"
     }
 
     sourceSets {
@@ -65,6 +67,7 @@ android {
     val newPodspecContent = podspec.readLines().map {
         when {
             it.contains("spec.source") -> """
+                |#$it
                 |    spec.source                   = {
                 |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
                 |                                      :branch => "develop"
@@ -72,7 +75,7 @@ android {
 //                |                                      :commit => "${grgit.describe(mapOf("tags" to true))}"
             it == "end" -> """
                 |    spec.preserve_paths           = "**/*.*"
-                |end
+                |$it
                 """.trimMargin()
             else -> it
         }
