@@ -19,7 +19,10 @@ kotlin {
     android {
         publishLibraryVariants("release")
     }
-    iosX64("ios")
+    iosArm32()
+    iosArm64()
+    iosX64()
+
     cocoapods {
         summary = "GodTools tool parser"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
@@ -41,8 +44,8 @@ kotlin {
         }
         val androidMain by getting
         val androidTest by getting
-        val iosMain by getting
-        val iosTest by getting
+//        val iosMain by getting
+//        val iosTest by getting
     }
 }
 
