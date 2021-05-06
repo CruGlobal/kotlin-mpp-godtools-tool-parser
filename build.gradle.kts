@@ -1,7 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.PodspecTask
+
 plugins {
-    kotlin("multiplatform") version "1.4.10"
+    kotlin("multiplatform") version "1.5.0"
+    kotlin("native.cocoapods") version "1.5.0"
     id("com.android.library")
     id("maven-publish")
+    id("org.ajoberstar.grgit") version "4.1.0"
 }
 
 group = "org.cru.godtools.kotlin"
@@ -9,20 +13,20 @@ version = "0.1.0-SNAPSHOT"
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
 }
 kotlin {
     android {
         publishLibraryVariants("release")
     }
-    iosX64("ios") {
-        binaries {
-            framework {
-                baseName = "godtools-tool-parser"
-            }
-        }
+    iosX64("ios")
+    cocoapods {
+        summary = "GodTools tool parser"
+        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+
+        frameworkName = "GodToolsToolParser"
     }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -45,7 +49,29 @@ kotlin {
 android {
     compileSdkVersion(30)
     defaultConfig {
-        minSdkVersion(19)
+        minSdkVersion(21)
         targetSdkVersion(30)
     }
+}
+
+// HACK: customize the podspec until KT-42105 is implemented
+//       https://youtrack.jetbrains.com/issue/KT-42105
+(tasks["podspec"] as PodspecTask).doLast {
+    val podspec = file("${project.name.replace("-", "_")}.podspec")
+    val newPodspecContent = podspec.readLines().map {
+        when {
+            it.contains("spec.source") -> """
+                |    spec.source                   = {
+                |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
+                |                                      :branch => "develop"
+                |                                    }""".trimMargin()
+//                |                                      :commit => "${grgit.describe(mapOf("tags" to true))}"
+            it == "end" -> """
+                |    spec.preserve_paths           = "**/*.*"
+                |end
+                """.trimMargin()
+            else -> it
+        }
+    }
+    podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
 }

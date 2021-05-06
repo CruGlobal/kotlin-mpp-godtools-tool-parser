@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cocoapods-disable-podfile-validations (0.1.1)
+    cocoapods-generate (2.0.1)
+      cocoapods-disable-podfile-validations (~> 0.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cocoapods-generate (~> 2.0)
+
+BUNDLED WITH
+   2.1.4
