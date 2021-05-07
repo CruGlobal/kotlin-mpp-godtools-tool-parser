@@ -25,10 +25,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Install CocoaPods
         run: bundle install
       - name: Add CruGlobal CocoaPods Repo
-        run: pod repo add CruGlobal https://github.com/CruGlobal/cocoapods-specs.git
+        run: pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Create podspec
         run: ./gradlew podspec
       - name: Push podspec
