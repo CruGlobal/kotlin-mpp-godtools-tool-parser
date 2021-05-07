@@ -25,6 +25,7 @@ kotlin {
 
     cocoapods {
         summary = "GodTools tool parser"
+        license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
 
         frameworkName = "GodToolsToolParser"
