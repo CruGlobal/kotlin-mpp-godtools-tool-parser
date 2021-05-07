@@ -70,7 +70,7 @@ android {
                 |#$it
                 |    spec.source                   = {
                 |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
-                |                                      :branch => "develop"
+                |                                      :branch => "main"
                 |                                    }
                 """.trimMargin()
 //                |                                      :commit => "${grgit.describe(mapOf("tags" to true))}"
