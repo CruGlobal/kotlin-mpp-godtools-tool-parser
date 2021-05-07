@@ -1,0 +1,35 @@
+name: Build Library
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  cancel-previous:
+    name: Cancel Stale In-progress Builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+
+  deploy_ios:
+    name: Deploy iOS podspec
+    runs-on: macos-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install CocoaPods
+        run: bundle install
+      - name: Add CruGlobal CocoaPods Repo
+        run: pod repo add CruGlobal https://github.com/CruGlobal/cocoapods-specs.git
+      - name: Create podspec
+        run: ./gradlew podspec
+      - name: Push podspec
+        run: pod repo push CruGlobal GodtoolsToolParser.podspec --allow-warnings
