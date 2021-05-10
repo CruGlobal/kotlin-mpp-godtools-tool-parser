@@ -24,16 +24,6 @@ kotlin {
     iosArm64()
     iosX64()
 
-    cocoapods {
-        summary = "GodTools tool parser"
-        license = "MIT"
-        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
-
-        frameworkName = "GodToolsToolParser"
-
-        ios.deploymentTarget = "11.0"
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -50,6 +40,16 @@ kotlin {
         val androidTest by getting
 //        val iosMain by getting
 //        val iosTest by getting
+    }
+
+    cocoapods {
+        summary = "GodTools tool parser"
+        license = "MIT"
+        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+
+        frameworkName = "GodToolsToolParser"
+
+        ios.deploymentTarget = "11.0"
     }
 }
 
