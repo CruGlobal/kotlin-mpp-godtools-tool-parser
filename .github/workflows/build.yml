@@ -46,4 +46,4 @@ jobs:
       - name: Create podspec
         run: ./gradlew podspec
       - name: Push podspec
-        run: pod repo push CruGlobal GodtoolsToolParser.podspec --allow-warnings
+        run: pod repo push CruGlobal *.podspec --allow-warnings

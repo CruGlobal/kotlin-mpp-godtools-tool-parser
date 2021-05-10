@@ -13,4 +13,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name = "GodtoolsToolParser"
+rootProject.name = "godtools-tool-parser"

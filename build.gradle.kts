@@ -95,5 +95,5 @@ android {
     podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
 }
 tasks.create("cleanPodspec", Delete::class) {
-    delete("GodToolsToolParser.podspec")
+    delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks["clean"].dependsOn(it) }
