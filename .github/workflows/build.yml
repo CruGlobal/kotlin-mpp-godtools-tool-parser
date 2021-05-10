@@ -2,10 +2,8 @@ name: Build Library
 
 on:
   push:
-    branches: [main]
   pull_request:
     branches: [main]
-
   workflow_dispatch:
 
 jobs:
@@ -18,10 +16,10 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-  deploy_ios:
-    name: Deploy iOS podspec
+  ios_podspec:
+    name: iOS Podspec
     runs-on: macos-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -34,16 +32,26 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: Install CocoaPods
+        run: bundle install
+      - name: Create podspec
+        run: ./gradlew podspec
+
+      # Lint podspec if not a push to the main branch
+      - name: Lint podspec
+        if: github.ref != 'refs/heads/main'
+        run: pod spec lint *.podspec --allow-warnings
+
+      # Deploy podspec if push to main branch
       - name: Install SSH key
+        if: github.ref == 'refs/heads/main'
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Install CocoaPods
-        run: bundle install
       - name: Add CruGlobal CocoaPods Repo
+        if: github.ref == 'refs/heads/main'
         run: pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
-      - name: Create podspec
-        run: ./gradlew podspec
       - name: Push podspec
-        run: pod repo push CruGlobal GodtoolsToolParser.podspec --allow-warnings
+        if: github.ref == 'refs/heads/main'
+        run: pod repo push CruGlobal *.podspec --allow-warnings

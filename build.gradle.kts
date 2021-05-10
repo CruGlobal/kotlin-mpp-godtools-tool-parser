@@ -24,16 +24,6 @@ kotlin {
     iosArm64()
     iosX64()
 
-    cocoapods {
-        summary = "GodTools tool parser"
-        license = "MIT"
-        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
-
-        frameworkName = "GodToolsToolParser"
-
-        ios.deploymentTarget = "11.0"
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -50,6 +40,16 @@ kotlin {
         val androidTest by getting
 //        val iosMain by getting
 //        val iosTest by getting
+    }
+
+    cocoapods {
+        summary = "GodTools tool parser"
+        license = "MIT"
+        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+
+        frameworkName = "GodToolsToolParser"
+
+        ios.deploymentTarget = "11.0"
     }
 }
 
@@ -83,7 +83,7 @@ android {
             """.trimMargin()
             it.contains("vendored_frameworks") -> """
                 |$it
-                |    spec.prepare_command          = "mkdir -p ${it.substringAfter('"').substringBeforeLast('"')}"
+                |    spec.prepare_command          = "./gradlew generateDummyFramework"
             """.trimMargin()
             it == "end" -> """
                 |    spec.preserve_paths           = "**/*.*"
@@ -95,5 +95,5 @@ android {
     podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
 }
 tasks.create("cleanPodspec", Delete::class) {
-    delete("GodToolsToolParser.podspec")
+    delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks["clean"].dependsOn(it) }
