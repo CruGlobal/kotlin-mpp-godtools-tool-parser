@@ -12,7 +12,7 @@ plugins {
 group = "org.cru.godtools.kotlin"
 version = "0.1.0-SNAPSHOT"
 
-val isSnapshotVersion = version.toString().endsWith("-SNAPSHOT")
+val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
 
 repositories {
     google()
