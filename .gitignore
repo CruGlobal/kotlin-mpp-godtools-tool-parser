@@ -1,6 +1,7 @@
 # gradle project ignores
 .gradle/
 build/
+*.podspec
 
 # Android Studio project ignores
 .idea/
