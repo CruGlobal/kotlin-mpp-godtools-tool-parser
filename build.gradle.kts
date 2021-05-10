@@ -12,6 +12,8 @@ plugins {
 group = "org.cru.godtools.kotlin"
 version = "0.1.0-SNAPSHOT"
 
+val isSnapshotVersion = version.toString().endsWith("-SNAPSHOT")
+
 repositories {
     google()
     mavenCentral()
@@ -50,6 +52,20 @@ kotlin {
         frameworkName = "GodToolsToolParser"
 
         ios.deploymentTarget = "11.0"
+    }
+    publishing {
+        repositories {
+            maven {
+                name = "cruGlobalMavenRepository"
+                setUrl(
+                    "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-${
+                        if (isSnapshotVersion) "snapshots" else "releases"
+                    }-local/"
+                )
+
+                credentials(PasswordCredentials::class)
+            }
+        }
     }
 }
 
