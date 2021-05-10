@@ -72,7 +72,7 @@ android {
                 |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
                 |                                      :branch => "main"
                 |                                    }
-                """.trimMargin()
+            """.trimMargin()
 //                |                                      :commit => "${grgit.describe(mapOf("tags" to true))}"
             it.contains("vendored_frameworks") -> """
                 |$it
@@ -81,7 +81,7 @@ android {
             it == "end" -> """
                 |    spec.preserve_paths           = "**/*.*"
                 |$it
-                """.trimMargin()
+            """.trimMargin()
             else -> it
         }
     }
