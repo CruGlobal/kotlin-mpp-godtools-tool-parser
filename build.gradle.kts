@@ -1,3 +1,4 @@
+import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.tasks.PodspecTask
 
 plugins {
@@ -63,10 +64,12 @@ android {
 // HACK: customize the podspec until KT-42105 is implemented
 //       https://youtrack.jetbrains.com/issue/KT-42105
 (tasks["podspec"] as PodspecTask).doLast {
+    // we can't use the grgit extension val because it won't be present if the .git directory is missing
+    val grgit = project.extensions.findByName("grgit") as? Grgit
     val podspec = file("${project.name.replace("-", "_")}.podspec")
     val newPodspecContent = podspec.readLines().map {
         when {
-            it.contains("spec.source") -> """
+            grgit != null && it.contains("spec.source") -> """
                 |#$it
                 |    spec.source                   = {
                 |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
