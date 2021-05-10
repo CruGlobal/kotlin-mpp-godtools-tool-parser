@@ -91,7 +91,7 @@ android {
                 |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
                 |                                      ${
                     when {
-                        project.version.toString().endsWith("-SNAPSHOT") -> ":commit => \"${grgit.head().id}\""
+                        isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
                         else -> ":tag => \"v${project.version}\""
                     }
                 }
