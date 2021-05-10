@@ -83,7 +83,7 @@ android {
             """.trimMargin()
             it.contains("vendored_frameworks") -> """
                 |$it
-                |    spec.prepare_command          = "mkdir -p ${it.substringAfter('"').substringBeforeLast('"')}"
+                |    spec.prepare_command          = "./gradlew generateDummyFramework"
             """.trimMargin()
             it == "end" -> """
                 |    spec.preserve_paths           = "**/*.*"
