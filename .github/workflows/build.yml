@@ -2,6 +2,7 @@ name: Build Library
 
 on:
   push:
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -40,6 +41,31 @@ jobs:
           name: ktlint-results
           path: "build/reports/ktlint/"
 
+  lint_ios_podspec:
+    name: Lint iOS Podspec
+    runs-on: macos-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Install CocoaPods
+        run: bundle install
+      - name: Create podspec
+        run: ./gradlew podspec
+      - name: Lint podspec
+        run: pod spec lint *.podspec --allow-warnings
+
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
@@ -68,10 +94,10 @@ jobs:
       - name: Publish library
         run: ./gradlew publish --parallel
 
-  ios_podspec:
-    name: iOS Podspec
+  deploy_ios_podspec:
+    name: Publish iOS Podspec
     runs-on: macos-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [ ktlint ]
     steps:
       - name: Checkout code
@@ -89,22 +115,12 @@ jobs:
         run: bundle install
       - name: Create podspec
         run: ./gradlew podspec
-
-      # Lint podspec if not a push to the main branch
-      - name: Lint podspec
-        if: github.ref != 'refs/heads/main'
-        run: pod spec lint *.podspec --allow-warnings
-
-      # Deploy podspec if push to main branch
       - name: Install SSH key
-        if: github.ref == 'refs/heads/main'
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Add CruGlobal CocoaPods Repo
-        if: github.ref == 'refs/heads/main'
         run: pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Push podspec
-        if: github.ref == 'refs/heads/main'
         run: pod repo push CruGlobal *.podspec --allow-warnings
