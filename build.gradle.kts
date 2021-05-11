@@ -7,6 +7,7 @@ plugins {
     id("com.android.library")
     id("maven-publish")
     id("org.ajoberstar.grgit") version "4.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
 group = "org.cru.godtools.kotlin"
