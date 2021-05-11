@@ -17,8 +17,8 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-  ktlint:
-    name: ktlint
+  static_checks:
+    name: Static Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,14 +32,32 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Run ktlint
-        run: ./gradlew ktlintCheck --parallel
+      - name: Run Static Checks
+        run: ./gradlew check -x iosX64Test --parallel
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ktlint-results
           path: "build/reports/ktlint/"
+
+  ios_tests:
+    name: iOS Unit Tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Run iOS Unit Tests
+        run: ./gradlew iosX64Test --parallel
 
   lint_ios_podspec:
     name: Lint iOS Podspec
@@ -70,7 +88,7 @@ jobs:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ ktlint ]
+    needs: [ static_checks, ios_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -98,7 +116,7 @@ jobs:
     name: Publish iOS Podspec
     runs-on: macos-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ ktlint ]
+    needs: [ static_checks, ios_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
