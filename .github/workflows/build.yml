@@ -16,10 +16,35 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
+  ktlint:
+    name: ktlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck --parallel
+      - name: Archive ktlint results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ktlint-results
+          path: "build/reports/ktlint/"
+
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [ ktlint ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,6 +72,7 @@ jobs:
     name: iOS Podspec
     runs-on: macos-latest
     if: github.event_name == 'push'
+    needs: [ ktlint ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
