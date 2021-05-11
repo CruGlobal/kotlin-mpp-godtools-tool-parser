@@ -24,6 +24,10 @@ kotlin {
         publishLibraryVariants("release")
     }
     ios()
+    js {
+        browser()
+        nodejs()
+    }
 
     sourceSets {
         val commonMain by getting {
