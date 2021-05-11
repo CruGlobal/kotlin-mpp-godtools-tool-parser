@@ -57,9 +57,11 @@ kotlin {
             maven {
                 name = "cruGlobalMavenRepository"
                 setUrl(
-                    "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-${
-                        if (isSnapshotVersion) "snapshots" else "releases"
-                    }-local/"
+                    when {
+                        isSnapshotVersion ->
+                            "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/"
+                        else -> "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/"
+                    }
                 )
 
                 credentials(PasswordCredentials::class)
@@ -84,18 +86,19 @@ android {
     val podspec = file("${project.name.replace("-", "_")}.podspec")
     val newPodspecContent = podspec.readLines().map {
         when {
-            grgit != null && it.contains("spec.source") -> """
-                |#$it
-                |    spec.source                   = {
-                |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
-                |                                      ${
-                    when {
-                        isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
-                        else -> ":tag => \"v${project.version}\""
-                    }
+            grgit != null && it.contains("spec.source") -> {
+                val ref = when {
+                    isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
+                    else -> ":tag => \"v${project.version}\""
                 }
-                |                                    }
-            """.trimMargin()
+                """
+                    |#$it
+                    |    spec.source                   = {
+                    |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
+                    |                                      $ref
+                    |                                    }
+                """.trimMargin()
+            }
             it.contains("vendored_frameworks") -> """
                 |$it
                 |    spec.prepare_command          = "./gradlew generateDummyFramework"
