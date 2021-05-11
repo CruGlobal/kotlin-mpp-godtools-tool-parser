@@ -22,9 +22,7 @@ kotlin {
     android {
         publishLibraryVariants("release")
     }
-    iosArm32()
-    iosArm64()
-    iosX64()
+    ios()
 
     sourceSets {
         val commonMain by getting {
@@ -40,8 +38,8 @@ kotlin {
         }
         val androidMain by getting
         val androidTest by getting
-//        val iosMain by getting
-//        val iosTest by getting
+        val iosMain by getting
+        val iosTest by getting
     }
 
     cocoapods {
