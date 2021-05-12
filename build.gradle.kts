@@ -80,6 +80,12 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
     }
+
+    sourceSets {
+        val main by getting { setRoot("src/androidMain") }
+        val test by getting { setRoot("src/androidTest") }
+        val androidTest by getting { setRoot("src/androidAndroidTest") }
+    }
 }
 
 // region Cocoapods
