@@ -8,6 +8,8 @@ plugins {
     id("maven-publish")
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("com.vanniktech.android.junit.jacoco") version "0.16.0"
+    jacoco
 }
 
 group = "org.cru.godtools.kotlin"
@@ -118,3 +120,8 @@ android {
 tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks["clean"].dependsOn(it) }
+// endregion Cocoapods
+
+jacoco {
+    toolVersion = "0.8.7"
+}
