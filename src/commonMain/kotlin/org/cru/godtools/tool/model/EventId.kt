@@ -2,16 +2,12 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 
+private const val EVENT_NAMESPACE_FOLLOWUP = "followup"
+internal const val EVENT_NAMESPACE_STATE = "state"
+
 class EventId internal constructor(val namespace: String? = null, val name: String) {
-    override fun equals(other: Any?) = other is EventId &&
-        namespace == other.namespace &&
-        name.equals(other.name, true)
-
-    override fun hashCode() = (namespace?.hashCode() ?: 0) * 31 + name.lowercase().hashCode()
-    override fun toString() = if (namespace != null) "$namespace:$name" else name
-
     companion object {
-        val FOLLOWUP = EventId(namespace = "followup", name = "send")
+        val FOLLOWUP = EventId(EVENT_NAMESPACE_FOLLOWUP, "send")
 
         fun parse(raw: String?) = raw
             ?.split(REGEX_SEQUENCE_SEPARATOR)
@@ -24,4 +20,11 @@ class EventId internal constructor(val namespace: String? = null, val name: Stri
                 }
             }.orEmpty()
     }
+
+    override fun equals(other: Any?) = other is EventId &&
+        namespace == other.namespace &&
+        name.equals(other.name, true)
+
+    override fun hashCode() = (namespace?.hashCode() ?: 0) * 31 + name.lowercase().hashCode()
+    override fun toString() = if (namespace != null) "$namespace:$name" else name
 }
