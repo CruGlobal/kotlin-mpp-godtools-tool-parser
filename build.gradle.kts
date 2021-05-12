@@ -1,5 +1,4 @@
 import org.ajoberstar.grgit.Grgit
-import org.jetbrains.kotlin.gradle.tasks.PodspecTask
 
 plugins {
     kotlin("multiplatform") version "1.5.0"
@@ -83,43 +82,46 @@ android {
     }
 }
 
+// region Cocoapods
 // HACK: customize the podspec until KT-42105 is implemented
 //       https://youtrack.jetbrains.com/issue/KT-42105
-(tasks["podspec"] as PodspecTask).doLast {
-    // we can't use the grgit extension val because it won't be present if the .git directory is missing
-    val grgit = project.extensions.findByName("grgit") as? Grgit
-    val podspec = file("${project.name.replace("-", "_")}.podspec")
-    val newPodspecContent = podspec.readLines().map {
-        when {
-            grgit != null && it.contains("spec.source") -> {
-                val ref = when {
-                    isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
-                    else -> ":tag => \"v${project.version}\""
+tasks.podspec.configure {
+    doLast {
+        // we can't use the grgit extension val because it won't be present if the .git directory is missing
+        val grgit = project.extensions.findByName("grgit") as? Grgit
+        val podspec = file("${project.name.replace("-", "_")}.podspec")
+        val newPodspecContent = podspec.readLines().map {
+            when {
+                grgit != null && it.contains("spec.source") -> {
+                    val ref = when {
+                        isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
+                        else -> ":tag => \"v${project.version}\""
+                    }
+                    """
+                        |#$it
+                        |    spec.source                   = {
+                        |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
+                        |                                      $ref
+                        |                                    }
+                    """.trimMargin()
                 }
-                """
-                    |#$it
-                    |    spec.source                   = {
-                    |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
-                    |                                      $ref
-                    |                                    }
+                it.contains("vendored_frameworks") -> """
+                    |$it
+                    |    spec.prepare_command          = "./gradlew generateDummyFramework"
                 """.trimMargin()
+                it == "end" -> """
+                    |    spec.preserve_paths           = "**/*.*"
+                    |$it
+                """.trimMargin()
+                else -> it
             }
-            it.contains("vendored_frameworks") -> """
-                |$it
-                |    spec.prepare_command          = "./gradlew generateDummyFramework"
-            """.trimMargin()
-            it == "end" -> """
-                |    spec.preserve_paths           = "**/*.*"
-                |$it
-            """.trimMargin()
-            else -> it
         }
+        podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
     }
-    podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
 }
 tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
-}.also { tasks["clean"].dependsOn(it) }
+}.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
 
 jacoco {
