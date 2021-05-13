@@ -1,10 +1,13 @@
 package org.cru.godtools.tool.state
 
+import org.cru.godtools.tool.internal.parcel.Parcelable
+import org.cru.godtools.tool.internal.parcel.Parcelize
 import org.cru.godtools.tool.model.EVENT_NAMESPACE_STATE
 import org.cru.godtools.tool.model.EventId
 
-class State internal constructor() {
-    private val state = mutableMapOf<String, List<String>>()
+@Parcelize
+class State internal constructor(private val state: MutableMap<String, List<String>>) : Parcelable {
+    constructor() : this(mutableMapOf<String, List<String>>())
 
     operator fun get(key: String) = state[key]?.firstOrNull()
     fun getAll(key: String) = state[key].orEmpty()
