@@ -22,7 +22,7 @@ repositories {
 }
 kotlin {
     android {
-        publishLibraryVariants("release")
+        publishLibraryVariants("debug", "release")
     }
     ios()
     js {
