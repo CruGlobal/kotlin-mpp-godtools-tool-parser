@@ -22,7 +22,7 @@ repositories {
 }
 kotlin {
     android {
-        publishLibraryVariants("release")
+        publishLibraryVariants("debug", "release")
     }
     ios()
     js {
@@ -41,10 +41,6 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting
-        val iosMain by getting
-        val iosTest by getting
     }
 
     cocoapods {
@@ -79,6 +75,12 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(30)
+    }
+
+    sourceSets {
+        val main by getting { setRoot("src/androidMain") }
+        val test by getting { setRoot("src/androidTest") }
+        val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
 
