@@ -5,6 +5,7 @@ plugins {
     kotlin("native.cocoapods") version "1.5.0"
     id("com.android.library")
     id("maven-publish")
+    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.0"
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
@@ -39,6 +40,12 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+        val androidTest by getting {
+            dependencies {
+                implementation("androidx.test.ext:junit:1.1.2")
+                implementation("org.robolectric:robolectric:4.5.1")
             }
         }
     }
