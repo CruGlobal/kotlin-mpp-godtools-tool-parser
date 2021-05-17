@@ -148,6 +148,20 @@ tasks.podspec.configure {
                     |    spec.preserve_paths           = "**/*.*"
                     |$it
                 """.trimMargin()
+
+                // HACK: force CONFIGURATION to be debug or release only.
+                //       other values are not currently supported by the kotlin cocoapods plugin
+                it.contains("syncFramework") -> """
+                    |if [[ ${'$'}(echo ${'$'}CONFIGURATION | tr '[:upper:]' '[:lower:]') = 'debug' ]]
+                    |then
+                    |    SANITIZED_CONFIGURATION=debug
+                    |else
+                    |    SANITIZED_CONFIGURATION=release
+                    |fi
+                    |$it
+                """.trimMargin()
+                it.contains("\$CONFIGURATION") -> it.replace("CONFIGURATION", "SANITIZED_CONFIGURATION")
+
                 else -> it
             }
         }
