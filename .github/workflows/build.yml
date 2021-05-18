@@ -38,7 +38,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Static Checks
-        run: ./gradlew check -x iosX64Test --parallel
+        run: ./gradlew check -x iosTest --parallel
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
@@ -72,7 +72,7 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run iOS Unit Tests
-        run: ./gradlew iosX64Test --parallel
+        run: ./gradlew iosTest --parallel
 
   lint_ios_podspec:
     name: Lint iOS Podspec
