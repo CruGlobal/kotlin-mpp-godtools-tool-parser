@@ -93,7 +93,10 @@ android {
 
     sourceSets {
         val main by getting { setRoot("src/androidMain") }
-        val test by getting { setRoot("src/androidTest") }
+        val test by getting {
+            setRoot("src/androidTest")
+            resources.srcDir("src/commonTest/resources")
+        }
         val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
