@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.state
 
-import org.cru.godtools.tool.internal.parcel.Parcelable
-import org.cru.godtools.tool.internal.parcel.Parcelize
+import org.cru.godtools.tool.internal.Parcelable
+import org.cru.godtools.tool.internal.Parcelize
 import org.cru.godtools.tool.model.EVENT_NAMESPACE_STATE
 import org.cru.godtools.tool.model.EventId
 
