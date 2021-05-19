@@ -38,7 +38,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Static Checks
-        run: ./gradlew check -x iosTest --parallel
+        run: ./gradlew check -x iosTest -x jsTest -x jsNodeTest -x jsBrowserTest --parallel
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
@@ -74,6 +74,23 @@ jobs:
       - name: Run iOS Unit Tests
         run: ./gradlew iosTest --parallel
 
+  js_tests:
+    name: JS Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Run JS Unit Tests
+        run: ./gradlew jsTest --parallel
+
   lint_ios_podspec:
     name: Lint iOS Podspec
     runs-on: macos-latest
@@ -102,7 +119,7 @@ jobs:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ static_checks, ios_tests ]
+    needs: [ static_checks, ios_tests, js_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
