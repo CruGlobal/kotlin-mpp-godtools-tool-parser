@@ -1,4 +1,6 @@
 import org.ajoberstar.grgit.Grgit
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 plugins {
     kotlin("multiplatform") version "1.5.0"
@@ -32,7 +34,7 @@ kotlin {
     when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
         else -> iosX64("ios")
-    }
+    }.copyTestResources()
     js {
         browser()
         nodejs()
@@ -161,3 +163,20 @@ tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
+
+// region iOS Test Resources
+// HACK: workaround https://youtrack.jetbrains.com/issue/KT-37818
+//       based on logic found here: https://github.com/icerockdev/moko-resources/pull/107/files
+fun KotlinNativeTarget.copyTestResources() {
+    binaries
+        .matching { it is TestExecutable }
+        .configureEach {
+            (this as TestExecutable).linkTask.doLast {
+                project.file("src/commonTest/resources").copyRecursively(
+                    target = outputDirectory,
+                    overwrite = true
+                )
+            }
+        }
+}
+// endregion iOS Test Resources
