@@ -4,7 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.cru.godtools.tool.xml.AndroidXmlPullParserFactory
 import org.cru.godtools.tool.xml.XmlPullParserFactory
 
-actual val Any.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
+actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
     get() = object : AndroidXmlPullParserFactory() {
         override fun openFile(fileName: String) =
             this@TEST_XML_PULL_PARSER_FACTORY::class.java.getResourceAsStream(fileName)!!

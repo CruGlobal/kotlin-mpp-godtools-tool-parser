@@ -36,7 +36,6 @@ kotlin {
         else -> iosX64("ios")
     }.copyTestResources()
     js {
-        browser()
         nodejs()
     }
 
@@ -55,6 +54,17 @@ kotlin {
             dependencies {
                 implementation("androidx.test.ext:junit:1.1.2")
                 implementation("org.robolectric:robolectric:4.5.1")
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("xmldom", "0.6.0"))
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(libs.okio.js)
+                implementation(libs.okio.nodefilesystem)
             }
         }
     }
