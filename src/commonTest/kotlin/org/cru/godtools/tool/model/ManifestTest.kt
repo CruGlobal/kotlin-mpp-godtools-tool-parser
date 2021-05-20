@@ -5,13 +5,16 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.TEST_XML_PULL_PARSER_FACTORY
 import org.cru.godtools.tool.internal.UsesResources
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ManifestTest : UsesResources {
     override val resourcesDir = "model"
 
+    // region parse Manifest
     @Test
-    fun parseManifestEmpty() {
+    fun testParseManifestEmpty() {
         val manifest = parseManifest("manifest_empty.xml")
 //        assertNull(manifest.title)
 //        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
@@ -27,4 +30,16 @@ class ManifestTest : UsesResources {
         val parser = TEST_XML_PULL_PARSER_FACTORY.getXmlParser(name)!!.apply { nextTag() }
         return Manifest(parser)
     }
+    // endregion parse Manifest
+
+    // region Manifest.Type
+    @Test
+    fun testManifestTypeParsing() {
+        assertNull(Manifest.Type.parseOrNull(null))
+        assertEquals(Manifest.Type.ARTICLE, Manifest.Type.parseOrNull("article"))
+        assertEquals(Manifest.Type.LESSON, Manifest.Type.parseOrNull("lesson"))
+        assertEquals(Manifest.Type.TRACT, Manifest.Type.parseOrNull("tract"))
+        assertEquals(Manifest.Type.UNKNOWN, Manifest.Type.parseOrNull("nasldkja"))
+    }
+    // endregion Manifest.Type
 }
