@@ -15,5 +15,4 @@ abstract class AndroidXmlPullParserFactory : XmlPullParserFactory() {
 private fun InputStream.xmlPullParser() = Xml.newPullParser().also {
     it.setFeature(FEATURE_PROCESS_NAMESPACES, true)
     it.setInput(this, "UTF-8")
-    it.nextTag()
 }

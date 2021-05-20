@@ -24,7 +24,7 @@ class ManifestTest : UsesResources {
     }
 
     private fun parseManifest(name: String): Manifest {
-        val factory = TEST_XML_PULL_PARSER_FACTORY
-        return Manifest(factory.getXmlParser(name)!!)
+        val parser = TEST_XML_PULL_PARSER_FACTORY.getXmlParser(name)!!.apply { nextTag() }
+        return Manifest(parser)
     }
 }
