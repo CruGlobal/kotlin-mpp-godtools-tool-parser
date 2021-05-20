@@ -16,6 +16,7 @@ class ManifestTest : UsesResources {
     @Test
     fun testParseManifestEmpty() {
         val manifest = parseManifest("manifest_empty.xml")
+        assertEquals(Manifest.Type.DEFAULT, manifest.type)
 //        assertNull(manifest.title)
 //        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 //        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
@@ -24,6 +25,18 @@ class ManifestTest : UsesResources {
 //        assertThat(manifest.tractPages, `is`(empty()))
 //        assertEquals(0, manifest.resources.size)
 //        assertEquals(0, manifest.tips.size)
+    }
+
+    @Test
+    fun testParseManifestLesson() {
+        val manifest = parseManifest("manifest_lesson.xml")
+//        assertEquals("title", manifest.title)
+        assertEquals(Manifest.Type.LESSON, manifest.type)
+//        assertEquals(Color.RED, manifest.lessonControlColor)
+//        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
+//        assertThat(manifest.tractPages, `is`(empty()))
+//        assertEquals(1, manifest.lessonPages.size)
+//        assertEquals("page0.xml", manifest.lessonPages[0].fileName)
     }
 
     private fun parseManifest(name: String): Manifest {

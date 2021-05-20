@@ -10,8 +10,8 @@ abstract class SaxXmlPullParser : XmlPullParser {
 
     override fun require(type: Int, namespace: String?, name: String?) = with(currentEvent) {
         if (this.type != type) throw Exception("expected $type")
-        if (namespace != null && this.namespace != namespace) throw Exception("expected $namespace")
-        if (name != null && this.name != name) throw Exception("expected $name")
+        if (namespace != null && namespace != this.qname?.uri) throw Exception("expected $namespace")
+        if (name != null && this.qname?.local != name) throw Exception("expected $name")
     }
 
     override fun next() = events.removeFirst().also { currentEvent = it }.type
@@ -25,19 +25,25 @@ abstract class SaxXmlPullParser : XmlPullParser {
         return event.type
     }
 
-    private class ParserEvent(
-        val type: Int,
-        val namespace: String? = null,
-        val name: String? = null,
-        val content: String? = null
-    )
-
-    protected fun enqueueStartTag(namespaceUri: String?, name: String?) {
-        events += ParserEvent(START_TAG, namespaceUri, name)
+    override fun getAttributeValue(namespace: String?, name: String): String? {
+        val event = currentEvent.takeIf { it.type == START_TAG } ?: throw IndexOutOfBoundsException()
+        return event.attrs?.get(QName(namespace, name))
     }
 
-    protected fun enqueueEndTag(namespaceUri: String?, name: String?) {
-        events += ParserEvent(END_TAG, namespaceUri, name)
+    protected data class QName(val uri: String? = null, val local: String)
+    private class ParserEvent(
+        val type: Int,
+        val qname: QName? = null,
+        val content: String? = null,
+        val attrs: Map<QName, String>? = null
+    )
+
+    protected fun enqueueStartTag(qname: QName, attrs: Map<QName, String>? = null) {
+        events += ParserEvent(START_TAG, qname, attrs = attrs)
+    }
+
+    protected fun enqueueEndTag(qname: QName) {
+        events += ParserEvent(END_TAG, qname)
     }
 
     protected fun enqueueEndDocument() {

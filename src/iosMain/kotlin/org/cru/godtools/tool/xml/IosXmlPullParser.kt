@@ -15,12 +15,15 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
             namespaceURI: String?,
             qualifiedName: String?,
             attributes: Map<Any?, *>
-        ) = enqueueStartTag(namespaceURI, didStartElement)
+        ) = enqueueStartTag(QName(namespaceURI, didStartElement), attrs = attributes.convert())
 
         override fun parser(parser: NSXMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) =
-            enqueueEndTag(namespaceURI, didEndElement)
+            enqueueEndTag(QName(namespaceURI, didEndElement))
 
         override fun parserDidEndDocument(parser: NSXMLParser) = enqueueEndDocument()
+
+        private fun Map<Any?, *>.convert() =
+            map { QName(local = it.key?.toString().orEmpty()) to it.value?.toString().orEmpty() }.toMap()
 
         init {
             parser.delegate = this
