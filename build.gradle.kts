@@ -58,7 +58,7 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation(npm("xmldom", "0.6.0"))
+                implementation(npm("sax", "1.2.4"))
             }
         }
         val jsTest by getting {

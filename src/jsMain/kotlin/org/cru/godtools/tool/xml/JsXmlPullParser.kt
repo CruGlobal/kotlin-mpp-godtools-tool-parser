@@ -1,17 +1,22 @@
 package org.cru.godtools.tool.xml
 
-import org.w3c.dom.Document
+import org.cru.godtools.tool.internal.node.sax.QualifiedTag
+import org.cru.godtools.tool.internal.node.sax.SAXOptions
+import org.cru.godtools.tool.internal.node.sax.SAXParser
 
-class JsXmlPullParser(private val document: Document) : XmlPullParser {
-    override fun require(type: Int, namespace: String?, name: String?) {
-        TODO("Not yet implemented")
+private val SAX_OPTIONS = object : SAXOptions {
+    override val xmlns = true
+}
+
+class JsXmlPullParser(xml: String) : SaxXmlPullParser() {
+    private val internalParser = InternalSAXParser().apply {
+        write(xml)
+        close()
     }
 
-    override fun next(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun nextTag(): Int {
-        TODO("Not yet implemented")
+    private inner class InternalSAXParser : SAXParser(true, SAX_OPTIONS) {
+        override fun onopentag(tag: QualifiedTag) {
+            enqueueStartTag(tag.uri, tag.name)
+        }
     }
 }
