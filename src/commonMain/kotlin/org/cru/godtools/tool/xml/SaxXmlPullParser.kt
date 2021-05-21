@@ -3,6 +3,7 @@ package org.cru.godtools.tool.xml
 import org.cru.godtools.tool.xml.XmlPullParser.Companion.END_DOCUMENT
 import org.cru.godtools.tool.xml.XmlPullParser.Companion.END_TAG
 import org.cru.godtools.tool.xml.XmlPullParser.Companion.START_TAG
+import org.cru.godtools.tool.xml.XmlPullParser.Companion.TEXT
 
 abstract class SaxXmlPullParser : XmlPullParser {
     private var currentEvent = ParserEvent(XmlPullParser.START_DOCUMENT)
@@ -29,6 +30,16 @@ abstract class SaxXmlPullParser : XmlPullParser {
         return event.type
     }
 
+    override fun nextText(): String {
+        require(START_TAG)
+        return when (next()) {
+            TEXT -> currentEvent.content.orEmpty()
+                .also { check(next() == END_TAG) }
+            END_TAG -> ""
+            else -> throw Exception("parser must be on START_TAG or TEXT to read text")
+        }
+    }
+
     override fun getAttributeValue(namespace: String?, name: String): String? {
         val event = currentEvent.takeIf { it.type == START_TAG } ?: throw IndexOutOfBoundsException()
         return event.attrs?.get(QName(namespace, name))
@@ -43,14 +54,27 @@ abstract class SaxXmlPullParser : XmlPullParser {
     )
 
     protected fun enqueueStartTag(qname: QName, attrs: Map<QName, String>? = null) {
-        events += ParserEvent(START_TAG, qname, attrs = attrs)
+        enqueueEvent(ParserEvent(START_TAG, qname, attrs = attrs))
+    }
+
+    private val accumulatedText = StringBuilder()
+    protected fun enqueueText(text: String) {
+        accumulatedText.append(text)
     }
 
     protected fun enqueueEndTag(qname: QName) {
-        events += ParserEvent(END_TAG, qname)
+        enqueueEvent(ParserEvent(END_TAG, qname))
     }
 
     protected fun enqueueEndDocument() {
-        events += ParserEvent(END_DOCUMENT)
+        enqueueEvent(ParserEvent(END_DOCUMENT))
+    }
+
+    private fun enqueueEvent(event: ParserEvent) {
+        if (accumulatedText.isNotEmpty()) {
+            events += ParserEvent(TEXT, content = accumulatedText.toString())
+            accumulatedText.clear()
+        }
+        events += event
     }
 }

@@ -19,8 +19,8 @@ class JsXmlPullParser(xml: String) : SaxXmlPullParser() {
     private inner class InternalSAXParser : SAXParser(true, SAX_OPTIONS) {
         override fun onopentag(tag: QualifiedTag) =
             enqueueStartTag(QName(tag.uri, tag.local), attrs = tag.attributes.convert())
-
         override fun onclosetag(tagName: String) = enqueueEndTag(QName(local = tagName))
+        override fun ontext(t: String) = enqueueText(t)
     }
 
     private fun Attributes.convert(): Map<QName, String> =

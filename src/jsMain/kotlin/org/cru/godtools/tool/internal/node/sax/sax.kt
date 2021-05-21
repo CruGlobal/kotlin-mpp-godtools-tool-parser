@@ -5,6 +5,7 @@ package org.cru.godtools.tool.internal.node.sax
 open external class SAXParser(strict: Boolean, opt: SAXOptions) {
     open fun write(s: String): SAXParser
     open fun close(): SAXParser
+    open fun ontext(t: String)
     open fun onopentag(tag: QualifiedTag)
     open fun onclosetag(tagName: String)
 }

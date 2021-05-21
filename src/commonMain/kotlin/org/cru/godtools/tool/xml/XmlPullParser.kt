@@ -9,6 +9,7 @@ internal interface XmlPullParser {
 
     fun next(): Int
     fun nextTag(): Int
+    fun nextText(): String
 
     fun getAttributeValue(namespace: String?, name: String): String?
 

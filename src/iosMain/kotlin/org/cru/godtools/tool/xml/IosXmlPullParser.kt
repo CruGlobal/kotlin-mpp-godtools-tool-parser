@@ -20,6 +20,10 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
         override fun parser(parser: NSXMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) =
             enqueueEndTag(QName(namespaceURI, didEndElement))
 
+        override fun parser(parser: NSXMLParser, foundCharacters: String) {
+            enqueueText(foundCharacters)
+        }
+
         override fun parserDidEndDocument(parser: NSXMLParser) = enqueueEndDocument()
 
         private fun Map<Any?, *>.convert() =
