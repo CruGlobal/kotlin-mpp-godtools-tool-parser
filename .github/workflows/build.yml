@@ -67,6 +67,12 @@ jobs:
         with:
           fail_ci_if_error: true
           verbose: true
+      - name: Archive jacoco results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-results
+          path: "build/reports/jacoco/"
 
   ios_tests:
     name: iOS Unit Tests
