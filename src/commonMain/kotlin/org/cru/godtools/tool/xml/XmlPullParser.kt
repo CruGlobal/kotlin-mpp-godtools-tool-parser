@@ -21,3 +21,16 @@ internal interface XmlPullParser {
         const val TEXT = 4
     }
 }
+
+internal fun XmlPullParser.skipTag() {
+    require(XmlPullParser.START_TAG, null, null)
+
+    // loop until we process all nested tags
+    var depth = 1
+    while (depth > 0) {
+        when (next()) {
+            XmlPullParser.START_TAG -> depth++
+            XmlPullParser.END_TAG -> depth--
+        }
+    }
+}
