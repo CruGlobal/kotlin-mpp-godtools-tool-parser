@@ -1,7 +1,11 @@
 package org.cru.godtools.tool.xml
 
 internal interface XmlPullParser {
-    fun require(type: Int, namespace: String?, name: String?)
+    val eventType: Int
+    val namespace: String?
+    val name: String?
+
+    fun require(type: Int, namespace: String? = null, name: String? = null)
 
     fun next(): Int
     fun nextTag(): Int

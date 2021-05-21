@@ -8,6 +8,10 @@ abstract class SaxXmlPullParser : XmlPullParser {
     private var currentEvent = ParserEvent(XmlPullParser.START_DOCUMENT)
     private val events = mutableListOf<ParserEvent>()
 
+    override val eventType get() = currentEvent.type
+    override val namespace get() = currentEvent.qname?.uri
+    override val name get() = currentEvent.qname?.local
+
     override fun require(type: Int, namespace: String?, name: String?) = with(currentEvent) {
         if (this.type != type) throw Exception("expected $type")
         if (namespace != null && namespace != this.qname?.uri) throw Exception("expected $namespace")
