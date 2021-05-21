@@ -107,6 +107,11 @@ junitJacoco {
         "**/SaxXmlPullParser*"
     )
 }
+tasks.withType(Test::class.java) {
+    extensions.configure(JacocoTaskExtension::class.java) {
+        excludes = excludes.orEmpty() + "jdk.internal.*"
+    }
+}
 tasks.create("jacocoTestReport") {
     dependsOn(tasks.withType(JacocoReport::class.java))
 }
