@@ -31,6 +31,12 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Run Static Checks
         run: ./gradlew ktlintCheck lint --parallel
       - name: Archive ktlint results
@@ -54,6 +60,12 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Cache Maven
         uses: actions/cache@v2
         with:
@@ -111,6 +123,12 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Run JS Unit Tests
         run: ./gradlew jsTest --parallel
 
@@ -181,6 +199,12 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Install CocoaPods
         run: bundle install
       - name: Create podspec
