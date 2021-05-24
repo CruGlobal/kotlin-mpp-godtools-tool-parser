@@ -1,4 +1,6 @@
 import org.ajoberstar.grgit.Grgit
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 plugins {
     kotlin("multiplatform") version "1.5.10"
@@ -32,9 +34,8 @@ kotlin {
     when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
         else -> iosX64("ios")
-    }
+    }.copyTestResources()
     js {
-        browser()
         nodejs()
     }
 
@@ -53,6 +54,17 @@ kotlin {
             dependencies {
                 implementation("androidx.test.ext:junit:1.1.2")
                 implementation("org.robolectric:robolectric:4.5.1")
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("sax", "1.2.4"))
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(libs.okio.js)
+                implementation(libs.okio.nodefilesystem)
             }
         }
     }
@@ -93,7 +105,10 @@ android {
 
     sourceSets {
         val main by getting { setRoot("src/androidMain") }
-        val test by getting { setRoot("src/androidTest") }
+        val test by getting {
+            setRoot("src/androidTest")
+            resources.srcDir("src/commonTest/resources")
+        }
         val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
@@ -158,3 +173,20 @@ tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
+
+// region iOS Test Resources
+// HACK: workaround https://youtrack.jetbrains.com/issue/KT-37818
+//       based on logic found here: https://github.com/icerockdev/moko-resources/pull/107/files
+fun KotlinNativeTarget.copyTestResources() {
+    binaries
+        .matching { it is TestExecutable }
+        .configureEach {
+            (this as TestExecutable).linkTask.doLast {
+                project.file("src/commonTest/resources").copyRecursively(
+                    target = outputDirectory,
+                    overwrite = true
+                )
+            }
+        }
+}
+// endregion iOS Test Resources
