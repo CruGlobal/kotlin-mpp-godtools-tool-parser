@@ -25,7 +25,14 @@ kotlin {
     android {
         publishLibraryVariants("debug", "release")
     }
-    ios()
+    // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
+    //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
+    //       This should be able to go away when we upgrade to Kotlin 1.5.20
+//    ios()
+    when {
+        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
+        else -> iosX64("ios")
+    }
     js {
         browser()
         nodejs()
@@ -91,6 +98,25 @@ android {
     }
 }
 
+// region Jacoco
+junitJacoco {
+    jacocoVersion = libs.versions.jacoco.get()
+    includeNoLocationClasses = true
+    excludes = listOf(
+        // we exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+        "**/SaxXmlPullParser*"
+    )
+}
+tasks.withType(Test::class.java) {
+    extensions.configure(JacocoTaskExtension::class.java) {
+        excludes = excludes.orEmpty() + "jdk.internal.*"
+    }
+}
+tasks.create("jacocoTestReport") {
+    dependsOn(tasks.withType(JacocoReport::class.java))
+}
+// endregion Jacoco
+
 // region Cocoapods
 // HACK: customize the podspec until KT-42105 is implemented
 //       https://youtrack.jetbrains.com/issue/KT-42105
@@ -132,7 +158,3 @@ tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
-
-jacoco {
-    toolVersion = "0.8.7"
-}

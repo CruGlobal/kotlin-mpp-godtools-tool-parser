@@ -31,25 +31,60 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
-      - name: Cache Maven
+      - name: Cache Konan
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-maven-
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Run Static Checks
-        run: ./gradlew check -x iosX64Test --parallel
+        run: ./gradlew ktlintCheck lint --parallel
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ktlint-results
           path: "build/reports/ktlint/"
+
+  android_tests:
+    name: Android Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Cache Maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: Run Android Unit Tests
+        run: ./gradlew test jacocoTestReport --parallel
       - name: Codecov
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
           verbose: true
+      - name: Archive jacoco results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-results
+          path: "build/reports/jacoco/"
 
   ios_tests:
     name: iOS Unit Tests
@@ -72,7 +107,30 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run iOS Unit Tests
-        run: ./gradlew iosX64Test --parallel
+        run: ./gradlew iosTest --parallel
+
+  js_tests:
+    name: JS Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Run JS Unit Tests
+        run: ./gradlew jsTest --parallel
 
   lint_ios_podspec:
     name: Lint iOS Podspec
@@ -102,7 +160,7 @@ jobs:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ static_checks, ios_tests ]
+    needs: [ static_checks, android_tests, ios_tests, js_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -141,6 +199,12 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Konan
+        uses: actions/cache@v2
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
       - name: Install CocoaPods
         run: bundle install
       - name: Create podspec
