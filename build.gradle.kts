@@ -69,6 +69,11 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.annotation)
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation("androidx.test.ext:junit:1.1.2")
