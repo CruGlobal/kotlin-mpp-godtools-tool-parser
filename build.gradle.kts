@@ -1,11 +1,11 @@
 import org.ajoberstar.grgit.Grgit
 
 plugins {
-    kotlin("multiplatform") version "1.5.0"
-    kotlin("native.cocoapods") version "1.5.0"
+    kotlin("multiplatform") version "1.5.10"
+    kotlin("native.cocoapods") version "1.5.10"
     id("com.android.library")
     id("maven-publish")
-    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.0"
+    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.10"
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
