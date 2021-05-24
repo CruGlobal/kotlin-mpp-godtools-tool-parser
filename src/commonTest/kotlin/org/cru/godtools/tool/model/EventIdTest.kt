@@ -1,9 +1,11 @@
 package org.cru.godtools.tool.model
 
+import kotlin.native.concurrent.SharedImmutable
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
+@SharedImmutable
 private val ID1 = EventId("followup", "seND")
 
 class EventTest {
