@@ -98,6 +98,15 @@ android {
     }
 }
 
+// region Jacoco
+jacoco {
+    toolVersion = "0.8.7"
+}
+tasks.create("jacocoTestReport") {
+    dependsOn(tasks.withType(JacocoReport::class.java))
+}
+// endregion Jacoco
+
 // region Cocoapods
 // HACK: customize the podspec until KT-42105 is implemented
 //       https://youtrack.jetbrains.com/issue/KT-42105
@@ -139,7 +148,3 @@ tasks.create("cleanPodspec", Delete::class) {
     delete("${project.name.replace('-', '_')}.podspec")
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
-
-jacoco {
-    toolVersion = "0.8.7"
-}

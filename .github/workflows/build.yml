@@ -31,20 +31,37 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: ${{ runner.os }}-gradle-
-      - name: Cache Maven
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-maven-
       - name: Run Static Checks
-        run: ./gradlew check -x iosTest -x jsTest -x jsNodeTest -x jsBrowserTest --parallel
+        run: ./gradlew ktlintCheck lint --parallel
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: ktlint-results
           path: "build/reports/ktlint/"
+
+  android_tests:
+    name: Android Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Cache Maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: Run Android Unit Tests
+        run: ./gradlew test jacocoTestReport --parallel
       - name: Codecov
         uses: codecov/codecov-action@v1
         with:
@@ -119,7 +136,7 @@ jobs:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [ static_checks, ios_tests, js_tests ]
+    needs: [ static_checks, android_tests, ios_tests, js_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
