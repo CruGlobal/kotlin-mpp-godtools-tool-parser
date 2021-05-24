@@ -9,6 +9,17 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
 
     @Suppress("CONFLICTING_OVERLOADS")
     private inner class InternalXMLParser(parser: NSXMLParser) : NSObject(), NSXMLParserDelegateProtocol {
+        // region Active Namespaces
+        private val namespaces = mutableMapOf<String, MutableList<String>>()
+        override fun parser(parser: NSXMLParser, didStartMappingPrefix: String, toURI: String) {
+            namespaces.getOrPut(didStartMappingPrefix) { mutableListOf() }.add(toURI)
+        }
+
+        override fun parser(parser: NSXMLParser, didEndMappingPrefix: String) {
+            namespaces[didEndMappingPrefix]!!.removeLast()
+        }
+        // endregion Active Namespaces
+
         override fun parser(
             parser: NSXMLParser,
             didStartElement: String,
@@ -27,11 +38,20 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
         override fun parserDidEndDocument(parser: NSXMLParser) = enqueueEndDocument()
 
         private fun Map<Any?, *>.convert() =
-            map { QName(local = it.key?.toString().orEmpty()) to it.value?.toString().orEmpty() }.toMap()
+            map { it.key?.toString().orEmpty().attrToQName() to it.value?.toString().orEmpty() }.toMap()
+
+        private fun String.attrToQName(): QName = when {
+            !contains(':') -> QName(local = this)
+            else -> {
+                val (ns, local) = split(':', limit = 2)
+                QName(namespaces[ns]!!.last(), local)
+            }
+        }
 
         init {
             parser.delegate = this
             parser.shouldProcessNamespaces = true
+            parser.shouldReportNamespacePrefixes = true
             parser.parse()
         }
     }
