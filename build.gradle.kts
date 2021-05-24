@@ -99,8 +99,13 @@ android {
 }
 
 // region Jacoco
-jacoco {
-    toolVersion = "0.8.7"
+junitJacoco {
+    jacocoVersion = libs.versions.jacoco.get()
+    includeNoLocationClasses = true
+    excludes = listOf(
+        // we exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+        "**/SaxXmlPullParser*"
+    )
 }
 tasks.create("jacocoTestReport") {
     dependsOn(tasks.withType(JacocoReport::class.java))
