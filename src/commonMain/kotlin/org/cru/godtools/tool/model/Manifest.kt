@@ -1,7 +1,11 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
+import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
+import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
+import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
 
@@ -19,6 +23,9 @@ class Manifest : BaseModel {
     val locale: PlatformLocale?
     val type: Type
 
+    @AndroidColorInt
+    internal val lessonControlColor: Color
+
     private val _title: Text?
     val title: String? get() = _title?.text
 
@@ -28,6 +35,9 @@ class Manifest : BaseModel {
         code = parser.getAttributeValue(null, XML_TOOL)
         locale = parser.getAttributeValue(null, XML_LOCALE)?.toLocaleOrNull()
         type = Type.parseOrNull(parser.getAttributeValue(null, XML_TYPE)) ?: Type.DEFAULT
+
+        lessonControlColor =
+            parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
 
         var title: Text? = null
         while (parser.next() != XmlPullParser.END_TAG) {
