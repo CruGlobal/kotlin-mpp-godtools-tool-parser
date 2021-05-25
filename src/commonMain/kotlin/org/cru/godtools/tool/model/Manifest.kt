@@ -19,6 +19,13 @@ private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
 
 class Manifest : BaseModel {
+    companion object {
+        @AndroidColorInt
+        internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
+        @AndroidColorInt
+        internal val DEFAULT_PRIMARY_TEXT_COLOR = color(255, 255, 255, 1.0)
+    }
+
     val code: String?
     val locale: PlatformLocale?
     val type: Type
