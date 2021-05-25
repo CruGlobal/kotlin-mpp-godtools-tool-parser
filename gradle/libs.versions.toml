@@ -1,7 +1,9 @@
 [versions]
+fluidLocale = "0.9.6"
 jacoco = "0.8.7"
 okio = "3.0.0-alpha.5"
 
 [libraries]
+fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem-js", version.ref = "okio" }
