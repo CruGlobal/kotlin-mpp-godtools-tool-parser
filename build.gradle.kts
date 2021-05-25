@@ -59,6 +59,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(kotlin("stdlib"))
                 implementation(libs.fluidLocale)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
             }
