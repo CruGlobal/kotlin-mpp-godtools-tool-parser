@@ -18,7 +18,7 @@ private const val XML_TYPE_LESSON = "lesson"
 private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
 
-class Manifest : BaseModel {
+class Manifest : BaseModel, Styles {
     companion object {
         @AndroidColorInt
         internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
@@ -33,6 +33,11 @@ class Manifest : BaseModel {
     val dismissListeners: Set<EventId>
 
     @AndroidColorInt
+    override val primaryColor: Color
+    @AndroidColorInt
+    override val primaryTextColor: Color
+
+    @AndroidColorInt
     internal val lessonControlColor: Color
 
     private val _title: Text?
@@ -41,11 +46,15 @@ class Manifest : BaseModel {
     internal constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
-        code = parser.getAttributeValue(null, XML_TOOL)
-        locale = parser.getAttributeValue(null, XML_LOCALE)?.toLocaleOrNull()
-        type = Type.parseOrNull(parser.getAttributeValue(null, XML_TYPE)) ?: Type.DEFAULT
+        code = parser.getAttributeValue(XML_TOOL)
+        locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
+        type = Type.parseOrNull(parser.getAttributeValue(XML_TYPE)) ?: Type.DEFAULT
 
-        dismissListeners = parser.getAttributeValue(null, XML_DISMISS_LISTENERS).toEventIds().toSet()
+        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
+
+        primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_COLOR
+        primaryTextColor =
+            parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_TEXT_COLOR
 
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
