@@ -40,12 +40,11 @@ class ManifestTest : UsesResources {
         assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
         assertEquals(TestColors.RED, manifest.lessonControlColor)
-//        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
+        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 //        assertThat(manifest.tractPages, `is`(empty()))
 //        assertEquals(1, manifest.lessonPages.size)
 //        assertEquals("page0.xml", manifest.lessonPages[0].fileName)
     }
-
 
     @Test
     fun testParseManifestTract() {

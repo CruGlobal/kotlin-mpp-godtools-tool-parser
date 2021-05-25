@@ -30,6 +30,8 @@ class Manifest : BaseModel {
     val locale: PlatformLocale?
     val type: Type
 
+    val dismissListeners: Set<EventId>
+
     @AndroidColorInt
     internal val lessonControlColor: Color
 
@@ -42,6 +44,8 @@ class Manifest : BaseModel {
         code = parser.getAttributeValue(null, XML_TOOL)
         locale = parser.getAttributeValue(null, XML_LOCALE)?.toLocaleOrNull()
         type = Type.parseOrNull(parser.getAttributeValue(null, XML_TYPE)) ?: Type.DEFAULT
+
+        dismissListeners = parser.getAttributeValue(null, XML_DISMISS_LISTENERS).toEventIds().toSet()
 
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
