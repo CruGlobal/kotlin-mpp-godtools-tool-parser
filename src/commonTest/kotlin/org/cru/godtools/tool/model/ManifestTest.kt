@@ -1,9 +1,11 @@
 package org.cru.godtools.tool.model
 
+import io.fluidsonic.locale.Locale
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.TEST_XML_PULL_PARSER_FACTORY
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.fluidlocale.toCommon
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -17,6 +19,8 @@ class ManifestTest : UsesResources {
     fun testParseManifestEmpty() {
         val manifest = parseManifest("manifest_empty.xml")
         assertNull(manifest.title)
+        assertNull(manifest.code)
+        assertNull(manifest.locale)
         assertEquals(Manifest.Type.DEFAULT, manifest.type)
 //        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 //        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
@@ -31,6 +35,8 @@ class ManifestTest : UsesResources {
     fun testParseManifestLesson() {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)
+        assertEquals("lesson1", manifest.code)
+        assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
 //        assertEquals(Color.RED, manifest.lessonControlColor)
 //        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)

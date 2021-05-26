@@ -1,9 +1,13 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
+import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
 
 private const val XML_MANIFEST = "manifest"
+private const val XML_TOOL = "tool"
+private const val XML_LOCALE = "locale"
 private const val XML_TYPE = "type"
 private const val XML_TYPE_ARTICLE = "article"
 private const val XML_TYPE_LESSON = "lesson"
@@ -11,6 +15,8 @@ private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
 
 class Manifest : BaseModel {
+    val code: String?
+    val locale: PlatformLocale?
     val type: Type
 
     private val _title: Text?
@@ -18,6 +24,9 @@ class Manifest : BaseModel {
 
     internal constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
+
+        code = parser.getAttributeValue(null, XML_TOOL)
+        locale = parser.getAttributeValue(null, XML_LOCALE)?.toLocaleOrNull()
         type = Type.parseOrNull(parser.getAttributeValue(null, XML_TYPE)) ?: Type.DEFAULT
 
         var title: Text? = null
