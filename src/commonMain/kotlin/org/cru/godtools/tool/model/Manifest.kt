@@ -4,6 +4,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
+import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -17,6 +18,8 @@ private const val XML_TYPE_ARTICLE = "article"
 private const val XML_TYPE_LESSON = "lesson"
 private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
+private const val XML_NAVBAR_COLOR = "navbar-color"
+private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
 
 class Manifest : BaseModel, Styles {
     companion object {
@@ -38,6 +41,15 @@ class Manifest : BaseModel, Styles {
     override val primaryTextColor: Color
 
     @AndroidColorInt
+    private val _navBarColor: Color?
+    @get:AndroidColorInt
+    val navBarColor get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
+    @AndroidColorInt
+    private val _navBarControlColor: Color?
+    @get:AndroidColorInt
+    val navBarControlColor get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor
+
+    @AndroidColorInt
     internal val lessonControlColor: Color
 
     private val _title: Text?
@@ -55,6 +67,9 @@ class Manifest : BaseModel, Styles {
         primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_COLOR
         primaryTextColor =
             parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_TEXT_COLOR
+
+        _navBarColor = parser.getAttributeValue(XML_NAVBAR_COLOR)?.toColorOrNull()
+        _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()
 
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
@@ -75,6 +90,30 @@ class Manifest : BaseModel, Styles {
         _title = title
     }
 
+    internal constructor(
+        type: Type = Type.DEFAULT,
+        primaryColor: Color = DEFAULT_PRIMARY_COLOR,
+        primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
+        navBarColor: Color? = null,
+        navBarControlColor: Color? = null
+    ) {
+        code = null
+        locale = null
+        this.type = type
+
+        dismissListeners = emptySet()
+
+        this.primaryColor = primaryColor
+        this.primaryTextColor = primaryTextColor
+
+        _navBarColor = navBarColor
+        _navBarControlColor = navBarControlColor
+
+        lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
+
+        _title = null
+    }
+
     enum class Type {
         TRACT, ARTICLE, LESSON, UNKNOWN;
 
@@ -91,3 +130,13 @@ class Manifest : BaseModel, Styles {
         }
     }
 }
+
+@get:AndroidColorInt
+val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
+@get:AndroidColorInt
+val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor
+
+@get:AndroidColorInt
+val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
+@get:AndroidColorInt
+val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
