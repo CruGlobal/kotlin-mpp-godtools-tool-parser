@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import splitties.bitflags.minusFlag
 import splitties.bitflags.withFlag
@@ -69,7 +70,7 @@ value class ImageGravity(private val gravity: Int) {
 
             ImageGravity(gravity)
         } catch (e: IllegalArgumentException) {
-//            Timber.tag("ImageGravity").e(e, "error parsing ImageGravity: %s", raw)
+            Napier.e(tag = "ImageGravity", throwable = e, message = { "error parsing ImageGravity: $raw" })
             null
         }
     }
