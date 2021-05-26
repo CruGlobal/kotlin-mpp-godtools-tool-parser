@@ -1,0 +1,7 @@
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"
+    xmlns:tract="https://mobile-content-api.cru.org/xmlns/tract" background-color="rgba(0,255,0,1)"
+    background-image-align="top end" background-image-scale-type="fit" tract:card-background-color="rgba(0,0,255,1)">
+    <resources>
+        <resource filename="file.jpg" src="sha.jpg" />
+    </resources>
+</manifest>

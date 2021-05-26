@@ -34,7 +34,13 @@ value class ImageGravity(private val gravity: Int) {
     val isTop get() = gravity and MASK_Y_AXIS == BIT_TOP
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
 
+    internal infix fun or(other: ImageGravity) = ImageGravity(gravity or other.gravity)
+
     companion object {
+        internal val END = ImageGravity(BIT_END)
+        internal val TOP = ImageGravity(BIT_TOP)
+        internal val CENTER = ImageGravity(BIT_CENTER)
+
         internal fun parseOrNull(raw: String) = try {
             var gravity = BIT_CENTER
             var seenX = false

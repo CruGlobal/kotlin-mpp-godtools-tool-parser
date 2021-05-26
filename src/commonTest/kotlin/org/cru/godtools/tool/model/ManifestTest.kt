@@ -24,8 +24,15 @@ class ManifestTest : UsesResources {
         assertNull(manifest.code)
         assertNull(manifest.locale)
         assertEquals(Manifest.Type.DEFAULT, manifest.type)
+
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifest.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, manifest.primaryTextColor)
+
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, manifest.backgroundColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY, manifest.backgroundImageGravity)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, manifest.backgroundImageScaleType)
+
+        assertEquals(manifest.backgroundColor, manifest.cardBackgroundColor)
         assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 //        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
@@ -68,6 +75,15 @@ class ManifestTest : UsesResources {
     }
 
     @Test
+    fun testParseManifestBackgroundAttrs() {
+        val manifest = parseManifest("manifest_background.xml")
+        assertEquals(TestColors.GREEN, manifest.backgroundColor)
+        assertEquals(TestColors.BLUE, manifest.cardBackgroundColor)
+        assertEquals(ImageScaleType.FIT, manifest.backgroundImageScaleType)
+        assertEquals(ImageGravity.TOP or ImageGravity.END, manifest.backgroundImageGravity)
+    }
+
+    @Test
     fun testParseManifestContainingTips() {
         val manifest = parseManifest("manifest_tips.xml")
 //        assertEquals(0, manifest.tractPages.size)
@@ -92,8 +108,8 @@ class ManifestTest : UsesResources {
 
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
-//        assertEquals(Color.GREEN, Manifest(cardBackgroundColor = Color.GREEN).cardBackgroundColor)
-//        assertEquals(Color.BLUE, Manifest(backgroundColor = Color.BLUE).cardBackgroundColor)
+        assertEquals(TestColors.GREEN, Manifest(cardBackgroundColor = TestColors.GREEN).cardBackgroundColor)
+        assertEquals(TestColors.BLUE, Manifest(backgroundColor = TestColors.BLUE).cardBackgroundColor)
     }
 
     // region navbar colors

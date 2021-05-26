@@ -7,4 +7,8 @@ internal const val XMLNS_CONTENT = "https://mobile-content-api.cru.org/xmlns/con
 // common XML attributes
 internal const val XML_PRIMARY_COLOR = "primary-color"
 internal const val XML_PRIMARY_TEXT_COLOR = "primary-text-color"
+internal const val XML_BACKGROUND_COLOR = "background-color"
+internal const val XML_BACKGROUND_IMAGE = "background-image"
+internal const val XML_BACKGROUND_IMAGE_GRAVITY = "background-image-align"
+internal const val XML_BACKGROUND_IMAGE_SCALE_TYPE = "background-image-scale-type"
 internal const val XML_DISMISS_LISTENERS = "dismiss-listeners"
