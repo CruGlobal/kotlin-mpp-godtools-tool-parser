@@ -39,7 +39,7 @@ class ManifestTest : UsesResources {
         assertEquals("lesson1", manifest.code)
         assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
-        assertEquals(color(255, 0, 0, 1.0), manifest.lessonControlColor)
+        assertEquals(TestColors.RED, manifest.lessonControlColor)
 //        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 //        assertThat(manifest.tractPages, `is`(empty()))
 //        assertEquals(1, manifest.lessonPages.size)

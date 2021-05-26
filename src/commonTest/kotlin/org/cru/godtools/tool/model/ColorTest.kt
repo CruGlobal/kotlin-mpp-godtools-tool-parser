@@ -8,20 +8,14 @@ import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ColorTest {
-    private val red = color(255, 0, 0, 1.0)
-    private val green = color(0, 255, 0, 1.0)
-    private val blue = color(0, 0, 255, 1.0)
-    private val black = color(0, 0, 0, 1.0)
-    private val transparent = color(0, 0, 0, 0.0)
-
     @Test
     fun testParseColor() {
-        assertEquals(red, "rgba(255,0,0,1)".toColorOrNull())
-        assertEquals(green, "rgba(0,255,0,1)".toColorOrNull())
-        assertEquals(blue, "rgba(0,0,255,1)".toColorOrNull())
-        assertEquals(black, "rgba(0,0,0,1)".toColorOrNull())
-        assertEquals(black, "rgba(0,0,0,1.0)".toColorOrNull())
-        assertEquals(transparent, "rgba(0,0,0,0)".toColorOrNull())
+        assertEquals(TestColors.RED, "rgba(255,0,0,1)".toColorOrNull())
+        assertEquals(TestColors.GREEN, "rgba(0,255,0,1)".toColorOrNull())
+        assertEquals(TestColors.BLUE, "rgba(0,0,255,1)".toColorOrNull())
+        assertEquals(TestColors.BLACK, "rgba(0,0,0,1)".toColorOrNull())
+        assertEquals(TestColors.BLACK, "rgba(0,0,0,1.0)".toColorOrNull())
+        assertEquals(TestColors.TRANSPARENT, "rgba(0,0,0,0)".toColorOrNull())
     }
 
     @Test
