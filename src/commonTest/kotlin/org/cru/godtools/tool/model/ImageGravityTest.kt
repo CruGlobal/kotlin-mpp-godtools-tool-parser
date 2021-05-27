@@ -37,12 +37,23 @@ class ImageGravityTest {
             assertFalse(isBottom)
             assertTrue(isCenter)
         }
+
+        with(ImageGravity.parseOrNull("start top center")!!) {
+            assertTrue(isStart)
+            assertFalse(isEnd)
+            assertFalse(isCenterX)
+            assertTrue(isTop)
+            assertFalse(isBottom)
+            assertFalse(isCenterY)
+        }
     }
 
     @Test
     fun verifyParseConflictingGravity() {
         assertNull(ImageGravity.parseOrNull("start end"))
+        assertNull(ImageGravity.parseOrNull("end start"))
         assertNull(ImageGravity.parseOrNull("start top end"))
+        assertNull(ImageGravity.parseOrNull("top bottom end"))
         assertNull(ImageGravity.parseOrNull("bottom top end"))
     }
 }
