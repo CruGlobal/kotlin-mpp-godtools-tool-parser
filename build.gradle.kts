@@ -156,6 +156,12 @@ tasks.create("jacocoTestReport") {
 }
 // endregion Jacoco
 
+// region KtLint
+ktlint {
+    version.set(libs.versions.ktlint)
+}
+// endregion KtLint
+
 // region Cocoapods
 // HACK: customize the podspec until KT-42105 is implemented
 //       https://youtrack.jetbrains.com/issue/KT-42105

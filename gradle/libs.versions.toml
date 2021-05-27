@@ -2,6 +2,7 @@
 androidx-annotation = "1.2.0"
 fluidLocale = "0.9.6"
 jacoco = "0.8.7"
+ktlint = "0.41.0"
 okio = "3.0.0-alpha.5"
 
 [libraries]
