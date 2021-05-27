@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
@@ -23,6 +24,7 @@ private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
 private const val XML_NAVBAR_COLOR = "navbar-color"
 private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
+private const val XML_RESOURCES = "resources"
 
 class Manifest : BaseModel, Styles {
     companion object {
@@ -60,6 +62,7 @@ class Manifest : BaseModel, Styles {
     @AndroidColorInt
     val backgroundColor: Color
     private val _backgroundImage: String?
+    val backgroundImage get() = getResource(_backgroundImage)
     val backgroundImageGravity: ImageGravity
     val backgroundImageScaleType: ImageScaleType
 
@@ -73,6 +76,9 @@ class Manifest : BaseModel, Styles {
 
     private val _title: Text?
     val title: String? get() = _title?.text
+
+    @VisibleForTesting
+    internal val resources: Map<String?, Resource>
 
     internal constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
@@ -102,12 +108,14 @@ class Manifest : BaseModel, Styles {
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
 
         var title: Text? = null
+        val resources = mutableListOf<Resource>()
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) continue
 
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
+                    XML_RESOURCES -> resources += parser.parseResources()
                     else -> parser.skipTag()
                 }
                 else -> parser.skipTag()
@@ -115,6 +123,7 @@ class Manifest : BaseModel, Styles {
         }
 
         _title = title
+        this.resources = resources.associateBy { it.name }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -148,6 +157,28 @@ class Manifest : BaseModel, Styles {
         lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
 
         _title = null
+
+        resources = emptyMap()
+    }
+
+    override val manifest get() = this
+    override fun getResource(name: String?) = name?.let { resources[name] }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun XmlPullParser.parseResources() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCES)
+
+        while (next() != XmlPullParser.END_TAG) {
+            if (eventType != XmlPullParser.START_TAG) continue
+
+            when (namespace) {
+                XMLNS_MANIFEST -> when (name) {
+                    Resource.XML_RESOURCE -> add(Resource(this@Manifest, this@parseResources))
+                    else -> skipTag()
+                }
+                else -> skipTag()
+            }
+        }
     }
 
     enum class Type {

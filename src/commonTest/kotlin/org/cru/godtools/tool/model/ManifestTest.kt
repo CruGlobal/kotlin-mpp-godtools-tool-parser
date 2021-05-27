@@ -10,6 +10,7 @@ import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -38,7 +39,7 @@ class ManifestTest : UsesResources {
 //        assertEquals(0, manifest.aemImports.size)
 //        assertThat(manifest.lessonPages, `is`(empty()))
 //        assertThat(manifest.tractPages, `is`(empty()))
-//        assertEquals(0, manifest.resources.size)
+        assertEquals(0, manifest.resources.size)
 //        assertEquals(0, manifest.tips.size)
     }
 
@@ -81,13 +82,16 @@ class ManifestTest : UsesResources {
         assertEquals(TestColors.BLUE, manifest.cardBackgroundColor)
         assertEquals(ImageScaleType.FIT, manifest.backgroundImageScaleType)
         assertEquals(ImageGravity.TOP or ImageGravity.END, manifest.backgroundImageGravity)
+        val backgroundImage = assertNotNull(manifest.backgroundImage)
+        assertEquals("file.jpg", backgroundImage.name)
+        assertEquals("sha1.jpg", backgroundImage.localName)
     }
 
     @Test
     fun testParseManifestContainingTips() {
         val manifest = parseManifest("manifest_tips.xml")
 //        assertEquals(0, manifest.tractPages.size)
-//        assertEquals(0, manifest.resources.size)
+        assertEquals(0, manifest.resources.size)
 //        assertEquals(1, manifest.tips.size)
 //        assertEquals("tip1", manifest.findTip("tip1")!!.id)
     }
@@ -96,7 +100,7 @@ class ManifestTest : UsesResources {
     fun testParseManifestInvalidTips() {
         val manifest = parseManifest("manifest_tips_invalid.xml")
 //        assertEquals(0, manifest.tractPages.size)
-//        assertEquals(0, manifest.resources.size)
+        assertEquals(0, manifest.resources.size)
 //        assertEquals(0, manifest.tips.size)
     }
 
