@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
@@ -116,6 +117,7 @@ class Manifest : BaseModel, Styles {
         _title = title
     }
 
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         type: Type = Type.DEFAULT,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,

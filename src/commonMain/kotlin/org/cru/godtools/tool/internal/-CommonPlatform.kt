@@ -22,3 +22,8 @@ expect interface Parcelable
 )
 expect annotation class AndroidColorInt()
 // endregion Android Annotations
+
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
+@Retention(AnnotationRetention.BINARY)
+expect annotation class VisibleForTesting()

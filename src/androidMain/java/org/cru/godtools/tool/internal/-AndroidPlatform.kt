@@ -1,8 +1,9 @@
 package org.cru.godtools.tool.internal
 
-// region Android Annotations
+// region AndroidX Annotations
 actual typealias AndroidColorInt = androidx.annotation.ColorInt
-// endregion Android Annotations
+actual typealias VisibleForTesting = androidx.annotation.VisibleForTesting
+// endregion AndroidX Annotations
 
 // region Parcelable/kotlin-parcelize
 actual typealias Parcelize = kotlinx.parcelize.Parcelize
