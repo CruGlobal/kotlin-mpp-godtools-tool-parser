@@ -8,3 +8,16 @@ package org.cru.godtools.tool.internal
 expect annotation class Parcelize()
 expect interface Parcelable
 // endregion Parcelable/kotlin-parcelize
+
+// region Android Annotations
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
+@Retention(AnnotationRetention.BINARY)
+@Target(
+    AnnotationTarget.VALUE_PARAMETER,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.LOCAL_VARIABLE,
+    AnnotationTarget.FIELD
+)
+expect annotation class AndroidColorInt()
+// endregion Android Annotations

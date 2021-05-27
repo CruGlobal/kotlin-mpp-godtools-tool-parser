@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.TEST_XML_PULL_PARSER_FACTORY
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.fluidlocale.toCommon
+import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -22,7 +23,7 @@ class ManifestTest : UsesResources {
         assertNull(manifest.code)
         assertNull(manifest.locale)
         assertEquals(Manifest.Type.DEFAULT, manifest.type)
-//        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
+        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 //        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
 //        assertThat(manifest.lessonPages, `is`(empty()))
@@ -38,7 +39,7 @@ class ManifestTest : UsesResources {
         assertEquals("lesson1", manifest.code)
         assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
-//        assertEquals(Color.RED, manifest.lessonControlColor)
+        assertEquals(TestColors.RED, manifest.lessonControlColor)
 //        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 //        assertThat(manifest.tractPages, `is`(empty()))
 //        assertEquals(1, manifest.lessonPages.size)
