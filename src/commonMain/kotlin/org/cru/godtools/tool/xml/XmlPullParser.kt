@@ -23,6 +23,20 @@ internal interface XmlPullParser {
     }
 }
 
+internal inline fun XmlPullParser.parseChildren(block: () -> Unit = { }) {
+    while (next() != XmlPullParser.END_TAG) {
+        if (eventType != XmlPullParser.START_TAG) continue
+
+        // execute any custom parsing logic from the call-site
+        // if the block consumes the tag, the parser will be on an END_TAG after returning
+        block()
+        if (eventType == XmlPullParser.END_TAG) continue
+
+        // otherwise consume this child
+        skipTag()
+    }
+}
+
 internal fun XmlPullParser.skipTag() {
     require(XmlPullParser.START_TAG, null, null)
 

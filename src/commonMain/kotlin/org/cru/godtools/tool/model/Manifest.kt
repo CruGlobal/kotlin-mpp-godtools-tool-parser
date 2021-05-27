@@ -12,7 +12,7 @@ import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.skipTag
+import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_MANIFEST = "manifest"
 private const val XML_TOOL = "tool"
@@ -109,16 +109,12 @@ class Manifest : BaseModel, Styles {
 
         var title: Text? = null
         val resources = mutableListOf<Resource>()
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) continue
-
+        parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
                     XML_RESOURCES -> resources += parser.parseResources()
-                    else -> parser.skipTag()
                 }
-                else -> parser.skipTag()
             }
         }
 
@@ -167,16 +163,11 @@ class Manifest : BaseModel, Styles {
     @OptIn(ExperimentalStdlibApi::class)
     private fun XmlPullParser.parseResources() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCES)
-
-        while (next() != XmlPullParser.END_TAG) {
-            if (eventType != XmlPullParser.START_TAG) continue
-
+        parseChildren {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     Resource.XML_RESOURCE -> add(Resource(this@Manifest, this@parseResources))
-                    else -> skipTag()
                 }
-                else -> skipTag()
             }
         }
     }
