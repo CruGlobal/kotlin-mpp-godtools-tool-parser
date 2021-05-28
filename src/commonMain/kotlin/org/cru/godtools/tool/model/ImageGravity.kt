@@ -45,29 +45,29 @@ value class ImageGravity(private val gravity: Int) {
         internal val TOP = ImageGravity(BIT_TOP)
         internal val CENTER = ImageGravity(BIT_CENTER)
 
-        internal fun parseOrNull(raw: String) = try {
+        internal fun String.toImageGravityOrNull() = try {
             var gravity = BIT_CENTER
             var seenX = false
             var seenY = false
-            REGEX_SEQUENCE_SEPARATOR.split(raw).forEach {
+            REGEX_SEQUENCE_SEPARATOR.split(this).forEach {
                 when (it) {
                     XML_START -> {
-                        require(!seenX) { "multiple X-Axis gravities in: $raw" }
+                        require(!seenX) { "multiple X-Axis gravities in: $this" }
                         gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_START)
                         seenX = true
                     }
                     XML_END -> {
-                        require(!seenX) { "multiple X-Axis gravities in: $raw" }
+                        require(!seenX) { "multiple X-Axis gravities in: $this" }
                         gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_END)
                         seenX = true
                     }
                     XML_TOP -> {
-                        require(!seenY) { "multiple Y-Axis gravities in: $raw" }
+                        require(!seenY) { "multiple Y-Axis gravities in: $this" }
                         gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_TOP)
                         seenY = true
                     }
                     XML_BOTTOM -> {
-                        require(!seenY) { "multiple Y-Axis gravities in: $raw" }
+                        require(!seenY) { "multiple Y-Axis gravities in: $this" }
                         gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_BOTTOM)
                         seenY = true
                     }
@@ -80,10 +80,8 @@ value class ImageGravity(private val gravity: Int) {
 
             ImageGravity(gravity)
         } catch (e: IllegalArgumentException) {
-            Napier.e(tag = "ImageGravity", throwable = e, message = { "error parsing ImageGravity: $raw" })
+            Napier.e(tag = "ImageGravity", throwable = e, message = { "error parsing ImageGravity: $this" })
             null
         }
     }
 }
-
-internal fun String.toImageGravityOrNull() = ImageGravity.parseOrNull(this)
