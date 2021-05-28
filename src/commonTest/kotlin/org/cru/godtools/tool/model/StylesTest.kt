@@ -14,6 +14,8 @@ class StylesTest {
 
             override var primaryColor: Color = TestColors.RED
             override var primaryTextColor: Color = TestColors.RED
+            override var textColor: Color = TestColors.RED
+            override var textScale: Double = 0.0
         }
     }
     private val child by lazy { object : BaseModel(parent), Styles {} }
@@ -33,9 +35,25 @@ class StylesTest {
     }
 
     @Test
+    fun testStylesTextColorFallback() {
+        parent.textColor = TestColors.GREEN
+        assertEquals(TestColors.GREEN, child.textColor)
+        assertEquals(TestColors.GREEN, (child as Styles?).textColor)
+    }
+
+    @Test
+    fun testStylesTextScaleFallback() {
+        parent.textScale = 5.0
+        assertEquals(5.0, child.textScale, 0.0001)
+        assertEquals(5.0, (child as Styles?).textScale, 0.0001)
+    }
+
+    @Test
     fun testStylesDefaultsForNull() {
         val styles: Styles? = null
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, styles.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
+        assertEquals(Manifest.DEFAULT_TEXT_SCALE, styles.textScale)
     }
 }
