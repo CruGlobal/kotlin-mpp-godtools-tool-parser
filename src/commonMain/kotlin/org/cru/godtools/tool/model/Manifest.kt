@@ -46,6 +46,7 @@ class Manifest : BaseModel, Styles {
         @AndroidColorInt
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal const val DEFAULT_TEXT_SCALE = 1.0
+        internal val DEFAULT_TEXT_ALIGN = Text.Align.START
     }
 
     val code: String?

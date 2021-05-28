@@ -12,10 +12,11 @@ class StylesTest {
             override val stylesParent: Styles? = null
             override val manifest get() = TODO()
 
-            override var primaryColor: Color = TestColors.RED
-            override var primaryTextColor: Color = TestColors.RED
-            override var textColor: Color = TestColors.RED
-            override var textScale: Double = 0.0
+            override var primaryColor = TestColors.RED
+            override var primaryTextColor = TestColors.RED
+            override var textAlign = Text.Align.END
+            override var textColor = TestColors.RED
+            override var textScale = 0.0
         }
     }
     private val child by lazy { object : BaseModel(parent), Styles {} }
@@ -32,6 +33,13 @@ class StylesTest {
         parent.primaryTextColor = TestColors.GREEN
         assertEquals(TestColors.GREEN, child.primaryTextColor)
         assertEquals(TestColors.GREEN, (child as Styles?).primaryTextColor)
+    }
+
+    @Test
+    fun testStylesTextAlignFallback() {
+        parent.textAlign = Text.Align.CENTER
+        assertEquals(Text.Align.CENTER, child.textAlign)
+        assertEquals(Text.Align.CENTER, (child as Styles?).textAlign)
     }
 
     @Test
@@ -53,6 +61,7 @@ class StylesTest {
         val styles: Styles? = null
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, styles.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
+        assertEquals(Manifest.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, styles.textScale)
     }
