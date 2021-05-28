@@ -44,6 +44,20 @@ class ManifestTest : UsesResources {
     }
 
     @Test
+    fun testParseManifestArticle() {
+        val manifest = parseManifest("manifest_article.xml")
+        assertEquals(Manifest.Type.ARTICLE, manifest.type)
+        val category = assertNotNull(manifest.findCategory("testParseCategory"))
+        assertEquals("testParseCategory", category.id)
+        val banner = assertNotNull(category.banner)
+        assertEquals("banner.jpg", banner.name)
+        assertEquals("bannersha1.jpg", banner.localName)
+        assertEquals(setOf("tag1", "tag2"), category.aemTags)
+        val label = assertNotNull(category.label)
+        assertEquals("Category", label.text)
+    }
+
+    @Test
     fun testParseManifestLesson() {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)

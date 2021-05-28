@@ -24,8 +24,10 @@ private const val XML_TYPE_TRACT = "tract"
 private const val XML_TITLE = "title"
 private const val XML_NAVBAR_COLOR = "navbar-color"
 private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
+private const val XML_CATEGORIES = "categories"
 private const val XML_RESOURCES = "resources"
 
+@OptIn(ExperimentalStdlibApi::class)
 class Manifest : BaseModel, Styles {
     companion object {
         @AndroidColorInt
@@ -77,6 +79,8 @@ class Manifest : BaseModel, Styles {
     private val _title: Text?
     val title: String? get() = _title?.text
 
+    val categories: List<Category>
+
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
 
@@ -108,17 +112,20 @@ class Manifest : BaseModel, Styles {
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
 
         var title: Text? = null
+        val categories = mutableListOf<Category>()
         val resources = mutableListOf<Resource>()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
+                    XML_CATEGORIES -> categories += parser.parseCategories()
                     XML_RESOURCES -> resources += parser.parseResources()
                 }
             }
         }
 
         _title = title
+        this.categories = categories
         this.resources = resources.associateBy { it.name }
     }
 
@@ -154,13 +161,26 @@ class Manifest : BaseModel, Styles {
 
         _title = null
 
+        categories = emptyList()
         resources = emptyMap()
     }
 
     override val manifest get() = this
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
-    @OptIn(ExperimentalStdlibApi::class)
+    fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
+
+    private fun XmlPullParser.parseCategories() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
+        parseChildren {
+            when (namespace) {
+                XMLNS_MANIFEST -> when (name) {
+                    Category.XML_CATEGORY -> add(Category(this@Manifest, this@parseCategories))
+                }
+            }
+        }
+    }
+
     private fun XmlPullParser.parseResources() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCES)
         parseChildren {
