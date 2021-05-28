@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
+import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON

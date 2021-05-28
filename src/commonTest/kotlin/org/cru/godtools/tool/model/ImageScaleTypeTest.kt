@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -7,11 +8,10 @@ import kotlin.test.assertNull
 class ImageScaleTypeTest {
     @Test
     fun testParseOrNull() {
-        assertEquals(ImageScaleType.FIT, ImageScaleType.parseOrNull("fit"))
-        assertEquals(ImageScaleType.FILL, ImageScaleType.parseOrNull("fill"))
-        assertEquals(ImageScaleType.FILL_X, ImageScaleType.parseOrNull("fill-x"))
-        assertEquals(ImageScaleType.FILL_Y, ImageScaleType.parseOrNull("fill-y"))
-        assertNull(ImageScaleType.parseOrNull(null))
-        assertNull(ImageScaleType.parseOrNull("ajklsdfjkaewr"))
+        assertEquals(ImageScaleType.FIT, "fit".toImageScaleTypeOrNull())
+        assertEquals(ImageScaleType.FILL, "fill".toImageScaleTypeOrNull())
+        assertEquals(ImageScaleType.FILL_X, "fill-x".toImageScaleTypeOrNull())
+        assertEquals(ImageScaleType.FILL_Y, "fill-y".toImageScaleTypeOrNull())
+        assertNull("ajklsdfjkaewr".toImageScaleTypeOrNull())
     }
 }
