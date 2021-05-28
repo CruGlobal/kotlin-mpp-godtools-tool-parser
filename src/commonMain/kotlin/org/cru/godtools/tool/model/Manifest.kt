@@ -5,6 +5,8 @@ import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
+import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
+import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
@@ -12,7 +14,7 @@ import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.skipTag
+import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_MANIFEST = "manifest"
 private const val XML_TOOL = "tool"
@@ -21,11 +23,14 @@ private const val XML_TYPE = "type"
 private const val XML_TYPE_ARTICLE = "article"
 private const val XML_TYPE_LESSON = "lesson"
 private const val XML_TYPE_TRACT = "tract"
-private const val XML_TITLE = "title"
 private const val XML_NAVBAR_COLOR = "navbar-color"
 private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
+private const val XML_CATEGORY_LABEL_COLOR = "category-label-color"
+private const val XML_TITLE = "title"
+private const val XML_CATEGORIES = "categories"
 private const val XML_RESOURCES = "resources"
 
+@OptIn(ExperimentalStdlibApi::class)
 class Manifest : BaseModel, Styles {
     companion object {
         @AndroidColorInt
@@ -37,6 +42,11 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_BACKGROUND_COLOR = color(255, 255, 255, 1.0)
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL
+
+        @AndroidColorInt
+        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
+        internal const val DEFAULT_TEXT_SCALE = 1.0
+        internal val DEFAULT_TEXT_ALIGN = Text.Align.START
     }
 
     val code: String?
@@ -72,10 +82,21 @@ class Manifest : BaseModel, Styles {
     val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
+    private val _categoryLabelColor: Color?
+    @get:AndroidColorInt
+    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
+
+    @AndroidColorInt
     internal val lessonControlColor: Color
+
+    @AndroidColorInt
+    override val textColor: Color
+    override val textScale: Double
 
     private val _title: Text?
     val title: String? get() = _title?.text
+
+    val categories: List<Category>
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -104,25 +125,28 @@ class Manifest : BaseModel, Styles {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
+        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
 
-        var title: Text? = null
-        val resources = mutableListOf<Resource>()
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) continue
+        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
+        textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
+        var title: Text? = null
+        val categories = mutableListOf<Category>()
+        val resources = mutableListOf<Resource>()
+        parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
+                    XML_CATEGORIES -> categories += parser.parseCategories()
                     XML_RESOURCES -> resources += parser.parseResources()
-                    else -> parser.skipTag()
                 }
-                else -> parser.skipTag()
             }
         }
 
         _title = title
+        this.categories = categories
         this.resources = resources.associateBy { it.name }
     }
 
@@ -134,7 +158,9 @@ class Manifest : BaseModel, Styles {
         navBarColor: Color? = null,
         navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
-        cardBackgroundColor: Color? = null
+        cardBackgroundColor: Color? = null,
+        categoryLabelColor: Color? = null,
+        textColor: Color = DEFAULT_TEXT_COLOR
     ) {
         code = null
         locale = null
@@ -154,29 +180,41 @@ class Manifest : BaseModel, Styles {
         backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = cardBackgroundColor
+        _categoryLabelColor = categoryLabelColor
         lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
+
+        this.textColor = textColor
+        textScale = DEFAULT_TEXT_SCALE
 
         _title = null
 
+        categories = emptyList()
         resources = emptyMap()
     }
 
     override val manifest get() = this
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
-    @OptIn(ExperimentalStdlibApi::class)
+    fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
+
+    private fun XmlPullParser.parseCategories() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
+        parseChildren {
+            when (namespace) {
+                XMLNS_MANIFEST -> when (name) {
+                    Category.XML_CATEGORY -> add(Category(this@Manifest, this@parseCategories))
+                }
+            }
+        }
+    }
+
     private fun XmlPullParser.parseResources() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCES)
-
-        while (next() != XmlPullParser.END_TAG) {
-            if (eventType != XmlPullParser.START_TAG) continue
-
+        parseChildren {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     Resource.XML_RESOURCE -> add(Resource(this@Manifest, this@parseResources))
-                    else -> skipTag()
                 }
-                else -> skipTag()
             }
         }
     }
@@ -213,5 +251,8 @@ val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_
 val Manifest?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Manifest?.backgroundImageScaleType
     get() = this?.backgroundImageScaleType ?: Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+
+@get:AndroidColorInt
+val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
 
 internal fun Base.getResource(name: String?) = manifest.getResource(name)
