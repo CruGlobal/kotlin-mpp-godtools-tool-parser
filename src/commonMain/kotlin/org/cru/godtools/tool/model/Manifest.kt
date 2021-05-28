@@ -21,9 +21,10 @@ private const val XML_TYPE = "type"
 private const val XML_TYPE_ARTICLE = "article"
 private const val XML_TYPE_LESSON = "lesson"
 private const val XML_TYPE_TRACT = "tract"
-private const val XML_TITLE = "title"
 private const val XML_NAVBAR_COLOR = "navbar-color"
 private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
+private const val XML_CATEGORY_LABEL_COLOR = "category-label-color"
+private const val XML_TITLE = "title"
 private const val XML_CATEGORIES = "categories"
 private const val XML_RESOURCES = "resources"
 
@@ -39,6 +40,10 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_BACKGROUND_COLOR = color(255, 255, 255, 1.0)
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL
+
+        @AndroidColorInt
+        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
+        internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
     val code: String?
@@ -74,7 +79,14 @@ class Manifest : BaseModel, Styles {
     val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
+    internal val categoryLabelColor: Color?
+
+    @AndroidColorInt
     internal val lessonControlColor: Color
+
+    @AndroidColorInt
+    override val textColor: Color
+    override val textScale: Double
 
     private val _title: Text?
     val title: String? get() = _title?.text
@@ -108,8 +120,12 @@ class Manifest : BaseModel, Styles {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
+        categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
+
+        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
+        textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
         var title: Text? = null
         val categories = mutableListOf<Category>()
@@ -157,7 +173,11 @@ class Manifest : BaseModel, Styles {
         backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = cardBackgroundColor
+        categoryLabelColor = null
         lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
+
+        textColor = DEFAULT_TEXT_COLOR
+        textScale = DEFAULT_TEXT_SCALE
 
         _title = null
 
@@ -224,5 +244,8 @@ val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_
 val Manifest?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Manifest?.backgroundImageScaleType
     get() = this?.backgroundImageScaleType ?: Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+
+@get:AndroidColorInt
+val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
 
 internal fun Base.getResource(name: String?) = manifest.getResource(name)

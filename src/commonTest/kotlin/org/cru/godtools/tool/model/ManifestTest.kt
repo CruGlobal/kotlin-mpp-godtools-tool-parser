@@ -35,7 +35,7 @@ class ManifestTest : UsesResources {
 
         assertEquals(manifest.backgroundColor, manifest.cardBackgroundColor)
         assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
-//        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
+        assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
 //        assertThat(manifest.lessonPages, `is`(empty()))
 //        assertThat(manifest.tractPages, `is`(empty()))
@@ -80,7 +80,7 @@ class ManifestTest : UsesResources {
         assertEquals(TestColors.BLUE, manifest.primaryTextColor)
         assertEquals(TestColors.GREEN, manifest.navBarColor)
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
-//        assertEquals(1.2345, manifest.textScale, 0.00001)
+        assertEquals(1.2345, manifest.textScale, 0.00001)
 //        assertThat(manifest.lessonPages, `is`(empty()))
 //        assertEquals(2, manifest.tractPages.size)
 //        assertEquals("page0.xml", manifest.tractPages[0].fileName)
