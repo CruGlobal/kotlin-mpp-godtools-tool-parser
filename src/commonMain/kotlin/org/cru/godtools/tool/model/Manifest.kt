@@ -162,7 +162,7 @@ class Manifest : BaseModel, Styles {
     }
 
     override val manifest get() = this
-    override fun getResource(name: String?) = name?.let { resources[name] }
+    internal fun getResource(name: String?) = name?.let { resources[name] }
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun XmlPullParser.parseResources() = buildList {
@@ -213,3 +213,5 @@ val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_
 val Manifest?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Manifest?.backgroundImageScaleType
     get() = this?.backgroundImageScaleType ?: Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+
+internal fun Base.getResource(name: String?) = manifest.getResource(name)
