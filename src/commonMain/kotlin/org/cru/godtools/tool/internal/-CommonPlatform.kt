@@ -21,9 +21,17 @@ expect interface Parcelable
     AnnotationTarget.FIELD
 )
 expect annotation class AndroidColorInt()
-// endregion Android Annotations
 
 @OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
 @Retention(AnnotationRetention.BINARY)
+expect annotation class AndroidDimension(val unit: Int)
+internal const val DP = 0
+// endregion Android Annotations
+
+// region Testing Annotations
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
+@Retention(AnnotationRetention.BINARY)
 expect annotation class VisibleForTesting()
+// endregion Testing Annotations

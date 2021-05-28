@@ -10,6 +10,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -33,6 +34,8 @@ class TextTest : UsesResources {
         assertEquals(DEFAULT_TEXT_SCALE * text.stylesParent.textScale, text.textScale, 0.001)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, text.textColor)
         assertEquals(manifest.textAlign, text.textAlign)
+        assertEquals(Text.DEFAULT_IMAGE_SIZE, text.startImageSize)
+        assertEquals(Text.DEFAULT_IMAGE_SIZE, text.endImageSize)
         assertTrue(text.textStyles.isEmpty())
     }
 
@@ -46,9 +49,31 @@ class TextTest : UsesResources {
         assertEquals(TestColors.GREEN, text.textColor)
         assertEquals(Text.Align.END, text.textAlign)
         assertNotEquals(manifest.textAlign, text.textAlign)
+        assertEquals("start.png", text.startImageName)
+        assertEquals(5, text.startImageSize)
+        assertEquals("end.png", text.endImageName)
+        assertEquals(11, text.endImageSize)
         assertEquals(setOf(Text.Style.BOLD, Text.Style.ITALIC), text.textStyles)
     }
     // endregion Parsing
+
+    @Test
+    fun testStartImage() {
+        val name = "image.png"
+        val manifest = Manifest(resources = { listOf(Resource(it, name = name)) })
+        val resource = manifest.getResource(name)!!
+        assertSame(resource, Text(manifest, startImage = "image.png").startImage)
+        assertNull(Text(manifest, startImage = null).startImage)
+    }
+
+    @Test
+    fun testEndImage() {
+        val name = "image.png"
+        val manifest = Manifest(resources = { listOf(Resource(it, name = name)) })
+        val resource = manifest.getResource(name)!!
+        assertSame(resource, Text(manifest, endImage = "image.png").endImage)
+        assertNull(Text(manifest, endImage = null).endImage)
+    }
 
     @Test
     fun testTextScale() {

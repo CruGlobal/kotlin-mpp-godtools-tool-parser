@@ -2,12 +2,19 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.internal.AndroidDimension
+import org.cru.godtools.tool.internal.DP
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.tool.model.Text.Style.Companion.toTextStyles
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
+private const val XML_START_IMAGE = "start-image"
+private const val XML_START_IMAGE_SIZE = "start-image-size"
+private const val XML_END_IMAGE = "end-image"
+private const val XML_END_IMAGE_SIZE = "end-image-size"
 private const val XML_TEXT_ALIGN = "text-align"
 private const val XML_TEXT_ALIGN_START = "start"
 private const val XML_TEXT_ALIGN_CENTER = "center"
@@ -22,6 +29,10 @@ class Text : Content {
         internal const val XML_TEXT = "text"
 
         internal const val DEFAULT_TEXT_SCALE = 1.0
+
+        @VisibleForTesting
+        @AndroidDimension(unit = DP)
+        internal const val DEFAULT_IMAGE_SIZE = 40
     }
 
     val text: String?
@@ -36,6 +47,17 @@ class Text : Content {
     val textScale get() = _textScale * stylesParent.textScale
     val textStyles: Set<Style>
 
+    @VisibleForTesting
+    internal val startImageName: String?
+    val startImage get() = getResource(startImageName)
+    @AndroidDimension(unit = DP)
+    val startImageSize: Int
+    @VisibleForTesting
+    internal val endImageName: String?
+    val endImage get() = getResource(endImageName)
+    @AndroidDimension(unit = DP)
+    val endImageSize: Int
+
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
 
@@ -43,6 +65,11 @@ class Text : Content {
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
         textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
+
+        startImageName = parser.getAttributeValue(XML_START_IMAGE)
+        startImageSize = parser.getAttributeValue(XML_START_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
+        endImageName = parser.getAttributeValue(XML_END_IMAGE)
+        endImageSize = parser.getAttributeValue(XML_END_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
 
         text = parser.nextText()
     }
@@ -54,13 +81,19 @@ class Text : Content {
         textScale: Double = DEFAULT_TEXT_SCALE,
         @AndroidColorInt textColor: Color? = null,
         textAlign: Align? = null,
-        textStyles: Set<Style> = emptySet()
+        textStyles: Set<Style> = emptySet(),
+        startImage: String? = null,
+        endImage: String? = null,
     ) : super(parent) {
         this.text = text
         _textAlign = textAlign
         _textColor = textColor
         _textScale = textScale
         this.textStyles = textStyles
+        startImageName = startImage
+        startImageSize = DEFAULT_IMAGE_SIZE
+        endImageName = endImage
+        endImageSize = DEFAULT_IMAGE_SIZE
     }
 
     @AndroidColorInt

@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
 
@@ -18,6 +19,12 @@ class Resource : BaseModel {
         localName = parser.getAttributeValue(null, XML_SRC)
 
         parser.skipTag()
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(manifest: Manifest, name: String? = null) : super(manifest) {
+        this.name = name
+        localName = null
     }
 
     val name: String?
