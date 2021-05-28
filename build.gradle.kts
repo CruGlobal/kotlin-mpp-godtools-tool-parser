@@ -68,7 +68,7 @@ kotlin {
                 implementation(libs.fluidLocale)
                 implementation(libs.napier)
                 implementation(libs.splitties.bitflags)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
             }
         }
         val commonTest by getting {
