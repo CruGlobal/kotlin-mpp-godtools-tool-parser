@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.skipTag
+import org.cru.godtools.tool.xml.parseChildren
 
 class Text : BaseModel {
     companion object {
@@ -26,18 +26,16 @@ internal fun XmlPullParser.parseTextChild(
 
     // process any child elements
     var text: Text? = null
-    while (next() != XmlPullParser.END_TAG) {
-        if (eventType != XmlPullParser.START_TAG) continue
-
+    parseChildren {
         // execute any custom parsing logic from the call-site
         // if the block consumes the tag, the parser will be on an END_TAG after returning
         block()
-        if (eventType == XmlPullParser.END_TAG) continue
+        if (eventType == XmlPullParser.END_TAG) return@parseChildren
 
-        // parse text node
-        when {
-            namespace == XMLNS_CONTENT && name == Text.XML_TEXT -> text = Text(parent, this)
-            else -> skipTag()
+        when (namespace) {
+            XMLNS_CONTENT -> when (name) {
+                Text.XML_TEXT -> text = Text(parent, this)
+            }
         }
     }
     return text
