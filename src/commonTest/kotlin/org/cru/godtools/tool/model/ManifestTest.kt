@@ -3,7 +3,6 @@ package org.cru.godtools.tool.model
 import io.fluidsonic.locale.Locale
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
-import org.cru.godtools.tool.internal.TEST_XML_PULL_PARSER_FACTORY
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.fluidlocale.toCommon
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
@@ -123,10 +122,7 @@ class ManifestTest : UsesResources {
 //        assertEquals(0, manifest.tips.size)
     }
 
-    private fun parseManifest(name: String): Manifest {
-        val parser = TEST_XML_PULL_PARSER_FACTORY.getXmlParser(name)!!.apply { nextTag() }
-        return Manifest(parser)
-    }
+    private fun parseManifest(name: String) = Manifest(getTestXmlParser(name))
     // endregion parse Manifest
 
     // region Fallback Behaviors

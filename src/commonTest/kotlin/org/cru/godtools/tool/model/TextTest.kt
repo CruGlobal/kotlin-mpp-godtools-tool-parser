@@ -1,20 +1,54 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.AndroidJUnit4
+import org.cru.godtools.tool.internal.RunOnAndroidWith
+import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Manifest.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.tool.model.Text.Style.Companion.toTextStyles
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class TextTest {
+@RunOnAndroidWith(AndroidJUnit4::class)
+class TextTest : UsesResources {
+    override val resourcesDir = "model"
+
     private val parent = object : Styles {
         override val stylesParent = null
         override val manifest get() = TODO()
 
         override var textScale = DEFAULT_TEXT_SCALE
     }
+
+    // region Parsing
+    @Test
+    fun testTextParsingDefaults() {
+        val manifest = Manifest()
+        val text = Text(manifest, getTestXmlParser("text_defaults.xml"))
+
+        assertEquals("Text Defaults", text.text)
+        assertEquals(DEFAULT_TEXT_SCALE * text.stylesParent.textScale, text.textScale, 0.001)
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, text.textColor)
+        assertEquals(manifest.textAlign, text.textAlign)
+        assertTrue(text.textStyles.isEmpty())
+    }
+
+    @Test
+    fun testTextParsingAttributes() {
+        val manifest = Manifest()
+        val text = Text(parent, getTestXmlParser("text_attributes.xml"))
+
+        assertEquals("Attributes", text.text)
+        assertEquals(1.23, text.textScale, 0.001)
+        assertEquals(TestColors.GREEN, text.textColor)
+        assertEquals(Text.Align.END, text.textAlign)
+        assertNotEquals(manifest.textAlign, text.textAlign)
+        assertEquals(setOf(Text.Style.BOLD, Text.Style.ITALIC), text.textStyles)
+    }
+    // endregion Parsing
 
     @Test
     fun testTextScale() {
