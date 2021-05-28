@@ -34,7 +34,10 @@ class ManifestTest : UsesResources {
         assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, manifest.backgroundImageScaleType)
 
         assertEquals(manifest.backgroundColor, manifest.cardBackgroundColor)
+        assertEquals(manifest.textColor, manifest.categoryLabelColor)
         assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
+
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
 //        assertThat(manifest.lessonPages, `is`(empty()))
@@ -47,6 +50,8 @@ class ManifestTest : UsesResources {
     fun testParseManifestArticle() {
         val manifest = parseManifest("manifest_article.xml")
         assertEquals(Manifest.Type.ARTICLE, manifest.type)
+        assertEquals(TestColors.GREEN, manifest.categoryLabelColor)
+        assertEquals(TestColors.RED, manifest.textColor)
         val category = assertNotNull(manifest.findCategory("testParseCategory"))
         assertEquals("testParseCategory", category.id)
         val banner = assertNotNull(category.banner)
@@ -124,6 +129,7 @@ class ManifestTest : UsesResources {
     }
     // endregion parse Manifest
 
+    // region Fallback Behaviors
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
         assertEquals(TestColors.GREEN, Manifest(cardBackgroundColor = TestColors.GREEN).cardBackgroundColor)
@@ -148,6 +154,7 @@ class ManifestTest : UsesResources {
             assertEquals(TestColors.GREEN, (this as Manifest?).categoryLabelColor)
         }
     }
+    // endregion Fallback Behaviors
 
     // region navbar colors
     @Test
