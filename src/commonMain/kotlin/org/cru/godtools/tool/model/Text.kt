@@ -11,14 +11,14 @@ private const val XML_TEXT_STYLE_BOLD = "bold"
 private const val XML_TEXT_STYLE_ITALIC = "italic"
 private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 
-class Text : BaseModel {
+class Text : Content {
     companion object {
         internal const val XML_TEXT = "text"
     }
 
     val text: String?
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
         text = parser.nextText()
     }
