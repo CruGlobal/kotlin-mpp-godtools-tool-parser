@@ -79,7 +79,9 @@ class Manifest : BaseModel, Styles {
     val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
-    internal val categoryLabelColor: Color?
+    private val _categoryLabelColor: Color?
+    @get:AndroidColorInt
+    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
 
     @AndroidColorInt
     internal val lessonControlColor: Color
@@ -120,7 +122,7 @@ class Manifest : BaseModel, Styles {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
-        categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
+        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
 
@@ -153,7 +155,9 @@ class Manifest : BaseModel, Styles {
         navBarColor: Color? = null,
         navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
-        cardBackgroundColor: Color? = null
+        cardBackgroundColor: Color? = null,
+        categoryLabelColor: Color? = null,
+        textColor: Color = DEFAULT_TEXT_COLOR
     ) {
         code = null
         locale = null
@@ -173,10 +177,10 @@ class Manifest : BaseModel, Styles {
         backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = cardBackgroundColor
-        categoryLabelColor = null
+        _categoryLabelColor = categoryLabelColor
         lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
 
-        textColor = DEFAULT_TEXT_COLOR
+        this.textColor = textColor
         textScale = DEFAULT_TEXT_SCALE
 
         _title = null

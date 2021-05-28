@@ -130,6 +130,25 @@ class ManifestTest : UsesResources {
         assertEquals(TestColors.BLUE, Manifest(backgroundColor = TestColors.BLUE).cardBackgroundColor)
     }
 
+    @Test
+    fun testCategoryLabelColorFallbackBehavior() {
+        with(null as Manifest?) {
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR, categoryLabelColor)
+        }
+        with(Manifest()) {
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR, categoryLabelColor)
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR, (this as Manifest?).categoryLabelColor)
+        }
+        with(Manifest(textColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, categoryLabelColor)
+            assertEquals(TestColors.GREEN, (this as Manifest?).categoryLabelColor)
+        }
+        with(Manifest(textColor = TestColors.RED, categoryLabelColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, categoryLabelColor)
+            assertEquals(TestColors.GREEN, (this as Manifest?).categoryLabelColor)
+        }
+    }
+
     // region navbar colors
     @Test
     fun testNavBarColors() {
