@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.internal
 
-// HACK: create a local RestrictTo annotation because we can't use expect/actual with the AndroidX RestrictTo annotation.
+// HACK: create a local RestrictTo annotation because we can't use expect/actual with the AndroidX RestrictTo
+//       annotation.
 //       see: https://youtrack.jetbrains.com/issue/KT-20900
 internal annotation class RestrictTo(vararg val value: Scope) {
     enum class Scope {
