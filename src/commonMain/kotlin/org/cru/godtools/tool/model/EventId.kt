@@ -28,3 +28,5 @@ class EventId internal constructor(val namespace: String? = null, val name: Stri
     override fun hashCode() = (namespace?.hashCode() ?: 0) * 31 + name.lowercase().hashCode()
     override fun toString() = if (namespace != null) "$namespace:$name" else name
 }
+
+internal inline fun String?.toEventIds() = EventId.parse(this)

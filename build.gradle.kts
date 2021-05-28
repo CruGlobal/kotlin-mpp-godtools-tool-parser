@@ -23,6 +23,11 @@ val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
 repositories {
     google()
     mavenCentral()
+    jcenter {
+        content {
+            includeGroup("com.louiscad.splitties")
+        }
+    }
 }
 kotlin {
     android {
@@ -61,6 +66,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation(libs.fluidLocale)
+                implementation(libs.napier)
+                implementation(libs.splitties.bitflags)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
             }
         }

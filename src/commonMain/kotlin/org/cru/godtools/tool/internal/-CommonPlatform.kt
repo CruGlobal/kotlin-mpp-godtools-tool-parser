@@ -16,8 +16,14 @@ expect interface Parcelable
 @Target(
     AnnotationTarget.VALUE_PARAMETER,
     AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.LOCAL_VARIABLE,
     AnnotationTarget.FIELD
 )
 expect annotation class AndroidColorInt()
 // endregion Android Annotations
+
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
+@Retention(AnnotationRetention.BINARY)
+expect annotation class VisibleForTesting()
