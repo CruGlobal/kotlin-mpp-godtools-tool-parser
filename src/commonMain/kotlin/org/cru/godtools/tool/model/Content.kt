@@ -38,6 +38,7 @@ abstract class Content : BaseModel {
             return when (namespace) {
                 XMLNS_CONTENT -> when (name) {
                     Text.XML_TEXT -> Text(parent, this)
+                    Fallback.XML_FALLBACK -> Fallback(parent, this)
                     else -> {
                         skipTag()
                         null

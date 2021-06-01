@@ -67,12 +67,11 @@ class ContentTest : UsesResources {
 //        val content = Content.fromXml(Manifest(), getXmlParserForResource("fallback_paragraph.xml"), true)
 //        assertTrue(content is Fallback)
 //    }
-//
-//    @Test
-//    fun verifyFromXmlFallback() {
-//        val content = Content.fromXml(Manifest(), getXmlParserForResource("fallback.xml"), true)
-//        assertTrue(content is Fallback)
-//    }
+
+    @Test
+    fun verifyParseContentElementFallback() {
+        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+    }
 //
 //    @Test
 //    fun testFromXmlSpacer() {
