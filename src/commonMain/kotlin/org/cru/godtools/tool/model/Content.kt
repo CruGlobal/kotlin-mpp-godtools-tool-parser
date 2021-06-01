@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.xml.XmlPullParser
+import org.cru.godtools.tool.xml.skipTag
 
 private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
@@ -30,4 +31,23 @@ abstract class Content : BaseModel {
      * @return true if this content element should be completely ignored.
      */
     open val isIgnored get() = version > SCHEMA_VERSION || restrictTo.none { it in DeviceType.SUPPORTED }
+
+    companion object {
+        internal fun XmlPullParser.parseContentElement(parent: Base): Content? {
+            require(XmlPullParser.START_TAG, null, null)
+            return when (namespace) {
+                XMLNS_CONTENT -> when (name) {
+                    Text.XML_TEXT -> Text(parent, this)
+                    else -> {
+                        skipTag()
+                        null
+                    }
+                }
+                else -> {
+                    skipTag()
+                    null
+                }
+            }
+        }
+    }
 }

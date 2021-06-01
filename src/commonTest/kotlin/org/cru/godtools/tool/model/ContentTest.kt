@@ -2,12 +2,16 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
+import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class ContentTest {
+class ContentTest : UsesResources {
+    override val resourcesDir = "model"
+
     @Test
     fun verifyRestrictToSupported() {
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.ALL) {}.isIgnored)
@@ -34,6 +38,12 @@ class ContentTest {
     @Test
     fun verifyVersionNotSupported() {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
+    }
+
+    @Test
+    fun verifyParseContentElementText() {
+        assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
+        assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
 //
 //    @Test
