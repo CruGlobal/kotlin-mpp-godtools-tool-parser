@@ -18,7 +18,6 @@ internal inline fun Parent.parseContent(
     block: () -> Unit = { }
 ) = buildList {
     parser.require(XmlPullParser.START_TAG, null, null)
-
     parser.parseChildren {
         // execute any custom parsing logic from the call-site
         // if the block consumes the tag, the parser will be on an END_TAG after returning
