@@ -3,10 +3,11 @@ package org.cru.godtools.tool.internal
 import org.cru.godtools.tool.xml.XmlPullParserFactory
 import kotlin.reflect.KClass
 
-interface UsesResources {
+internal interface UsesResources {
     val resourcesDir: String? get() = null
+    fun getTestXmlParser(name: String) = TEST_XML_PULL_PARSER_FACTORY.getXmlParser(name)!!.apply { nextTag() }
 }
-expect val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
+internal expect val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
 
 // region Android Robolectric
 @OptIn(ExperimentalMultiplatform::class)

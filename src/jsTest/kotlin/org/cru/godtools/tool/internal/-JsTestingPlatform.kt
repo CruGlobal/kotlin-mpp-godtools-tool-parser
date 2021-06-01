@@ -13,7 +13,7 @@ import org.cru.godtools.tool.xml.XmlPullParserFactory
 private val RESOURCES_ROOT = "..$DIRECTORY_SEPARATOR../../processedResources/js/test".toPath()
 
 @OptIn(ExperimentalFileSystem::class)
-actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
+internal actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
     get() = object : JsXmlPullParserFactory() {
         override fun readFile(fileName: String): String {
             var path = RESOURCES_ROOT / "org/cru/godtools/tool"

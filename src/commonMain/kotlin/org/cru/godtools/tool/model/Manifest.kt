@@ -160,7 +160,8 @@ class Manifest : BaseModel, Styles {
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
-        textColor: Color = DEFAULT_TEXT_COLOR
+        textColor: Color = DEFAULT_TEXT_COLOR,
+        resources: ((Manifest) -> List<Resource>?)? = null
     ) {
         code = null
         locale = null
@@ -189,7 +190,7 @@ class Manifest : BaseModel, Styles {
         _title = null
 
         categories = emptyList()
-        resources = emptyMap()
+        this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
     }
 
     override val manifest get() = this
