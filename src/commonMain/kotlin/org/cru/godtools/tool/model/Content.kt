@@ -3,7 +3,6 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.skipTag
 
 private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
@@ -39,15 +38,9 @@ abstract class Content : BaseModel {
                 XMLNS_CONTENT -> when (name) {
                     Text.XML_TEXT -> Text(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
-                    else -> {
-                        skipTag()
-                        null
-                    }
+                    else -> null
                 }
-                else -> {
-                    skipTag()
-                    null
-                }
+                else -> null
             }
         }
     }

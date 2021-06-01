@@ -11,6 +11,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -78,4 +79,9 @@ class ContentTest : UsesResources {
 //        val content = Content.fromXml(Manifest(), getXmlParserForResource("spacer.xml"), true)
 //        assertTrue(content is Spacer)
 //    }
+
+    @Test
+    fun verifyParseContentElementUnrecognized() {
+        assertNull(getTestXmlParser("content_unrecognized.xml").parseContentElement(Manifest()))
+    }
 }
