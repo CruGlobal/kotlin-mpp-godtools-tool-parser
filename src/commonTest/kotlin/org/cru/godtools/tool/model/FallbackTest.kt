@@ -14,9 +14,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class FallbackTest : UsesResources {
-    override val resourcesDir = "model"
-
+class FallbackTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)

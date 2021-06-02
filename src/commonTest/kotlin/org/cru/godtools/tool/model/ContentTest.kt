@@ -15,9 +15,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class ContentTest : UsesResources {
-    override val resourcesDir = "model"
-
+class ContentTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)

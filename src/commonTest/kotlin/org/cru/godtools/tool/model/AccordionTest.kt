@@ -8,9 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class AccordionTest : UsesResources {
-    override val resourcesDir = "model"
-
+class AccordionTest : UsesResources() {
     @Test
     fun testParseAccordion() {
         val accordion = Accordion(Manifest(), getTestXmlParser("accordion.xml"))

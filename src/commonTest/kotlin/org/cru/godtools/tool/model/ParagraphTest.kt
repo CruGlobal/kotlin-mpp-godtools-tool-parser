@@ -12,9 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class ParagraphTest : UsesResources {
-    override val resourcesDir = "model"
-
+class ParagraphTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)
