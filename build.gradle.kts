@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.10"
     id("org.ajoberstar.grgit") version "4.1.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
     jacoco
 }
