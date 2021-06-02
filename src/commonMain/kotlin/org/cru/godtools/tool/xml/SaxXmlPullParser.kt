@@ -22,10 +22,10 @@ abstract class SaxXmlPullParser : XmlPullParser {
     override fun next() = events.removeFirst().also { currentEvent = it }.type
 
     override fun nextTag(): Int {
-        if (next() == XmlPullParser.TEXT && currentEvent.content.isNullOrBlank()) next()
+        if (next() == TEXT && currentEvent.content.isNullOrBlank()) next()
         val event = currentEvent
         if (event.type != START_TAG && event.type != END_TAG) {
-            throw Exception("Expected start or end tag. Found: " + event.type)
+            throw XmlPullParserException("Expected start or end tag. Found: ${event.type}")
         }
         return event.type
     }
@@ -36,7 +36,7 @@ abstract class SaxXmlPullParser : XmlPullParser {
             TEXT -> currentEvent.content.orEmpty()
                 .also { check(next() == END_TAG) }
             END_TAG -> ""
-            else -> throw Exception("parser must be on START_TAG or TEXT to read text")
+            else -> throw XmlPullParserException("parser must be on START_TAG or TEXT to read text")
         }
     }
 

@@ -30,4 +30,23 @@ abstract class Content : BaseModel {
      * @return true if this content element should be completely ignored.
      */
     open val isIgnored get() = version > SCHEMA_VERSION || restrictTo.none { it in DeviceType.SUPPORTED }
+
+    companion object {
+        internal fun XmlPullParser.parseContentElement(parent: Base): Content? {
+            require(XmlPullParser.START_TAG, null, null)
+            return when (namespace) {
+                XMLNS_CONTENT -> when (name) {
+                    Paragraph.XML_PARAGRAPH ->
+                        when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
+                            true -> Fallback(parent, this)
+                            else -> Paragraph(parent, this)
+                        }
+                    Text.XML_TEXT -> Text(parent, this)
+                    Fallback.XML_FALLBACK -> Fallback(parent, this)
+                    else -> null
+                }
+                else -> null
+            }
+        }
+    }
 }
