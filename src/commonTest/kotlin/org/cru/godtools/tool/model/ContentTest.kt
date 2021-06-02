@@ -51,10 +51,10 @@ class ContentTest : UsesResources {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
 
+    // region parseContentElement()
     @Test
-    fun verifyParseContentElementText() {
-        assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
-        assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
+    fun verifyParseContentElementFallback() {
+        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
     }
 
     @Test
@@ -68,8 +68,9 @@ class ContentTest : UsesResources {
     }
 
     @Test
-    fun verifyParseContentElementFallback() {
-        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+    fun verifyParseContentElementText() {
+        assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
+        assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
 //
 //    @Test
@@ -82,4 +83,5 @@ class ContentTest : UsesResources {
     fun verifyParseContentElementUnrecognized() {
         assertNull(getTestXmlParser("content_unrecognized.xml").parseContentElement(Manifest()))
     }
+    // endregion parseContentElement()
 }
