@@ -53,6 +53,11 @@ class ContentTest : UsesResources {
 
     // region parseContentElement()
     @Test
+    fun verifyParseContentElementAccordion() {
+        assertIs<Accordion>(getTestXmlParser("accordion.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementFallback() {
         assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
     }
