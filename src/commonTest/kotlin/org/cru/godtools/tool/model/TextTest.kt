@@ -14,9 +14,7 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class TextTest : UsesResources {
-    override val resourcesDir = "model"
-
+class TextTest : UsesResources() {
     private val parent = object : Styles {
         override val stylesParent = null
         override val manifest get() = TODO()

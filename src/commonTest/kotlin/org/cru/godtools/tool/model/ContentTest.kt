@@ -15,9 +15,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class ContentTest : UsesResources {
-    override val resourcesDir = "model"
-
+class ContentTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
@@ -51,10 +49,21 @@ class ContentTest : UsesResources {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
 
+    // region parseContentElement()
     @Test
-    fun verifyParseContentElementText() {
-        assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
-        assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
+    fun verifyParseContentElementAccordion() {
+        assertIs<Accordion>(getTestXmlParser("accordion.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
+    fun verifyParseContentElementAnimation() {
+        assertIs<Animation>(getTestXmlParser("animation.xml").parseContentElement(Manifest()))
+        assertIs<Animation>(getTestXmlParser("animation_defaults.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
+    fun verifyParseContentElementFallback() {
+        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
     }
 
     @Test
@@ -68,8 +77,9 @@ class ContentTest : UsesResources {
     }
 
     @Test
-    fun verifyParseContentElementFallback() {
-        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+    fun verifyParseContentElementText() {
+        assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
+        assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
 //
 //    @Test
@@ -82,4 +92,5 @@ class ContentTest : UsesResources {
     fun verifyParseContentElementUnrecognized() {
         assertNull(getTestXmlParser("content_unrecognized.xml").parseContentElement(Manifest()))
     }
+    // endregion parseContentElement()
 }

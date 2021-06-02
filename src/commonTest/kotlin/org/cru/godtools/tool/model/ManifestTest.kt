@@ -13,9 +13,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class ManifestTest : UsesResources {
-    override val resourcesDir = "model"
-
+class ManifestTest : UsesResources() {
     // region parse Manifest
     @Test
     fun testParseManifestEmpty() {
