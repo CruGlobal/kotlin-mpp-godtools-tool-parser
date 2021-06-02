@@ -37,6 +37,7 @@ abstract class Content : BaseModel {
             return when (namespace) {
                 XMLNS_CONTENT -> when (name) {
                     Accordion.XML_ACCORDION -> Accordion(parent, this)
+                    Animation.XML_ANIMATION -> Animation(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
                     Paragraph.XML_PARAGRAPH ->
                         when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
