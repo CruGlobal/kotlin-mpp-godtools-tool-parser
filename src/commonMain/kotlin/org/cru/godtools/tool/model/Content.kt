@@ -36,6 +36,11 @@ abstract class Content : BaseModel {
             require(XmlPullParser.START_TAG, null, null)
             return when (namespace) {
                 XMLNS_CONTENT -> when (name) {
+                    Paragraph.XML_PARAGRAPH ->
+                        when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
+                            true -> Fallback(parent, this)
+                            else -> Paragraph(parent, this)
+                        }
                     Text.XML_TEXT -> Text(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
                     else -> null
