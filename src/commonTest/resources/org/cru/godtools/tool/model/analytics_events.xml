@@ -5,4 +5,6 @@
     <analytics:event action="event2" delay="2" system="firebase appsflyer">
         <analytics:attribute key="attr2" value="value" />
     </analytics:event>
+    <analytics:unrecognized />
+    <unrecognized />
 </analytics:events>

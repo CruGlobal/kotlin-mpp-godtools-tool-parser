@@ -2,7 +2,6 @@ package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
-import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger.Companion.toTrigger
 import org.cru.godtools.tool.xml.XmlPullParser
