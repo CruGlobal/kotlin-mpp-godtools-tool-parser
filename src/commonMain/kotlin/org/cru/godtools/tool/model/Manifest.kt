@@ -43,6 +43,8 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL
 
+        internal val DEFAULT_BUTTON_STYLE = Button.Style.CONTAINED
+
         @AndroidColorInt
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal const val DEFAULT_TEXT_SCALE = 1.0
@@ -88,6 +90,8 @@ class Manifest : BaseModel, Styles {
 
     @AndroidColorInt
     internal val lessonControlColor: Color
+
+    override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
     @AndroidColorInt
     override val textColor: Color

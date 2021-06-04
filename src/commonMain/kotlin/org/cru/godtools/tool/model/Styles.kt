@@ -8,6 +8,12 @@ interface Styles : Base {
     @get:AndroidColorInt
     val primaryTextColor: Color get() = stylesParent.primaryTextColor
 
+    // region Button styles
+    val buttonStyle: Button.Style get() = stylesParent.buttonStyle
+    @get:AndroidColorInt
+    val buttonColor: Color? get() = stylesParent?.buttonColor
+    // endregion Button styles
+
     // region Text styles
     @get:AndroidColorInt
     val textColor: Color get() = stylesParent.textColor
@@ -20,6 +26,8 @@ interface Styles : Base {
 val Styles?.primaryColor get() = this?.primaryColor ?: Manifest.DEFAULT_PRIMARY_COLOR
 @get:AndroidColorInt
 val Styles?.primaryTextColor get() = this?.primaryTextColor ?: Manifest.DEFAULT_PRIMARY_TEXT_COLOR
+
+val Styles?.buttonStyle get() = this?.buttonStyle ?: Manifest.DEFAULT_BUTTON_STYLE
 
 // region Text styles
 @get:AndroidColorInt
