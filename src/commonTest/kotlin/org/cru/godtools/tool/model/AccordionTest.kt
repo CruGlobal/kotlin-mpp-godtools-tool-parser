@@ -19,5 +19,11 @@ class AccordionTest : UsesResources() {
             assertEquals(1, content.size)
             assertIs<Text>(content[0])
         }
+
+        with(accordion.sections[1]) {
+            assertEquals("Section 2", header!!.text)
+            assertEquals(1, content.size)
+            assertIs<Image>(content[0])
+        }
     }
 }

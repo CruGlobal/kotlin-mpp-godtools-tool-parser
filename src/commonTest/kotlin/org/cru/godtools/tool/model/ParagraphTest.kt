@@ -24,6 +24,14 @@ class ParagraphTest : UsesResources() {
     }
 
     @Test
+    fun testParseParagraph() {
+        val paragraph = Paragraph(Manifest(), getTestXmlParser("paragraph.xml"))
+        assertEquals(2, paragraph.content.size)
+        assertIs<Image>(paragraph.content[0])
+        assertIs<Text>(paragraph.content[1])
+    }
+
+    @Test
     fun testParseParagraphIgnoredContent() {
         val paragraph = Paragraph(Manifest(), getTestXmlParser("paragraph_ignored_content.xml"))
         assertEquals(3, paragraph.content.size)
