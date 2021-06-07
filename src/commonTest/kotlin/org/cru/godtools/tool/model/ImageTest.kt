@@ -5,6 +5,8 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -22,5 +24,15 @@ class ImageTest : UsesResources() {
     fun testParseImageRestricted() {
         val image = Image(Manifest(), getTestXmlParser("image_restricted.xml"))
         assertTrue(image.isIgnored)
+    }
+
+    @Test
+    fun testResource() {
+        val name = "image.png"
+        val manifest = Manifest(resources = { listOf(Resource(it, name = name)) })
+        val resource = manifest.getResource(name)!!
+        assertSame(resource, Image(manifest, resource = "image.png").resource)
+        assertNull(Image(manifest, resource = "invalid.jpg").resource)
+        assertNull(Image(manifest, resource = null).resource)
     }
 }

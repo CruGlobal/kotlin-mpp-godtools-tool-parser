@@ -28,8 +28,8 @@ class Image : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base) : super(parent) {
+    internal constructor(parent: Base, resource: String? = null) : super(parent) {
+        resourceName = resource
         events = emptyList()
-        resourceName = null
     }
 }
