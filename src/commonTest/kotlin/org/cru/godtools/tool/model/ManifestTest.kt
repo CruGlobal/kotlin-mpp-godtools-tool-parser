@@ -40,7 +40,7 @@ class ManifestTest : UsesResources() {
 //        assertThat(manifest.lessonPages, `is`(empty()))
 //        assertThat(manifest.tractPages, `is`(empty()))
         assertEquals(0, manifest.resources.size)
-//        assertEquals(0, manifest.tips.size)
+        assertEquals(0, manifest.tips.size)
     }
 
     @Test
@@ -108,8 +108,8 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_tips.xml")
 //        assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
-//        assertEquals(1, manifest.tips.size)
-//        assertEquals("tip1", manifest.findTip("tip1")!!.id)
+        assertEquals(1, manifest.tips.size)
+        assertEquals("tip1", manifest.findTip("tip1")!!.id)
     }
 
     @Test
@@ -117,10 +117,10 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_tips_invalid.xml")
 //        assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
-//        assertEquals(0, manifest.tips.size)
+        assertEquals(0, manifest.tips.size)
     }
 
-    private fun parseManifest(name: String) = Manifest(getTestXmlParser(name))
+    private fun parseManifest(name: String) = Manifest(getTestXmlParser(name)) { getTestXmlParser(it) }
     // endregion parse Manifest
 
     // region Fallback Behaviors

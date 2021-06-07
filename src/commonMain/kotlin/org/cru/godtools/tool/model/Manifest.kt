@@ -11,6 +11,7 @@ import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
+import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -29,6 +30,10 @@ private const val XML_CATEGORY_LABEL_COLOR = "category-label-color"
 private const val XML_TITLE = "title"
 private const val XML_CATEGORIES = "categories"
 private const val XML_RESOURCES = "resources"
+private const val XML_TIPS = "tips"
+private const val XML_TIPS_TIP = "tip"
+private const val XML_TIPS_TIP_ID = "id"
+private const val XML_TIPS_TIP_SRC = "src"
 
 @OptIn(ExperimentalStdlibApi::class)
 class Manifest : BaseModel, Styles {
@@ -104,8 +109,9 @@ class Manifest : BaseModel, Styles {
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
+    val tips: Map<String, Tip>
 
-    internal constructor(parser: XmlPullParser) {
+    internal constructor(parser: XmlPullParser, parseFile: (String) -> XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
         code = parser.getAttributeValue(XML_TOOL)
@@ -139,12 +145,14 @@ class Manifest : BaseModel, Styles {
         var title: Text? = null
         val categories = mutableListOf<Category>()
         val resources = mutableListOf<Resource>()
+        val tips = mutableListOf<Tip>()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
                     XML_CATEGORIES -> categories += parser.parseCategories()
                     XML_RESOURCES -> resources += parser.parseResources()
+                    XML_TIPS -> tips += parser.parseTips(parseFile)
                 }
             }
         }
@@ -152,6 +160,7 @@ class Manifest : BaseModel, Styles {
         _title = title
         this.categories = categories
         this.resources = resources.associateBy { it.name }
+        this.tips = tips.associateBy { it.id }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -195,12 +204,14 @@ class Manifest : BaseModel, Styles {
 
         categories = emptyList()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
+        this.tips = emptyMap()
     }
 
     override val manifest get() = this
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
+    fun findTip(id: String?) = tips[id]
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
@@ -219,6 +230,21 @@ class Manifest : BaseModel, Styles {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     Resource.XML_RESOURCE -> add(Resource(this@Manifest, this@parseResources))
+                }
+            }
+        }
+    }
+
+    private fun XmlPullParser.parseTips(parseFile: (String) -> XmlPullParser) = buildList {
+        parseChildren {
+            when (namespace) {
+                XMLNS_MANIFEST -> when (name) {
+                    XML_TIPS_TIP -> {
+                        val id = getAttributeValue(null, XML_TIPS_TIP_ID)
+                        val src = getAttributeValue(null, XML_TIPS_TIP_SRC)
+                        if (id != null && src != null)
+                            add(Tip(this@Manifest, id, parseFile(src)))
+                    }
                 }
             }
         }
