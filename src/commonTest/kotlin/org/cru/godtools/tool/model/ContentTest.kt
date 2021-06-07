@@ -74,6 +74,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementForm() {
+        assertIs<Form>(getTestXmlParser("form.xml").parseContentElement(Manifest()))
+        assertIs<Form>(getTestXmlParser("form_ignored_content.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementImage() {
         assertIs<Image>(getTestXmlParser("image.xml").parseContentElement(Manifest()))
         assertIs<Image>(getTestXmlParser("image_restricted.xml").parseContentElement(Manifest()))
