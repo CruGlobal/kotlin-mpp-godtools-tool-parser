@@ -62,6 +62,13 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementButton() {
+        assertIs<Button>(getTestXmlParser("button_event.xml").parseContentElement(Manifest()))
+        assertIs<Button>(getTestXmlParser("button_restrictTo.xml").parseContentElement(Manifest()))
+        assertIs<Button>(getTestXmlParser("button_url.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementFallback() {
         assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
     }
