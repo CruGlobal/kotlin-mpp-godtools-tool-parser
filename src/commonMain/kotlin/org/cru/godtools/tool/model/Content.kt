@@ -40,6 +40,7 @@ abstract class Content : BaseModel {
                     Animation.XML_ANIMATION -> Animation(parent, this)
                     Button.XML_BUTTON -> Button(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
+                    Image.XML_IMAGE -> Image(parent, this)
                     Paragraph.XML_PARAGRAPH ->
                         when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
                             true -> Fallback(parent, this)
