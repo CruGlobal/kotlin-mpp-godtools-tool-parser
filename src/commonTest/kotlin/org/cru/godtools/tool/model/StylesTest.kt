@@ -14,6 +14,9 @@ class StylesTest {
 
             override var primaryColor = TestColors.RED
             override var primaryTextColor = TestColors.RED
+
+            override lateinit var buttonStyle: Button.Style
+
             override var textAlign = Text.Align.END
             override var textColor = TestColors.RED
             override var textScale = 0.0
@@ -33,6 +36,13 @@ class StylesTest {
         parent.primaryTextColor = TestColors.GREEN
         assertEquals(TestColors.GREEN, child.primaryTextColor)
         assertEquals(TestColors.GREEN, (child as Styles?).primaryTextColor)
+    }
+
+    @Test
+    fun testStylesButtonStyleFallback() {
+        parent.buttonStyle = Button.Style.OUTLINED
+        assertEquals(Button.Style.OUTLINED, child.buttonStyle)
+        assertEquals(Button.Style.OUTLINED, (child as Styles?).buttonStyle)
     }
 
     @Test
@@ -61,6 +71,7 @@ class StylesTest {
         val styles: Styles? = null
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, styles.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
+        assertEquals(Manifest.DEFAULT_BUTTON_STYLE, styles.buttonStyle)
         assertEquals(Manifest.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, styles.textScale)
