@@ -6,6 +6,7 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.tips.Tip.Type.Companion.toTypeOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
+import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_TIP = "tip"
 private const val XML_TYPE = "type"
@@ -14,6 +15,7 @@ private const val XML_TYPE_ASK = "ask"
 private const val XML_TYPE_CONSIDER = "consider"
 private const val XML_TYPE_PREPARE = "prepare"
 private const val XML_TYPE_QUOTE = "quote"
+private const val XML_PAGES = "pages"
 
 @OptIn(ExperimentalStdlibApi::class)
 class Tip : BaseModel, Styles {
@@ -24,17 +26,40 @@ class Tip : BaseModel, Styles {
     override val primaryTextColor get() = Manifest.DEFAULT_PRIMARY_TEXT_COLOR
     override val textColor get() = Manifest.DEFAULT_TEXT_COLOR
 
+    val pages: List<TipPage>
+
     internal constructor(manifest: Manifest, id: String, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_TIP)
 
         this.id = id
         type = parser.getAttributeValue(null, XML_TYPE)?.toTypeOrNull() ?: Type.DEFAULT
+        pages = buildList {
+            parser.parseChildren {
+                when (parser.namespace) {
+                    XMLNS_TRAINING -> when (parser.name) {
+                        XML_PAGES -> addAll(parser.parsePages())
+                    }
+                }
+            }
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(manifest: Manifest? = null, id: String, type: Type = Type.DEFAULT) : super(manifest) {
         this.id = id
         this.type = type
+        pages = emptyList()
+    }
+
+    private fun XmlPullParser.parsePages() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_PAGES)
+        parseChildren {
+            when (namespace) {
+                XMLNS_TRAINING -> when (name) {
+                    TipPage.XML_PAGE -> add(TipPage(this@Tip, size, this@parsePages))
+                }
+            }
+        }
     }
 
     enum class Type {
