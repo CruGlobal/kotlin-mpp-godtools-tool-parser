@@ -14,6 +14,7 @@ private const val XML_TYPE_URL = "url"
 private const val XML_STYLE = "style"
 private const val XML_STYLE_CONTAINED = "contained"
 private const val XML_STYLE_OUTLINED = "outlined"
+private const val XML_URL = "url"
 
 class Button : Content, Styles {
     companion object {
@@ -22,6 +23,7 @@ class Button : Content, Styles {
 
     val type: Type
     val events: List<EventId>
+    val url: Uri?
 
     private val _style: Style?
     val style: Style get() = _style ?: stylesParent.buttonStyle
@@ -42,6 +44,7 @@ class Button : Content, Styles {
 
         type = parser.getAttributeValue(XML_TYPE)?.toButtonTypeOrNull() ?: Type.DEFAULT
         events = parser.getAttributeValue(XML_EVENTS).toEventIds()
+        url = parser.getAttributeValue(XML_URL)?.toAbsoluteUri()
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
@@ -68,6 +71,7 @@ class Button : Content, Styles {
     ) : super(parent) {
         this.type = type
         events = emptyList()
+        url = null
 
         _style = style
         _buttonColor = color

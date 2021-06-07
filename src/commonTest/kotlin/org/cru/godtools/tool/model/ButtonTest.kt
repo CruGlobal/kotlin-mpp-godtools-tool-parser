@@ -34,6 +34,18 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
+    fun testParseButtonUrl() {
+        val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
+        assertFalse(button.isIgnored)
+        assertEquals(Button.Style.OUTLINED, button.style)
+        assertEquals(Button.Type.URL, button.type)
+        assertEquals("https://www.google.com/", button.url!!.toString())
+        assertEquals("url button", button.text!!.text)
+        assertEquals(1, button.analyticsEvents.size)
+        assertEquals("firebase action", button.analyticsEvents.single().action)
+    }
+
+    @Test
     fun testParseButtonRestrictTo() {
         val button = Button(Manifest(), getTestXmlParser("button_restrictTo.xml"))
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
