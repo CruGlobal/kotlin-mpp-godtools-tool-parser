@@ -16,7 +16,15 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TipTest : UsesResources("model/tips") {
     @Test
-    fun verifyParse() {
+    fun testParseTipDefaults() {
+        val tip = Tip(Manifest(), "test", getTestXmlParser("tip_defaults.xml"))
+        assertEquals("test", tip.id)
+        assertEquals(Tip.Type.DEFAULT, tip.type)
+        assertEquals(0, tip.pages.size)
+    }
+
+    @Test
+    fun testParseTip() {
         val tip = Tip(Manifest(), "name", getTestXmlParser("tip.xml"))
         assertEquals("name", tip.id)
         assertEquals(Tip.Type.ASK, tip.type)
