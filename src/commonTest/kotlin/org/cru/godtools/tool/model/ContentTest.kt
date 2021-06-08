@@ -92,6 +92,13 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementInput() {
+        assertIs<Input>(getTestXmlParser("input_email.xml").parseContentElement(Manifest()))
+        assertIs<Input>(getTestXmlParser("input_hidden.xml").parseContentElement(Manifest()))
+        assertIs<Input>(getTestXmlParser("input_text.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementParagraph() {
         assertIs<Paragraph>(getTestXmlParser("paragraph.xml").parseContentElement(Manifest()))
     }

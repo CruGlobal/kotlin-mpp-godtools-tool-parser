@@ -44,6 +44,7 @@ abstract class Content : BaseModel {
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
                     Form.XML_FORM -> Form(parent, this)
                     Image.XML_IMAGE -> Image(parent, this)
+                    Input.XML_INPUT -> Input(parent, this)
                     Paragraph.XML_PARAGRAPH ->
                         when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
                             true -> Fallback(parent, this)
