@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
+import org.cru.godtools.tool.model.tips.InlineTip
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -83,6 +84,11 @@ class ContentTest : UsesResources() {
     fun verifyParseContentElementImage() {
         assertIs<Image>(getTestXmlParser("image.xml").parseContentElement(Manifest()))
         assertIs<Image>(getTestXmlParser("image_restricted.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
+    fun verifyParseContentElementInlineTip() {
+        assertIs<InlineTip>(getTestXmlParser("tips/inline_tip.xml").parseContentElement(Manifest()))
     }
 
     @Test

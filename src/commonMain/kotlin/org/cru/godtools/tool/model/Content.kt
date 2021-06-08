@@ -2,6 +2,8 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
+import org.cru.godtools.tool.model.tips.InlineTip
+import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_RESTRICT_TO = "restrictTo"
@@ -48,6 +50,10 @@ abstract class Content : BaseModel {
                             else -> Paragraph(parent, this)
                         }
                     Text.XML_TEXT -> Text(parent, this)
+                    else -> null
+                }
+                XMLNS_TRAINING -> when (name) {
+                    InlineTip.XML_TIP -> InlineTip(parent, this)
                     else -> null
                 }
                 else -> null
