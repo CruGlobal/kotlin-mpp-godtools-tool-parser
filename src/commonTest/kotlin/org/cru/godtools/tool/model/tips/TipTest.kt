@@ -4,17 +4,20 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Manifest
+import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.tips.Tip.Type.Companion.toTypeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TipTest : UsesResources("model/tips") {
+    // region parseTip
     @Test
     fun testParseTipDefaults() {
         val tip = Tip(Manifest(), "test", getTestXmlParser("tip_defaults.xml"))
@@ -35,6 +38,22 @@ class TipTest : UsesResources("model/tips") {
         assertEquals(1, tip.pages[1].position)
         assertTrue(tip.pages[1].isLastPage)
         assertEquals("Page 2", assertIs<Text>(tip.pages[1].content[0]).text)
+    }
+    // region parseTip
+
+    @Test
+    fun testTipDefaults() {
+        val manifest =
+            Manifest(primaryColor = TestColors.RED, primaryTextColor = TestColors.RED, textColor = TestColors.RED)
+        val tip = Tip(manifest)
+        assertNotEquals(manifest.primaryColor, tip.primaryColor)
+        assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, tip.primaryColor)
+        assertNotEquals(manifest.primaryTextColor, tip.primaryTextColor)
+        assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, tip.primaryTextColor)
+        assertNotEquals(manifest.textColor, tip.textColor)
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, tip.textColor)
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, (tip as Tip?).textColor)
+        assertEquals(Manifest.DEFAULT_TEXT_COLOR, (null as Tip?).textColor)
     }
 
     // region Tip.Type

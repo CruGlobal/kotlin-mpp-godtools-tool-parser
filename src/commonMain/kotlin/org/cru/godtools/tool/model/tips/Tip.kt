@@ -45,7 +45,7 @@ class Tip : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    constructor(manifest: Manifest? = null, id: String, type: Type = Type.DEFAULT) : super(manifest) {
+    constructor(manifest: Manifest? = null, id: String = "", type: Type = Type.DEFAULT) : super(manifest) {
         this.id = id
         this.type = type
         pages = emptyList()
