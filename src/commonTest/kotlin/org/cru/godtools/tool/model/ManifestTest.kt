@@ -120,7 +120,7 @@ class ManifestTest : UsesResources() {
         assertEquals(0, manifest.tips.size)
     }
 
-    private fun parseManifest(name: String) = Manifest(getTestXmlParser(name)) { getTestXmlParser(it) }
+    private fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
     // endregion parse Manifest
 
     // region Fallback Behaviors

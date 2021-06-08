@@ -54,6 +54,9 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal const val DEFAULT_TEXT_SCALE = 1.0
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
+
+        internal fun parse(fileName: String, parseFile: (String) -> XmlPullParser) =
+            Manifest(parseFile(fileName), parseFile)
     }
 
     val code: String?
@@ -111,7 +114,7 @@ class Manifest : BaseModel, Styles {
     internal val resources: Map<String?, Resource>
     val tips: Map<String, Tip>
 
-    internal constructor(parser: XmlPullParser, parseFile: (String) -> XmlPullParser) {
+    private constructor(parser: XmlPullParser, parseFile: (String) -> XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
         code = parser.getAttributeValue(XML_TOOL)
