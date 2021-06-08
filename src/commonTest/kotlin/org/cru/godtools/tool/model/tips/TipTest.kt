@@ -5,10 +5,12 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Text
+import org.cru.godtools.tool.model.tips.Tip.Type.Companion.toTypeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -26,4 +28,16 @@ class TipTest : UsesResources("model/tips") {
         assertTrue(tip.pages[1].isLastPage)
         assertEquals("Page 2", assertIs<Text>(tip.pages[1].content[0]).text)
     }
+
+    // region Tip.Type
+    @Test
+    fun testParseTipType() {
+        assertEquals(Tip.Type.TIP, "tip".toTypeOrNull())
+        assertEquals(Tip.Type.ASK, "ask".toTypeOrNull())
+        assertEquals(Tip.Type.CONSIDER, "consider".toTypeOrNull())
+        assertEquals(Tip.Type.PREPARE, "prepare".toTypeOrNull())
+        assertEquals(Tip.Type.QUOTE, "quote".toTypeOrNull())
+        assertNull("klasjdfjalewr".toTypeOrNull())
+    }
+    // endregion Tip.Type
 }
