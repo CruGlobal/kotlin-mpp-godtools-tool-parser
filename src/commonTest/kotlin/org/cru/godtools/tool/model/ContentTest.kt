@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
+import org.cru.godtools.tool.model.tips.InlineTip
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -86,6 +87,23 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementInlineTip() {
+        assertIs<InlineTip>(getTestXmlParser("tips/inline_tip.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
+    fun verifyParseContentElementInput() {
+        assertIs<Input>(getTestXmlParser("input_email.xml").parseContentElement(Manifest()))
+        assertIs<Input>(getTestXmlParser("input_hidden.xml").parseContentElement(Manifest()))
+        assertIs<Input>(getTestXmlParser("input_text.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
+    fun verifyParseContentElementLink() {
+        assertIs<Link>(getTestXmlParser("link.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementParagraph() {
         assertIs<Paragraph>(getTestXmlParser("paragraph.xml").parseContentElement(Manifest()))
     }
@@ -96,16 +114,21 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementSpacer() {
+        assertIs<Spacer>(getTestXmlParser("spacer.xml").parseContentElement(Manifest()))
+        assertIs<Spacer>(getTestXmlParser("spacer_fixed.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementText() {
         assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
         assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
-//
-//    @Test
-//    fun testFromXmlSpacer() {
-//        val content = Content.fromXml(Manifest(), getXmlParserForResource("spacer.xml"), true)
-//        assertTrue(content is Spacer)
-//    }
+
+    @Test
+    fun verifyParseContentElementVideo() {
+        assertIs<Video>(getTestXmlParser("video.xml").parseContentElement(Manifest()))
+    }
 
     @Test
     fun verifyParseContentElementUnrecognized() {

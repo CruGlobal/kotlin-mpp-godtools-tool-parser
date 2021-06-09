@@ -2,6 +2,8 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
+import org.cru.godtools.tool.model.tips.InlineTip
+import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_RESTRICT_TO = "restrictTo"
@@ -42,12 +44,20 @@ abstract class Content : BaseModel {
                     Fallback.XML_FALLBACK -> Fallback(parent, this)
                     Form.XML_FORM -> Form(parent, this)
                     Image.XML_IMAGE -> Image(parent, this)
+                    Input.XML_INPUT -> Input(parent, this)
+                    Link.XML_LINK -> Link(parent, this)
                     Paragraph.XML_PARAGRAPH ->
                         when (getAttributeValue(Paragraph.XML_FALLBACK)?.toBoolean()) {
                             true -> Fallback(parent, this)
                             else -> Paragraph(parent, this)
                         }
+                    Spacer.XML_SPACER -> Spacer(parent, this)
                     Text.XML_TEXT -> Text(parent, this)
+                    Video.XML_VIDEO -> Video(parent, this)
+                    else -> null
+                }
+                XMLNS_TRAINING -> when (name) {
+                    InlineTip.XML_TIP -> InlineTip(parent, this)
                     else -> null
                 }
                 else -> null
