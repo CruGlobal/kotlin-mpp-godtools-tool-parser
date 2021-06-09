@@ -55,6 +55,7 @@ abstract class Content : BaseModel {
                             else -> Paragraph(parent, this)
                         }
                     Spacer.XML_SPACER -> Spacer(parent, this)
+                    Tabs.XML_TABS -> Tabs(parent, this)
                     Text.XML_TEXT -> Text(parent, this)
                     Video.XML_VIDEO -> Video(parent, this)
                     else -> null
