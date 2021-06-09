@@ -99,6 +99,11 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementLink() {
+        assertIs<Link>(getTestXmlParser("link.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementParagraph() {
         assertIs<Paragraph>(getTestXmlParser("paragraph.xml").parseContentElement(Manifest()))
     }
