@@ -24,8 +24,10 @@ class InlineTipTest : UsesResources("model/tips") {
 
         val valid = InlineTip(manifest, "tip1")
         assertSame(tip, valid.tip)
+        assertEquals(listOf(tip), valid.tips)
 
         val missing = InlineTip(manifest, "tip2")
         assertNull(missing.tip)
+        assertEquals(emptyList(), missing.tips)
     }
 }
