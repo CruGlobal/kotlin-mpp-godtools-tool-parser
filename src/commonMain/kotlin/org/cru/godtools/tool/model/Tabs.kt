@@ -3,7 +3,10 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.skipTag
+import org.cru.godtools.tool.xml.parseChildren
+
+private const val XML_TAB = "tab"
+private const val XML_LABEL = "label"
 
 class Tabs : Content {
     internal companion object {
@@ -23,26 +26,19 @@ class Tabs : Content {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TABS)
 
         tabs = buildList {
-            while (parser.next() != XmlPullParser.END_TAG) {
-                if (parser.eventType != XmlPullParser.START_TAG) continue
-
+            parser.parseChildren {
                 when (parser.namespace) {
                     XMLNS_CONTENT -> when (parser.name) {
-                        Tab.XML_TAB -> add(Tab(this@Tabs, size, parser))
-                        else -> parser.skipTag()
+                        XML_TAB -> add(Tab(this@Tabs, parser))
                     }
-                    else -> parser.skipTag()
                 }
             }
         }
     }
 
-    class Tab internal constructor(parent: Tabs, val position: Int, parser: XmlPullParser) : BaseModel(parent), Parent {
-        internal companion object {
-            internal const val XML_TAB = "tab"
-
-            private const val XML_LABEL = "label"
-        }
+    class Tab : BaseModel, Parent {
+        private val tabs: Tabs
+        val position get() = tabs.tabs.indexOf(this)
 
         val analyticsEvents: Collection<AnalyticsEvent>
         val listeners: Set<EventId>
@@ -50,11 +46,12 @@ class Tabs : Content {
 
         override val content: List<Content>
 
-        init {
+        internal constructor(parent: Tabs, parser: XmlPullParser) : super(parent) {
+            tabs = parent
+
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TAB)
             listeners = parser.getAttributeValue(XML_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
-            // process any child elements
             var analyticsEvents: Collection<AnalyticsEvent> = emptyList()
             var label: Text? = null
             content = parseContent(parser) {
