@@ -53,6 +53,7 @@ abstract class Content : BaseModel {
                         }
                     Spacer.XML_SPACER -> Spacer(parent, this)
                     Text.XML_TEXT -> Text(parent, this)
+                    Video.XML_VIDEO -> Video(parent, this)
                     else -> null
                 }
                 XMLNS_TRAINING -> when (name) {

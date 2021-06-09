@@ -124,12 +124,11 @@ class ContentTest : UsesResources() {
         assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
         assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
-//
-//    @Test
-//    fun testFromXmlSpacer() {
-//        val content = Content.fromXml(Manifest(), getXmlParserForResource("spacer.xml"), true)
-//        assertTrue(content is Spacer)
-//    }
+
+    @Test
+    fun verifyParseContentElementVideo() {
+        assertIs<Video>(getTestXmlParser("video.xml").parseContentElement(Manifest()))
+    }
 
     @Test
     fun verifyParseContentElementUnrecognized() {
