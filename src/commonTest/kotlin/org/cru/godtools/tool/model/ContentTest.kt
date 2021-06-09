@@ -114,6 +114,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementSpacer() {
+        assertIs<Spacer>(getTestXmlParser("spacer.xml").parseContentElement(Manifest()))
+        assertIs<Spacer>(getTestXmlParser("spacer_fixed.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementText() {
         assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
         assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))

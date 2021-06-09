@@ -51,6 +51,7 @@ abstract class Content : BaseModel {
                             true -> Fallback(parent, this)
                             else -> Paragraph(parent, this)
                         }
+                    Spacer.XML_SPACER -> Spacer(parent, this)
                     Text.XML_TEXT -> Text(parent, this)
                     else -> null
                 }
