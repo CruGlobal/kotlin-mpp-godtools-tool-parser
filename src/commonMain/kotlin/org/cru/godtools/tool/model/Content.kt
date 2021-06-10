@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.model.tips.InlineTip
+import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
@@ -33,6 +34,8 @@ abstract class Content : BaseModel {
      */
     open val isIgnored get() = version > SCHEMA_VERSION || restrictTo.none { it in DeviceType.SUPPORTED }
 
+    open val tips get() = emptyList<Tip>()
+
     companion object {
         internal fun XmlPullParser.parseContentElement(parent: Base): Content? {
             require(XmlPullParser.START_TAG, null, null)
@@ -52,6 +55,7 @@ abstract class Content : BaseModel {
                             else -> Paragraph(parent, this)
                         }
                     Spacer.XML_SPACER -> Spacer(parent, this)
+                    Tabs.XML_TABS -> Tabs(parent, this)
                     Text.XML_TEXT -> Text(parent, this)
                     Video.XML_VIDEO -> Video(parent, this)
                     else -> null

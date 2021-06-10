@@ -1,0 +1,12 @@
+<content:tabs xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <content:tab>
+        <content:label>
+            <content:text>Tab 1</content:text>
+        </content:label>
+
+        <content:image resource="test.png" restrictTo="web" />
+        <content:paragraph />
+        <content:unrecognized />
+    </content:tab>
+</content:tabs>
