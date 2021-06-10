@@ -11,6 +11,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ManifestTest : UsesResources() {
@@ -37,7 +38,7 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
-//        assertThat(manifest.lessonPages, `is`(empty()))
+        assertTrue(manifest.lessonPages.isEmpty())
 //        assertThat(manifest.tractPages, `is`(empty()))
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
@@ -69,8 +70,8 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.RED, manifest.lessonControlColor)
         assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 //        assertThat(manifest.tractPages, `is`(empty()))
-//        assertEquals(1, manifest.lessonPages.size)
-//        assertEquals("page0.xml", manifest.lessonPages[0].fileName)
+        assertEquals(1, manifest.lessonPages.size)
+        assertEquals("page0.xml", manifest.lessonPages[0].fileName)
     }
 
     @Test
@@ -83,7 +84,7 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.GREEN, manifest.navBarColor)
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
-//        assertThat(manifest.lessonPages, `is`(empty()))
+        assertTrue(manifest.lessonPages.isEmpty())
 //        assertEquals(2, manifest.tractPages.size)
 //        assertEquals("page0.xml", manifest.tractPages[0].fileName)
 //        assertEquals(0, manifest.tractPages[0].position)
