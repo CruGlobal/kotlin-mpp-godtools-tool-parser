@@ -114,6 +114,7 @@ class LessonPage : BaseModel, Parent, Styles {
     internal constructor(
         manifest: Manifest,
         fileName: String? = null,
+        controlColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         this.fileName = fileName
@@ -126,7 +127,7 @@ class LessonPage : BaseModel, Parent, Styles {
         backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-        _controlColor = null
+        _controlColor = controlColor
 
         _textScale = textScale
 

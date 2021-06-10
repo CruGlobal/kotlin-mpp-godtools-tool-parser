@@ -188,6 +188,7 @@ class Manifest : BaseModel, Styles {
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
+        lessonControlColor: Color = DEFAULT_LESSON_CONTROL_COLOR,
         textColor: Color = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
@@ -212,7 +213,7 @@ class Manifest : BaseModel, Styles {
 
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor
-        lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
+        this.lessonControlColor = lessonControlColor
 
         this.textColor = textColor
         this.textScale = textScale

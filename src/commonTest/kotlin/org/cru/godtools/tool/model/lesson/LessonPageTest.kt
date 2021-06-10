@@ -50,6 +50,26 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
     // endregion parsePage
 
+    // region Attribute Behavior
+    @Test
+    fun testControlColor() {
+        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, (null as LessonPage?).controlColor)
+
+        with(LessonPage(Manifest(), controlColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, controlColor)
+            assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
+        }
+
+        with(LessonPage(Manifest(lessonControlColor = TestColors.GREEN))) {
+            assertEquals(TestColors.GREEN, controlColor)
+            assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
+        }
+        with(LessonPage(Manifest(lessonControlColor = TestColors.RED), controlColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, controlColor)
+            assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
+        }
+    }
+
     @Test
     fun testTextScale() {
         assertEquals(DEFAULT_TEXT_SCALE, LessonPage(Manifest()).textScale, 0.001)
@@ -59,6 +79,7 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(3.0, LessonPage(manifest).textScale, 0.001)
         assertEquals(6.0, LessonPage(manifest, textScale = 2.0).textScale, 0.001)
     }
+    // endregion Attribute Behavior
 
     private fun parsePageXml(file: String, manifest: Manifest = Manifest()) =
         LessonPage(manifest, null, getTestXmlParser(file))
