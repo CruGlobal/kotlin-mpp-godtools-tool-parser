@@ -1,6 +1,5 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -15,11 +14,6 @@ class Tabs : Content {
 
     val tabs: List<Tab>
     override val tips get() = tabs.flatMap { it.contentTips }
-
-    @VisibleForTesting
-    internal constructor(parent: Base, tabs: List<Tab>) : super(parent) {
-        this.tabs = tabs
-    }
 
     @OptIn(ExperimentalStdlibApi::class)
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {

@@ -120,6 +120,13 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementTabs() {
+        assertIs<Tabs>(getTestXmlParser("tabs_empty.xml").parseContentElement(Manifest()))
+        assertIs<Tabs>(getTestXmlParser("tabs_single.xml").parseContentElement(Manifest()))
+        assertIs<Tabs>(getTestXmlParser("tabs_multiple.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementText() {
         assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
         assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))

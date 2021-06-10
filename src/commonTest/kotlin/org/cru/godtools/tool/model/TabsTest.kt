@@ -24,30 +24,36 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabs() {
-        val tabs = Tabs(Manifest(), getTestXmlParser("tabs.xml"))
+    fun testParseTabsEmpty() {
+        val tabs = Tabs(Manifest(), getTestXmlParser("tabs_empty.xml"))
+        assertEquals(0, tabs.tabs.size)
+    }
+
+    @Test
+    fun testParseTabsSingle() {
+        val tab = Tabs(Manifest(), getTestXmlParser("tabs_single.xml")).tabs.single()
+        assertEquals(0, tab.position)
+        assertEquals("Tab 1", tab.label!!.text)
+        assertEquals("event1", tab.listeners.single().name)
+        assertEquals(1, tab.analyticsEvents.size)
+        assertEquals("test", tab.analyticsEvents.single().action)
+        assertEquals(2, tab.content.size)
+        assertIs<Image>(tab.content[0])
+        assertIs<Paragraph>(tab.content[1])
+    }
+
+    @Test
+    fun testParseTabsMultiple() {
+        val tabs = Tabs(Manifest(), getTestXmlParser("tabs_multiple.xml"))
         assertEquals(2, tabs.tabs.size)
         assertEquals(0, tabs.tabs[0].position)
         assertEquals(1, tabs.tabs[1].position)
     }
 
     @Test
-    fun testParseTab() {
-        val tab = Tabs(Manifest(), getTestXmlParser("tabs_single.xml")).tabs.single()
-        assertEquals(0, tab.position)
-        assertEquals(1, tab.analyticsEvents.size)
-        assertEquals("Tab 1", tab.label!!.text)
-        assertEquals(3, tab.content.size)
-        assertIs<Image>(tab.content[0])
-        assertIs<Paragraph>(tab.content[1])
-        assertIs<Tabs>(tab.content[2])
-    }
-
-    @Test
-    fun testParseTabIgnoredContent() {
+    fun testParseTabsIgnoredContent() {
         val tab = Tabs(Manifest(), getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
-        assertEquals(2, tab.content.size)
+        assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])
-        assertIs<Tabs>(tab.content[1])
     }
 }

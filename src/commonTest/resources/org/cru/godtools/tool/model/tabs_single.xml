@@ -1,8 +1,8 @@
 <content:tabs xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
     xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
-    <content:tab>
+    <content:tab listeners="event1">
         <analytics:events>
-            <analytics:event action="test" system="adobe" />
+            <analytics:event action="test" system="firebase" />
         </analytics:events>
         <content:label>
             <content:text>Tab 1</content:text>
@@ -10,12 +10,5 @@
         <content:image resource="test.png" />
         <content:paragraph />
         <content:unrecognized />
-        <content:tabs>
-            <content:tab>
-                <content:label>
-                    <content:text>Tab 1</content:text>
-                </content:label>
-            </content:tab>
-        </content:tabs>
     </content:tab>
 </content:tabs>
