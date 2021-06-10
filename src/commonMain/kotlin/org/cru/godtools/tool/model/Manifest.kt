@@ -260,10 +260,7 @@ class Manifest : BaseModel, Styles {
                         if (src != null) {
                             @Suppress("NON_EXHAUSTIVE_WHEN")
                             when (type) {
-                                Type.LESSON -> {
-                                    val pos = result.lessonPages.size
-                                    result.lessonPages += LessonPage(this@Manifest, pos, fileName, parseFile(src))
-                                }
+                                Type.LESSON -> result.lessonPages += LessonPage(this@Manifest, fileName, parseFile(src))
                             }
                         }
                     }

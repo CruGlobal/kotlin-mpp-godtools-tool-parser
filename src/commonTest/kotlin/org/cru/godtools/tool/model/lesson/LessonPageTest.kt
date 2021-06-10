@@ -61,5 +61,5 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
 
     private fun parsePageXml(file: String, manifest: Manifest = Manifest()) =
-        LessonPage(manifest, 0, null, getTestXmlParser(file))
+        LessonPage(manifest, null, getTestXmlParser(file))
 }

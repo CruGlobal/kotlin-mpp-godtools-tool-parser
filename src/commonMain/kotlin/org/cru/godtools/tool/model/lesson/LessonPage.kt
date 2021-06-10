@@ -48,8 +48,8 @@ class LessonPage : BaseModel, Parent, Styles {
         internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
-    val id get() = fileName ?: "${manifest.code}-$position"
-    val position: Int
+    val id by lazy { fileName ?: "${manifest.code}-$position" }
+    val position by lazy { manifest.lessonPages.indexOf(this) }
 
     @VisibleForTesting
     internal val fileName: String?
@@ -78,12 +78,10 @@ class LessonPage : BaseModel, Parent, Styles {
 
     internal constructor(
         manifest: Manifest,
-        position: Int,
         fileName: String?,
         parser: XmlPullParser
     ) : super(manifest) {
         this.fileName = fileName
-        this.position = position
 
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
@@ -115,12 +113,10 @@ class LessonPage : BaseModel, Parent, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest,
-        position: Int = 0,
         fileName: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         this.fileName = fileName
-        this.position = position
 
         isHidden = false
         listeners = emptySet()
