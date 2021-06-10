@@ -22,28 +22,30 @@ import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.XML_TEXT_SCALE
 import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
+import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
+import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
-import kotlin.native.concurrent.SharedImmutable
 
 private const val XML_PAGE = "page"
 private const val XML_HIDDEN = "hidden"
 private const val XML_CONTENT = "content"
 
-@AndroidColorInt
-@SharedImmutable
-private val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
-@SharedImmutable
-private val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
-@SharedImmutable
-private val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
-
 class LessonPage : BaseModel, Parent, Styles {
     internal companion object {
+        @AndroidColorInt
+        @VisibleForTesting
+        internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
+        @VisibleForTesting
+        internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
+        @VisibleForTesting
+        internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
+
         @VisibleForTesting
         internal const val DEFAULT_TEXT_SCALE = 1.0
     }
@@ -114,6 +116,10 @@ class LessonPage : BaseModel, Parent, Styles {
     internal constructor(
         manifest: Manifest,
         fileName: String? = null,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundImage: String? = null,
+        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
@@ -122,10 +128,10 @@ class LessonPage : BaseModel, Parent, Styles {
         isHidden = false
         listeners = emptySet()
 
-        backgroundColor = DEFAULT_BACKGROUND_COLOR
-        _backgroundImage = null
-        backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
-        backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+        this.backgroundColor = backgroundColor
+        _backgroundImage = backgroundImage
+        this.backgroundImageGravity = backgroundImageGravity
+        this.backgroundImageScaleType = backgroundImageScaleType
 
         _controlColor = controlColor
 
