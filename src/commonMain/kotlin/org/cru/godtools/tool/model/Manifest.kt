@@ -177,8 +177,9 @@ class Manifest : BaseModel, Styles {
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
         textColor: Color = DEFAULT_TEXT_COLOR,
-        resources: ((Manifest) -> List<Resource>?)? = null,
-        tips: ((Manifest) -> List<Tip>?)? = null
+        textScale: Double = DEFAULT_TEXT_SCALE,
+        resources: ((Manifest) -> List<Resource>)? = null,
+        tips: ((Manifest) -> List<Tip>)? = null
     ) {
         code = null
         locale = null
@@ -202,7 +203,7 @@ class Manifest : BaseModel, Styles {
         lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
 
         this.textColor = textColor
-        textScale = DEFAULT_TEXT_SCALE
+        this.textScale = textScale
 
         _title = null
 
