@@ -2,7 +2,6 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
-import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.Parent
@@ -24,7 +23,7 @@ class Hero : BaseModel, Parent, Styles {
     val heading: Text?
     override val content: List<Content>
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
+    internal constructor(page: TractPage, parser: XmlPullParser) : super(page) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_HERO)
 
         // process any child elements

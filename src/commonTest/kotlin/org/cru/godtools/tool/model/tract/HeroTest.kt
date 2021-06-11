@@ -15,6 +15,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeroTest : UsesResources("model/tract") {
@@ -30,7 +31,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHero() {
-        val hero = Hero(Manifest(), getTestXmlParser("hero.xml"))
+        val hero = assertNotNull(TractPage(Manifest(), 0, null, getTestXmlParser("hero.xml")).hero)
         assertEquals(1, hero.analyticsEvents.size)
         assertEquals("Heading", hero.heading!!.text)
         assertEquals(3, hero.content.size)
@@ -41,7 +42,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHeroIgnoredContent() {
-        val hero = Hero(Manifest(), getTestXmlParser("hero_ignored_content.xml"))
+        val hero = assertNotNull(TractPage(Manifest(), 0, null, getTestXmlParser("hero_ignored_content.xml")).hero)
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])
         assertIs<Tabs>(hero.content[1])
