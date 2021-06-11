@@ -23,7 +23,16 @@ class TractPageTest : UsesResources("model/tract") {
         assertEquals("header", page.header!!.title!!.text)
         assertEquals("hero", page.hero!!.heading!!.text)
         assertEquals("call to action", page.callToAction.label!!.text)
+        assertTrue(page.cards.isEmpty())
         assertTrue(page.modals.isEmpty())
+    }
+
+    @Test
+    fun verifyParseCards() {
+        val page = parsePageXml("page_cards.xml")
+        assertEquals(2, page.cards.size)
+        assertEquals("Card 1", page.cards[0].label!!.text)
+        assertEquals("Card 2", page.cards[1].label!!.text)
     }
 
     @Test

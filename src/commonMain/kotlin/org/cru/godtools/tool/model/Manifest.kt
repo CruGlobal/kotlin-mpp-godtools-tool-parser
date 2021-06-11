@@ -181,6 +181,7 @@ class Manifest : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         type: Type = Type.DEFAULT,
+        code: String? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: Color? = null,
@@ -194,7 +195,7 @@ class Manifest : BaseModel, Styles {
         resources: ((Manifest) -> List<Resource>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null
     ) {
-        code = null
+        this.code = code
         locale = null
         this.type = type
 

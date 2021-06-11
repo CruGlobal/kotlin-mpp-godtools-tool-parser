@@ -37,6 +37,7 @@ import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_PAGE = "page"
 private const val XML_CARD_TEXT_COLOR = "card-text-color"
+private const val XML_CARDS = "cards"
 private const val XML_MODALS = "modals"
 
 class TractPage : BaseModel, Styles {
@@ -66,6 +67,8 @@ class TractPage : BaseModel, Styles {
 
     val header: Header?
     val hero: Hero?
+    val cards: List<Card>
+    val visibleCards get() = cards.filter { !it.isHidden }
     val modals: List<Modal>
     val callToAction: CallToAction
 
@@ -127,6 +130,7 @@ class TractPage : BaseModel, Styles {
         // process any child elements
         var header: Header? = null
         var hero: Hero? = null
+        cards = mutableListOf()
         modals = mutableListOf()
         var callToAction: CallToAction? = null
         parser.parseChildren {
@@ -134,6 +138,7 @@ class TractPage : BaseModel, Styles {
                 XMLNS_TRACT -> when (parser.name) {
                     Header.XML_HEADER -> header = Header(this, parser)
                     Hero.XML_HERO -> hero = Hero(this, parser)
+                    XML_CARDS -> cards += parser.parseCardsXml()
                     XML_MODALS -> modals += parser.parseModalsXml()
                     CallToAction.XML_CALL_TO_ACTION -> callToAction = CallToAction(this, parser)
                 }
@@ -151,6 +156,7 @@ class TractPage : BaseModel, Styles {
         fileName: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
+        cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(manifest) {
         this.position = position
@@ -174,11 +180,24 @@ class TractPage : BaseModel, Styles {
 
         header = null
         hero = null
+        this.cards = cards?.invoke(this).orEmpty()
         modals = emptyList()
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
 
     fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun XmlPullParser.parseCardsXml() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CARDS)
+        parseChildren {
+            when (namespace) {
+                XMLNS_TRACT -> when (name) {
+                    Card.XML_CARD -> add(Card(this@TractPage, size, this@parseCardsXml))
+                }
+            }
+        }
+    }
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun XmlPullParser.parseModalsXml() = buildList {
