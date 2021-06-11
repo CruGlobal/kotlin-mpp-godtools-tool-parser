@@ -37,6 +37,7 @@ import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_PAGE = "page"
 private const val XML_CARD_TEXT_COLOR = "card-text-color"
+private const val XML_MODALS = "modals"
 
 class TractPage : BaseModel, Styles {
     internal companion object {
@@ -65,6 +66,7 @@ class TractPage : BaseModel, Styles {
 
     val header: Header?
     val hero: Hero?
+    val modals: List<Modal>
     val callToAction: CallToAction
 
     @AndroidColorInt
@@ -125,12 +127,14 @@ class TractPage : BaseModel, Styles {
         // process any child elements
         var header: Header? = null
         var hero: Hero? = null
+        modals = mutableListOf()
         var callToAction: CallToAction? = null
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_TRACT -> when (parser.name) {
                     Header.XML_HEADER -> header = Header(this, parser)
                     Hero.XML_HERO -> hero = Hero(this, parser)
+                    XML_MODALS -> modals += parser.parseModalsXml()
                     CallToAction.XML_CALL_TO_ACTION -> callToAction = CallToAction(this, parser)
                 }
             }
@@ -170,7 +174,22 @@ class TractPage : BaseModel, Styles {
 
         header = null
         hero = null
+        modals = emptyList()
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
+    }
+
+    fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun XmlPullParser.parseModalsXml() = buildList {
+        require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_MODALS)
+        parseChildren {
+            when (namespace) {
+                XMLNS_TRACT -> when (name) {
+                    Modal.XML_MODAL -> add(Modal(this@TractPage, size, this@parseModalsXml))
+                }
+            }
+        }
     }
 }
 

@@ -22,6 +22,16 @@ class TractPageTest : UsesResources("model/tract") {
         assertEquals(1.2345, page.textScale, 0.00001)
         assertEquals("header", page.header!!.title!!.text)
         assertEquals("hero", page.hero!!.heading!!.text)
+        assertEquals("call to action", page.callToAction.label!!.text)
+        assertTrue(page.modals.isEmpty())
+    }
+
+    @Test
+    fun verifyParseModals() {
+        val page = parsePageXml("page_modals.xml")
+        assertEquals(2, page.modals.size)
+        assertEquals("Modal 1", page.modals[0].title?.text)
+        assertEquals("Modal 2", page.modals[1].title?.text)
     }
 
     @Test
