@@ -9,6 +9,7 @@ import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
+import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
@@ -29,6 +30,10 @@ private const val XML_NAVBAR_CONTROL_COLOR = "navbar-control-color"
 private const val XML_CATEGORY_LABEL_COLOR = "category-label-color"
 private const val XML_TITLE = "title"
 private const val XML_CATEGORIES = "categories"
+private const val XML_PAGES = "pages"
+private const val XML_PAGES_PAGE = "page"
+private const val XML_PAGES_PAGE_FILENAME = "filename"
+private const val XML_PAGES_PAGE_SRC = "src"
 private const val XML_RESOURCES = "resources"
 private const val XML_TIPS = "tips"
 private const val XML_TIPS_TIP = "tip"
@@ -109,6 +114,7 @@ class Manifest : BaseModel, Styles {
     val title: String? get() = _title?.text
 
     val categories: List<Category>
+    val lessonPages: List<LessonPage>
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -147,6 +153,7 @@ class Manifest : BaseModel, Styles {
 
         var title: Text? = null
         val categories = mutableListOf<Category>()
+        val lessonPages = mutableListOf<LessonPage>()
         val resources = mutableListOf<Resource>()
         val tips = mutableListOf<Tip>()
         parser.parseChildren {
@@ -154,6 +161,10 @@ class Manifest : BaseModel, Styles {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
                     XML_CATEGORIES -> categories += parser.parseCategories()
+                    XML_PAGES -> {
+                        val result = parser.parsePages(parseFile)
+                        lessonPages += result.lessonPages
+                    }
                     XML_RESOURCES -> resources += parser.parseResources()
                     XML_TIPS -> tips += parser.parseTips(parseFile)
                 }
@@ -162,6 +173,7 @@ class Manifest : BaseModel, Styles {
 
         _title = title
         this.categories = categories
+        this.lessonPages = lessonPages
         this.resources = resources.associateBy { it.name }
         this.tips = tips.associateBy { it.id }
     }
@@ -176,9 +188,11 @@ class Manifest : BaseModel, Styles {
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
+        lessonControlColor: Color = DEFAULT_LESSON_CONTROL_COLOR,
         textColor: Color = DEFAULT_TEXT_COLOR,
-        resources: ((Manifest) -> List<Resource>?)? = null,
-        tips: ((Manifest) -> List<Tip>?)? = null
+        textScale: Double = DEFAULT_TEXT_SCALE,
+        resources: ((Manifest) -> List<Resource>)? = null,
+        tips: ((Manifest) -> List<Tip>)? = null
     ) {
         code = null
         locale = null
@@ -199,14 +213,15 @@ class Manifest : BaseModel, Styles {
 
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor
-        lessonControlColor = DEFAULT_LESSON_CONTROL_COLOR
+        this.lessonControlColor = lessonControlColor
 
         this.textColor = textColor
-        textScale = DEFAULT_TEXT_SCALE
+        this.textScale = textScale
 
         _title = null
 
         categories = emptyList()
+        lessonPages = emptyList()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
     }
@@ -223,6 +238,33 @@ class Manifest : BaseModel, Styles {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     Category.XML_CATEGORY -> add(Category(this@Manifest, this@parseCategories))
+                }
+            }
+        }
+    }
+
+    private class PagesData {
+        val lessonPages = mutableListOf<LessonPage>()
+    }
+
+    private fun XmlPullParser.parsePages(parseFile: (String) -> XmlPullParser) = PagesData().also { result ->
+        require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_PAGES)
+
+        // process any child elements
+        parseChildren {
+            when (namespace) {
+                XMLNS_MANIFEST -> when (name) {
+                    XML_PAGES_PAGE -> {
+                        val fileName = getAttributeValue(XML_PAGES_PAGE_FILENAME)
+                        val src = getAttributeValue(XML_PAGES_PAGE_SRC)
+
+                        if (src != null) {
+                            @Suppress("NON_EXHAUSTIVE_WHEN")
+                            when (type) {
+                                Type.LESSON -> result.lessonPages += LessonPage(this@Manifest, fileName, parseFile(src))
+                            }
+                        }
+                    }
                 }
             }
         }
