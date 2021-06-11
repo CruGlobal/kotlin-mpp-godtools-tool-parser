@@ -65,6 +65,7 @@ class TractPage : BaseModel, Styles {
 
     val header: Header?
     val hero: Hero?
+    val callToAction: CallToAction
 
     @AndroidColorInt
     private val _primaryColor: Color?
@@ -124,16 +125,19 @@ class TractPage : BaseModel, Styles {
         // process any child elements
         var header: Header? = null
         var hero: Hero? = null
+        var callToAction: CallToAction? = null
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_TRACT -> when (parser.name) {
                     Header.XML_HEADER -> header = Header(this, parser)
                     Hero.XML_HERO -> hero = Hero(this, parser)
+                    CallToAction.XML_CALL_TO_ACTION -> callToAction = CallToAction(this, parser)
                 }
             }
         }
         this.header = header
         this.hero = hero
+        this.callToAction = callToAction ?: CallToAction(this)
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -143,6 +147,7 @@ class TractPage : BaseModel, Styles {
         fileName: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
+        callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(manifest) {
         this.position = position
         this.fileName = fileName
@@ -165,6 +170,7 @@ class TractPage : BaseModel, Styles {
 
         header = null
         hero = null
+        this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
 }
 
