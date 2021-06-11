@@ -31,7 +31,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHero() {
-        val hero = assertNotNull(TractPage(Manifest(), 0, null, getTestXmlParser("hero.xml")).hero)
+        val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero.xml")).hero)
         assertEquals(1, hero.analyticsEvents.size)
         assertEquals("Heading", hero.heading!!.text)
         assertEquals(3, hero.content.size)
@@ -42,7 +42,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHeroIgnoredContent() {
-        val hero = assertNotNull(TractPage(Manifest(), 0, null, getTestXmlParser("hero_ignored_content.xml")).hero)
+        val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero_ignored_content.xml")).hero)
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])
         assertIs<Tabs>(hero.content[1])

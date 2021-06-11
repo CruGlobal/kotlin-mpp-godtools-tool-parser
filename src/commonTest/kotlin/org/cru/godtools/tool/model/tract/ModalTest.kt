@@ -14,7 +14,7 @@ import kotlin.test.assertIs
 class ModalTest : UsesResources("model/tract") {
     @Test
     fun testParseModal() {
-        val modal = TractPage(Manifest(), 0, null, getTestXmlParser("modal.xml")).modals.single()
+        val modal = TractPage(Manifest(), null, getTestXmlParser("modal.xml")).modals.single()
         assertEquals("listener1 listener2".toEventIds().toSet(), modal.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), modal.dismissListeners)
         assertEquals(2, modal.content.size)

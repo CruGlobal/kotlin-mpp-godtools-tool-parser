@@ -13,7 +13,7 @@ import kotlin.test.assertNotNull
 class HeaderTest : UsesResources("model/tract") {
     @Test
     fun testParseHeader() {
-        val header = assertNotNull(TractPage(Manifest(), 0, null, getTestXmlParser("header.xml")).header)
+        val header = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("header.xml")).header)
         assertEquals("5", header.number!!.text)
         assertEquals("title", header.title!!.text)
         assertEquals(TestColors.RED, header.backgroundColor)

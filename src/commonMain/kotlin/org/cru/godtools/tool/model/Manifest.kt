@@ -269,10 +269,7 @@ class Manifest : BaseModel, Styles {
                             @Suppress("NON_EXHAUSTIVE_WHEN")
                             when (type) {
                                 Type.LESSON -> result.lessonPages += LessonPage(this@Manifest, fileName, parseFile(src))
-                                Type.TRACT -> {
-                                    val pos = result.tractPages.size
-                                    result.tractPages += TractPage(this@Manifest, pos, fileName, parseFile(src))
-                                }
+                                Type.TRACT -> result.tractPages += TractPage(this@Manifest, fileName, parseFile(src))
                             }
                         }
                     }

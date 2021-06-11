@@ -60,5 +60,5 @@ class TractPageTest : UsesResources("model/tract") {
         assertEquals(6.0, TractPage(manifest, textScale = 2.0).textScale, 0.001)
     }
 
-    private fun parsePageXml(file: String) = TractPage(Manifest(), 0, null, getTestXmlParser(file))
+    private fun parsePageXml(file: String) = TractPage(Manifest(), null, getTestXmlParser(file))
 }

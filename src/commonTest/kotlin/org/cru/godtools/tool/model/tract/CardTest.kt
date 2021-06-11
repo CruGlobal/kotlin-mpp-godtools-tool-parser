@@ -19,8 +19,8 @@ import kotlin.test.assertTrue
 class CardTest : UsesResources("model/tract") {
     @Test
     fun verifyParseCard() {
-        val card = TractPage(Manifest(code = "test"), 0, null, getTestXmlParser("card.xml")).cards.single()
-        assertEquals("test-0-0", card.id)
+        val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
+        assertEquals("page.xml-0", card.id)
         assertEquals("Card 1", card.label!!.text)
         assertEquals(TestColors.RED, card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)

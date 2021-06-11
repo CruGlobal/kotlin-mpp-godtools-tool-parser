@@ -52,7 +52,7 @@ class TractPage : BaseModel, Styles {
     }
 
     val id get() = fileName ?: "${manifest.code}-$position"
-    val position: Int
+    val position by lazy { manifest.tractPages.indexOf(this) }
 
     @VisibleForTesting
     internal val fileName: String?
@@ -99,13 +99,7 @@ class TractPage : BaseModel, Styles {
     @get:AndroidColorInt
     val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
 
-    internal constructor(
-        manifest: Manifest,
-        position: Int,
-        fileName: String?,
-        parser: XmlPullParser
-    ) : super(manifest) {
-        this.position = position
+    internal constructor(manifest: Manifest, fileName: String?, parser: XmlPullParser) : super(manifest) {
         this.fileName = fileName
 
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
@@ -152,14 +146,12 @@ class TractPage : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest,
-        position: Int = 0,
         fileName: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(manifest) {
-        this.position = position
         this.fileName = fileName
 
         listeners = emptySet()
@@ -205,7 +197,7 @@ class TractPage : BaseModel, Styles {
         parseChildren {
             when (namespace) {
                 XMLNS_TRACT -> when (name) {
-                    Modal.XML_MODAL -> add(Modal(this@TractPage, size, this@parseModalsXml))
+                    Modal.XML_MODAL -> add(Modal(this@TractPage, this@parseModalsXml))
                 }
             }
         }

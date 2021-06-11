@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class CallToActionTest : UsesResources("model/tract") {
     @Test
     fun testParseCallToAction() {
-        val callToAction = TractPage(Manifest(), 0, null, getTestXmlParser("call_to_action.xml")).callToAction
+        val callToAction = TractPage(Manifest(), null, getTestXmlParser("call_to_action.xml")).callToAction
         assertEquals(TestColors.RED, callToAction.controlColor)
         assertEquals("event1 event2".toEventIds(), callToAction.events)
         assertEquals("Call To Action", callToAction.label!!.text)
