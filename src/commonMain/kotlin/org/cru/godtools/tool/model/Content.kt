@@ -36,7 +36,7 @@ abstract class Content : BaseModel {
 
     open val tips get() = emptyList<Tip>()
 
-    companion object {
+    internal companion object {
         internal fun XmlPullParser.parseContentElement(parent: Base): Content? {
             require(XmlPullParser.START_TAG, null, null)
             return when (namespace) {

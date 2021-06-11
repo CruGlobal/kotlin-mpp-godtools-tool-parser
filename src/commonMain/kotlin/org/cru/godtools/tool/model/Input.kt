@@ -21,7 +21,7 @@ private const val XML_PLACEHOLDER = "placeholder"
 private val REGEX_VALIDATE_EMAIL = Regex(".+@.+")
 
 class Input : Content {
-    companion object {
+    internal companion object {
         internal const val XML_INPUT = "input"
     }
 

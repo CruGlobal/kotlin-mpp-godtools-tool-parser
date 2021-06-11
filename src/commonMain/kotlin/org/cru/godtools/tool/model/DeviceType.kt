@@ -11,7 +11,7 @@ private const val XML_DEVICE_TYPE_WEB = "web"
 enum class DeviceType {
     ANDROID, IOS, MOBILE, WEB, UNKNOWN;
 
-    companion object {
+    internal companion object {
         internal val ALL = values().toSet()
         internal val SUPPORTED get() = ParserConfig.supportedDeviceTypes
 

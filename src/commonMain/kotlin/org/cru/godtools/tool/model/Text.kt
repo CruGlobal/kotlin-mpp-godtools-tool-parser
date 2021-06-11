@@ -25,7 +25,7 @@ private const val XML_TEXT_STYLE_ITALIC = "italic"
 private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 
 class Text : Content {
-    companion object {
+    internal companion object {
         internal const val XML_TEXT = "text"
 
         internal const val DEFAULT_TEXT_SCALE = 1.0

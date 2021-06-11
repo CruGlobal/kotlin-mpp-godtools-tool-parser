@@ -10,7 +10,7 @@ private const val XML_MODE_AUTO = "auto"
 private const val XML_MODE_FIXED = "fixed"
 
 class Spacer : Content {
-    companion object {
+    internal companion object {
         internal const val XML_SPACER = "spacer"
     }
 
@@ -29,8 +29,8 @@ class Spacer : Content {
     enum class Mode {
         AUTO, FIXED;
 
-        companion object {
-            val DEFAULT = AUTO
+        internal companion object {
+            internal val DEFAULT = AUTO
 
             internal fun String.toModeOrNull() = when (this) {
                 XML_MODE_AUTO -> AUTO

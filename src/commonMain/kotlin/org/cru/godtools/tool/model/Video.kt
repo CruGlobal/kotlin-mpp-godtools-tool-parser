@@ -8,14 +8,14 @@ private const val XML_PROVIDER = "provider"
 private const val XML_PROVIDER_YOUTUBE = "youtube"
 
 class Video : Content {
-    companion object {
+    internal companion object {
         internal const val XML_VIDEO = "video"
     }
 
     enum class Provider {
         YOUTUBE, UNKNOWN;
 
-        companion object {
+        internal companion object {
             internal val DEFAULT = UNKNOWN
 
             internal fun parseOrNull(value: String?) = when (value) {
