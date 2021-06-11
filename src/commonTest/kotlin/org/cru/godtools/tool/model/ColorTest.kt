@@ -15,7 +15,7 @@ class ColorTest {
         assertEquals(TestColors.BLUE, "rgba(0,0,255,1)".toColorOrNull())
         assertEquals(TestColors.BLACK, "rgba(0,0,0,1)".toColorOrNull())
         assertEquals(TestColors.BLACK, "rgba(0,0,0,1.0)".toColorOrNull())
-        assertEquals(TestColors.TRANSPARENT, "rgba(0,0,0,0)".toColorOrNull())
+        assertEquals(TRANSPARENT, "rgba(0,0,0,0)".toColorOrNull())
     }
 
     @Test
