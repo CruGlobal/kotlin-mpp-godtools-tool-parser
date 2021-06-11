@@ -63,6 +63,7 @@ class TractPage : BaseModel, Styles {
     val backgroundImageGravity: ImageGravity
     val backgroundImageScaleType: ImageScaleType
 
+    val header: Header?
     val hero: Hero?
 
     @AndroidColorInt
@@ -121,14 +122,17 @@ class TractPage : BaseModel, Styles {
         _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
 
         // process any child elements
+        var header: Header? = null
         var hero: Hero? = null
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_TRACT -> when (parser.name) {
+                    Header.XML_HEADER -> header = Header(this, parser)
                     Hero.XML_HERO -> hero = Hero(this, parser)
                 }
             }
         }
+        this.header = header
         this.hero = hero
     }
 
@@ -159,6 +163,7 @@ class TractPage : BaseModel, Styles {
         _cardBackgroundColor = cardBackgroundColor
         _cardTextColor = null
 
+        header = null
         hero = null
     }
 }

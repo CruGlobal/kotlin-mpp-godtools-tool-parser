@@ -20,6 +20,7 @@ class TractPageTest : UsesResources("model/tract") {
         assertTrue(page.backgroundImageGravity.isStart)
         assertEquals(ImageScaleType.FILL, page.backgroundImageScaleType)
         assertEquals(1.2345, page.textScale, 0.00001)
+        assertEquals("header", page.header!!.title!!.text)
         assertEquals("hero", page.hero!!.heading!!.text)
     }
 
