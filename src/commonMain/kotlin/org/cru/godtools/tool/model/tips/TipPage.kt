@@ -7,7 +7,7 @@ import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.xml.XmlPullParser
 
 class TipPage : BaseModel, Parent {
-    companion object {
+    internal companion object {
         internal const val XML_PAGE = "page"
     }
 

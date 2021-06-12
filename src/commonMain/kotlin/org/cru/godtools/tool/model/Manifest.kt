@@ -42,7 +42,7 @@ private const val XML_TIPS_TIP_SRC = "src"
 
 @OptIn(ExperimentalStdlibApi::class)
 class Manifest : BaseModel, Styles {
-    companion object {
+    internal companion object {
         @AndroidColorInt
         internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
         @AndroidColorInt
@@ -299,10 +299,10 @@ class Manifest : BaseModel, Styles {
     enum class Type {
         TRACT, ARTICLE, LESSON, UNKNOWN;
 
-        companion object {
-            val DEFAULT = TRACT
+        internal companion object {
+            internal val DEFAULT = TRACT
 
-            fun parseOrNull(value: String?) = when (value) {
+            internal fun parseOrNull(value: String?) = when (value) {
                 XML_TYPE_ARTICLE -> ARTICLE
                 XML_TYPE_LESSON -> LESSON
                 XML_TYPE_TRACT -> TRACT

@@ -9,7 +9,7 @@ import org.cru.godtools.tool.xml.skipTag
 private const val XML_ID = "id"
 
 class InlineTip : Content {
-    companion object {
+    internal companion object {
         internal const val XML_TIP = "tip"
     }
 

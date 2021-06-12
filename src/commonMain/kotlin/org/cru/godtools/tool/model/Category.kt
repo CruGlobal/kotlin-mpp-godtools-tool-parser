@@ -10,7 +10,7 @@ private const val XML_AEM_TAG = "aem-tag"
 
 @OptIn(ExperimentalStdlibApi::class)
 class Category internal constructor(manifest: Manifest, parser: XmlPullParser) : BaseModel(manifest) {
-    companion object {
+    internal companion object {
         internal const val XML_CATEGORY = "category"
     }
 

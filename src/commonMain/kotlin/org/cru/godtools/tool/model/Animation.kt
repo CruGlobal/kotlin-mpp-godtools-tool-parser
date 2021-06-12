@@ -11,7 +11,7 @@ private const val XML_PLAY_LISTENERS = "play-listeners"
 private const val XML_STOP_LISTENERS = "stop-listeners"
 
 class Animation : Content {
-    companion object {
+    internal companion object {
         internal const val XML_ANIMATION = "animation"
     }
 

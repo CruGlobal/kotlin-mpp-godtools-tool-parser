@@ -17,7 +17,7 @@ private const val XML_STYLE_OUTLINED = "outlined"
 private const val XML_URL = "url"
 
 class Button : Content, Styles {
-    companion object {
+    internal companion object {
         internal const val XML_BUTTON = "button"
     }
 

@@ -8,7 +8,7 @@ import org.cru.godtools.tool.xml.skipTag
 private const val XML_RESOURCE = "resource"
 
 class Image : Content {
-    companion object {
+    internal companion object {
         internal const val XML_IMAGE = "image"
     }
 
