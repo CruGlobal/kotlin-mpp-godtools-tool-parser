@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Color
@@ -57,6 +58,16 @@ class Header : BaseModel, Styles {
         }
         this.number = number
         this.title = title
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(page: TractPage, backgroundColor: Color? = null, tip: String? = null) : super(page) {
+        _backgroundColor = backgroundColor
+
+        number = null
+        title = null
+
+        tipId = tip
     }
 }
 
