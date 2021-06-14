@@ -26,6 +26,7 @@ import org.cru.godtools.tool.model.XML_TEXT_COLOR
 import org.cru.godtools.tool.model.backgroundColor
 import org.cru.godtools.tool.model.contentTips
 import org.cru.godtools.tool.model.getResource
+import org.cru.godtools.tool.model.manifest
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
 import org.cru.godtools.tool.model.toColorOrNull
@@ -75,8 +76,8 @@ class Card : BaseModel, Styles, Parent {
     override val content: List<Content>
     val tips get() = contentTips
 
-    internal constructor(parent: TractPage, position: Int, parser: XmlPullParser) : super(parent) {
-        page = parent
+    internal constructor(page: TractPage, position: Int, parser: XmlPullParser) : super(page) {
+        this.page = page
         this.position = position
 
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CARD)
@@ -112,12 +113,15 @@ class Card : BaseModel, Styles, Parent {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        parent: TractPage,
+        page: TractPage,
         backgroundColor: Color? = null,
+        backgroundImage: String? = null,
+        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         isHidden: Boolean = false,
         content: ((Card) -> List<Content>?)? = null
-    ) : super(parent) {
-        page = parent
+    ) : super(page) {
+        this.page = page
         position = 0
 
         this.isHidden = isHidden
@@ -126,9 +130,9 @@ class Card : BaseModel, Styles, Parent {
         analyticsEvents = emptySet()
 
         _backgroundColor = backgroundColor
-        _backgroundImage = null
-        backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
-        backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+        _backgroundImage = backgroundImage
+        this.backgroundImageGravity = backgroundImageGravity
+        this.backgroundImageScaleType = backgroundImageScaleType
 
         _textColor = null
 
@@ -138,6 +142,6 @@ class Card : BaseModel, Styles, Parent {
 }
 
 @get:AndroidColorInt
-val Card?.backgroundColor get() = this?.backgroundColor ?: this?.manifest.backgroundColor
+val Card?.backgroundColor get() = this?.backgroundColor ?: manifest.backgroundColor
 val Card?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Card?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

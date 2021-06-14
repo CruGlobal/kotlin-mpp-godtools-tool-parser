@@ -3,8 +3,11 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.model.ImageGravity
+import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
+import org.cru.godtools.tool.model.Resource
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
@@ -25,6 +28,8 @@ class CardTest : UsesResources("model/tract") {
         assertEquals(TestColors.RED, card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), card.dismissListeners)
+        assertEquals(1, card.analyticsEvents.size)
+        assertEquals("firebaseEvent", card.analyticsEvents.single().action)
         assertEquals(1, card.content.size)
         assertIs<Paragraph>(card.content[0])
     }
@@ -57,6 +62,36 @@ class CardTest : UsesResources("model/tract") {
         assertFalse(page.cards[0].isLastVisibleCard)
         assertTrue(page.cards[1].isLastVisibleCard)
         assertFalse(page.cards[2].isLastVisibleCard)
+    }
+
+    @Test
+    fun testBackgroundAttributes() {
+        val manifest = Manifest(resources = { listOf(Resource(it, name = "background.png")) })
+        val card = Card(
+            TractPage(manifest),
+            backgroundColor = TestColors.GREEN,
+            backgroundImage = "background.png",
+            backgroundImageGravity = ImageGravity.END,
+            backgroundImageScaleType = ImageScaleType.FILL_Y
+        )
+        val resource = manifest.resources["background.png"]
+
+        with(null as Card?) {
+            assertEquals(manifest.backgroundColor, backgroundColor)
+            assertEquals(Card.DEFAULT_BACKGROUND_IMAGE_GRAVITY, backgroundImageGravity)
+            assertEquals(Card.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
+        }
+        with(card as Card?) {
+            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
+        }
+        with(card) {
+            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(resource, backgroundImage)
+            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
+        }
     }
 
     @Test
