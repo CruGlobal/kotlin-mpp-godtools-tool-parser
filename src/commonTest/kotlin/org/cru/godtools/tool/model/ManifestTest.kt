@@ -37,7 +37,7 @@ class ManifestTest : UsesResources() {
 
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
-//        assertEquals(0, manifest.aemImports.size)
+        assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.lessonPages.isEmpty())
         assertTrue(manifest.tractPages.isEmpty())
         assertEquals(0, manifest.resources.size)
@@ -58,6 +58,8 @@ class ManifestTest : UsesResources() {
         assertEquals(setOf("tag1", "tag2"), category.aemTags)
         val label = assertNotNull(category.label)
         assertEquals("Category", label.text)
+        assertEquals(1, manifest.aemImports.size)
+        assertEquals("https://www.example.com", manifest.aemImports.single().toString())
     }
 
     @Test

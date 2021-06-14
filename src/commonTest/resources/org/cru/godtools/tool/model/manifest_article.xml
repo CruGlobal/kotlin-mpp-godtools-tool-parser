@@ -16,4 +16,8 @@
             <article:aem-tag id="tag2" />
         </category>
     </categories>
+
+    <pages>
+        <article:aem-import src="https://www.example.com" />
+    </pages>
 </manifest>
