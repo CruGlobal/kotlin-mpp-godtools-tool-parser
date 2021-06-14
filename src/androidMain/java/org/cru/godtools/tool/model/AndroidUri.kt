@@ -6,4 +6,6 @@ import android.net.Uri as AndroidUri
 //       see: https://discuss.kotlinlang.org/t/feature-request-typealias-for-expected-types/20054/4
 @Suppress("ACTUAL_WITHOUT_EXPECT")
 actual typealias Uri = AndroidUri
+internal actual inline val Uri.scheme get() = scheme
+
 internal actual fun String.toUri() = AndroidUri.parse(this)

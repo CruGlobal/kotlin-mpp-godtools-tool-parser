@@ -35,6 +35,8 @@ private const val XML_PAGES = "pages"
 private const val XML_PAGES_PAGE = "page"
 private const val XML_PAGES_PAGE_FILENAME = "filename"
 private const val XML_PAGES_PAGE_SRC = "src"
+private const val XML_PAGES_AEM_IMPORT = "aem-import"
+private const val XML_PAGES_AEM_IMPORT_SRC = "src"
 private const val XML_RESOURCES = "resources"
 private const val XML_TIPS = "tips"
 private const val XML_TIPS_TIP = "tip"
@@ -117,6 +119,7 @@ class Manifest : BaseModel, Styles {
     val categories: List<Category>
     val lessonPages: List<LessonPage>
     val tractPages: List<TractPage>
+    val aemImports: List<Uri>
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -154,6 +157,7 @@ class Manifest : BaseModel, Styles {
         textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
         var title: Text? = null
+        aemImports = mutableListOf()
         val categories = mutableListOf<Category>()
         val lessonPages = mutableListOf<LessonPage>()
         val resources = mutableListOf<Resource>()
@@ -166,6 +170,7 @@ class Manifest : BaseModel, Styles {
                     XML_CATEGORIES -> categories += parser.parseCategories()
                     XML_PAGES -> {
                         val result = parser.parsePages(parseFile)
+                        aemImports += result.aemImports
                         lessonPages += result.lessonPages
                         tractPages += result.tractPages
                     }
@@ -225,6 +230,7 @@ class Manifest : BaseModel, Styles {
 
         _title = null
 
+        aemImports = emptyList()
         categories = emptyList()
         lessonPages = emptyList()
         tractPages = emptyList()
@@ -250,6 +256,7 @@ class Manifest : BaseModel, Styles {
     }
 
     private class PagesData {
+        val aemImports = mutableListOf<Uri>()
         val lessonPages = mutableListOf<LessonPage>()
         val tractPages = mutableListOf<TractPage>()
     }
@@ -273,6 +280,11 @@ class Manifest : BaseModel, Styles {
                             }
                         }
                     }
+                }
+                XMLNS_ARTICLE -> when (name) {
+                    XML_PAGES_AEM_IMPORT -> getAttributeValue(XML_PAGES_AEM_IMPORT_SRC)?.toUri()
+                        ?.takeIf { it.isHttpUrl }
+                        ?.let { result.aemImports += it }
                 }
             }
         }

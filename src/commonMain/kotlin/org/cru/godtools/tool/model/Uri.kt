@@ -1,6 +1,8 @@
 package org.cru.godtools.tool.model
 
 expect class Uri
+internal expect val Uri.scheme: String?
+internal val Uri.isHttpUrl: Boolean get() = scheme?.matches(Regex("https?", RegexOption.IGNORE_CASE)) == true
 
 internal expect fun String.toUri(): Uri
 
