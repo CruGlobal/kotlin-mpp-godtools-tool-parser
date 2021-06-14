@@ -147,8 +147,14 @@ class TractPage : BaseModel, Styles {
     internal constructor(
         manifest: Manifest,
         fileName: String? = null,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundImage: String? = null,
+        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
+        cardTextColor: Color? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(manifest) {
@@ -159,16 +165,16 @@ class TractPage : BaseModel, Styles {
         _primaryColor = null
         _primaryTextColor = null
 
-        backgroundColor = DEFAULT_BACKGROUND_COLOR
-        _backgroundImage = null
-        backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
-        backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+        this.backgroundColor = backgroundColor
+        _backgroundImage = backgroundImage
+        this.backgroundImageGravity = backgroundImageGravity
+        this.backgroundImageScaleType = backgroundImageScaleType
 
-        _textColor = null
+        _textColor = textColor
         _textScale = textScale
 
         _cardBackgroundColor = cardBackgroundColor
-        _cardTextColor = null
+        _cardTextColor = cardTextColor
 
         header = null
         hero = null
