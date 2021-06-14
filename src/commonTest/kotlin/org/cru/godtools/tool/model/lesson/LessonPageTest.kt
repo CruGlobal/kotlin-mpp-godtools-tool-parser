@@ -3,10 +3,10 @@ package org.cru.godtools.tool.model.lesson
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
+import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_COLOR
@@ -34,7 +34,8 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertIs<Text>(page.content[0])
         assertEquals("background.png", page._backgroundImage)
         assertEquals(TestColors.RED, page.backgroundColor)
-        assertEquals(ImageGravity.TOP or ImageGravity.END, page.backgroundImageGravity)
+        assertTrue(page.backgroundImageGravity.isTop)
+        assertTrue(page.backgroundImageGravity.isEnd)
         assertEquals(ImageScaleType.FIT, page.backgroundImageScaleType)
         assertEquals("lesson_page_event1".toEventIds().toSet(), page.listeners)
     }
@@ -76,11 +77,11 @@ class LessonPageTest : UsesResources("model/lesson") {
         val page = LessonPage(
             manifest,
             backgroundImage = "test.png",
-            backgroundImageGravity = ImageGravity.TOP,
+            backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FIT
         )
         assertSame(resource, page.backgroundImage)
-        assertEquals(ImageGravity.TOP, (page as LessonPage?).backgroundImageGravity)
+        assertEquals(TEST_GRAVITY, (page as LessonPage?).backgroundImageGravity)
         assertEquals(ImageScaleType.FIT, (page as LessonPage?).backgroundImageScaleType)
     }
 
