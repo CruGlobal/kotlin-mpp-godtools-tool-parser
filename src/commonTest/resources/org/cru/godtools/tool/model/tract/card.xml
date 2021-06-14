@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract"
+    xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <cards>
+        <card background-color="rgba(255,0,0,1)"
+            dismiss-listeners="dismiss-listener1 dismiss-listener2"
+            listeners="listener1 listener2">
+            <label>
+                <content:text>Card 1</content:text>
+            </label>
+            <analytics:events>
+                <analytics:event system="firebase" action="firebaseEvent" />
+            </analytics:events>
+            <content:paragraph>
+                <content:text>Test</content:text>
+            </content:paragraph>
+        </card>
+    </cards>
+</page>

@@ -1,0 +1,15 @@
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <hero>
+        <content:image resource="test.png" restrictTo="web" />
+        <content:paragraph />
+        <content:unrecognized />
+        <content:tabs>
+            <content:tab>
+                <content:label>
+                    <content:text>Tab 1</content:text>
+                </content:label>
+            </content:tab>
+        </content:tabs>
+    </hero>
+</page>

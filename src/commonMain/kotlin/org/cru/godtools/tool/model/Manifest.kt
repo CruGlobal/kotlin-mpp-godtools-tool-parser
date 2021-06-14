@@ -13,6 +13,7 @@ import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
+import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -115,6 +116,7 @@ class Manifest : BaseModel, Styles {
 
     val categories: List<Category>
     val lessonPages: List<LessonPage>
+    val tractPages: List<TractPage>
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -156,6 +158,7 @@ class Manifest : BaseModel, Styles {
         val lessonPages = mutableListOf<LessonPage>()
         val resources = mutableListOf<Resource>()
         val tips = mutableListOf<Tip>()
+        tractPages = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
@@ -164,6 +167,7 @@ class Manifest : BaseModel, Styles {
                     XML_PAGES -> {
                         val result = parser.parsePages(parseFile)
                         lessonPages += result.lessonPages
+                        tractPages += result.tractPages
                     }
                     XML_RESOURCES -> resources += parser.parseResources()
                     XML_TIPS -> tips += parser.parseTips(parseFile)
@@ -181,6 +185,7 @@ class Manifest : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         type: Type = Type.DEFAULT,
+        code: String? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: Color? = null,
@@ -194,7 +199,7 @@ class Manifest : BaseModel, Styles {
         resources: ((Manifest) -> List<Resource>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null
     ) {
-        code = null
+        this.code = code
         locale = null
         this.type = type
 
@@ -222,6 +227,7 @@ class Manifest : BaseModel, Styles {
 
         categories = emptyList()
         lessonPages = emptyList()
+        tractPages = emptyList()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
     }
@@ -245,6 +251,7 @@ class Manifest : BaseModel, Styles {
 
     private class PagesData {
         val lessonPages = mutableListOf<LessonPage>()
+        val tractPages = mutableListOf<TractPage>()
     }
 
     private fun XmlPullParser.parsePages(parseFile: (String) -> XmlPullParser) = PagesData().also { result ->
@@ -262,6 +269,7 @@ class Manifest : BaseModel, Styles {
                             @Suppress("NON_EXHAUSTIVE_WHEN")
                             when (type) {
                                 Type.LESSON -> result.lessonPages += LessonPage(this@Manifest, fileName, parseFile(src))
+                                Type.TRACT -> result.tractPages += TractPage(this@Manifest, fileName, parseFile(src))
                             }
                         }
                     }

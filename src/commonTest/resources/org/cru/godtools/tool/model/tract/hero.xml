@@ -1,0 +1,21 @@
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <hero>
+        <analytics:events>
+            <analytics:event system="adobe" action="test" />
+        </analytics:events>
+        <heading>
+            <content:text>Heading</content:text>
+        </heading>
+        <content:image resource="test.png" />
+        <content:paragraph />
+        <content:unrecognized />
+        <content:tabs>
+            <content:tab>
+                <content:label>
+                    <content:text>Tab 1</content:text>
+                </content:label>
+            </content:tab>
+        </content:tabs>
+    </hero>
+</page>

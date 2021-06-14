@@ -39,7 +39,7 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
 //        assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.lessonPages.isEmpty())
-//        assertThat(manifest.tractPages, `is`(empty()))
+        assertTrue(manifest.tractPages.isEmpty())
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
     }
@@ -69,7 +69,7 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.Type.LESSON, manifest.type)
         assertEquals(TestColors.RED, manifest.lessonControlColor)
         assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
-//        assertThat(manifest.tractPages, `is`(empty()))
+        assertTrue(manifest.tractPages.isEmpty())
         assertEquals(1, manifest.lessonPages.size)
         assertEquals("page0.xml", manifest.lessonPages[0].fileName)
     }
@@ -85,11 +85,11 @@ class ManifestTest : UsesResources() {
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
         assertTrue(manifest.lessonPages.isEmpty())
-//        assertEquals(2, manifest.tractPages.size)
-//        assertEquals("page0.xml", manifest.tractPages[0].fileName)
-//        assertEquals(0, manifest.tractPages[0].position)
-//        assertEquals(null, manifest.tractPages[1].fileName)
-//        assertEquals(1, manifest.tractPages[1].position)
+        assertEquals(2, manifest.tractPages.size)
+        assertEquals("page0.xml", manifest.tractPages[0].fileName)
+        assertEquals(0, manifest.tractPages[0].position)
+        assertEquals(null, manifest.tractPages[1].fileName)
+        assertEquals(1, manifest.tractPages[1].position)
     }
 
     @Test
@@ -107,7 +107,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestContainingTips() {
         val manifest = parseManifest("manifest_tips.xml")
-//        assertEquals(0, manifest.tractPages.size)
+        assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(1, manifest.tips.size)
         assertEquals("tip1", manifest.findTip("tip1")!!.id)
@@ -116,7 +116,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestInvalidTips() {
         val manifest = parseManifest("manifest_tips_invalid.xml")
-//        assertEquals(0, manifest.tractPages.size)
+        assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
     }

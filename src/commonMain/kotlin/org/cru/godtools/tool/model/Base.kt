@@ -6,3 +6,4 @@ interface Base {
 }
 
 val Base?.stylesParent get() = this?.stylesParent
+internal val Base?.manifest get() = this?.manifest

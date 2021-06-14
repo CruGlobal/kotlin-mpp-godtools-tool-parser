@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import kotlin.native.concurrent.SharedImmutable
+
 internal const val SCHEMA_VERSION = 1
 
 // XML namespaces
@@ -20,3 +22,9 @@ internal const val XML_TEXT_COLOR = "text-color"
 internal const val XML_TEXT_SCALE = "text-scale"
 internal const val XML_EVENTS = "events"
 internal const val XML_LISTENERS = "listeners"
+
+// common colors
+@SharedImmutable
+internal val TRANSPARENT = color(0, 0, 0, 0.0)
+@SharedImmutable
+internal val WHITE = color(255, 255, 255, 1.0)
