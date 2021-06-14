@@ -158,8 +158,8 @@ class Manifest : BaseModel, Styles {
 
         var title: Text? = null
         aemImports = mutableListOf()
-        val categories = mutableListOf<Category>()
-        val lessonPages = mutableListOf<LessonPage>()
+        categories = mutableListOf()
+        lessonPages = mutableListOf()
         val resources = mutableListOf<Resource>()
         val tips = mutableListOf<Tip>()
         tractPages = mutableListOf()
@@ -181,8 +181,6 @@ class Manifest : BaseModel, Styles {
         }
 
         _title = title
-        this.categories = categories
-        this.lessonPages = lessonPages
         this.resources = resources.associateBy { it.name }
         this.tips = tips.associateBy { it.id }
     }
