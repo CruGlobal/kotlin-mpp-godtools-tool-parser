@@ -3,11 +3,11 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Resource
+import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
@@ -71,7 +71,7 @@ class CardTest : UsesResources("model/tract") {
             TractPage(manifest),
             backgroundColor = TestColors.GREEN,
             backgroundImage = "background.png",
-            backgroundImageGravity = ImageGravity.END,
+            backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
         )
         val resource = manifest.resources["background.png"]
@@ -83,13 +83,13 @@ class CardTest : UsesResources("model/tract") {
         }
         with(card as Card?) {
             assertEquals(TestColors.GREEN, backgroundColor)
-            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
         with(card) {
             assertEquals(TestColors.GREEN, backgroundColor)
             assertEquals(resource, backgroundImage)
-            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
     }

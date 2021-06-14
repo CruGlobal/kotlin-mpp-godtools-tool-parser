@@ -3,10 +3,10 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
+import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.textColor
 import org.cru.godtools.tool.model.toEventIds
@@ -56,7 +56,7 @@ class TractPageTest : UsesResources("model/tract") {
             manifest,
             backgroundColor = TestColors.GREEN,
             backgroundImage = "background.png",
-            backgroundImageGravity = ImageGravity.END,
+            backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
         )
         val resource = manifest.resources["background.png"]
@@ -68,13 +68,13 @@ class TractPageTest : UsesResources("model/tract") {
         }
         with(page as TractPage?) {
             assertEquals(TestColors.GREEN, backgroundColor)
-            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
         with(page) {
             assertEquals(TestColors.GREEN, backgroundColor)
             assertEquals(resource, backgroundImage)
-            assertEquals(ImageGravity.END, backgroundImageGravity)
+            assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
     }

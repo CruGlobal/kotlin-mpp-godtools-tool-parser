@@ -2,7 +2,6 @@ package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
-import org.cru.godtools.tool.internal.RestrictTo
 import splitties.bitflags.minusFlag
 import splitties.bitflags.withFlag
 import kotlin.jvm.JvmInline
@@ -35,14 +34,7 @@ value class ImageGravity(private val gravity: Int) {
     val isTop get() = gravity and MASK_Y_AXIS == BIT_TOP
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    internal infix fun or(other: ImageGravity) = ImageGravity(gravity or other.gravity)
-
     companion object {
-        @RestrictTo(RestrictTo.Scope.TESTS)
-        internal val END = ImageGravity(BIT_END)
-        @RestrictTo(RestrictTo.Scope.TESTS)
-        internal val TOP = ImageGravity(BIT_TOP)
         internal val CENTER = ImageGravity(BIT_CENTER)
 
         internal fun String.toImageGravityOrNull() = try {
