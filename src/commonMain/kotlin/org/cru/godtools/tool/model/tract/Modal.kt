@@ -38,14 +38,14 @@ class Modal : BaseModel, Parent, Styles {
     override val primaryColor get() = TRANSPARENT
     @get:AndroidColorInt
     override val primaryTextColor get() = WHITE
-    @get:AndroidColorInt
-    override val textColor get() = WHITE
 
-    override val buttonStyle get() = Button.Style.OUTLINED
     @get:AndroidColorInt
     override val buttonColor get() = WHITE
+    override val buttonStyle get() = Button.Style.OUTLINED
 
     override val textAlign get() = Text.Align.CENTER
+    @get:AndroidColorInt
+    override val textColor get() = WHITE
 
     internal constructor(parent: TractPage, parser: XmlPullParser) : super(parent) {
         page = parent
