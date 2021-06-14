@@ -283,6 +283,7 @@ class Manifest : BaseModel, Styles {
                 }
                 XMLNS_ARTICLE -> when (name) {
                     XML_PAGES_AEM_IMPORT -> getAttributeValue(XML_PAGES_AEM_IMPORT_SRC)?.toUri()
+                        ?.takeIf { it.isHttpUrl }
                         ?.let { result.aemImports += it }
                 }
             }

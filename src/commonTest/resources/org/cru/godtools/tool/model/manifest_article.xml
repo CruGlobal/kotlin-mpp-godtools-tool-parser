@@ -19,5 +19,8 @@
 
     <pages>
         <article:aem-import src="https://www.example.com" />
+        <article:aem-import src="invalid-uri" />
+        <article:aem-import />
+        <article:unrecognized />
     </pages>
 </manifest>
