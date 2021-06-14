@@ -6,6 +6,5 @@ import platform.Foundation.NSXMLParser
 abstract class IosXmlPullParserFactory : XmlPullParserFactory() {
     abstract fun openFile(fileName: String): NSData?
 
-    override fun getXmlParser(fileName: String) =
-        openFile(fileName)?.let { IosXmlPullParser(NSXMLParser(it)) }
+    override fun getXmlParser(fileName: String) = openFile(fileName)?.let { IosXmlPullParser(NSXMLParser(it)) }
 }
