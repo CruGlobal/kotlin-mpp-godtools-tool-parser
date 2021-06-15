@@ -14,9 +14,9 @@ abstract class SaxXmlPullParser : XmlPullParser {
     override val name get() = currentEvent.qname?.local
 
     override fun require(type: Int, namespace: String?, name: String?) = with(currentEvent) {
-        if (this.type != type) throw Exception("expected $type")
-        if (namespace != null && namespace != this.qname?.uri) throw Exception("expected $namespace")
-        if (name != null && this.qname?.local != name) throw Exception("expected $name")
+        if (this.type != type) throw XmlPullParserException("expected $type")
+        if (namespace != null && namespace != this.qname?.uri) throw XmlPullParserException("expected $namespace")
+        if (name != null && this.qname?.local != name) throw XmlPullParserException("expected $name")
     }
 
     override fun next() = events.removeFirst().also { currentEvent = it }.type

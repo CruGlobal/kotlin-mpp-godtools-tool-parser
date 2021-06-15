@@ -5,11 +5,10 @@ import org.xmlpull.v1.XmlPullParser.FEATURE_PROCESS_NAMESPACES
 import java.io.InputStream
 
 abstract class AndroidXmlPullParserFactory : XmlPullParserFactory() {
-    protected abstract fun openFile(fileName: String): InputStream
+    protected abstract fun openFile(fileName: String): InputStream?
 
     override fun getXmlParser(fileName: String) = openFile(fileName)
-        .xmlPullParser()
-        .let { AndroidXmlPullParser(it) }
+        ?.let { AndroidXmlPullParser(it.xmlPullParser()) }
 }
 
 private fun InputStream.xmlPullParser() = Xml.newPullParser().also {
