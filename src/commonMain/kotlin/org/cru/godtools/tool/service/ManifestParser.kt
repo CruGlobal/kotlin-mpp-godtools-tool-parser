@@ -7,7 +7,10 @@ import org.cru.godtools.tool.xml.XmlPullParserFactory
 
 class ManifestParser(private val parserFactory: XmlPullParserFactory) {
     fun parseManifest(fileName: String): Result = try {
-        Result.Data(Manifest.parse(fileName) { parserFactory.getXmlParser(it) ?: throw FileNotFoundException() })
+        val manifest = Manifest.parse(fileName) {
+            parserFactory.getXmlParser(it)?.apply { nextTag() } ?: throw FileNotFoundException()
+        }
+        Result.Data(manifest)
     } catch (e: FileNotFoundException) {
         Result.Error.NotFound
     } catch (e: XmlPullParserException) {
