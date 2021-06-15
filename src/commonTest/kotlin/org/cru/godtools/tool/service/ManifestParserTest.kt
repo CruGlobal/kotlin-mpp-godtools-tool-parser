@@ -12,7 +12,12 @@ class ManifestParserTest : UsesResources("service") {
     private val parser = ManifestParser(TEST_XML_PULL_PARSER_FACTORY)
 
     @Test
-    fun testMissingManifest() {
+    fun testParseManifestMissingManifest() {
         assertIs<Result.Error.NotFound>(parser.parseManifest("missing.xml"))
+    }
+
+    @Test
+    fun testParseManifestInvalidManifest() {
+        assertIs<Result.Error.Corrupted>(parser.parseManifest("../model/accordion.xml"))
     }
 }
