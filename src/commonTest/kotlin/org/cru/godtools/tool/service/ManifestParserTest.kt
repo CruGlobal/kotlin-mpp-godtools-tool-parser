@@ -27,4 +27,14 @@ class ManifestParserTest : UsesResources("service") {
     fun testParseManifestInvalidManifest() {
         assertIs<Result.Error.Corrupted>(parser.parseManifest("../model/accordion.xml"))
     }
+
+    @Test
+    fun testParseManifestMissingPage() {
+        assertIs<Result.Error.NotFound>(parser.parseManifest("manifest_missing_page.xml"))
+    }
+
+    @Test
+    fun testParseManifestInvalidPage() {
+        assertIs<Result.Error.Corrupted>(parser.parseManifest("manifest_invalid_page.xml"))
+    }
 }

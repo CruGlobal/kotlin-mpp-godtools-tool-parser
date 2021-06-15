@@ -1,0 +1,5 @@
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest">
+    <pages>
+        <page src="missing.xml" />
+    </pages>
+</manifest>
