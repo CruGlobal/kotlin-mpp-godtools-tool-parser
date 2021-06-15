@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.service
 
+import org.cru.godtools.tool.internal.FileNotFoundException
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.xml.XmlPullParserException
 import org.cru.godtools.tool.xml.XmlPullParserFactory
@@ -24,5 +25,3 @@ sealed class Result {
         object NotFound : Error()
     }
 }
-
-private class FileNotFoundException : Exception()
