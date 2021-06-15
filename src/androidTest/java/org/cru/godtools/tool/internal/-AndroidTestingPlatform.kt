@@ -7,7 +7,7 @@ import org.cru.godtools.tool.xml.XmlPullParserFactory
 internal actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFactory
     get() = object : AndroidXmlPullParserFactory() {
         override fun openFile(fileName: String) =
-            this@TEST_XML_PULL_PARSER_FACTORY::class.java.getResourceAsStream(fileName)!!
+            this@TEST_XML_PULL_PARSER_FACTORY::class.java.getResourceAsStream(fileName)
     }
 
 // region Android Robolectric
