@@ -55,7 +55,6 @@ class CardTest : UsesResources("model/tract") {
     @Test
     fun verifyCardIsLastVisibleCard() {
         val page = TractPage(
-            Manifest(),
             cards = { listOf(Card(it, isHidden = false), Card(it, isHidden = false), Card(it, isHidden = true)) }
         )
 
@@ -96,7 +95,7 @@ class CardTest : UsesResources("model/tract") {
 
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
-        val page = TractPage(Manifest(), cardBackgroundColor = TestColors.GREEN)
+        val page = TractPage(cardBackgroundColor = TestColors.GREEN)
         assertEquals(TestColors.GREEN, Card(page).backgroundColor)
         assertEquals(TestColors.BLUE, Card(page, backgroundColor = TestColors.BLUE).backgroundColor)
     }
