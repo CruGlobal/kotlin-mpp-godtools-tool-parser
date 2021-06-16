@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Button
 import org.cru.godtools.tool.model.Content
@@ -10,6 +11,7 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.TEXT_SIZE_BASE
 import org.cru.godtools.tool.model.TEXT_SIZE_MODAL
+import org.cru.godtools.tool.model.TEXT_SIZE_MODAL_TITLE
 import org.cru.godtools.tool.model.TRANSPARENT
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.WHITE
@@ -17,6 +19,7 @@ import org.cru.godtools.tool.model.XML_DISMISS_LISTENERS
 import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
+import org.cru.godtools.tool.model.stylesOverride
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -32,6 +35,7 @@ class Modal : BaseModel, Parent, Styles {
     val id get() = "${page.id}-$position"
     private val position get() = page.modals.indexOf(this)
 
+    private val titleParent by lazy { stylesOverride(TEXT_SIZE_MODAL_TITLE.toDouble() / TEXT_SIZE_MODAL) }
     val title: Text?
     override val content: List<Content>
 
@@ -65,7 +69,7 @@ class Modal : BaseModel, Parent, Styles {
         content = parseContent(parser) {
             when (parser.namespace) {
                 XMLNS_TRACT -> when (parser.name) {
-                    XML_TITLE -> title = parser.parseTextChild(this@Modal, XMLNS_TRACT, XML_TITLE)
+                    XML_TITLE -> title = parser.parseTextChild(titleParent, XMLNS_TRACT, XML_TITLE)
                 }
             }
         }
@@ -73,9 +77,9 @@ class Modal : BaseModel, Parent, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(page: TractPage = TractPage()) : super(page) {
+    internal constructor(page: TractPage = TractPage(), title: (Base) -> Text?) : super(page) {
         this.page = page
-        title = null
+        this.title = title.invoke(titleParent)
         content = emptyList()
         listeners = emptySet()
         dismissListeners = emptySet()
