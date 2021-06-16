@@ -38,7 +38,7 @@ class HeaderTest : UsesResources("model/tract") {
 
     @Test
     fun testBackgroundColorBehavior() {
-        val header = Header(TractPage(), backgroundColor = TestColors.GREEN)
+        val header = Header(backgroundColor = TestColors.GREEN)
 
         with(null as Header?) { assertEquals(stylesParent.primaryColor, backgroundColor) }
         with(header as Header?) { assertEquals(TestColors.GREEN, backgroundColor) }
