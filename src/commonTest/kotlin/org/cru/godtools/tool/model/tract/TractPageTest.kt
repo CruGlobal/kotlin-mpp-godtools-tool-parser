@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.textColor
@@ -113,7 +114,7 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testTextScale() {
-        assertEquals(TractPage.DEFAULT_TEXT_SCALE, TractPage(Manifest()).textScale, 0.001)
+        assertEquals(DEFAULT_TEXT_SCALE, TractPage(Manifest()).textScale, 0.001)
         assertEquals(2.0, TractPage(textScale = 2.0).textScale, 0.001)
 
         val manifest = Manifest(textScale = 3.0)

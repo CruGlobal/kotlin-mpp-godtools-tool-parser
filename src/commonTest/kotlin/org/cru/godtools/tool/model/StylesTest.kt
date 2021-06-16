@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -74,6 +75,6 @@ class StylesTest {
         assertEquals(Manifest.DEFAULT_BUTTON_STYLE, styles.buttonStyle)
         assertEquals(Manifest.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
-        assertEquals(Manifest.DEFAULT_TEXT_SCALE, styles.textScale)
+        assertEquals(DEFAULT_TEXT_SCALE, styles.textScale)
     }
 }

@@ -3,7 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.model.Manifest.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.tool.model.Text.Style.Companion.toTextStyles
 import kotlin.test.Test
