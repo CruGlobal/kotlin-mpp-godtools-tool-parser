@@ -28,3 +28,9 @@ internal const val XML_LISTENERS = "listeners"
 internal val TRANSPARENT = color(0, 0, 0, 0.0)
 @SharedImmutable
 internal val WHITE = color(255, 255, 255, 1.0)
+
+// region Text Sizes
+// these text sizes are exposed publicly via relative textScale properties based off the base text size
+internal const val TEXT_SIZE_BASE = 16
+internal const val TEXT_SIZE_MODAL = 18
+// endregion Text Sizes
