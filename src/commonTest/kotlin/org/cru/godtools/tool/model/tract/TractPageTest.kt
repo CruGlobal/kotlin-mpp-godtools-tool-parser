@@ -88,11 +88,11 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testCardTextColorBehavior() {
-        with(TractPage(Manifest(), textColor = TestColors.GREEN)) {
+        with(TractPage(textColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, cardTextColor)
             assertEquals(textColor, cardTextColor)
         }
-        with(TractPage(Manifest(), cardTextColor = TestColors.GREEN)) {
+        with(TractPage(cardTextColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, cardTextColor)
             assertNotEquals(textColor, cardTextColor)
         }
@@ -114,7 +114,7 @@ class TractPageTest : UsesResources("model/tract") {
     @Test
     fun testTextScale() {
         assertEquals(TractPage.DEFAULT_TEXT_SCALE, TractPage(Manifest()).textScale, 0.001)
-        assertEquals(2.0, TractPage(Manifest(), textScale = 2.0).textScale, 0.001)
+        assertEquals(2.0, TractPage(textScale = 2.0).textScale, 0.001)
 
         val manifest = Manifest(textScale = 3.0)
         assertEquals(3.0, TractPage(manifest).textScale, 0.001)

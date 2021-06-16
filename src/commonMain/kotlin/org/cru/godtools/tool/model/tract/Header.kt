@@ -61,7 +61,11 @@ class Header : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(page: TractPage, backgroundColor: Color? = null, tip: String? = null) : super(page) {
+    internal constructor(
+        page: TractPage = TractPage(),
+        backgroundColor: Color? = null,
+        tip: String? = null
+    ) : super(page) {
         _backgroundColor = backgroundColor
 
         number = null
