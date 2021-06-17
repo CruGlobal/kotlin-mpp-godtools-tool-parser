@@ -8,7 +8,10 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Resource
 import org.cru.godtools.tool.model.TEST_GRAVITY
+import org.cru.godtools.tool.model.TEXT_SIZE_BASE
+import org.cru.godtools.tool.model.TEXT_SIZE_CARD_LABEL
 import org.cru.godtools.tool.model.TestColors
+import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.toEventIds
@@ -98,5 +101,20 @@ class CardTest : UsesResources("model/tract") {
         val page = TractPage(cardBackgroundColor = TestColors.GREEN)
         assertEquals(TestColors.GREEN, Card(page).backgroundColor)
         assertEquals(TestColors.BLUE, Card(page, backgroundColor = TestColors.BLUE).backgroundColor)
+    }
+
+    @Test
+    fun testLabelTextSize() {
+        with(Card(label = { Text(it) })) {
+            assertEquals(TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
+        }
+
+        with(Card(TractPage(textScale = 2.0), label = { Text(it) })) {
+            assertEquals(2 * TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
+        }
+
+        with(Card(label = { Text(it, textScale = 2.0) })) {
+            assertEquals(2 * TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
+        }
     }
 }

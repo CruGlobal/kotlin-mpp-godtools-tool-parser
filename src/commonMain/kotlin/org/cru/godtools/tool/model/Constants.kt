@@ -36,6 +36,7 @@ internal const val TEXT_SIZE_CATEGORY = 30
 internal const val TEXT_SIZE_HEADER = 18
 internal const val TEXT_SIZE_HEADER_NUMBER = 54
 internal const val TEXT_SIZE_HERO_HEADING = 30
+internal const val TEXT_SIZE_CARD_LABEL = 18
 internal const val TEXT_SIZE_MODAL = 18
 internal const val TEXT_SIZE_MODAL_TITLE = 54
 // endregion Text Sizes

@@ -4,6 +4,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Color
 import org.cru.godtools.tool.model.Content
@@ -14,6 +15,8 @@ import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Styles
+import org.cru.godtools.tool.model.TEXT_SIZE_BASE
+import org.cru.godtools.tool.model.TEXT_SIZE_CARD_LABEL
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
@@ -29,6 +32,7 @@ import org.cru.godtools.tool.model.getResource
 import org.cru.godtools.tool.model.manifest
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
+import org.cru.godtools.tool.model.stylesOverride
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.model.tract.Card.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -72,6 +76,7 @@ class Card : BaseModel, Styles, Parent {
     @get:AndroidColorInt
     override val textColor get() = _textColor ?: page.cardTextColor
 
+    private val labelParent by lazy { stylesOverride(textScale = TEXT_SIZE_CARD_LABEL.toDouble() / TEXT_SIZE_BASE) }
     val label: Text?
     override val content: List<Content>
     val tips get() = contentTips
@@ -104,7 +109,7 @@ class Card : BaseModel, Styles, Parent {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                 }
                 XMLNS_TRACT -> when (parser.name) {
-                    XML_LABEL -> label = parser.parseTextChild(this@Card, XMLNS_TRACT, XML_LABEL)
+                    XML_LABEL -> label = parser.parseTextChild(labelParent, XMLNS_TRACT, XML_LABEL)
                 }
             }
         }
@@ -113,12 +118,13 @@ class Card : BaseModel, Styles, Parent {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        page: TractPage,
+        page: TractPage = TractPage(),
         backgroundColor: Color? = null,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         isHidden: Boolean = false,
+        label: ((Base) -> Text?)? = null,
         content: ((Card) -> List<Content>?)? = null
     ) : super(page) {
         this.page = page
@@ -136,7 +142,7 @@ class Card : BaseModel, Styles, Parent {
 
         _textColor = null
 
-        label = null
+        this.label = label?.invoke(labelParent)
         this.content = content?.invoke(this).orEmpty()
     }
 }
