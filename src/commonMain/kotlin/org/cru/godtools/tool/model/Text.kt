@@ -75,7 +75,7 @@ class Text : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         parent: Base,
         text: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,

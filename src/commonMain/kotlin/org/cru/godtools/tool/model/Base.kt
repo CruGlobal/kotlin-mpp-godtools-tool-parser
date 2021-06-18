@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model
 
 interface Base {
-    val stylesParent: Styles?
     val manifest: Manifest
+    val stylesParent: Styles?
 }
 
+val Base?.manifest get() = this?.manifest
 val Base?.stylesParent get() = this?.stylesParent
-internal val Base?.manifest get() = this?.manifest
