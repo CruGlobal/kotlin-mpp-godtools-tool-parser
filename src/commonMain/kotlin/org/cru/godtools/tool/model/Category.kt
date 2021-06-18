@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -9,7 +10,7 @@ private const val XML_BANNER = "banner"
 private const val XML_AEM_TAG = "aem-tag"
 
 @OptIn(ExperimentalStdlibApi::class)
-class Category internal constructor(manifest: Manifest, parser: XmlPullParser) : BaseModel(manifest) {
+class Category : BaseModel, Styles {
     internal companion object {
         internal const val XML_CATEGORY = "category"
     }
@@ -20,7 +21,9 @@ class Category internal constructor(manifest: Manifest, parser: XmlPullParser) :
     private val _banner: String?
     val banner get() = getResource(_banner)
 
-    init {
+    override val textScale get() = super.textScale * TEXT_SIZE_CATEGORY / TEXT_SIZE_BASE
+
+    internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORY)
 
         id = parser.getAttributeValue(XML_ID)
@@ -40,5 +43,13 @@ class Category internal constructor(manifest: Manifest, parser: XmlPullParser) :
             }
         }
         this.label = label
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(manifest: Manifest = Manifest(), label: (Base) -> Text?) : super(manifest) {
+        id = null
+        this.label = label(this)
+        aemTags = emptySet()
+        _banner = null
     }
 }

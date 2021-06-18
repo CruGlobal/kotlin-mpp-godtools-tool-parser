@@ -12,6 +12,7 @@ import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Styles
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
@@ -46,9 +47,6 @@ class TractPage : BaseModel, Styles {
         internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
-
-        @VisibleForTesting
-        internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
     val id get() = fileName ?: "${manifest.code}-$position"

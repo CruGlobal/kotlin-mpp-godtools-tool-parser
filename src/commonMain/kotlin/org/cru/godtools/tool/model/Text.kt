@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.AndroidDimension
 import org.cru.godtools.tool.internal.DP
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.tool.model.Text.Style.Companion.toTextStyles
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -27,8 +28,6 @@ private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 class Text : Content {
     internal companion object {
         internal const val XML_TEXT = "text"
-
-        internal const val DEFAULT_TEXT_SCALE = 1.0
 
         @VisibleForTesting
         @AndroidDimension(unit = DP)

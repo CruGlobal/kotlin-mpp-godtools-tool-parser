@@ -1,8 +1,13 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 
 interface Styles : Base {
+    companion object {
+        internal const val DEFAULT_TEXT_SCALE = 1.0
+    }
+
     @get:AndroidColorInt
     val primaryColor: Color get() = stylesParent.primaryColor
     @get:AndroidColorInt
@@ -32,6 +37,6 @@ val Styles?.buttonStyle get() = this?.buttonStyle ?: Manifest.DEFAULT_BUTTON_STY
 // region Text styles
 @get:AndroidColorInt
 val Styles?.textColor get() = this?.textColor ?: Manifest.DEFAULT_TEXT_COLOR
-val Styles?.textScale get() = this?.textScale ?: Manifest.DEFAULT_TEXT_SCALE
+val Styles?.textScale get() = this?.textScale ?: DEFAULT_TEXT_SCALE
 val Styles?.textAlign get() = this?.textAlign ?: Manifest.DEFAULT_TEXT_ALIGN
 // endregion Text styles

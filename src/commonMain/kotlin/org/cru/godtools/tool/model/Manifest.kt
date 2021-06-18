@@ -7,6 +7,7 @@ import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.LessonPage
@@ -60,7 +61,6 @@ class Manifest : BaseModel, Styles {
 
         @AndroidColorInt
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
-        internal const val DEFAULT_TEXT_SCALE = 1.0
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
         internal fun parse(fileName: String, parseFile: (String) -> XmlPullParser) =

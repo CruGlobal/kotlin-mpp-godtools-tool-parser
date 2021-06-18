@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.fluidlocale.toCommon
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import kotlin.test.Test
@@ -36,7 +37,7 @@ class ManifestTest : UsesResources() {
         assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
-        assertEquals(Manifest.DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
+        assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
         assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.lessonPages.isEmpty())
         assertTrue(manifest.tractPages.isEmpty())

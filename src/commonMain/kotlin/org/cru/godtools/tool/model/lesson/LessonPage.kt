@@ -14,6 +14,7 @@ import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNu
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Styles
+import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
@@ -45,9 +46,6 @@ class LessonPage : BaseModel, Parent, Styles {
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
-
-        @VisibleForTesting
-        internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
     val id by lazy { fileName ?: "${manifest.code}-$position" }

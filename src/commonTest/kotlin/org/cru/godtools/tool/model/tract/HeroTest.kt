@@ -9,7 +9,10 @@ import org.cru.godtools.tool.model.DeviceType
 import org.cru.godtools.tool.model.Image
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
+import org.cru.godtools.tool.model.TEXT_SIZE_BASE
+import org.cru.godtools.tool.model.TEXT_SIZE_HERO_HEADING
 import org.cru.godtools.tool.model.Tabs
+import org.cru.godtools.tool.model.Text
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -46,5 +49,20 @@ class HeroTest : UsesResources("model/tract") {
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])
         assertIs<Tabs>(hero.content[1])
+    }
+
+    @Test
+    fun testHeadingTextScale() {
+        with(Hero(heading = { Text(it) })) {
+            assertEquals(TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
+        }
+
+        with(Hero(TractPage(textScale = 2.0), heading = { Text(it) })) {
+            assertEquals(2 * TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
+        }
+
+        with(Hero(heading = { Text(it, textScale = 2.0) })) {
+            assertEquals(2 * TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
+        }
     }
 }

@@ -1,25 +1,30 @@
 package org.cru.godtools.tool.model.tract
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.Parent
-import org.cru.godtools.tool.model.Styles
+import org.cru.godtools.tool.model.TEXT_SIZE_BASE
+import org.cru.godtools.tool.model.TEXT_SIZE_HERO_HEADING
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
+import org.cru.godtools.tool.model.stylesOverride
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Hero : BaseModel, Parent, Styles {
+private const val XML_HEADING = "heading"
+
+class Hero : BaseModel, Parent {
     internal companion object {
         internal const val XML_HERO = "hero"
-
-        private const val XML_HEADING = "heading"
     }
 
     val analyticsEvents: Collection<AnalyticsEvent>
+    private val headingParent by lazy { stylesOverride(textScale = TEXT_SIZE_HERO_HEADING.toDouble() / TEXT_SIZE_BASE) }
     val heading: Text?
     override val content: List<Content>
 
@@ -35,10 +40,17 @@ class Hero : BaseModel, Parent, Styles {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                 }
                 XMLNS_TRACT -> when (parser.name) {
-                    XML_HEADING -> heading = parser.parseTextChild(this, XMLNS_TRACT, XML_HEADING)
+                    XML_HEADING -> heading = parser.parseTextChild(headingParent, XMLNS_TRACT, XML_HEADING)
                 }
             }
         }
         this.heading = heading
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(page: TractPage = TractPage(), heading: (Base) -> Text?) : super(page) {
+        analyticsEvents = emptyList()
+        this.heading = heading(headingParent)
+        content = emptyList()
     }
 }
