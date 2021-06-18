@@ -200,7 +200,8 @@ class Manifest : BaseModel, Styles {
         textColor: Color = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
-        tips: ((Manifest) -> List<Tip>)? = null
+        tips: ((Manifest) -> List<Tip>)? = null,
+        tractPages: ((Manifest) -> List<TractPage>)? = null
     ) {
         this.code = code
         locale = null
@@ -231,7 +232,7 @@ class Manifest : BaseModel, Styles {
         aemImports = emptyList()
         categories = emptyList()
         lessonPages = emptyList()
-        tractPages = emptyList()
+        this.tractPages = tractPages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
     }
