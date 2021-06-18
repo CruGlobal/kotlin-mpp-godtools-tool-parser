@@ -35,7 +35,7 @@ value class ImageGravity(private val gravity: Int) {
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
 
     companion object {
-        internal val CENTER = ImageGravity(BIT_CENTER)
+        val CENTER = ImageGravity(BIT_CENTER)
 
         internal fun String.toImageGravityOrNull() = try {
             var gravity = BIT_CENTER
