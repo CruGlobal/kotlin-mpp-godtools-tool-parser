@@ -32,4 +32,11 @@ class SpacerTest : UsesResources() {
         assertEquals(Spacer.Mode.FIXED, "fixed".toModeOrNull())
         assertNull("ajsdkf".toModeOrNull())
     }
+
+    @Test
+    fun testTestConstructor() {
+        val spacer = Spacer(Manifest(), Spacer.Mode.FIXED, 10)
+        assertEquals(Spacer.Mode.FIXED, spacer.mode)
+        assertEquals(10, spacer.height)
+    }
 }
