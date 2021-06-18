@@ -241,6 +241,7 @@ class Manifest : BaseModel, Styles {
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
+    fun findTractPage(id: String?) = tractPages.firstOrNull { it.id.equals(id, ignoreCase = true) }
     fun findTip(id: String?) = tips[id]
 
     private fun XmlPullParser.parseCategories() = buildList {

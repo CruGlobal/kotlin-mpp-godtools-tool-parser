@@ -8,10 +8,12 @@ import org.cru.godtools.tool.internal.fluidlocale.toCommon
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
+import org.cru.godtools.tool.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -127,6 +129,15 @@ class ManifestTest : UsesResources() {
 
     private fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
     // endregion parse Manifest
+
+    @Test
+    fun testManifestFindTractPage() {
+        val manifest = Manifest(code = "tool", tractPages = { manifest -> List(10) { TractPage(manifest) } })
+        assertNull(manifest.findTractPage("invalid"))
+        manifest.tractPages.forEach { page ->
+            assertSame(page, manifest.findTractPage(page.id))
+        }
+    }
 
     // region Fallback Behaviors
     @Test
