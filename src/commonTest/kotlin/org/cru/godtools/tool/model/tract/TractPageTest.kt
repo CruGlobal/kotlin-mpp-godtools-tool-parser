@@ -12,6 +12,7 @@ import org.cru.godtools.tool.model.textColor
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
@@ -47,6 +48,15 @@ class TractPageTest : UsesResources("model/tract") {
         assertEquals(2, page.modals.size)
         assertEquals("Modal 1", page.modals[0].title?.text)
         assertEquals("Modal 2", page.modals[1].title?.text)
+    }
+
+    @Test
+    fun testIsLastPage() {
+        val manifest = Manifest(tractPages = { manifest -> List(3) { TractPage(manifest) } })
+        assertEquals(3, manifest.tractPages.size)
+        assertFalse(manifest.tractPages[0].isLastPage)
+        assertFalse(manifest.tractPages[1].isLastPage)
+        assertTrue(manifest.tractPages[2].isLastPage)
     }
 
     @Test

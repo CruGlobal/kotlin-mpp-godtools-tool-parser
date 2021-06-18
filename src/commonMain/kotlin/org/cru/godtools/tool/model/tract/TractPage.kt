@@ -53,6 +53,7 @@ class TractPage : BaseModel, Styles {
 
     val id get() = fileName ?: "${manifest.code}-$position"
     val position by lazy { manifest.tractPages.indexOf(this) }
+    val isLastPage get() = manifest.tractPages.last() == this
 
     @VisibleForTesting
     internal val fileName: String?
