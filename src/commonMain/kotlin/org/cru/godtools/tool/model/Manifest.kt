@@ -186,7 +186,7 @@ class Manifest : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         type: Type = Type.DEFAULT,
         code: String? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
