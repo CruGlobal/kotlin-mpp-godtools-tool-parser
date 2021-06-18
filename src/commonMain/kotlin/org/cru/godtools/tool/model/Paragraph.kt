@@ -18,7 +18,7 @@ class Paragraph : Content, Parent {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base, content: (Paragraph) -> List<Content>) : super(parent) {
+    constructor(parent: Base, content: (Paragraph) -> List<Content>) : super(parent) {
         this.content = content(this)
     }
 }
