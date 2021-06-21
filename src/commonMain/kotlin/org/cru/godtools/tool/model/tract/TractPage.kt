@@ -143,7 +143,7 @@ class TractPage : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
