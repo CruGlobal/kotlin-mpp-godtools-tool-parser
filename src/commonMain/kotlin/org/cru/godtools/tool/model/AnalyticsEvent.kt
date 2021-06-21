@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger.Companion.toTrigger
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -74,6 +75,20 @@ class AnalyticsEvent : BaseModel {
             val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
             Napier.e(message, UnsupportedOperationException("XML Adobe Analytics Event $message"), TAG)
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        action: String? = null,
+        delay: Int = 0,
+        systems: Set<System> = emptySet(),
+        attributes: Map<String, String> = emptyMap()
+    ) {
+        this.action = action
+        this.delay = delay
+        this.systems = systems
+        trigger = Trigger.DEFAULT
+        this.attributes = attributes
     }
 
     fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
