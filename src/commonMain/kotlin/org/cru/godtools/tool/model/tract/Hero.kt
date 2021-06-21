@@ -23,7 +23,7 @@ class Hero : BaseModel, Parent {
         internal const val XML_HERO = "hero"
     }
 
-    val analyticsEvents: Collection<AnalyticsEvent>
+    val analyticsEvents: List<AnalyticsEvent>
     private val headingParent by lazy { stylesOverride(textScale = TEXT_SIZE_HERO_HEADING.toDouble() / TEXT_SIZE_BASE) }
     val heading: Text?
     override val content: List<Content>
@@ -48,8 +48,12 @@ class Hero : BaseModel, Parent {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    constructor(page: TractPage = TractPage(), heading: (Base) -> Text?) : super(page) {
-        analyticsEvents = emptyList()
+    constructor(
+        page: TractPage = TractPage(),
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
+        heading: (Base) -> Text?
+    ) : super(page) {
+        this.analyticsEvents = analyticsEvents
         this.heading = heading(headingParent)
         content = emptyList()
     }
