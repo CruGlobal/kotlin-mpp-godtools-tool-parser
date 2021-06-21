@@ -189,6 +189,7 @@ class Manifest : BaseModel, Styles {
     constructor(
         type: Type = Type.DEFAULT,
         code: String? = null,
+        locale: PlatformLocale? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: Color? = null,
@@ -204,7 +205,7 @@ class Manifest : BaseModel, Styles {
         tractPages: ((Manifest) -> List<TractPage>)? = null
     ) {
         this.code = code
-        locale = null
+        this.locale = locale
         this.type = type
 
         dismissListeners = emptySet()
