@@ -48,7 +48,7 @@ class Hero : BaseModel, Parent {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(page: TractPage = TractPage(), heading: (Base) -> Text?) : super(page) {
+    constructor(page: TractPage = TractPage(), heading: (Base) -> Text?) : super(page) {
         analyticsEvents = emptyList()
         this.heading = heading(headingParent)
         content = emptyList()
