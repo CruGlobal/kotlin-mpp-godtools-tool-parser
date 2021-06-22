@@ -32,7 +32,6 @@ internal val WHITE = color(255, 255, 255, 1.0)
 // region Text Sizes
 // these text sizes are exposed publicly via relative textScale properties based off the base text size
 internal const val TEXT_SIZE_BASE = 16
-internal const val TEXT_SIZE_CATEGORY = 30
 internal const val TEXT_SIZE_HEADER = 18
 internal const val TEXT_SIZE_HEADER_NUMBER = 54
 internal const val TEXT_SIZE_HERO_HEADING = 30
