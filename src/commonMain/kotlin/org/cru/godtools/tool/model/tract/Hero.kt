@@ -7,8 +7,6 @@ import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.Parent
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_HERO_HEADING
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.parseContent
@@ -25,12 +23,7 @@ class Hero : BaseModel, Parent {
     }
 
     val analyticsEvents: List<AnalyticsEvent>
-    private val headingParent by lazy {
-        stylesOverride(
-            textColor = { stylesParent.primaryColor },
-            textScale = TEXT_SIZE_HERO_HEADING.toDouble() / TEXT_SIZE_BASE
-        )
-    }
+    private val headingParent by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
     val heading: Text?
     override val content: List<Content>
 
