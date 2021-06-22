@@ -1,15 +1,12 @@
 package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
-import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Button
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Styles
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_MODAL
 import org.cru.godtools.tool.model.TRANSPARENT
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.WHITE
@@ -17,7 +14,6 @@ import org.cru.godtools.tool.model.XML_DISMISS_LISTENERS
 import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
-import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 
@@ -50,7 +46,6 @@ class Modal : BaseModel, Parent, Styles {
     override val textAlign get() = Text.Align.CENTER
     @get:AndroidColorInt
     override val textColor get() = WHITE
-    override val textScale get() = stylesParent.textScale * TEXT_SIZE_MODAL / TEXT_SIZE_BASE
 
     internal constructor(parent: TractPage, parser: XmlPullParser) : super(parent) {
         page = parent
@@ -70,14 +65,5 @@ class Modal : BaseModel, Parent, Styles {
             }
         }
         this.title = title
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(page: TractPage = TractPage()) : super(page) {
-        this.page = page
-        title = null
-        content = emptyList()
-        listeners = emptySet()
-        dismissListeners = emptySet()
     }
 }
