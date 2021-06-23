@@ -21,6 +21,7 @@ class Category : BaseModel, Styles {
     private val _banner: String?
     val banner get() = getResource(_banner)
 
+    override val textColor get() = manifest.categoryLabelColor
     override val textScale get() = super.textScale * TEXT_SIZE_CATEGORY / TEXT_SIZE_BASE
 
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest xmlns:article="https://mobile-content-api.cru.org/xmlns/article"
     xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    xmlns="https://mobile-content-api.cru.org/xmlns/manifest">
+    xmlns="https://mobile-content-api.cru.org/xmlns/manifest" category-label-color="rgba(255,0,0,1)">
     <resources>
         <resource filename="banner.jpg" src="bannersha1.jpg" />
     </resources>
