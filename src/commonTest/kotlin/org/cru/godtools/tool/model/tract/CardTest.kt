@@ -19,6 +19,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -28,6 +29,8 @@ class CardTest : UsesResources("model/tract") {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
         assertEquals("page.xml-0", card.id)
         assertEquals("Card 1", card.label!!.text)
+        assertEquals(card.primaryColor, card.label!!.textColor)
+        assertNotEquals(card.textColor, card.label!!.textColor)
         assertEquals(TestColors.RED, card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), card.dismissListeners)
@@ -101,6 +104,20 @@ class CardTest : UsesResources("model/tract") {
         val page = TractPage(cardBackgroundColor = TestColors.GREEN)
         assertEquals(TestColors.GREEN, Card(page).backgroundColor)
         assertEquals(TestColors.BLUE, Card(page, backgroundColor = TestColors.BLUE).backgroundColor)
+    }
+
+    @Test
+    fun testLabelTextColor() {
+        with(Card(label = { Text(it) })) {
+            assertEquals(primaryColor, label!!.textColor)
+            assertNotEquals(textColor, label!!.textColor)
+        }
+
+        with(Card(label = { Text(it, textColor = TestColors.GREEN) })) {
+            assertEquals(TestColors.GREEN, label!!.textColor)
+            assertNotEquals(primaryColor, label!!.textColor)
+            assertNotEquals(textColor, label!!.textColor)
+        }
     }
 
     @Test

@@ -76,7 +76,12 @@ class Card : BaseModel, Styles, Parent {
     @get:AndroidColorInt
     override val textColor get() = _textColor ?: page.cardTextColor
 
-    private val labelParent by lazy { stylesOverride(textScale = TEXT_SIZE_CARD_LABEL.toDouble() / TEXT_SIZE_BASE) }
+    private val labelParent by lazy {
+        stylesOverride(
+            textColor = { primaryColor },
+            textScale = TEXT_SIZE_CARD_LABEL.toDouble() / TEXT_SIZE_BASE
+        )
+    }
     val label: Text?
     override val content: List<Content>
     val tips get() = contentTips
