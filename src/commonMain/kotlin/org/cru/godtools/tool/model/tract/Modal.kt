@@ -35,7 +35,7 @@ class Modal : BaseModel, Parent, Styles {
     val id get() = "${page.id}-$position"
     private val position get() = page.modals.indexOf(this)
 
-    private val titleParent by lazy { stylesOverride(TEXT_SIZE_MODAL_TITLE.toDouble() / TEXT_SIZE_MODAL) }
+    private val titleParent by lazy { stylesOverride(textScale = TEXT_SIZE_MODAL_TITLE.toDouble() / TEXT_SIZE_MODAL) }
     val title: Text?
     override val content: List<Content>
 

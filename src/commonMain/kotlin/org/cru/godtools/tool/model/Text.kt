@@ -95,6 +95,7 @@ class Text : Content {
         endImageSize = DEFAULT_IMAGE_SIZE
     }
 
+    @Deprecated("Once we correctly override text color in the model this method should no longer be necessary")
     @AndroidColorInt
     fun getTextColor(@AndroidColorInt defaultColor: Color) = _textColor ?: defaultColor
 
