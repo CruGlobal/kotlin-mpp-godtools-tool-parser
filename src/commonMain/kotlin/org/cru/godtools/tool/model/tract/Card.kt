@@ -15,8 +15,6 @@ import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Styles
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_CARD_LABEL
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
@@ -76,12 +74,7 @@ class Card : BaseModel, Styles, Parent {
     @get:AndroidColorInt
     override val textColor get() = _textColor ?: page.cardTextColor
 
-    private val labelParent by lazy {
-        stylesOverride(
-            textColor = { primaryColor },
-            textScale = TEXT_SIZE_CARD_LABEL.toDouble() / TEXT_SIZE_BASE
-        )
-    }
+    private val labelParent by lazy { stylesOverride(textColor = { primaryColor }) }
     val label: Text?
     override val content: List<Content>
     val tips get() = contentTips

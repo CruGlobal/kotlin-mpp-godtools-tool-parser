@@ -8,8 +8,6 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Resource
 import org.cru.godtools.tool.model.TEST_GRAVITY
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_CARD_LABEL
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.tips.InlineTip
@@ -117,21 +115,6 @@ class CardTest : UsesResources("model/tract") {
             assertEquals(TestColors.GREEN, label!!.textColor)
             assertNotEquals(primaryColor, label!!.textColor)
             assertNotEquals(textColor, label!!.textColor)
-        }
-    }
-
-    @Test
-    fun testLabelTextSize() {
-        with(Card(label = { Text(it) })) {
-            assertEquals(TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
-        }
-
-        with(Card(TractPage(textScale = 2.0), label = { Text(it) })) {
-            assertEquals(2 * TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
-        }
-
-        with(Card(label = { Text(it, textScale = 2.0) })) {
-            assertEquals(2 * TEXT_SIZE_CARD_LABEL, (label!!.textScale * TEXT_SIZE_BASE).toInt())
         }
     }
 }

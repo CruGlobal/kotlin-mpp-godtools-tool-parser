@@ -6,9 +6,6 @@ import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Button
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_MODAL
-import org.cru.godtools.tool.model.TEXT_SIZE_MODAL_TITLE
 import org.cru.godtools.tool.model.TRANSPARENT
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.WHITE
@@ -30,24 +27,6 @@ class ModalTest : UsesResources("model/tract") {
         assertIs<Paragraph>(modal.content[0])
         assertIs<Paragraph>(modal.content[1])
         assertEquals("Thank you", modal.title!!.text)
-    }
-
-    @Test
-    fun testTextScale() {
-        with(Modal(title = { Text(it) })) {
-            assertEquals(TEXT_SIZE_MODAL, (TEXT_SIZE_BASE * textScale).toInt())
-            assertEquals(TEXT_SIZE_MODAL_TITLE, (TEXT_SIZE_BASE * title!!.textScale).toInt())
-        }
-
-        with(Modal(TractPage(textScale = 2.0), title = { Text(it) })) {
-            assertEquals(2 * TEXT_SIZE_MODAL, (TEXT_SIZE_BASE * textScale).toInt())
-            assertEquals(2 * TEXT_SIZE_MODAL_TITLE, (TEXT_SIZE_BASE * title!!.textScale).toInt())
-        }
-
-        with(Modal(title = { Text(it, textScale = 2.0) })) {
-            assertEquals(TEXT_SIZE_MODAL, (TEXT_SIZE_BASE * textScale).toInt())
-            assertEquals(2 * TEXT_SIZE_MODAL_TITLE, (TEXT_SIZE_BASE * title!!.textScale).toInt())
-        }
     }
 
     private fun assertFixedAttributes(modal: Modal) {

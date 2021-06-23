@@ -9,8 +9,6 @@ import org.cru.godtools.tool.model.DeviceType
 import org.cru.godtools.tool.model.Image
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
-import org.cru.godtools.tool.model.TEXT_SIZE_BASE
-import org.cru.godtools.tool.model.TEXT_SIZE_HERO_HEADING
 import org.cru.godtools.tool.model.Tabs
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
@@ -65,21 +63,6 @@ class HeroTest : UsesResources("model/tract") {
         with(Hero(page, heading = { Text(it, textColor = TestColors.GREEN) })) {
             assertEquals(TestColors.GREEN, heading!!.textColor)
             assertNotEquals(page.primaryColor, heading!!.textColor)
-        }
-    }
-
-    @Test
-    fun testHeadingTextScale() {
-        with(Hero(heading = { Text(it) })) {
-            assertEquals(TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
-        }
-
-        with(Hero(TractPage(textScale = 2.0), heading = { Text(it) })) {
-            assertEquals(2 * TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
-        }
-
-        with(Hero(heading = { Text(it, textScale = 2.0) })) {
-            assertEquals(2 * TEXT_SIZE_HERO_HEADING, (TEXT_SIZE_BASE * heading!!.textScale).toInt())
         }
     }
 }
