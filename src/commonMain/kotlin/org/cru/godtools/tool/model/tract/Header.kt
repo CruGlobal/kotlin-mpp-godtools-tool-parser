@@ -39,7 +39,9 @@ class Header : BaseModel, Styles {
     override val textColor get() = primaryTextColor
     override val textScale get() = super.textScale * TEXT_SIZE_HEADER / TEXT_SIZE_BASE
 
-    private val numberParent by lazy { stylesOverride(TEXT_SIZE_HEADER_NUMBER.toDouble() / TEXT_SIZE_HEADER) }
+    private val numberParent by lazy {
+        stylesOverride(textScale = TEXT_SIZE_HEADER_NUMBER.toDouble() / TEXT_SIZE_HEADER)
+    }
     val number: Text?
     val title: Text?
 

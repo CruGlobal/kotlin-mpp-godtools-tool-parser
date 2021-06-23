@@ -148,6 +148,7 @@ class TractPage : BaseModel, Styles {
         fileName: String? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
+        @AndroidColorInt primaryColor: Color? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textColor: Color? = null,
@@ -161,7 +162,7 @@ class TractPage : BaseModel, Styles {
 
         listeners = emptySet()
 
-        _primaryColor = null
+        _primaryColor = primaryColor
         _primaryTextColor = null
 
         this.backgroundColor = backgroundColor
