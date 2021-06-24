@@ -6,6 +6,7 @@ import org.cru.godtools.tool.internal.UsesResources
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class LinkTest : UsesResources() {
@@ -18,5 +19,25 @@ class LinkTest : UsesResources() {
         assertEquals("event2", link.events[1].name)
         assertEquals(1, link.analyticsEvents.size)
         assertEquals("test", assertIs<AnalyticsEvent>(link.analyticsEvents.single()).action)
+    }
+
+    @Test
+    fun testLinkTextColor() {
+        val parent = object : BaseModel(), Styles {
+            override val primaryColor = TestColors.BLUE
+        }
+
+        assertEquals(parent.primaryColor, Link(parent).textColor)
+
+        with(Link(parent) { Text(it) }) {
+            assertNotEquals(parent.textColor, text!!.textColor)
+            assertEquals(parent.primaryColor, text!!.textColor)
+            assertEquals(TestColors.BLUE, text!!.textColor)
+        }
+
+        with(Link(parent) { Text(it, textColor = TestColors.GREEN) }) {
+            assertNotEquals(parent.primaryColor, text!!.textColor)
+            assertEquals(TestColors.GREEN, text!!.textColor)
+        }
     }
 }

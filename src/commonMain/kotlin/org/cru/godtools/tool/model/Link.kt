@@ -1,12 +1,15 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Link : Content {
+class Link : Content, Styles {
     internal companion object {
         internal const val XML_LINK = "link"
     }
+
+    override val textColor get() = primaryColor
 
     val analyticsEvents: List<AnalyticsEvent>
     val events: List<EventId>
@@ -24,5 +27,12 @@ class Link : Content {
                     }
             }
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(parent: Base, text: ((Base) -> Text?)? = null) : super(parent) {
+        analyticsEvents = emptyList()
+        events = emptyList()
+        this.text = text?.invoke(this)
     }
 }
