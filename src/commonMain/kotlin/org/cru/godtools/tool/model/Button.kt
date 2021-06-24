@@ -35,7 +35,11 @@ class Button : Content, Styles {
 
     val text: Text?
     override val textAlign get() = Text.Align.CENTER
-    override val textColor get() = stylesParent.primaryTextColor
+    override val textColor
+        get() = when (style) {
+            Style.CONTAINED, Style.UNKNOWN -> primaryTextColor
+            Style.OUTLINED -> buttonColor
+        }
 
     val analyticsEvents: Collection<AnalyticsEvent>
 
