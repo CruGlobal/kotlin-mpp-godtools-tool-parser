@@ -3,21 +3,19 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Link internal constructor(parent: Base, parser: XmlPullParser) : Content(parent, parser) {
-    companion object {
+class Link : Content {
+    internal companion object {
         internal const val XML_LINK = "link"
     }
 
-    val analyticsEvents: Collection<AnalyticsEvent>
+    val analyticsEvents: List<AnalyticsEvent>
     val events: List<EventId>
     val text: Text?
 
-    init {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
         events = parser.getAttributeValue(XML_EVENTS)?.toEventIds().orEmpty()
-
-        // process any child elements
-        val analyticsEvents = mutableListOf<AnalyticsEvent>()
+        analyticsEvents = mutableListOf()
         text = parser.parseTextChild(this, XMLNS_CONTENT, XML_LINK) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS ->
@@ -26,6 +24,5 @@ class Link internal constructor(parent: Base, parser: XmlPullParser) : Content(p
                     }
             }
         }
-        this.analyticsEvents = analyticsEvents
     }
 }
