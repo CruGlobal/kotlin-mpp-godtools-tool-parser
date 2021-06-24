@@ -17,7 +17,7 @@ class Link : Content, Styles {
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
-        events = parser.getAttributeValue(XML_EVENTS)?.toEventIds().orEmpty()
+        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
         analyticsEvents = mutableListOf()
         text = parser.parseTextChild(this, XMLNS_CONTENT, XML_LINK) {
             when (parser.namespace) {
