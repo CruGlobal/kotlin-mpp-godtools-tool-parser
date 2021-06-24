@@ -99,13 +99,50 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testButtonTextColorFallbackBehavior() {
+    fun testButtonTextColorFallbackBehaviorContained() {
         parent.primaryColor = TestColors.RED
         parent.primaryTextColor = TestColors.GREEN
-        assertEquals(TestColors.BLUE, Button(parent, text = { Text(it, textColor = TestColors.BLUE) }).text!!.textColor)
-        assertEquals(TestColors.GREEN, Button(parent, text = { Text(it, textColor = null) }).text!!.textColor)
+
+        with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it) })) {
+            assertNotEquals(parent.primaryColor, text!!.textColor)
+            assertNotEquals(parent.textColor, text!!.textColor)
+            assertEquals(primaryTextColor, text!!.textColor)
+            assertEquals(TestColors.GREEN, text!!.textColor)
+        }
+
+        with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
+            assertNotEquals(primaryTextColor, text!!.textColor)
+            assertNotEquals(textColor, text!!.textColor)
+            assertEquals(TestColors.BLUE, text!!.textColor)
+        }
     }
 
+    @Test
+    fun testButtonTextColorFallbackBehaviorOutlined() {
+        parent.primaryColor = TestColors.RED
+        parent.primaryTextColor = TestColors.RED
+
+        with(Button(parent, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
+            assertNotEquals(parent.primaryColor, text!!.textColor)
+            assertNotEquals(parent.primaryTextColor, text!!.textColor)
+            assertNotEquals(parent.textColor, text!!.textColor)
+            assertEquals(buttonColor, text!!.textColor)
+            assertEquals(TestColors.GREEN, text!!.textColor)
+        }
+
+        with(
+            Button(
+                parent,
+                style = Button.Style.OUTLINED,
+                color = TestColors.RED,
+                text = { Text(it, textColor = TestColors.GREEN) }
+            )
+        ) {
+            assertNotEquals(buttonColor, text!!.textColor)
+            assertNotEquals(textColor, text!!.textColor)
+            assertEquals(TestColors.GREEN, text!!.textColor)
+        }
+    }
     // region Button.Style
     @Test
     fun verifyParseButtonStyle() {
