@@ -4,11 +4,11 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 plugins {
-    kotlin("multiplatform") version "1.5.10"
-    kotlin("native.cocoapods") version "1.5.10"
+    kotlin("multiplatform") version "1.5.20"
+    kotlin("native.cocoapods") version "1.5.20"
     id("com.android.library")
     id("maven-publish")
-    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.10"
+    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.20"
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
@@ -35,8 +35,8 @@ kotlin {
     }
     // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
     //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
-    //       This should be able to go away when we upgrade to Kotlin 1.5.20
-//    ios()
+    //       This should be able to go away when we upgrade to Kotlin 1.5.30
+//    ios { copyTestResources() }
     when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
         else -> iosX64("ios")
