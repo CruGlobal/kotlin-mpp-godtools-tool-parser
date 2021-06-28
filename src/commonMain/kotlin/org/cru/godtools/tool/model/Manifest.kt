@@ -1,5 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -17,6 +21,7 @@ import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
+import org.cru.godtools.tool.util.setOnce
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -63,8 +68,29 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
-        internal suspend fun parse(fileName: String, parseFile: (String) -> XmlPullParser) =
-            Manifest(parseFile(fileName), parseFile)
+        internal suspend fun parse(fileName: String, parseFile: suspend (String) -> XmlPullParser): Manifest {
+            val manifest = Manifest(parseFile(fileName))
+            coroutineScope {
+                // parse pages
+                launch {
+                    manifest.lessonPages = if (manifest.type == Type.LESSON) manifest.pagesToParse
+                        .map { (fileName, src) -> async { LessonPage(manifest, fileName, parseFile(src)) } }
+                        .awaitAll() else emptyList()
+                    manifest.tractPages = if (manifest.type == Type.TRACT) manifest.pagesToParse
+                        .map { (fileName, src) -> async { TractPage(manifest, fileName, parseFile(src)) } }
+                        .awaitAll() else emptyList()
+                }
+
+                // parse tips
+                launch {
+                    manifest.tips = manifest.tipsToParse
+                        .map { (id, src) -> async { Tip(manifest, id, parseFile(src)) } }
+                        .awaitAll()
+                        .associateBy { it.id }
+                }
+            }
+            return manifest
+        }
     }
 
     val code: String?
@@ -117,15 +143,21 @@ class Manifest : BaseModel, Styles {
     val title: String? get() = _title?.text
 
     val categories: List<Category>
-    val lessonPages: List<LessonPage>
-    val tractPages: List<TractPage>
+    var lessonPages: List<LessonPage> by setOnce()
+        private set
+    var tractPages: List<TractPage> by setOnce()
+        private set
     val aemImports: List<Uri>
 
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
-    val tips: Map<String, Tip>
+    var tips: Map<String, Tip> by setOnce()
+        private set
 
-    private constructor(parser: XmlPullParser, parseFile: (String) -> XmlPullParser) {
+    private val pagesToParse: List<Pair<String?, String>>
+    private val tipsToParse: List<Pair<String, String>>
+
+    private constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
         code = parser.getAttributeValue(XML_TOOL)
@@ -159,30 +191,27 @@ class Manifest : BaseModel, Styles {
         var title: Text? = null
         aemImports = mutableListOf()
         categories = mutableListOf()
-        lessonPages = mutableListOf()
         val resources = mutableListOf<Resource>()
-        val tips = mutableListOf<Tip>()
-        tractPages = mutableListOf()
+        pagesToParse = mutableListOf()
+        tipsToParse = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
                     XML_CATEGORIES -> categories += parser.parseCategories()
                     XML_PAGES -> {
-                        val result = parser.parsePages(parseFile)
+                        val result = parser.parsePages()
                         aemImports += result.aemImports
-                        lessonPages += result.lessonPages
-                        tractPages += result.tractPages
+                        pagesToParse += result.pages
                     }
                     XML_RESOURCES -> resources += parser.parseResources()
-                    XML_TIPS -> tips += parser.parseTips(parseFile)
+                    XML_TIPS -> tipsToParse += parser.parseTips()
                 }
             }
         }
 
         _title = title
         this.resources = resources.associateBy { it.name }
-        this.tips = tips.associateBy { it.id }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -236,6 +265,9 @@ class Manifest : BaseModel, Styles {
         this.tractPages = tractPages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
+
+        pagesToParse = emptyList()
+        tipsToParse = emptyList()
     }
 
     override val manifest get() = this
@@ -258,11 +290,10 @@ class Manifest : BaseModel, Styles {
 
     private class PagesData {
         val aemImports = mutableListOf<Uri>()
-        val lessonPages = mutableListOf<LessonPage>()
-        val tractPages = mutableListOf<TractPage>()
+        val pages = mutableListOf<Pair<String?, String>>()
     }
 
-    private fun XmlPullParser.parsePages(parseFile: (String) -> XmlPullParser) = PagesData().also { result ->
+    private fun XmlPullParser.parsePages() = PagesData().also { result ->
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_PAGES)
 
         // process any child elements
@@ -270,16 +301,9 @@ class Manifest : BaseModel, Styles {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     XML_PAGES_PAGE -> {
+                        val src = getAttributeValue(XML_PAGES_PAGE_SRC) ?: return@parseChildren
                         val fileName = getAttributeValue(XML_PAGES_PAGE_FILENAME)
-                        val src = getAttributeValue(XML_PAGES_PAGE_SRC)
-
-                        if (src != null) {
-                            @Suppress("NON_EXHAUSTIVE_WHEN")
-                            when (type) {
-                                Type.LESSON -> result.lessonPages += LessonPage(this@Manifest, fileName, parseFile(src))
-                                Type.TRACT -> result.tractPages += TractPage(this@Manifest, fileName, parseFile(src))
-                            }
-                        }
+                        result.pages += fileName to src
                     }
                 }
                 XMLNS_ARTICLE -> when (name) {
@@ -302,15 +326,14 @@ class Manifest : BaseModel, Styles {
         }
     }
 
-    private fun XmlPullParser.parseTips(parseFile: (String) -> XmlPullParser) = buildList {
+    private fun XmlPullParser.parseTips() = buildList {
         parseChildren {
             when (namespace) {
                 XMLNS_MANIFEST -> when (name) {
                     XML_TIPS_TIP -> {
-                        val id = getAttributeValue(null, XML_TIPS_TIP_ID)
-                        val src = getAttributeValue(null, XML_TIPS_TIP_SRC)
-                        if (id != null && src != null)
-                            add(Tip(this@Manifest, id, parseFile(src)))
+                        val id = getAttributeValue(XML_TIPS_TIP_ID) ?: return@parseChildren
+                        val src = getAttributeValue(XML_TIPS_TIP_SRC) ?: return@parseChildren
+                        add(id to src)
                     }
                 }
             }
