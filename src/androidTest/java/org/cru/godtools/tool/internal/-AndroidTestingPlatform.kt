@@ -1,6 +1,8 @@
 package org.cru.godtools.tool.internal
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 import org.cru.godtools.tool.xml.AndroidXmlPullParserFactory
 import org.cru.godtools.tool.xml.XmlPullParserFactory
 
@@ -15,3 +17,7 @@ actual typealias RunOnAndroidWith = org.junit.runner.RunWith
 actual typealias Runner = org.junit.runner.Runner
 actual typealias AndroidJUnit4 = AndroidJUnit4
 // endregion Android Robolectric
+
+// region Kotlin Coroutines
+actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit) = runBlocking { block() }
+// endregion Kotlin Coroutines
