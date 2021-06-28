@@ -1,23 +1,24 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Link internal constructor(parent: Base, parser: XmlPullParser) : Content(parent, parser) {
-    companion object {
+class Link : Content, Styles {
+    internal companion object {
         internal const val XML_LINK = "link"
     }
 
-    val analyticsEvents: Collection<AnalyticsEvent>
+    override val textColor get() = primaryColor
+
+    val analyticsEvents: List<AnalyticsEvent>
     val events: List<EventId>
     val text: Text?
 
-    init {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
-        events = parser.getAttributeValue(XML_EVENTS)?.toEventIds().orEmpty()
-
-        // process any child elements
-        val analyticsEvents = mutableListOf<AnalyticsEvent>()
+        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
+        analyticsEvents = mutableListOf()
         text = parser.parseTextChild(this, XMLNS_CONTENT, XML_LINK) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS ->
@@ -26,6 +27,12 @@ class Link internal constructor(parent: Base, parser: XmlPullParser) : Content(p
                     }
             }
         }
-        this.analyticsEvents = analyticsEvents
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(parent: Base, text: ((Base) -> Text?)? = null) : super(parent) {
+        analyticsEvents = emptyList()
+        events = emptyList()
+        this.text = text?.invoke(this)
     }
 }
