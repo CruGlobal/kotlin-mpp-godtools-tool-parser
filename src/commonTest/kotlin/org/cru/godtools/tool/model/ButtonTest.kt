@@ -4,6 +4,7 @@ import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
 import kotlin.test.Test
@@ -22,7 +23,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonEvent() {
+    fun testParseButtonEvent() = runBlockingTest {
         val manifest = Manifest()
         val button = Button(manifest, getTestXmlParser("button_event.xml"))
         assertFalse(button.isIgnored)
@@ -34,7 +35,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonUrl() {
+    fun testParseButtonUrl() = runBlockingTest {
         val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
         assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
@@ -46,7 +47,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonRestrictTo() {
+    fun testParseButtonRestrictTo() = runBlockingTest {
         val button = Button(Manifest(), getTestXmlParser("button_restrictTo.xml"))
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
         assertFalse(button.isIgnored)

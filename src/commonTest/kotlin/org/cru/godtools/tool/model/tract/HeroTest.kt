@@ -1,10 +1,10 @@
 package org.cru.godtools.tool.model.tract
 
-import org.cru.godtools.tool.DEFAULT_SUPPORTED_DEVICE_TYPES
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.DeviceType
 import org.cru.godtools.tool.model.Image
 import org.cru.godtools.tool.model.Manifest
@@ -12,7 +12,6 @@ import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Tabs
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,13 +26,8 @@ class HeroTest : UsesResources("model/tract") {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)
     }
 
-    @AfterTest
-    fun resetConfig() {
-        ParserConfig.supportedDeviceTypes = DEFAULT_SUPPORTED_DEVICE_TYPES
-    }
-
     @Test
-    fun testParseHero() {
+    fun testParseHero() = runBlockingTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero.xml")).hero)
         assertEquals(1, hero.analyticsEvents.size)
         assertEquals("Heading", hero.heading!!.text)
@@ -46,7 +40,7 @@ class HeroTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun testParseHeroIgnoredContent() {
+    fun testParseHeroIgnoredContent() = runBlockingTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero_ignored_content.xml")).hero)
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])

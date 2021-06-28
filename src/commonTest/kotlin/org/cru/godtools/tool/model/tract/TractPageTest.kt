@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
@@ -20,7 +21,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TractPageTest : UsesResources("model/tract") {
     @Test
-    fun verifyParse() {
+    fun verifyParse() = runBlockingTest {
         val page = parsePageXml("page.xml")
         assertEquals(TestColors.RED, page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
@@ -36,7 +37,7 @@ class TractPageTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun verifyParseCards() {
+    fun verifyParseCards() = runBlockingTest {
         val page = parsePageXml("page_cards.xml")
         assertEquals(2, page.cards.size)
         assertEquals("Card 1", page.cards[0].label!!.text)
@@ -44,7 +45,7 @@ class TractPageTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun verifyParseModals() {
+    fun verifyParseModals() = runBlockingTest {
         val page = parsePageXml("page_modals.xml")
         assertEquals(2, page.modals.size)
         assertEquals("Modal 1", page.modals[0].title?.text)
@@ -132,5 +133,5 @@ class TractPageTest : UsesResources("model/tract") {
         assertEquals(6.0, TractPage(manifest, textScale = 2.0).textScale, 0.001)
     }
 
-    private fun parsePageXml(file: String) = TractPage(Manifest(), null, getTestXmlParser(file))
+    private suspend fun parsePageXml(file: String) = TractPage(Manifest(), null, getTestXmlParser(file))
 }

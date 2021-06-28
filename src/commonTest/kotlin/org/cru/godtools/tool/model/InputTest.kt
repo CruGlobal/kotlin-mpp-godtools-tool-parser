@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Input.Type.Companion.toTypeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +14,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class InputTest : UsesResources() {
     @Test
-    fun testParseInputHidden() {
+    fun testParseInputHidden() = runBlockingTest {
         val input = Input(Manifest(), getTestXmlParser("input_hidden.xml"))
         assertEquals(Input.Type.HIDDEN, input.type)
         assertEquals("destination_id", input.name)
@@ -27,7 +28,7 @@ class InputTest : UsesResources() {
     }
 
     @Test
-    fun testParseInputText() {
+    fun testParseInputText() = runBlockingTest {
         val input = Input(Manifest(), getTestXmlParser("input_text.xml"))
         assertEquals(Input.Type.TEXT, input.type)
         assertEquals("name", input.name)
@@ -43,7 +44,7 @@ class InputTest : UsesResources() {
     }
 
     @Test
-    fun testParseInputEmail() {
+    fun testParseInputEmail() = runBlockingTest {
         val input = Input(Manifest(), getTestXmlParser("input_email.xml"))
         assertEquals(Input.Type.EMAIL, input.type)
         assertEquals("email", input.name)

@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Spacer.Mode.Companion.toModeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -12,7 +13,7 @@ import kotlin.test.assertNull
 @RunOnAndroidWith(AndroidJUnit4::class)
 class SpacerTest : UsesResources() {
     @Test
-    fun testParseSpacerDefaults() {
+    fun testParseSpacerDefaults() = runBlockingTest {
         val spacer = Spacer(Manifest(), getTestXmlParser("spacer.xml"))
         assertNotNull(spacer)
         assertEquals(Spacer.Mode.AUTO, spacer.mode)
@@ -20,7 +21,7 @@ class SpacerTest : UsesResources() {
     }
 
     @Test
-    fun testParseSpacerFixedHeight() {
+    fun testParseSpacerFixedHeight() = runBlockingTest {
         val spacer = Spacer(Manifest(), getTestXmlParser("spacer_fixed.xml"))
         assertEquals(Spacer.Mode.FIXED, spacer.mode)
         assertEquals(123, spacer.height)

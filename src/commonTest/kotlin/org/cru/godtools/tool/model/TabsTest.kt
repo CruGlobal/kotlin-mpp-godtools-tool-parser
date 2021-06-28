@@ -1,11 +1,10 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.DEFAULT_SUPPORTED_DEVICE_TYPES
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import kotlin.test.AfterTest
+import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -18,19 +17,14 @@ class TabsTest : UsesResources() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
     }
 
-    @AfterTest
-    fun resetConfig() {
-        ParserConfig.supportedDeviceTypes = DEFAULT_SUPPORTED_DEVICE_TYPES
-    }
-
     @Test
-    fun testParseTabsEmpty() {
+    fun testParseTabsEmpty() = runBlockingTest {
         val tabs = Tabs(Manifest(), getTestXmlParser("tabs_empty.xml"))
         assertEquals(0, tabs.tabs.size)
     }
 
     @Test
-    fun testParseTabsSingle() {
+    fun testParseTabsSingle() = runBlockingTest {
         val tab = Tabs(Manifest(), getTestXmlParser("tabs_single.xml")).tabs.single()
         assertEquals(0, tab.position)
         assertEquals("Tab 1", tab.label!!.text)
@@ -43,7 +37,7 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabsMultiple() {
+    fun testParseTabsMultiple() = runBlockingTest {
         val tabs = Tabs(Manifest(), getTestXmlParser("tabs_multiple.xml"))
         assertEquals(2, tabs.tabs.size)
         assertEquals(0, tabs.tabs[0].position)
@@ -51,7 +45,7 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabsIgnoredContent() {
+    fun testParseTabsIgnoredContent() = runBlockingTest {
         val tab = Tabs(Manifest(), getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
         assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])

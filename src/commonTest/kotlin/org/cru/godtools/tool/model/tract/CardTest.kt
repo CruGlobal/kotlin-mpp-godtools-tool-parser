@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
@@ -23,7 +24,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class CardTest : UsesResources("model/tract") {
     @Test
-    fun verifyParseCard() {
+    fun verifyParseCard() = runBlockingTest {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
         assertEquals("page.xml-0", card.id)
         assertEquals("Card 1", card.label!!.text)

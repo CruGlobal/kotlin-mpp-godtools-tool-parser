@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import kotlin.test.Test
@@ -12,7 +13,7 @@ import kotlin.test.assertIs
 @RunOnAndroidWith(AndroidJUnit4::class)
 class AccordionTest : UsesResources() {
     @Test
-    fun testParseAccordion() {
+    fun testParseAccordion() = runBlockingTest {
         val accordion = Accordion(Manifest(), getTestXmlParser("accordion.xml"))
         assertEquals(2, accordion.sections.size)
 
