@@ -7,7 +7,7 @@ expect object ParserConfig {
 }
 
 object SimpleParserConfig {
-    var supportedDeviceTypes: Set<DeviceType> = DEFAULT_SUPPORTED_DEVICE_TYPES
+    var supportedDeviceTypes = DEFAULT_SUPPORTED_DEVICE_TYPES
 }
 
 internal expect val DEFAULT_SUPPORTED_DEVICE_TYPES: Set<DeviceType>

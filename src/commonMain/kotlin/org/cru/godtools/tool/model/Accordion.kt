@@ -8,7 +8,7 @@ private const val XML_SECTION = "section"
 private const val XML_SECTION_HEADER = "header"
 
 class Accordion : Content {
-    companion object {
+    internal companion object {
         internal const val XML_ACCORDION = "accordion"
     }
 

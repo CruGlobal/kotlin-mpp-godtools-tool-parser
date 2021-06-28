@@ -20,7 +20,7 @@ private const val XML_CONTROL_COLOR = "control-color"
 private const val XML_TIP = "tip"
 
 class CallToAction : BaseModel {
-    companion object {
+    internal companion object {
         internal const val XML_CALL_TO_ACTION = "call-to-action"
     }
 
