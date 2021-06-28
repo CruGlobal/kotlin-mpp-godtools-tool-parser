@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -11,7 +12,7 @@ import kotlin.test.assertNotEquals
 @RunOnAndroidWith(AndroidJUnit4::class)
 class LinkTest : UsesResources() {
     @Test
-    fun testParseLink() {
+    fun testParseLink() = runBlockingTest {
         val link = Link(Manifest(), getTestXmlParser("link.xml"))
         assertEquals("Test", link.text!!.text)
         assertEquals(2, link.events.size)

@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Button
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
@@ -17,7 +18,7 @@ import kotlin.test.assertIs
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ModalTest : UsesResources("model/tract") {
     @Test
-    fun testParseModal() {
+    fun testParseModal() = runBlockingTest {
         val modal = TractPage(Manifest(), "testPage", getTestXmlParser("modal.xml")).modals.single()
         assertEquals("testPage-0", modal.id)
         assertFixedAttributes(modal)

@@ -1,14 +1,13 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.DEFAULT_SUPPORTED_DEVICE_TYPES
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.xml.XmlPullParserException
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,13 +22,8 @@ class FallbackTest : UsesResources() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
     }
 
-    @AfterTest
-    fun resetConfig() {
-        ParserConfig.supportedDeviceTypes = DEFAULT_SUPPORTED_DEVICE_TYPES
-    }
-
     @Test
-    fun testParseFallback() {
+    fun testParseFallback() = runBlockingTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback.xml"))
         assertEquals(2, fallback.content.size)
         assertEquals("Test", assertIs<Text>(fallback.content[0]).text)
@@ -37,7 +31,7 @@ class FallbackTest : UsesResources() {
     }
 
     @Test
-    fun testParseParagraphFallback() {
+    fun testParseParagraphFallback() = runBlockingTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph.xml"))
         assertEquals(2, fallback.content.size)
         assertEquals("Test", assertIs<Text>(fallback.content[0]).text)
@@ -45,7 +39,7 @@ class FallbackTest : UsesResources() {
     }
 
     @Test
-    fun testParseParagraphFallbackInvalid() {
+    fun testParseParagraphFallbackInvalid() = runBlockingTest {
         assertFailsWith(XmlPullParserException::class) {
             Fallback(Manifest(), getTestXmlParser("paragraph.xml"))
         }

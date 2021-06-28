@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -12,7 +13,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ImageTest : UsesResources() {
     @Test
-    fun testParseImage() {
+    fun testParseImage() = runBlockingTest {
         val image = Image(Manifest(), getTestXmlParser("image.xml"))
         assertEquals("image.png", image.resourceName)
         assertEquals(2, image.events.size)
@@ -21,7 +22,7 @@ class ImageTest : UsesResources() {
     }
 
     @Test
-    fun testParseImageRestricted() {
+    fun testParseImageRestricted() = runBlockingTest {
         val image = Image(Manifest(), getTestXmlParser("image_restricted.xml"))
         assertTrue(image.isIgnored)
     }

@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.lesson
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
@@ -25,7 +26,7 @@ import kotlin.test.assertTrue
 class LessonPageTest : UsesResources("model/lesson") {
     // region parsePage
     @Test
-    fun testParsePage() {
+    fun testParsePage() = runBlockingTest {
         val page = parsePageXml("page.xml")
         assertFalse(page.isHidden)
         assertEquals(TestColors.GREEN, page.controlColor)
@@ -41,7 +42,7 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
 
     @Test
-    fun testParsePageDefault() {
+    fun testParsePageDefault() = runBlockingTest {
         val manifest = Manifest()
         val page = parsePageXml("page_defaults.xml", manifest)
         assertEquals(manifest.lessonControlColor, page.controlColor)
@@ -50,10 +51,13 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
 
     @Test
-    fun testParsePageHidden() {
+    fun testParsePageHidden() = runBlockingTest {
         val page = parsePageXml("page_hidden.xml")
         assertTrue(page.isHidden)
     }
+
+    private suspend fun parsePageXml(file: String, manifest: Manifest = Manifest()) =
+        LessonPage(manifest, null, getTestXmlParser(file))
     // endregion parsePage
 
     // region Attribute Behavior
@@ -114,7 +118,4 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(6.0, LessonPage(manifest, textScale = 2.0).textScale, 0.001)
     }
     // endregion Attribute Behavior
-
-    private fun parsePageXml(file: String, manifest: Manifest = Manifest()) =
-        LessonPage(manifest, null, getTestXmlParser(file))
 }

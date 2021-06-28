@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.tips
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
@@ -19,7 +20,7 @@ import kotlin.test.assertTrue
 class TipTest : UsesResources("model/tips") {
     // region parseTip
     @Test
-    fun testParseTipDefaults() {
+    fun testParseTipDefaults() = runBlockingTest {
         val tip = Tip(Manifest(), "test", getTestXmlParser("tip_defaults.xml"))
         assertEquals("test", tip.id)
         assertEquals(Tip.Type.DEFAULT, tip.type)
@@ -27,7 +28,7 @@ class TipTest : UsesResources("model/tips") {
     }
 
     @Test
-    fun testParseTip() {
+    fun testParseTip() = runBlockingTest {
         val tip = Tip(Manifest(), "name", getTestXmlParser("tip.xml"))
         assertEquals("name", tip.id)
         assertEquals(Tip.Type.ASK, tip.type)
