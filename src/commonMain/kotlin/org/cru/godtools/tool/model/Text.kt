@@ -41,7 +41,7 @@ class Text : Content {
     @AndroidColorInt
     private val _textColor: Color?
     @get:AndroidColorInt
-    val textColor get() = _textColor ?: defaultTextColor
+    val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     val textScale get() = _textScale * stylesParent.textScale
     val textStyles: Set<Style>
@@ -95,10 +95,6 @@ class Text : Content {
         endImageSize = DEFAULT_IMAGE_SIZE
     }
 
-    @Deprecated("Once we correctly override text color in the model this method should no longer be necessary")
-    @AndroidColorInt
-    fun getTextColor(@AndroidColorInt defaultColor: Color) = _textColor ?: defaultColor
-
     enum class Align {
         START, CENTER, END;
 
@@ -128,9 +124,6 @@ class Text : Content {
         }
     }
 }
-
-@get:AndroidColorInt
-val Text?.defaultTextColor get() = stylesParent.textColor
 
 val Text?.textAlign get() = this?.textAlign ?: stylesParent.textAlign
 @get:AndroidColorInt
