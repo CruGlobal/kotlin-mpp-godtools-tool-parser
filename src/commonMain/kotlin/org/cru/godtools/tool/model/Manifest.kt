@@ -63,7 +63,7 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
-        internal fun parse(fileName: String, parseFile: (String) -> XmlPullParser) =
+        internal suspend fun parse(fileName: String, parseFile: (String) -> XmlPullParser) =
             Manifest(parseFile(fileName), parseFile)
     }
 

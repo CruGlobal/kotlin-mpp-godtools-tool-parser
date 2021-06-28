@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.fluidlocale.toCommon
+import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
@@ -20,7 +21,7 @@ import kotlin.test.assertTrue
 class ManifestTest : UsesResources() {
     // region parse Manifest
     @Test
-    fun testParseManifestEmpty() {
+    fun testParseManifestEmpty() = runBlockingTest {
         val manifest = parseManifest("manifest_empty.xml")
         assertNull(manifest.title)
         assertNull(manifest.code)
@@ -48,7 +49,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestArticle() {
+    fun testParseManifestArticle() = runBlockingTest {
         val manifest = parseManifest("manifest_article.xml")
         assertEquals(Manifest.Type.ARTICLE, manifest.type)
         assertEquals(TestColors.GREEN, manifest.categoryLabelColor)
@@ -66,7 +67,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestLesson() {
+    fun testParseManifestLesson() = runBlockingTest {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)
         assertEquals("lesson1", manifest.code)
@@ -80,7 +81,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestTract() {
+    fun testParseManifestTract() = runBlockingTest {
         val manifest = parseManifest("manifest_tract.xml")
         assertEquals("title", manifest.title)
         assertEquals(Manifest.Type.TRACT, manifest.type)
@@ -98,7 +99,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestBackgroundAttrs() {
+    fun testParseManifestBackgroundAttrs() = runBlockingTest {
         val manifest = parseManifest("manifest_background.xml")
         assertEquals(TestColors.GREEN, manifest.backgroundColor)
         assertEquals(TestColors.BLUE, manifest.cardBackgroundColor)
@@ -111,7 +112,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestContainingTips() {
+    fun testParseManifestContainingTips() = runBlockingTest {
         val manifest = parseManifest("manifest_tips.xml")
         assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
@@ -120,14 +121,14 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestInvalidTips() {
+    fun testParseManifestInvalidTips() = runBlockingTest {
         val manifest = parseManifest("manifest_tips_invalid.xml")
         assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
     }
 
-    private fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
+    private suspend fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
     // endregion parse Manifest
 
     @Test
