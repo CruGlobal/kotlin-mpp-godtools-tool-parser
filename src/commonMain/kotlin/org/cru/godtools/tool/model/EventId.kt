@@ -1,8 +1,11 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
+import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.state.State
 
 private const val EVENT_NAMESPACE_FOLLOWUP = "followup"
+@VisibleForTesting
 internal const val EVENT_NAMESPACE_STATE = "state"
 
 class EventId internal constructor(val namespace: String? = null, val name: String) {
@@ -19,6 +22,11 @@ class EventId internal constructor(val namespace: String? = null, val name: Stri
                     else -> EventId(components[0], components[1])
                 }
             }.orEmpty()
+    }
+
+    fun resolve(state: State) = when (namespace) {
+        EVENT_NAMESPACE_STATE -> state.getAll(name).map { EventId(name = it) }
+        else -> listOf(this)
     }
 
     override fun equals(other: Any?) = other is EventId &&
