@@ -3,6 +3,7 @@ name: Build Library
 on:
   push:
     branches: [main]
+    tags: ['v[0-9]+*']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -165,7 +166,7 @@ jobs:
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
     needs: [ static_checks, android_tests, ios_tests, js_tests ]
     steps:
       - name: Checkout code
@@ -192,7 +193,7 @@ jobs:
   deploy_ios_podspec:
     name: Publish iOS Podspec
     runs-on: macos-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
     needs: [ static_checks, ios_tests ]
     steps:
       - name: Checkout code
