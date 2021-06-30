@@ -43,11 +43,12 @@ class Multiselect : Content {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        parent: Base,
+        parent: Base = Manifest(),
+        stateName: String = "",
         selectionLimit: Int = 1,
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
-        stateName = ""
+        this.stateName = stateName
         this.selectionLimit = selectionLimit
         this.options = options?.invoke(this).orEmpty()
     }

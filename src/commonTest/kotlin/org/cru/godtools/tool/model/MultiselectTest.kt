@@ -44,7 +44,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionIsSelected() {
-        val multiselect = Multiselect(Manifest()) { it.options(2) }
+        val multiselect = Multiselect() { it.options(2) }
 
         multiselect.options[0].toggleSelected(state)
         assertTrue(multiselect.options[0].isSelected(state))
@@ -53,7 +53,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionToggleSelectedSingleSelection() {
-        with(Multiselect(Manifest(), selectionLimit = 1) { it.options(2) }) {
+        with(Multiselect(selectionLimit = 1) { it.options(2) }) {
             // initial state
             assertFalse(options[0].isSelected(state))
             assertFalse(options[1].isSelected(state))
@@ -77,7 +77,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionToggleSelectedMultipleSelections() {
-        with(Multiselect(Manifest(), selectionLimit = 2) { it.options(3) }) {
+        with(Multiselect(selectionLimit = 2) { it.options(3) }) {
             // initial state
             assertFalse(options[0].isSelected(state))
             assertFalse(options[1].isSelected(state))
@@ -109,5 +109,15 @@ class MultiselectTest : UsesResources() {
         }
     }
 
-    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, it.toString()) }
+    @Test
+    fun testMultiselectAffectsEventIdResolution() {
+        val eventId = EventId(EVENT_NAMESPACE_STATE, "test")
+        val multiselect = Multiselect(stateName = eventId.name, selectionLimit = 2) { it.options(3) }
+
+        multiselect.options[2].toggleSelected(state)
+        multiselect.options[0].toggleSelected(state)
+        assertEquals(listOf(EventId(name = "2"), EventId(name = "0")), eventId.resolve(state))
+    }
+
+    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, "$it") }
 }
