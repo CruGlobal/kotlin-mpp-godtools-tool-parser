@@ -13,4 +13,7 @@ class State internal constructor(private val state: MutableMap<String, List<Stri
     internal operator fun set(key: String, value: String?) = state.set(key, listOfNotNull(value))
     internal operator fun set(key: String, values: List<String>?) = state.set(key, values.orEmpty())
     internal fun set(key: String, vararg values: String) = state.set(key, values.toList())
+
+    internal fun addValue(key: String, value: String) = state.set(key, (state[key].orEmpty() + value).distinct())
+    internal fun removeValue(key: String, value: String) = state.set(key, state[key]?.filterNot { it == value })
 }
