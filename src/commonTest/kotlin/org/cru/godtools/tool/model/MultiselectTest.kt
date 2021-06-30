@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_MULTISELECT
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -40,6 +42,17 @@ class MultiselectTest : UsesResources() {
             assertEquals("valueAttr", value)
             assertTrue(content.isEmpty())
         }
+    }
+
+    @Test
+    fun testIsIgnored() {
+        val multiselect = Multiselect()
+
+        ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
+        assertFalse(multiselect.isIgnored)
+
+        ParserConfig.supportedFeatures = emptySet()
+        assertTrue(multiselect.isIgnored)
     }
 
     @Test
