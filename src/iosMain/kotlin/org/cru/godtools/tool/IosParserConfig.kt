@@ -13,6 +13,13 @@ actual object ParserConfig {
         set(value) {
             _supportedDeviceTypes.value = if (value.isFrozen) value else value.toSet().freeze()
         }
+
+    private val _supportedFeatures = AtomicReference(emptySet<String>())
+    actual var supportedFeatures: Set<String>
+        get() = _supportedFeatures.value
+        set(value) {
+            _supportedFeatures.value = if (value.isFrozen) value else value.toSet().freeze()
+        }
 }
 
 @SharedImmutable
