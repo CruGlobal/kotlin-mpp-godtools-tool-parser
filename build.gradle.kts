@@ -83,7 +83,7 @@ kotlin {
         }
         val androidTest by getting {
             dependencies {
-                implementation("androidx.test.ext:junit:1.1.2")
+                implementation("androidx.test.ext:junit:1.1.3")
                 implementation("org.robolectric:robolectric:4.5.1")
             }
         }
