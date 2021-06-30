@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -18,7 +19,7 @@ class Multiselect : Content {
     }
 
     @VisibleForTesting
-    internal val state: String
+    internal val stateName: String
     @VisibleForTesting
     internal val selectionLimit: Int
 
@@ -27,7 +28,7 @@ class Multiselect : Content {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_MULTISELECT)
 
-        state = parser.getAttributeValue(XML_STATE).orEmpty()
+        stateName = parser.getAttributeValue(XML_STATE).orEmpty()
         selectionLimit = (parser.getAttributeValue(XML_SELECTION_LIMIT)?.toIntOrNull() ?: 1).coerceAtLeast(1)
 
         options = mutableListOf()
@@ -38,6 +39,17 @@ class Multiselect : Content {
                 }
             }
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(
+        parent: Base,
+        selectionLimit: Int = 1,
+        options: ((Multiselect) -> List<Option>)? = null
+    ) : super(parent) {
+        stateName = ""
+        this.selectionLimit = selectionLimit
+        this.options = options?.invoke(this).orEmpty()
     }
 
     override val isIgnored get() = FEATURE_MULTISELECT !in ParserConfig.supportedFeatures || super.isIgnored
@@ -59,13 +71,20 @@ class Multiselect : Content {
             content = parseContent(parser)
         }
 
-        fun isSelected(state: State) = value in state.getAll(multiselect.state)
+        @RestrictTo(RestrictTo.Scope.TESTS)
+        internal constructor(multiselect: Multiselect, value: String = "") : super(multiselect) {
+            this.multiselect = multiselect
+            this.value = value
+            content = emptyList()
+        }
+
+        fun isSelected(state: State) = value in state.getAll(multiselect.stateName)
         fun toggleSelected(state: State): Boolean {
-            val current = state.getAll(multiselect.state)
+            val current = state.getAll(multiselect.stateName)
             when {
-                value in current -> state.removeValue(multiselect.state, value)
-                current.size < multiselect.selectionLimit -> state.addValue(multiselect.state, value)
-                multiselect.selectionLimit == 1 -> state[multiselect.state] = value
+                value in current -> state.removeValue(multiselect.stateName, value)
+                current.size < multiselect.selectionLimit -> state.addValue(multiselect.stateName, value)
+                multiselect.selectionLimit == 1 -> state[multiselect.stateName] = value
                 else -> return false
             }
             return true
