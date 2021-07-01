@@ -1,10 +1,16 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.receive
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
@@ -57,11 +63,40 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionIsSelected() {
-        val multiselect = Multiselect() { it.options(2) }
+        val multiselect = Multiselect { it.options(2) }
 
         multiselect.options[0].toggleSelected(state)
         assertTrue(multiselect.options[0].isSelected(state))
         assertFalse(multiselect.options[1].isSelected(state))
+    }
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun testOptionIsSelectedFlow() = runBlockingTest {
+        val multiselect = Multiselect { it.options(2) }
+
+        val flowOutput = Channel<Boolean>(1)
+        val flow = multiselect.options[0].isSelectedFlow(state)
+            .onEach { flowOutput.send(it) }
+            .launchIn(this)
+        assertFalse("Initially not selected") { flowOutput.receive(100) }
+
+        multiselect.options[0].toggleSelected(state)
+        println("Toggled this option to true")
+        assertTrue(flowOutput.receive(100))
+
+        multiselect.options[1].toggleSelected(state)
+        assertFalse(flowOutput.receive(100), "Toggled other option to true")
+
+        multiselect.options[1].toggleSelected(state)
+        delay(100)
+        assertTrue(flowOutput.isEmpty, "Toggled other option to false")
+
+        state["other"] = "test"
+        delay(100)
+        assertTrue(flowOutput.isEmpty, "Set different state value")
+
+        flow.cancel()
     }
 
     @Test

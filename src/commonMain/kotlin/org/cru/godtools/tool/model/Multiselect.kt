@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
@@ -80,6 +82,9 @@ class Multiselect : Content {
         }
 
         fun isSelected(state: State) = value in state.getAll(multiselect.stateName)
+        fun isSelectedFlow(state: State) = state.changeFlow(multiselect.stateName)
+            .map { isSelected(state) }
+            .distinctUntilChanged()
         fun toggleSelected(state: State): Boolean {
             val current = state.getAll(multiselect.stateName)
             when {
