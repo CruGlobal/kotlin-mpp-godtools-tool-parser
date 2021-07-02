@@ -35,7 +35,7 @@ fun KotlinMultiplatformExtension.configureIosTargets() {
 }
 
 fun KotlinMultiplatformExtension.configureJsTargets() {
-    js {
+    js(IR) {
         nodejs { copyTestResources() }
     }
 }
