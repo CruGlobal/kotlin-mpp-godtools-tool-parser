@@ -21,7 +21,8 @@ internal fun String.toColorOrNull(): Color? = COLOR_REGEX.matchEntire(this)?.let
 }
 
 @AndroidColorInt
-internal expect inline fun color(red: Int, green: Int, blue: Int, alpha: Double): Color
+internal inline fun color(red: Int, green: Int, blue: Int, alpha: Double) =
+    RGB(red, green, blue, alpha.toFloat()).toColor()
 
 internal expect fun Color.toRGB(): RGB
-internal fun RGB.toColor() = color(r, g, b, a.toDouble())
+internal expect fun RGB.toColor(): Color
