@@ -1,23 +1,28 @@
 package org.cru.godtools.tool.state
 
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onStart
 import org.cru.godtools.tool.internal.Parcelable
 import org.cru.godtools.tool.internal.Parcelize
-import org.cru.godtools.tool.model.EVENT_NAMESPACE_STATE
-import org.cru.godtools.tool.model.EventId
 
 @Parcelize
-class State internal constructor(private val state: MutableMap<String, List<String>>) : Parcelable {
-    constructor() : this(mutableMapOf<String, List<String>>())
+class State internal constructor(private val state: MutableMap<String, List<String>?>) : Parcelable {
+    constructor() : this(mutableMapOf<String, List<String>?>())
 
-    operator fun get(key: String) = state[key]?.firstOrNull()
-    fun getAll(key: String) = state[key].orEmpty()
+    private val changeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
+    internal fun changeFlow(key: String) = changeFlow.filter { it == key }.onStart { emit(key) }.conflate()
 
-    operator fun set(key: String, value: String?) = state.set(key, listOfNotNull(value))
-    operator fun set(key: String, values: List<String>?) = state.set(key, values.orEmpty())
-    fun set(key: String, vararg values: String) = state.set(key, values.toList())
+    internal operator fun get(key: String) = state[key]?.firstOrNull()
+    internal fun getAll(key: String) = state[key].orEmpty()
 
-    fun resolveEventId(id: EventId) = when (id.namespace) {
-        EVENT_NAMESPACE_STATE -> getAll(id.name).map { EventId(name = it) }
-        else -> listOf(id)
+    internal operator fun set(key: String, value: String?) = set(key, listOfNotNull(value))
+    internal operator fun set(key: String, values: List<String>?) {
+        state[key] = values
+        changeFlow.tryEmit(key)
     }
+
+    internal fun addValue(key: String, value: String) = set(key, (getAll(key) + value).distinct())
+    internal fun removeValue(key: String, value: String) = set(key, getAll(key).filterNot { it == value })
 }

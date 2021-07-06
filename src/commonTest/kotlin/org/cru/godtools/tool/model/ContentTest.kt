@@ -105,6 +105,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementMultiselect() = runBlockingTest {
+        assertIs<Multiselect>(getTestXmlParser("multiselect.xml").parseContentElement(Manifest()))
+        assertIs<Multiselect>(getTestXmlParser("multiselect_defaults.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementParagraph() = runBlockingTest {
         assertIs<Paragraph>(getTestXmlParser("paragraph.xml").parseContentElement(Manifest()))
     }

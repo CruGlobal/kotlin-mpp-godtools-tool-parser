@@ -1,0 +1,12 @@
+<content:multiselect xmlns:content="https://mobile-content-api.cru.org/xmlns/content" state="quiz1" selection-limit="2">
+    <content:option value="answer1">
+        <content:text>Answer 1</content:text>
+    </content:option>
+    <content:option value="answer2">
+        <unrecognized />
+        <content:text>Answer 2</content:text>
+    </content:option>
+    <content:option value="answer3">
+        <content:text>Answer 3</content:text>
+    </content:option>
+</content:multiselect>

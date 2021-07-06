@@ -1,7 +1,11 @@
 package org.cru.godtools.tool.state
 
-import org.cru.godtools.tool.model.EVENT_NAMESPACE_STATE
-import org.cru.godtools.tool.model.EventId
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.cru.godtools.tool.internal.receive
+import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -29,23 +33,25 @@ class StateTest {
     }
 
     @Test
-    fun testResolveEventId() {
-        state["selectorState"] = listOf("a", "b")
-        val events = state.resolveEventId(EventId(EVENT_NAMESPACE_STATE, "selectorState"))
-        assertEquals(2, events.size)
-        assertEquals(EventId(name = "a"), events[0])
-        assertEquals(EventId(name = "b"), events[1])
-    }
+    fun testChangeFlow() = runBlockingTest {
+        val channel = Channel<String>()
+        val flow = state.changeFlow("test")
+            .onEach { channel.send(it) }
+            .launchIn(this)
 
-    @Test
-    fun testResolveEventIdUnset() {
-        assertTrue(state.resolveEventId(EventId(EVENT_NAMESPACE_STATE, "missing")).isEmpty())
-    }
+        // initial value
+        assertEquals("test", channel.receive(100))
 
-    @Test
-    fun testResolveEventIdDifferentNamespace() {
-        val event = EventId(name = "event")
-        state["event"] = listOf("a", "b")
-        assertEquals(event, state.resolveEventId(event).single())
+        // update state for monitored key
+        state["test"] = "a"
+        assertEquals("test", channel.receive(100))
+
+        // update state for a different key
+        state["other"] = "a"
+        delay(100)
+        assertTrue(channel.isEmpty)
+
+        // shut down flow
+        flow.cancel()
     }
 }

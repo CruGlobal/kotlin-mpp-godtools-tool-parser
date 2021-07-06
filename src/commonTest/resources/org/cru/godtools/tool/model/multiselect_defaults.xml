@@ -1,0 +1,3 @@
+<content:multiselect xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <content:option value="valueAttr" />
+</content:multiselect>
