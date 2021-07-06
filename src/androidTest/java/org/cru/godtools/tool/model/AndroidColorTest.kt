@@ -10,8 +10,8 @@ import kotlin.test.assertEquals
 @RunWith(AndroidJUnit4::class)
 class AndroidColorTest {
     @Test
-    fun testColorGeneration() {
-        val color = RGB(1, 2, 3, .5f).toColor()
+    fun testToPlatformColor() {
+        val color = RGB(1, 2, 3, .5f).toPlatformColor()
 
         assertEquals(1, Color.red(color))
         assertEquals(2, Color.green(color))

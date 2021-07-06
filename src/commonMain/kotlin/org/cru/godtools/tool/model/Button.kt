@@ -29,7 +29,7 @@ class Button : Content, Styles {
     val style: Style get() = _style ?: stylesParent.buttonStyle
 
     @AndroidColorInt
-    private val _buttonColor: Color?
+    private val _buttonColor: PlatformColor?
     @get:AndroidColorInt
     override val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
 
@@ -70,7 +70,7 @@ class Button : Content, Styles {
         parent: Base,
         type: Type = Type.DEFAULT,
         style: Style? = null,
-        @AndroidColorInt color: Color? = null,
+        @AndroidColorInt color: PlatformColor? = null,
         text: ((Button) -> Text?)? = null
     ) : super(parent) {
         this.type = type

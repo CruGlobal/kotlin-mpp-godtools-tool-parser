@@ -4,7 +4,6 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.Color
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.ImageGravity
@@ -13,6 +12,7 @@ import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Parent
+import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
@@ -58,7 +58,7 @@ class LessonPage : BaseModel, Parent, Styles {
     val listeners: Set<EventId>
 
     @AndroidColorInt
-    val backgroundColor: Color
+    val backgroundColor: PlatformColor
 
     @VisibleForTesting
     internal val _backgroundImage: String?
@@ -67,7 +67,7 @@ class LessonPage : BaseModel, Parent, Styles {
     val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
-    private val _controlColor: Color?
+    private val _controlColor: PlatformColor?
     @get:AndroidColorInt
     val controlColor get() = _controlColor ?: manifest.lessonControlColor
 
@@ -114,11 +114,11 @@ class LessonPage : BaseModel, Parent, Styles {
     internal constructor(
         manifest: Manifest,
         fileName: String? = null,
-        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        controlColor: Color? = null,
+        controlColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         this.fileName = fileName

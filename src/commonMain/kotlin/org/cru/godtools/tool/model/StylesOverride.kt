@@ -4,7 +4,7 @@ import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 
 private class StylesOverride(
     parent: Base,
-    private val _textColor: (() -> Color?)?,
+    private val _textColor: (() -> PlatformColor?)?,
     private val _textScale: Double
 ) : BaseModel(parent), Styles {
     override val textColor get() = _textColor?.invoke() ?: super.textColor
@@ -12,6 +12,6 @@ private class StylesOverride(
 }
 
 internal fun Base.stylesOverride(
-    textColor: (() -> Color?)? = null,
+    textColor: (() -> PlatformColor?)? = null,
     textScale: Double = DEFAULT_TEXT_SCALE
 ): Base = StylesOverride(this, textColor, textScale)

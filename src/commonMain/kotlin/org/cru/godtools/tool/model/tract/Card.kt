@@ -6,7 +6,6 @@ import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.Color
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.ImageGravity
@@ -14,6 +13,7 @@ import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Parent
+import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
@@ -61,7 +61,7 @@ class Card : BaseModel, Styles, Parent {
     val analyticsEvents: Collection<AnalyticsEvent>
 
     @AndroidColorInt
-    private val _backgroundColor: Color?
+    private val _backgroundColor: PlatformColor?
     @get:AndroidColorInt
     internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
     private val _backgroundImage: String?
@@ -70,7 +70,7 @@ class Card : BaseModel, Styles, Parent {
     val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
-    private val _textColor: Color?
+    private val _textColor: PlatformColor?
     @get:AndroidColorInt
     override val textColor get() = _textColor ?: page.cardTextColor
 
@@ -117,7 +117,7 @@ class Card : BaseModel, Styles, Parent {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
-        backgroundColor: Color? = null,
+        backgroundColor: PlatformColor? = null,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,

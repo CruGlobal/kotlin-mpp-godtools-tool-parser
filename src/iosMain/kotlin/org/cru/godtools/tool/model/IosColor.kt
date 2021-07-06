@@ -9,15 +9,15 @@ import kotlinx.cinterop.value
 import platform.UIKit.UIColor
 
 @Suppress("CONFLICTING_OVERLOADS")
-actual typealias Color = UIColor
+actual typealias PlatformColor = UIColor
 
-internal actual fun RGB.toColor() = UIColor(
+internal actual fun RGB.toPlatformColor() = UIColor(
     red = r.toDouble() / 255.0,
     green = g.toDouble() / 255.0,
     blue = b.toDouble() / 255.0,
     alpha = a.toDouble()
 )
-internal actual fun Color.toRGB(): RGB = memScoped {
+internal actual fun PlatformColor.toRGB(): RGB = memScoped {
     val red = alloc<DoubleVar>()
     val green = alloc<DoubleVar>()
     val blue = alloc<DoubleVar>()

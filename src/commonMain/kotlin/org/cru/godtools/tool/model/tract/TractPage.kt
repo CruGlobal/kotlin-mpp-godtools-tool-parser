@@ -4,13 +4,13 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.Color
 import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
+import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
@@ -58,7 +58,7 @@ class TractPage : BaseModel, Styles {
     val listeners: Set<EventId>
 
     @AndroidColorInt
-    val backgroundColor: Color
+    val backgroundColor: PlatformColor
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     val backgroundImageGravity: ImageGravity
@@ -72,29 +72,29 @@ class TractPage : BaseModel, Styles {
     val callToAction: CallToAction
 
     @AndroidColorInt
-    private val _primaryColor: Color?
+    private val _primaryColor: PlatformColor?
     @get:AndroidColorInt
     override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
 
     @AndroidColorInt
-    private val _primaryTextColor: Color?
+    private val _primaryTextColor: PlatformColor?
     @get:AndroidColorInt
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
 
     @AndroidColorInt
-    private val _textColor: Color?
+    private val _textColor: PlatformColor?
     @get:AndroidColorInt
     override val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
 
     @AndroidColorInt
-    private val _cardTextColor: Color?
+    private val _cardTextColor: PlatformColor?
     @get:AndroidColorInt
     val cardTextColor get() = _cardTextColor ?: textColor
 
     @AndroidColorInt
-    private val _cardBackgroundColor: Color?
+    private val _cardBackgroundColor: PlatformColor?
     @get:AndroidColorInt
     val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
 
@@ -146,15 +146,15 @@ class TractPage : BaseModel, Styles {
     constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
-        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        @AndroidColorInt primaryColor: Color? = null,
+        @AndroidColorInt primaryColor: PlatformColor? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        textColor: Color? = null,
+        textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        cardBackgroundColor: Color? = null,
-        cardTextColor: Color? = null,
+        cardBackgroundColor: PlatformColor? = null,
+        cardTextColor: PlatformColor? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(manifest) {
