@@ -5,7 +5,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import kotlin.native.concurrent.SharedImmutable
 
 @SharedImmutable
-internal val COLOR_REGEX =
+private val COLOR_REGEX =
     Regex("^\\s*rgba\\(\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9.]+)\\s*\\)\\s*$")
 
 expect class Color
