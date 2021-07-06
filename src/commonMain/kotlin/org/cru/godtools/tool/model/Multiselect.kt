@@ -12,6 +12,7 @@ import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_STATE = "state"
 private const val XML_SELECTION_LIMIT = "selection-limit"
+private const val XML_OPTION_BACKGROUND_COLOR = "option-background-color"
 private const val XML_OPTION = "option"
 private const val XML_OPTION_VALUE = "value"
 
@@ -25,6 +26,9 @@ class Multiselect : Content {
     @VisibleForTesting
     internal val selectionLimit: Int
 
+    private val _optionBackgroundColor: PlatformColor?
+    private val optionBackgroundColor get() = _optionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
+
     val options: List<Option>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
@@ -32,6 +36,8 @@ class Multiselect : Content {
 
         stateName = parser.getAttributeValue(XML_STATE).orEmpty()
         selectionLimit = (parser.getAttributeValue(XML_SELECTION_LIMIT)?.toIntOrNull() ?: 1).coerceAtLeast(1)
+
+        _optionBackgroundColor = parser.getAttributeValue(XML_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
 
         options = mutableListOf()
         parser.parseChildren {
@@ -52,6 +58,7 @@ class Multiselect : Content {
     ) : super(parent) {
         this.stateName = stateName
         this.selectionLimit = selectionLimit
+        _optionBackgroundColor = null
         this.options = options?.invoke(this).orEmpty()
     }
 
@@ -59,6 +66,9 @@ class Multiselect : Content {
 
     class Option : Content, Parent {
         private val multiselect: Multiselect
+
+        private val _backgroundColor: PlatformColor?
+        val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
 
         @VisibleForTesting
         internal val value: String
@@ -69,6 +79,7 @@ class Multiselect : Content {
             this.multiselect = multiselect
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_OPTION)
 
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
             value = parser.getAttributeValue(XML_OPTION_VALUE).orEmpty()
 
             content = parseContent(parser)
@@ -77,6 +88,7 @@ class Multiselect : Content {
         @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(multiselect: Multiselect, value: String = "") : super(multiselect) {
             this.multiselect = multiselect
+            _backgroundColor = null
             this.value = value
             content = emptyList()
         }
@@ -97,3 +109,5 @@ class Multiselect : Content {
         }
     }
 }
+
+val Multiselect.Option?.backgroundColor get() = this?.backgroundColor ?: stylesParent.multiselectOptionBackgroundColor
