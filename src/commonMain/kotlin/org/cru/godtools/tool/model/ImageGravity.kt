@@ -4,7 +4,6 @@ import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import splitties.bitflags.minusFlag
 import splitties.bitflags.withFlag
-import kotlin.jvm.JvmInline
 
 private const val XML_START = "start"
 private const val XML_END = "end"
@@ -24,8 +23,7 @@ private const val BIT_CENTER = BIT_CENTER_X or BIT_CENTER_Y
 private const val MASK_X_AXIS = BIT_START or BIT_END or BIT_CENTER_X
 private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM or BIT_CENTER_Y
 
-@JvmInline
-value class ImageGravity(private val gravity: Int) {
+class ImageGravity(private val gravity: Int) {
     val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == BIT_CENTER
     val isCenterX get() = gravity and MASK_X_AXIS == BIT_CENTER_X
     val isCenterY get() = gravity and MASK_Y_AXIS == BIT_CENTER_Y
