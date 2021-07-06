@@ -9,19 +9,19 @@ interface Styles : Base {
     }
 
     @get:AndroidColorInt
-    val primaryColor: Color get() = stylesParent.primaryColor
+    val primaryColor: PlatformColor get() = stylesParent.primaryColor
     @get:AndroidColorInt
-    val primaryTextColor: Color get() = stylesParent.primaryTextColor
+    val primaryTextColor: PlatformColor get() = stylesParent.primaryTextColor
 
     // region Button styles
     val buttonStyle: Button.Style get() = stylesParent.buttonStyle
     @get:AndroidColorInt
-    val buttonColor: Color? get() = stylesParent?.buttonColor
+    val buttonColor: PlatformColor? get() = stylesParent?.buttonColor
     // endregion Button styles
 
     // region Text styles
     @get:AndroidColorInt
-    val textColor: Color get() = stylesParent.textColor
+    val textColor: PlatformColor get() = stylesParent.textColor
     val textScale: Double get() = stylesParent.textScale
     val textAlign: Text.Align get() = stylesParent.textAlign
     // endregion Text styles

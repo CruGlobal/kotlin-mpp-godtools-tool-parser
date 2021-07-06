@@ -30,4 +30,13 @@ class ColorTest {
         assertNull("rgba(0,0,0,-0.1)".toColorOrNull())
         assertNull("rgba(0,0,0,1.1)".toColorOrNull())
     }
+
+    @Test
+    fun testToRGB() {
+        assertEquals(TestColors.RED, TestColors.RED.toRGB().toPlatformColor())
+        assertEquals(TestColors.GREEN, TestColors.GREEN.toRGB().toPlatformColor())
+        assertEquals(TestColors.BLUE, TestColors.BLUE.toRGB().toPlatformColor())
+        assertEquals(TestColors.BLACK, TestColors.BLACK.toRGB().toPlatformColor())
+        assertEquals(TRANSPARENT, TRANSPARENT.toRGB().toPlatformColor())
+    }
 }

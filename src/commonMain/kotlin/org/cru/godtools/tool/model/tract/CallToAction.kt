@@ -4,8 +4,8 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.Color
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XML_EVENTS
 import org.cru.godtools.tool.model.parseTextChild
@@ -30,7 +30,7 @@ class CallToAction : BaseModel {
     val events: List<EventId>
 
     @AndroidColorInt
-    private val _controlColor: Color?
+    private val _controlColor: PlatformColor?
     @get:AndroidColorInt
     val controlColor get() = _controlColor ?: stylesParent.primaryColor
 
@@ -62,7 +62,7 @@ class CallToAction : BaseModel {
         page: TractPage = TractPage(),
         label: ((CallToAction) -> Text)? = null,
         events: List<EventId> = emptyList(),
-        @AndroidColorInt controlColor: Color? = null,
+        @AndroidColorInt controlColor: PlatformColor? = null,
         tip: String? = null
     ) : super(page) {
         this.page = page

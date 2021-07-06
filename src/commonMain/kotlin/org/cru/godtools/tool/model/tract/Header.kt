@@ -4,7 +4,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.Color
+import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
@@ -26,7 +26,7 @@ class Header : BaseModel, Styles {
     }
 
     @AndroidColorInt
-    private val _backgroundColor: Color?
+    private val _backgroundColor: PlatformColor?
     @get:AndroidColorInt
     internal val backgroundColor get() = _backgroundColor ?: primaryColor
 
@@ -63,7 +63,7 @@ class Header : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
-        backgroundColor: Color? = null,
+        backgroundColor: PlatformColor? = null,
         tip: String? = null
     ) : super(page) {
         _backgroundColor = backgroundColor

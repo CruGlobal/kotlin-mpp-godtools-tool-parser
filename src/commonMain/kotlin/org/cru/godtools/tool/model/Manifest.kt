@@ -100,43 +100,43 @@ class Manifest : BaseModel, Styles {
     val dismissListeners: Set<EventId>
 
     @AndroidColorInt
-    override val primaryColor: Color
+    override val primaryColor: PlatformColor
     @AndroidColorInt
-    override val primaryTextColor: Color
+    override val primaryTextColor: PlatformColor
 
     @AndroidColorInt
-    private val _navBarColor: Color?
+    private val _navBarColor: PlatformColor?
     @get:AndroidColorInt
     val navBarColor get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
     @AndroidColorInt
-    private val _navBarControlColor: Color?
+    private val _navBarControlColor: PlatformColor?
     @get:AndroidColorInt
     val navBarControlColor get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor
 
     @AndroidColorInt
-    val backgroundColor: Color
+    val backgroundColor: PlatformColor
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     val backgroundImageGravity: ImageGravity
     val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
-    private val _cardBackgroundColor: Color?
+    private val _cardBackgroundColor: PlatformColor?
     @get:AndroidColorInt
     val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
-    private val _categoryLabelColor: Color?
+    private val _categoryLabelColor: PlatformColor?
     @get:AndroidColorInt
     internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
 
     @AndroidColorInt
-    internal val lessonControlColor: Color
+    internal val lessonControlColor: PlatformColor
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
     @AndroidColorInt
-    override val textColor: Color
+    override val textColor: PlatformColor
     override val textScale: Double
 
     private val _title: Text?
@@ -219,15 +219,15 @@ class Manifest : BaseModel, Styles {
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
-        primaryColor: Color = DEFAULT_PRIMARY_COLOR,
-        primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
-        navBarColor: Color? = null,
-        navBarControlColor: Color? = null,
-        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
-        cardBackgroundColor: Color? = null,
-        categoryLabelColor: Color? = null,
-        lessonControlColor: Color = DEFAULT_LESSON_CONTROL_COLOR,
-        textColor: Color = DEFAULT_TEXT_COLOR,
+        primaryColor: PlatformColor = DEFAULT_PRIMARY_COLOR,
+        primaryTextColor: PlatformColor = DEFAULT_PRIMARY_TEXT_COLOR,
+        navBarColor: PlatformColor? = null,
+        navBarControlColor: PlatformColor? = null,
+        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
+        cardBackgroundColor: PlatformColor? = null,
+        categoryLabelColor: PlatformColor? = null,
+        lessonControlColor: PlatformColor = DEFAULT_LESSON_CONTROL_COLOR,
+        textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,

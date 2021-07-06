@@ -39,7 +39,7 @@ class Text : Content {
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
     @AndroidColorInt
-    private val _textColor: Color?
+    private val _textColor: PlatformColor?
     @get:AndroidColorInt
     val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
@@ -78,7 +78,7 @@ class Text : Content {
         parent: Base,
         text: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        @AndroidColorInt textColor: Color? = null,
+        @AndroidColorInt textColor: PlatformColor? = null,
         textAlign: Align? = null,
         textStyles: Set<Style> = emptySet(),
         startImage: String? = null,

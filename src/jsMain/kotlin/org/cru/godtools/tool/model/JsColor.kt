@@ -1,6 +1,12 @@
 package org.cru.godtools.tool.model
 
-actual typealias Color = String
+import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.RGB
+import com.github.ajalt.colormath.RenderCondition
+import com.github.ajalt.colormath.fromCss
+import com.github.ajalt.colormath.toCssRgb
 
-internal actual inline fun color(red: Int, green: Int, blue: Int, alpha: Double) =
-    "rgba($red,$green,$blue,$alpha)"
+actual typealias PlatformColor = String
+
+internal actual fun RGB.toPlatformColor() = toCssRgb(namedRgba = true, renderAlpha = RenderCondition.ALWAYS)
+internal actual fun PlatformColor.toRGB() = Color.fromCss(this).toRGB()
