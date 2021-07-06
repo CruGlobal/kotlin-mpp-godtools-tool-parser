@@ -14,19 +14,10 @@ expect class Color
 internal fun String.toColorOrNull(): Color? = COLOR_REGEX.matchEntire(this)?.let {
     try {
         val (red, green, blue, alpha) = it.destructured
-        unsafeColor(red.toInt(), green.toInt(), blue.toInt(), alpha.toDouble())
-    } catch (ignored: Exception) {
+        RGB(red.toInt(), green.toInt(), blue.toInt(), alpha.toFloat()).toColor()
+    } catch (ignored: IllegalArgumentException) {
         null
     }
-}
-
-@AndroidColorInt
-private fun unsafeColor(red: Int, green: Int, blue: Int, alpha: Double): Color {
-    require(red in 0..255) { "Invalid red value" }
-    require(green in 0..255) { "Invalid green value" }
-    require(blue in 0..255) { "Invalid green value" }
-    require(alpha in 0.0..1.0) { "Invalid alpha value" }
-    return color(red, green, blue, alpha)
 }
 
 @AndroidColorInt
