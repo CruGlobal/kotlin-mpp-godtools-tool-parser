@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import com.github.ajalt.colormath.RGB
 import org.cru.godtools.tool.internal.AndroidColorInt
 import kotlin.native.concurrent.SharedImmutable
 
@@ -30,3 +31,6 @@ private fun unsafeColor(red: Int, green: Int, blue: Int, alpha: Double): Color {
 
 @AndroidColorInt
 internal expect inline fun color(red: Int, green: Int, blue: Int, alpha: Double): Color
+
+internal expect fun Color.toRGB(): RGB
+internal fun RGB.toColor() = color(r, g, b, a.toDouble())
