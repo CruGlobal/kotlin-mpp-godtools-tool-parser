@@ -1,5 +1,6 @@
 [versions]
 androidx-annotation = "1.2.0"
+colormath = "2.1.0"
 fluidLocale = "0.9.6"
 jacoco = "0.8.7"
 ktlint = "0.41.0"
@@ -9,6 +10,7 @@ splitties = "3.0.0-beta01"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }

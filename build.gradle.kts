@@ -65,10 +65,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+
+                implementation(libs.colormath)
                 implementation(libs.fluidLocale)
                 implementation(libs.napier)
                 implementation(libs.splitties.bitflags)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
             }
         }
         val commonTest by getting {
