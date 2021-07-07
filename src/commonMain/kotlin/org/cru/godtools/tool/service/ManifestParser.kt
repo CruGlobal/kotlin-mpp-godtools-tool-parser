@@ -15,8 +15,6 @@ class ManifestParser(private val parserFactory: XmlPullParserFactory) {
         Result.Error.NotFound
     } catch (e: XmlPullParserException) {
         Result.Error.Corrupted
-    } catch (e: Exception) {
-        Result.Error()
     }
 }
 
