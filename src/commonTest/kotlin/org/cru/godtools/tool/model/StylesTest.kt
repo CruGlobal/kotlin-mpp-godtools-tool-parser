@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class StylesTest {
@@ -17,6 +18,9 @@ class StylesTest {
             override var primaryTextColor = TestColors.RED
 
             override lateinit var buttonStyle: Button.Style
+
+            override var multiselectOptionBackgroundColor = TestColors.RANDOM
+            override var multiselectOptionSelectedColor: PlatformColor? = null
 
             override var textAlign = Text.Align.END
             override var textColor = TestColors.RED
@@ -47,6 +51,20 @@ class StylesTest {
     }
 
     @Test
+    fun testStylesMultiselectOptionBackgroundColorFallback() {
+        assertEquals(parent.multiselectOptionBackgroundColor, child.multiselectOptionBackgroundColor)
+        assertEquals(parent.multiselectOptionBackgroundColor, (child as Styles?).multiselectOptionBackgroundColor)
+    }
+
+    @Test
+    fun testStylesMultiselectOptionSelectedColorFallback() {
+        parent.multiselectOptionSelectedColor = null
+        assertNull(child.multiselectOptionSelectedColor)
+        parent.multiselectOptionSelectedColor = TestColors.RANDOM
+        assertEquals(parent.multiselectOptionSelectedColor, child.multiselectOptionSelectedColor)
+    }
+
+    @Test
     fun testStylesTextAlignFallback() {
         parent.textAlign = Text.Align.CENTER
         assertEquals(Text.Align.CENTER, child.textAlign)
@@ -73,6 +91,7 @@ class StylesTest {
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, styles.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
         assertEquals(Manifest.DEFAULT_BUTTON_STYLE, styles.buttonStyle)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, styles.multiselectOptionBackgroundColor)
         assertEquals(Manifest.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
         assertEquals(DEFAULT_TEXT_SCALE, styles.textScale)

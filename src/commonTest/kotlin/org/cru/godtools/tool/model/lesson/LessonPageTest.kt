@@ -34,6 +34,8 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(1, page.content.size)
         assertIs<Text>(page.content[0])
         assertEquals("background.png", page._backgroundImage)
+        assertEquals(TestColors.RED, page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
         assertEquals(TestColors.RED, page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
         assertTrue(page.backgroundImageGravity.isEnd)
@@ -46,6 +48,8 @@ class LessonPageTest : UsesResources("model/lesson") {
         val manifest = Manifest()
         val page = parsePageXml("page_defaults.xml", manifest)
         assertEquals(manifest.lessonControlColor, page.controlColor)
+        assertEquals(manifest.multiselectOptionBackgroundColor, page.multiselectOptionBackgroundColor)
+        assertEquals(manifest.multiselectOptionSelectedColor, page.multiselectOptionSelectedColor)
         assertEquals(DEFAULT_TEXT_SCALE, page.textScale, 0.001)
         assertTrue(page.content.isEmpty())
     }

@@ -10,9 +10,12 @@ import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.XMLNS_CONTENT
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
@@ -64,6 +67,13 @@ class TractPage : BaseModel, Styles {
     val backgroundImageGravity: ImageGravity
     val backgroundImageScaleType: ImageScaleType
 
+    private val _multiselectOptionBackgroundColor: PlatformColor?
+    override val multiselectOptionBackgroundColor
+        get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
+    private val _multiselectOptionSelectedColor: PlatformColor?
+    override val multiselectOptionSelectedColor
+        get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
+
     val header: Header?
     val hero: Hero?
     val cards: List<Card>
@@ -113,6 +123,11 @@ class TractPage : BaseModel, Styles {
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+
+        _multiselectOptionBackgroundColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+        _multiselectOptionSelectedColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
@@ -169,6 +184,9 @@ class TractPage : BaseModel, Styles {
         _backgroundImage = backgroundImage
         this.backgroundImageGravity = backgroundImageGravity
         this.backgroundImageScaleType = backgroundImageScaleType
+
+        _multiselectOptionBackgroundColor = null
+        _multiselectOptionSelectedColor = null
 
         _textColor = textColor
         _textScale = textScale

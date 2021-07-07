@@ -29,8 +29,14 @@ class MultiselectTest : UsesResources() {
         assertEquals("quiz1", multiselect.stateName)
         assertEquals(2, multiselect.selectionLimit)
         assertEquals(3, multiselect.options.size)
+        with(multiselect.options[0]) {
+            assertEquals(TestColors.RED, backgroundColor)
+            assertEquals(TestColors.BLUE, selectedColor)
+        }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
+            assertEquals(TestColors.BLUE, backgroundColor)
+            assertEquals(TestColors.GREEN, selectedColor)
             assertEquals(1, content.size)
             with(assertIs<Text>(content.single())) {
                 assertEquals("Answer 2", text)
@@ -40,12 +46,15 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testParseMultiselectDefaults() = runBlockingTest {
-        val multiselect = Multiselect(Manifest(), getTestXmlParser("multiselect_defaults.xml"))
+        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.RANDOM)
+        val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
         assertEquals(1, multiselect.selectionLimit)
         assertEquals(1, multiselect.options.size)
         with(multiselect.options.single()) {
             assertEquals("valueAttr", value)
+            assertEquals(manifest.backgroundColor, backgroundColor)
+            assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)
             assertTrue(content.isEmpty())
         }
     }
@@ -167,5 +176,73 @@ class MultiselectTest : UsesResources() {
         assertEquals(listOf(EventId(name = "2"), EventId(name = "0")), eventId.resolve(state))
     }
 
-    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, "$it") }
+    @Test
+    fun testOptionBackgroundColorFallback() {
+        val parent = object : BaseModel(), Styles {
+            override val multiselectOptionBackgroundColor = TestColors.RANDOM
+        }
+        with(Multiselect.Option(Multiselect(parent))) {
+            assertEquals(parent.multiselectOptionBackgroundColor, backgroundColor)
+        }
+
+        val multiselectBackgroundColor = TestColors.RANDOM
+        val multiselect = Multiselect(parent, optionBackgroundColor = multiselectBackgroundColor)
+        with(Multiselect.Option(multiselect)) {
+            assertEquals(multiselectBackgroundColor, backgroundColor)
+        }
+
+        val optionBackgroundColor = TestColors.RANDOM
+        with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor)) {
+            assertEquals(optionBackgroundColor, backgroundColor)
+        }
+
+        // test with nullable receiver
+        with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor) as Multiselect.Option?) {
+            assertEquals(optionBackgroundColor, backgroundColor)
+        }
+
+        with(null as Multiselect.Option?) {
+            assertEquals(stylesParent.multiselectOptionBackgroundColor, backgroundColor)
+        }
+    }
+
+    @Test
+    fun testOptionSelectedColorFallback() {
+        val parent = object : BaseModel(), Styles {
+            override val primaryColor = color(255, 0, 0, 0.5)
+            override var multiselectOptionSelectedColor: PlatformColor? = null
+        }
+
+        // 40% lighter primary color w/ 100% alpha
+        with(Multiselect.Option(Multiselect(parent))) {
+            assertEquals(color(255, 204, 204, 1.0), selectedColor)
+        }
+
+        parent.multiselectOptionSelectedColor = TestColors.RANDOM
+        with(Multiselect.Option(Multiselect(parent))) {
+            assertEquals(parent.multiselectOptionSelectedColor, selectedColor)
+        }
+
+        val multiselectSelectedColor = TestColors.RANDOM
+        val multiselect = Multiselect(parent, optionSelectedColor = multiselectSelectedColor)
+        with(Multiselect.Option(multiselect)) {
+            assertEquals(multiselectSelectedColor, selectedColor)
+        }
+
+        val optionSelectedColor = TestColors.RANDOM
+        with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor)) {
+            assertEquals(optionSelectedColor, selectedColor)
+        }
+
+        // test with nullable receiver
+        with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor) as Multiselect.Option?) {
+            assertEquals(optionSelectedColor, selectedColor)
+        }
+
+        with(null as Multiselect.Option?) {
+            assertEquals(stylesParent.defaultSelectedColor, selectedColor)
+        }
+    }
+
+    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, value = "$it") }
 }

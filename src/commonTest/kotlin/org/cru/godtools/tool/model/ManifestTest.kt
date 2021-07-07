@@ -39,6 +39,9 @@ class ManifestTest : UsesResources() {
         assertEquals(manifest.textColor, manifest.categoryLabelColor)
         assertEquals(DEFAULT_LESSON_CONTROL_COLOR, manifest.lessonControlColor)
 
+        assertEquals(manifest.backgroundColor, manifest.multiselectOptionBackgroundColor)
+        assertNull(manifest.multiselectOptionSelectedColor)
+
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
         assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
         assertEquals(0, manifest.aemImports.size)
@@ -75,6 +78,10 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.Type.LESSON, manifest.type)
         assertEquals(TestColors.RED, manifest.lessonControlColor)
         assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
+
+        assertEquals(TestColors.RED, manifest.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN, manifest.multiselectOptionSelectedColor)
+
         assertTrue(manifest.tractPages.isEmpty())
         assertEquals(1, manifest.lessonPages.size)
         assertEquals("page0.xml", manifest.lessonPages[0].fileName)

@@ -18,12 +18,22 @@ private const val XML_OPTION_VALUE = "value"
 class Multiselect : Content {
     internal companion object {
         internal const val XML_MULTISELECT = "multiselect"
+
+        internal const val XML_MULTISELECT_OPTION_BACKGROUND_COLOR = "multiselect-option-background-color"
+        internal const val XML_MULTISELECT_OPTION_SELECTED_COLOR = "multiselect-option-selected-color"
+        private const val XML_OPTION_BACKGROUND_COLOR = "option-background-color"
+        private const val XML_OPTION_SELECTED_COLOR = "option-selected-color"
     }
 
     @VisibleForTesting
     internal val stateName: String
     @VisibleForTesting
     internal val selectionLimit: Int
+
+    private val _optionBackgroundColor: PlatformColor?
+    private val optionBackgroundColor get() = _optionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
+    private val _optionSelectedColor: PlatformColor?
+    private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
     val options: List<Option>
 
@@ -32,6 +42,9 @@ class Multiselect : Content {
 
         stateName = parser.getAttributeValue(XML_STATE).orEmpty()
         selectionLimit = (parser.getAttributeValue(XML_SELECTION_LIMIT)?.toIntOrNull() ?: 1).coerceAtLeast(1)
+
+        _optionBackgroundColor = parser.getAttributeValue(XML_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+        _optionSelectedColor = parser.getAttributeValue(XML_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
         options = mutableListOf()
         parser.parseChildren {
@@ -48,17 +61,30 @@ class Multiselect : Content {
         parent: Base = Manifest(),
         stateName: String = "",
         selectionLimit: Int = 1,
+        optionBackgroundColor: PlatformColor? = null,
+        optionSelectedColor: PlatformColor? = null,
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
         this.stateName = stateName
         this.selectionLimit = selectionLimit
+        _optionBackgroundColor = optionBackgroundColor
+        _optionSelectedColor = optionSelectedColor
         this.options = options?.invoke(this).orEmpty()
     }
 
     override val isIgnored get() = FEATURE_MULTISELECT !in ParserConfig.supportedFeatures || super.isIgnored
 
     class Option : Content, Parent {
+        private companion object {
+            private const val XML_SELECTED_COLOR = "selected-color"
+        }
+
         private val multiselect: Multiselect
+
+        private val _backgroundColor: PlatformColor?
+        val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
+        private val _selectedColor: PlatformColor?
+        val selectedColor get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
 
         @VisibleForTesting
         internal val value: String
@@ -69,14 +95,24 @@ class Multiselect : Content {
             this.multiselect = multiselect
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_OPTION)
 
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
+            _selectedColor = parser.getAttributeValue(XML_SELECTED_COLOR)?.toColorOrNull()
+
             value = parser.getAttributeValue(XML_OPTION_VALUE).orEmpty()
 
             content = parseContent(parser)
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(multiselect: Multiselect, value: String = "") : super(multiselect) {
+        internal constructor(
+            multiselect: Multiselect,
+            backgroundColor: PlatformColor? = null,
+            selectedColor: PlatformColor? = null,
+            value: String = ""
+        ) : super(multiselect) {
             this.multiselect = multiselect
+            _backgroundColor = backgroundColor
+            _selectedColor = selectedColor
             this.value = value
             content = emptyList()
         }
@@ -97,3 +133,10 @@ class Multiselect : Content {
         }
     }
 }
+
+val Multiselect.Option?.backgroundColor get() = this?.backgroundColor ?: stylesParent.multiselectOptionBackgroundColor
+val Multiselect.Option?.selectedColor get() = this?.selectedColor ?: stylesParent.defaultSelectedColor
+
+@VisibleForTesting
+internal val Styles?.defaultSelectedColor
+    get() = primaryColor.toHSL().run { copy(a = 1f, l = l + 40) }.toPlatformColor()
