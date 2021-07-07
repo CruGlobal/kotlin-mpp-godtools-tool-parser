@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class StylesTest {
@@ -19,6 +20,7 @@ class StylesTest {
             override lateinit var buttonStyle: Button.Style
 
             override var multiselectOptionBackgroundColor = TestColors.RANDOM
+            override var multiselectOptionSelectedColor: PlatformColor? = null
 
             override var textAlign = Text.Align.END
             override var textColor = TestColors.RED
@@ -52,6 +54,14 @@ class StylesTest {
     fun testStylesMultiselectOptionBackgroundColorFallback() {
         assertEquals(parent.multiselectOptionBackgroundColor, child.multiselectOptionBackgroundColor)
         assertEquals(parent.multiselectOptionBackgroundColor, (child as Styles?).multiselectOptionBackgroundColor)
+    }
+
+    @Test
+    fun testStylesMultiselectOptionSelectedColorFallback() {
+        parent.multiselectOptionSelectedColor = null
+        assertNull(child.multiselectOptionSelectedColor)
+        parent.multiselectOptionSelectedColor = TestColors.RANDOM
+        assertEquals(parent.multiselectOptionSelectedColor, child.multiselectOptionSelectedColor)
     }
 
     @Test
