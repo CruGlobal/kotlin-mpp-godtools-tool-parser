@@ -11,10 +11,13 @@ import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.XMLNS_CONTENT
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
@@ -71,6 +74,13 @@ class LessonPage : BaseModel, Parent, Styles {
     @get:AndroidColorInt
     val controlColor get() = _controlColor ?: manifest.lessonControlColor
 
+    private val _multiselectOptionBackgroundColor: PlatformColor?
+    override val multiselectOptionBackgroundColor
+        get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
+    private val _multiselectOptionSelectedColor: PlatformColor?
+    override val multiselectOptionSelectedColor
+        get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
+
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
 
@@ -96,6 +106,11 @@ class LessonPage : BaseModel, Parent, Styles {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
+
+        _multiselectOptionBackgroundColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+        _multiselectOptionSelectedColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
@@ -132,6 +147,9 @@ class LessonPage : BaseModel, Parent, Styles {
         this.backgroundImageScaleType = backgroundImageScaleType
 
         _controlColor = controlColor
+
+        _multiselectOptionBackgroundColor = null
+        _multiselectOptionSelectedColor = null
 
         _textScale = textScale
 
