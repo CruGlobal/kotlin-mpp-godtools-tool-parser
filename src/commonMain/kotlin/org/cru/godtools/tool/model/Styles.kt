@@ -22,6 +22,8 @@ interface Styles : Base {
     // region Multiselect styles
     @get:AndroidColorInt
     val multiselectOptionBackgroundColor: PlatformColor get() = stylesParent.multiselectOptionBackgroundColor
+    @get:AndroidColorInt
+    val multiselectOptionSelectedColor: PlatformColor? get() = stylesParent?.multiselectOptionSelectedColor
     // endregion Multiselect styles
 
     // region Text styles

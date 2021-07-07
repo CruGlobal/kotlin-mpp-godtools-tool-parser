@@ -31,10 +31,12 @@ class MultiselectTest : UsesResources() {
         assertEquals(3, multiselect.options.size)
         with(multiselect.options[0]) {
             assertEquals(TestColors.RED, backgroundColor)
+            assertEquals(TestColors.BLUE, selectedColor)
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
             assertEquals(TestColors.BLUE, backgroundColor)
+            assertEquals(TestColors.GREEN, selectedColor)
             assertEquals(1, content.size)
             with(assertIs<Text>(content.single())) {
                 assertEquals("Answer 2", text)
