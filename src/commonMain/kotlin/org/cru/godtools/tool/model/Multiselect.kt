@@ -19,6 +19,8 @@ class Multiselect : Content {
     internal companion object {
         internal const val XML_MULTISELECT = "multiselect"
 
+        internal const val XML_MULTISELECT_OPTION_BACKGROUND_COLOR = "multiselect-option-background-color"
+        internal const val XML_MULTISELECT_OPTION_SELECTED_COLOR = "multiselect-option-selected-color"
         private const val XML_OPTION_BACKGROUND_COLOR = "option-background-color"
         private const val XML_OPTION_SELECTED_COLOR = "option-selected-color"
     }

@@ -11,6 +11,8 @@ import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
@@ -135,6 +137,11 @@ class Manifest : BaseModel, Styles {
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
+    private val _multiselectOptionBackgroundColor: PlatformColor?
+    override val multiselectOptionBackgroundColor
+        get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
+    override val multiselectOptionSelectedColor: PlatformColor?
+
     @AndroidColorInt
     override val textColor: PlatformColor
     override val textScale: Double
@@ -184,6 +191,11 @@ class Manifest : BaseModel, Styles {
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         lessonControlColor =
             parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
+
+        _multiselectOptionBackgroundColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+        multiselectOptionSelectedColor =
+            parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
         textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
         textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
@@ -253,6 +265,9 @@ class Manifest : BaseModel, Styles {
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor
         this.lessonControlColor = lessonControlColor
+
+        _multiselectOptionBackgroundColor = null
+        multiselectOptionSelectedColor = null
 
         this.textColor = textColor
         this.textScale = textScale
