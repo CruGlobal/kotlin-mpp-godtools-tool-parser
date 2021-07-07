@@ -12,17 +12,17 @@ class ManifestParser(private val parserFactory: XmlPullParserFactory) {
         }
         Result.Data(manifest)
     } catch (e: FileNotFoundException) {
-        Result.Error.NotFound
+        Result.Error.NotFound(e)
     } catch (e: XmlPullParserException) {
-        Result.Error.Corrupted
+        Result.Error.Corrupted(e)
     }
 }
 
 sealed class Result {
     class Data(val manifest: Manifest) : Result()
 
-    open class Error : Result() {
-        object Corrupted : Error()
-        object NotFound : Error()
+    open class Error internal constructor(val error: Exception? = null) : Result() {
+        class Corrupted internal constructor(e: Exception? = null) : Error(e)
+        class NotFound internal constructor(e: Exception? = null) : Error(e)
     }
 }
