@@ -21,8 +21,8 @@ internal const val DP = 0
 // endregion Android Annotations
 
 // region IOException
-internal expect open class IOException() : Exception
-internal expect class FileNotFoundException() : IOException
+internal expect open class IOException(message: String? = null) : Exception
+internal expect class FileNotFoundException(message: String? = null) : IOException
 // endregion IOException
 
 // region Parcelable/kotlin-parcelize
