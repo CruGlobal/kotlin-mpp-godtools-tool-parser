@@ -62,12 +62,13 @@ class Multiselect : Content {
         stateName: String = "",
         selectionLimit: Int = 1,
         optionBackgroundColor: PlatformColor? = null,
+        optionSelectedColor: PlatformColor? = null,
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
         this.stateName = stateName
         this.selectionLimit = selectionLimit
         _optionBackgroundColor = optionBackgroundColor
-        _optionSelectedColor = null
+        _optionSelectedColor = optionSelectedColor
         this.options = options?.invoke(this).orEmpty()
     }
 
@@ -106,11 +107,12 @@ class Multiselect : Content {
         internal constructor(
             multiselect: Multiselect,
             backgroundColor: PlatformColor? = null,
+            selectedColor: PlatformColor? = null,
             value: String = ""
         ) : super(multiselect) {
             this.multiselect = multiselect
             _backgroundColor = backgroundColor
-            _selectedColor = null
+            _selectedColor = selectedColor
             this.value = value
             content = emptyList()
         }
@@ -135,4 +137,6 @@ class Multiselect : Content {
 val Multiselect.Option?.backgroundColor get() = this?.backgroundColor ?: stylesParent.multiselectOptionBackgroundColor
 val Multiselect.Option?.selectedColor get() = this?.selectedColor ?: stylesParent.defaultSelectedColor
 
-private val Styles?.defaultSelectedColor get() = primaryColor.toHSL().run { copy(a = 1f, l = l + 40) }.toPlatformColor()
+@VisibleForTesting
+internal val Styles?.defaultSelectedColor
+    get() = primaryColor.toHSL().run { copy(a = 1f, l = l + 40) }.toPlatformColor()
