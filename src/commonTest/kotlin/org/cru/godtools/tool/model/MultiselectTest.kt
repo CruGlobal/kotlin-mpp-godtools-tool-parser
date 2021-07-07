@@ -46,7 +46,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testParseMultiselectDefaults() = runBlockingTest {
-        val manifest = Manifest()
+        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.RANDOM)
         val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
         assertEquals(1, multiselect.selectionLimit)
@@ -54,6 +54,7 @@ class MultiselectTest : UsesResources() {
         with(multiselect.options.single()) {
             assertEquals("valueAttr", value)
             assertEquals(manifest.backgroundColor, backgroundColor)
+            assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)
             assertTrue(content.isEmpty())
         }
     }

@@ -239,6 +239,7 @@ class Manifest : BaseModel, Styles {
         cardBackgroundColor: PlatformColor? = null,
         categoryLabelColor: PlatformColor? = null,
         lessonControlColor: PlatformColor = DEFAULT_LESSON_CONTROL_COLOR,
+        multiselectOptionSelectedColor: PlatformColor? = null,
         textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
@@ -267,7 +268,7 @@ class Manifest : BaseModel, Styles {
         this.lessonControlColor = lessonControlColor
 
         _multiselectOptionBackgroundColor = null
-        multiselectOptionSelectedColor = null
+        this.multiselectOptionSelectedColor = multiselectOptionSelectedColor
 
         this.textColor = textColor
         this.textScale = textScale
