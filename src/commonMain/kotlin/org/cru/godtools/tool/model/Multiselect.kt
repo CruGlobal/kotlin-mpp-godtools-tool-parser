@@ -61,11 +61,12 @@ class Multiselect : Content {
         parent: Base = Manifest(),
         stateName: String = "",
         selectionLimit: Int = 1,
+        optionBackgroundColor: PlatformColor? = null,
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
         this.stateName = stateName
         this.selectionLimit = selectionLimit
-        _optionBackgroundColor = null
+        _optionBackgroundColor = optionBackgroundColor
         _optionSelectedColor = null
         this.options = options?.invoke(this).orEmpty()
     }
@@ -102,9 +103,13 @@ class Multiselect : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(multiselect: Multiselect, value: String = "") : super(multiselect) {
+        internal constructor(
+            multiselect: Multiselect,
+            backgroundColor: PlatformColor? = null,
+            value: String = ""
+        ) : super(multiselect) {
             this.multiselect = multiselect
-            _backgroundColor = null
+            _backgroundColor = backgroundColor
             _selectedColor = null
             this.value = value
             content = emptyList()

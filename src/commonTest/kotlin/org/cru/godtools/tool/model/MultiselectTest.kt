@@ -176,5 +176,26 @@ class MultiselectTest : UsesResources() {
         assertEquals(listOf(EventId(name = "2"), EventId(name = "0")), eventId.resolve(state))
     }
 
-    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, "$it") }
+    @Test
+    fun testOptionBackgroundColorFallback() {
+        val parent = object : BaseModel(), Styles {
+            override val multiselectOptionBackgroundColor = TestColors.RANDOM
+        }
+        with(Multiselect.Option(Multiselect(parent))) {
+            assertEquals(parent.multiselectOptionBackgroundColor, backgroundColor)
+        }
+
+        val multiselectBackgroundColor = TestColors.RANDOM
+        val multiselect = Multiselect(parent, optionBackgroundColor = multiselectBackgroundColor)
+        with(Multiselect.Option(multiselect)) {
+            assertEquals(multiselectBackgroundColor, backgroundColor)
+        }
+
+        val optionBackgroundColor = TestColors.RANDOM
+        with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor)) {
+            assertEquals(optionBackgroundColor, backgroundColor)
+        }
+    }
+
+    private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, value = "$it") }
 }
