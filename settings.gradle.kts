@@ -14,3 +14,5 @@ pluginManagement {
 }
 rootProject.name = "godtools-tool-parser"
 enableFeaturePreview("VERSION_CATALOGS")
+
+include("godtools-tool-parser")
