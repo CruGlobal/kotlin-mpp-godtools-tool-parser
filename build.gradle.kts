@@ -20,15 +20,18 @@ version = "0.2.0-SNAPSHOT"
 
 val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
 
-repositories {
-    google()
-    mavenCentral()
-    jcenter {
-        content {
-            includeGroup("com.louiscad.splitties")
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter {
+            content {
+                includeGroup("com.louiscad.splitties")
+            }
         }
     }
 }
+
 kotlin {
     android {
         publishLibraryVariants("debug", "release")
