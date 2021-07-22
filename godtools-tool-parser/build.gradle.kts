@@ -10,8 +10,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
-version = rootProject.version
-
 val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
 
 kotlin {
