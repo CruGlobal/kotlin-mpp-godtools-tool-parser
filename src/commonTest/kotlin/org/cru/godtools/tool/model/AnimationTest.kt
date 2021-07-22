@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_ANIMATION
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -31,5 +33,16 @@ class AnimationTest : UsesResources() {
         assertEquals(EventId.parse("event1 event2"), animation.events)
         assertEquals(EventId.parse("event1").toSet(), animation.playListeners)
         assertEquals(EventId.parse("event2").toSet(), animation.stopListeners)
+    }
+
+    @Test
+    fun testIsIgnored() {
+        val animation = Animation()
+
+        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
+        assertFalse(animation.isIgnored)
+
+        ParserConfig.supportedFeatures = emptySet()
+        assertTrue(animation.isIgnored)
     }
 }
