@@ -1,4 +1,3 @@
-import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
@@ -6,7 +5,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     id("com.android.library")
     id("maven-publish")
     id("org.jetbrains.kotlin.plugin.parcelize")
@@ -89,15 +87,6 @@ kotlin {
         }
     }
 
-    cocoapods {
-        summary = "GodTools tool parser"
-        license = "MIT"
-        homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
-
-        frameworkName = "GodToolsToolParser"
-
-        ios.deploymentTarget = "11.0"
-    }
     publishing {
         repositories {
             maven {
@@ -132,62 +121,6 @@ android {
         val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
-
-// region Cocoapods
-// HACK: customize the podspec until KT-42105 is implemented
-//       https://youtrack.jetbrains.com/issue/KT-42105
-tasks.podspec.configure {
-    doLast {
-        // we can't use the grgit extension val because it won't be present if the .git directory is missing
-        val grgit = project.extensions.findByName("grgit") as? Grgit
-        val podspec = file("${project.name.replace("-", "_")}.podspec")
-        val newPodspecContent = podspec.readLines().map {
-            when {
-                grgit != null && it.contains("spec.source") -> {
-                    val ref = when {
-                        isSnapshotVersion -> ":commit => \"${grgit.head().id}\""
-                        else -> ":tag => \"v${project.version}\""
-                    }
-                    """
-                        |#$it
-                        |    spec.source                   = {
-                        |                                      :git => "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser.git",
-                        |                                      $ref
-                        |                                    }
-                    """.trimMargin()
-                }
-                it.contains("vendored_frameworks") -> """
-                    |$it
-                    |    spec.prepare_command          = "./gradlew generateDummyFramework"
-                """.trimMargin()
-                it == "end" -> """
-                    |    spec.preserve_paths           = "**/*.*"
-                    |$it
-                """.trimMargin()
-
-                // HACK: force CONFIGURATION to be debug or release only.
-                //       other values are not currently supported by the kotlin cocoapods plugin
-                it.contains("syncFramework") -> """
-                    |if [[ ${'$'}(echo ${'$'}CONFIGURATION | tr '[:upper:]' '[:lower:]') = 'debug' ]]
-                    |then
-                    |    SANITIZED_CONFIGURATION=debug
-                    |else
-                    |    SANITIZED_CONFIGURATION=release
-                    |fi
-                    |$it
-                """.trimMargin()
-                it.contains("\$CONFIGURATION") -> it.replace("CONFIGURATION", "SANITIZED_CONFIGURATION")
-
-                else -> it
-            }
-        }
-        podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
-    }
-}
-tasks.create("cleanPodspec", Delete::class) {
-    delete("${project.name.replace('-', '_')}.podspec")
-}.also { tasks.clean.configure { dependsOn(it) } }
-// endregion Cocoapods
 
 // region iOS Test Resources
 // HACK: workaround https://youtrack.jetbrains.com/issue/KT-37818
