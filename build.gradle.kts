@@ -1,4 +1,5 @@
 import org.ajoberstar.grgit.Grgit
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 
 plugins {
     kotlin("multiplatform") version "1.5.20"
@@ -31,10 +32,16 @@ kotlin {
     // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
     //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
     //       This should be able to go away when we upgrade to Kotlin 1.5.30
-//    ios { copyTestResources() }
+//    ios()
     when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
         else -> iosX64("ios")
+    }.apply {
+        binaries {
+            withType(Framework::class.java).configureEach {
+                export(project(":godtools-tool-parser"))
+            }
+        }
     }
 
     sourceSets {
