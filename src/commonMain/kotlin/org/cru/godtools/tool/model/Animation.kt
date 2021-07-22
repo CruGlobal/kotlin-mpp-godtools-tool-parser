@@ -1,5 +1,8 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_ANIMATION
+import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
@@ -39,4 +42,16 @@ class Animation : Content {
 
         parser.skipTag()
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor() : super(Manifest()) {
+        resourceName = null
+        loop = true
+        autoPlay = true
+        events = emptyList()
+        playListeners = emptySet()
+        stopListeners = emptySet()
+    }
+
+    override val isIgnored get() = FEATURE_ANIMATION !in ParserConfig.supportedFeatures || super.isIgnored
 }
