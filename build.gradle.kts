@@ -128,7 +128,7 @@ junitJacoco {
         "**/SaxXmlPullParser*"
     )
 }
-allprojects {
+subprojects {
     apply(plugin = "org.gradle.jacoco")
     tasks.withType(Test::class.java) {
         extensions.configure(JacocoTaskExtension::class.java) {
