@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "org.cru.godtools.kotlin"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.1"
 
 val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
 
