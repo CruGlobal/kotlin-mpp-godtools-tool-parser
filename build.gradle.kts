@@ -12,8 +12,6 @@ plugins {
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
 }
 
-val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
-
 allprojects {
     group = "org.cru.godtools.kotlin"
     version = "0.2.0-SNAPSHOT"

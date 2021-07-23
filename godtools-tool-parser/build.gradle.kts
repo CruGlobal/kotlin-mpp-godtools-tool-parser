@@ -9,8 +9,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
-val isSnapshotVersion get() = version.toString().endsWith("-SNAPSHOT")
-
 kotlin {
     android {
         publishLibraryVariants("debug", "release")
