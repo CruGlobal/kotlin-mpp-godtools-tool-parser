@@ -40,11 +40,11 @@ class StateTest {
             .launchIn(this)
 
         // initial value
-        assertEquals("test", channel.receive(100))
+        assertEquals("test", channel.receive(500))
 
         // update state for monitored key
         state["test"] = "a"
-        assertEquals("test", channel.receive(100))
+        assertEquals("test", channel.receive(500))
 
         // update state for a different key
         state["other"] = "a"

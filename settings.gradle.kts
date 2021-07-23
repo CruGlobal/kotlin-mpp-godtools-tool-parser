@@ -12,5 +12,7 @@ pluginManagement {
         }
     }
 }
-rootProject.name = "godtools-tool-parser"
+rootProject.name = "GodtoolsToolParser"
 enableFeaturePreview("VERSION_CATALOGS")
+
+include("godtools-tool-parser")
