@@ -5,7 +5,7 @@ plugins {
     kotlin("multiplatform") version "1.5.20"
     kotlin("native.cocoapods") version "1.5.20"
     id("com.android.library") apply false
-    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.20" apply false
+    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.21" apply false
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
