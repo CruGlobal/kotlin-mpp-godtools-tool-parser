@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("maven-publish")
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
@@ -81,23 +80,6 @@ kotlin {
             dependencies {
                 implementation(libs.okio.js)
                 implementation(libs.okio.nodefilesystem)
-            }
-        }
-    }
-
-    publishing {
-        repositories {
-            maven {
-                name = "cruGlobalMavenRepository"
-                setUrl(
-                    when {
-                        isSnapshotVersion ->
-                            "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/"
-                        else -> "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/"
-                    }
-                )
-
-                credentials(PasswordCredentials::class)
             }
         }
     }
