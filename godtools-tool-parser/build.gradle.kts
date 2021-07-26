@@ -15,6 +15,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":godtools-tool-state"))
+
                 implementation(kotlin("stdlib"))
                 implementation(libs.kotlin.coroutines.core)
 
