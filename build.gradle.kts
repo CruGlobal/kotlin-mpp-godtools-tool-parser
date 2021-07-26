@@ -2,11 +2,9 @@ import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 
 plugins {
-    kotlin("multiplatform") version "1.5.20"
-    kotlin("native.cocoapods") version "1.5.20"
+    kotlin("multiplatform")
+    kotlin("native.cocoapods")
     `maven-publish`
-    id("com.android.library") apply false
-    id("org.jetbrains.kotlin.plugin.parcelize") version "1.5.20" apply false
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
@@ -28,14 +26,7 @@ allprojects {
 }
 
 kotlin {
-    // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
-    //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
-    //       This should be able to go away when we upgrade to Kotlin 1.5.30
-//    ios()
-    when {
-        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
-        else -> iosX64("ios")
-    }.apply {
+    configureIosTargets {
         binaries {
             withType(Framework::class.java).configureEach {
                 export(project(":godtools-tool-parser"))
