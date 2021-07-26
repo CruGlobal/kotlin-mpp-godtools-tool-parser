@@ -4,6 +4,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
+android {
+    configureSdk()
+    configureSourceSets()
+}
+
 kotlin {
     configureTargets()
 
@@ -46,22 +51,5 @@ kotlin {
                 implementation(libs.okio.nodefilesystem)
             }
         }
-    }
-}
-
-android {
-    compileSdkVersion(30)
-    defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
-    }
-
-    sourceSets {
-        val main by getting { setRoot("src/androidMain") }
-        val test by getting {
-            setRoot("src/androidTest")
-            resources.srcDir("src/commonTest/resources")
-        }
-        val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
