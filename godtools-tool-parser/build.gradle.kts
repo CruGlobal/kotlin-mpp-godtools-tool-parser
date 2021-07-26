@@ -5,11 +5,7 @@ plugins {
 }
 
 kotlin {
-    android {
-        publishLibraryVariants("debug", "release")
-    }
-    configureIosTargets()
-    configureJsTargets()
+    configureTargets()
 
     sourceSets {
         val commonMain by getting {

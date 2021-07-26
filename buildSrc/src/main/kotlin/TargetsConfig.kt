@@ -4,6 +4,18 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 
+fun KotlinMultiplatformExtension.configureTargets() {
+    configureAndroidTargets()
+    configureIosTargets()
+    configureJsTargets()
+}
+
+fun KotlinMultiplatformExtension.configureAndroidTargets() {
+    android {
+        publishLibraryVariants("debug", "release")
+    }
+}
+
 fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarget.() -> Unit = {}) {
     // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
     //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
