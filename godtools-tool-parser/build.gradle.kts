@@ -17,22 +17,6 @@ kotlin {
         nodejs { copyTestResources() }
     }
 
-    // enable running ios tests on a background thread as well
-    // configuration copied from: https://github.com/square/okio/pull/929
-    targets.withType<KotlinNativeTargetWithTests<*>> {
-        binaries {
-            // Configure a separate test where code runs in background
-            test("background", setOf(DEBUG)) {
-                freeCompilerArgs += "-trw"
-            }
-        }
-        testRuns {
-            val background by creating {
-                setExecutionSourceFrom(binaries.getByName("backgroundDebugTest") as TestExecutable)
-            }
-        }
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {

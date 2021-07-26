@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarget.() -> Unit = {}) {
@@ -13,6 +14,20 @@ fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarg
     }
     target.copyTestResources()
     target.configure()
+
+    // enable running ios tests on a background thread as well
+    // configuration copied from: https://github.com/square/okio/pull/929
+    targets.withType(KotlinNativeTargetWithTests::class.java) {
+        binaries {
+            // Configure a separate test where code runs in background
+            test("background", setOf(DEBUG)) {
+                freeCompilerArgs += "-trw"
+            }
+        }
+        testRuns.create("background") {
+            setExecutionSourceFrom(binaries.getByName("backgroundDebugTest") as TestExecutable)
+        }
+    }
 }
 
 // region iOS Test Resources
