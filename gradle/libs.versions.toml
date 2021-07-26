@@ -3,6 +3,7 @@ androidx-annotation = "1.2.0"
 colormath = "2.1.0"
 fluidLocale = "0.9.6"
 jacoco = "0.8.7"
+kotlin = "1.5.21"
 ktlint = "0.41.0"
 napier = "1.5.0"
 okio = "3.0.0-alpha.5"
@@ -12,6 +13,7 @@ splitties = "3.0.0-beta01"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem-js", version.ref = "okio" }
