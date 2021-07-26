@@ -25,15 +25,6 @@ internal expect open class IOException(message: String? = null) : Exception
 internal expect class FileNotFoundException(message: String? = null) : IOException
 // endregion IOException
 
-// region Parcelable/kotlin-parcelize
-@OptIn(ExperimentalMultiplatform::class)
-@OptionalExpectation
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.BINARY)
-expect annotation class Parcelize()
-expect interface Parcelable
-// endregion Parcelable/kotlin-parcelize
-
 // region Testing Annotations
 @OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
