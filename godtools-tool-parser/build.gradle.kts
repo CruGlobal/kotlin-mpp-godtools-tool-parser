@@ -16,7 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation(libs.kotlin.coroutines.core)
 
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
