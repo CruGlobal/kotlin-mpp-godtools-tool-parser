@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
-import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -13,9 +9,7 @@ kotlin {
         publishLibraryVariants("debug", "release")
     }
     configureIosTargets()
-    js {
-        nodejs { copyTestResources() }
-    }
+    configureJsTargets()
 
     sourceSets {
         val commonMain by getting {
@@ -75,18 +69,3 @@ android {
         val androidTest by getting { setRoot("src/androidAndroidTest") }
     }
 }
-
-// region Js Test Resources
-fun KotlinJsSubTargetDsl.copyTestResources() {
-    testTask {
-        val compileTask = compilation.compileKotlinTaskProvider.get()
-        compileTask.doLast {
-            // TODO: copy resources out of processedResources instead.
-            project.file("src/commonTest/resources").copyRecursively(
-                target = compileTask.outputFileProperty.get().resolve("../../resources").normalize(),
-                overwrite = true
-            )
-        }
-    }
-}
-// endregion Js Test Resources

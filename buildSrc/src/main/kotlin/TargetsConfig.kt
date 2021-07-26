@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 
 fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarget.() -> Unit = {}) {
     // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
@@ -30,6 +31,12 @@ fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarg
     }
 }
 
+fun KotlinMultiplatformExtension.configureJsTargets() {
+    js {
+        nodejs { copyTestResources() }
+    }
+}
+
 // region iOS Test Resources
 // HACK: workaround https://youtrack.jetbrains.com/issue/KT-37818
 //       based on logic found here: https://github.com/icerockdev/moko-resources/pull/107/files
@@ -46,3 +53,18 @@ private fun KotlinNativeTarget.copyTestResources() {
         }
 }
 // endregion iOS Test Resources
+
+// region Js Test Resources
+private fun KotlinJsSubTargetDsl.copyTestResources() {
+    testTask {
+        val compileTask = compilation.compileKotlinTaskProvider.get()
+        compileTask.doLast {
+            // TODO: copy resources out of processedResources instead.
+            project.file("src/commonTest/resources").copyRecursively(
+                target = compileTask.outputFileProperty.get().resolve("../../resources").normalize(),
+                overwrite = true
+            )
+        }
+    }
+}
+// endregion Js Test Resources
