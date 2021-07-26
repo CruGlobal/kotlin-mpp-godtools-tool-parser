@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
@@ -143,25 +142,3 @@ allprojects {
     }
 }
 // endregion KtLint
-
-// region Publishing
-subprojects {
-    apply(plugin = "maven-publish")
-    publishing {
-        repositories {
-            maven {
-                name = "cruGlobalMavenRepository"
-                setUrl(
-                    when {
-                        isSnapshotVersion ->
-                            "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/"
-                        else -> "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/"
-                    }
-                )
-
-                credentials(PasswordCredentials::class)
-            }
-        }
-    }
-}
-// endregion Publishing

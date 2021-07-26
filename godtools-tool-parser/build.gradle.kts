@@ -3,6 +3,8 @@ plugins {
     id("com.android.library")
 }
 
+enablePublishing()
+
 android {
     configureSdk()
     configureSourceSets()

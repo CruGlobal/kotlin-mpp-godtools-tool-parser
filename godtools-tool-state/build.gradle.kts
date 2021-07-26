@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
+enablePublishing()
+
 android {
     configureSdk()
     configureSourceSets()
