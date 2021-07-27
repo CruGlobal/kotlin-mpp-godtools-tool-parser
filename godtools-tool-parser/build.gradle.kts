@@ -27,20 +27,9 @@ kotlin {
                 implementation(libs.splitties.bitflags)
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.annotation)
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation("androidx.test.ext:junit:1.1.3")
-                implementation("org.robolectric:robolectric:4.6.1")
             }
         }
         val jsMain by getting {

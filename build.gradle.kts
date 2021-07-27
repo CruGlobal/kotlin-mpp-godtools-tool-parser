@@ -24,6 +24,28 @@ allprojects {
     }
 }
 
+subprojects {
+    afterEvaluate {
+        kotlin {
+            sourceSets {
+                val commonTest by getting {
+                    dependencies {
+                        implementation(project(":test-fixtures"))
+
+                        implementation(kotlin("test"))
+                    }
+                }
+                val androidTest by getting {
+                    dependencies {
+                        implementation("androidx.test.ext:junit:1.1.3")
+                        implementation("org.robolectric:robolectric:4.6.1")
+                    }
+                }
+            }
+        }
+    }
+}
+
 kotlin {
     configureIosTargets {
         binaries {
