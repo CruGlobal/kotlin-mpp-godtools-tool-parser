@@ -6,7 +6,6 @@ import kotlinx.coroutines.promise
 import okio.ExperimentalFileSystem
 import okio.FileNotFoundException
 import okio.NodeJsFileSystem
-import okio.Path.Companion.DIRECTORY_SEPARATOR
 import okio.Path.Companion.toPath
 import okio.buffer
 import org.cru.godtools.tool.xml.JsXmlPullParserFactory
