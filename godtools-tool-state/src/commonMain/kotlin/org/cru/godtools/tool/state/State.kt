@@ -23,6 +23,12 @@ class State internal constructor(private val state: MutableMap<String, List<Stri
         changeFlow.tryEmit(key)
     }
 
-    fun addValue(key: String, value: String) = set(key, (getAll(key) + value).distinct())
-    fun removeValue(key: String, value: String) = set(key, getAll(key).filterNot { it == value })
+    fun addValue(key: String, value: String) {
+        val values = getAll(key)
+        if (!values.contains(value)) set(key, (values + value))
+    }
+    fun removeValue(key: String, value: String) {
+        val values = getAll(key)
+        if (values.contains(value)) set(key, values.filterNot { it == value })
+    }
 }
