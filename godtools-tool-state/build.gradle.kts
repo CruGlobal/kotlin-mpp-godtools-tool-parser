@@ -4,12 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
+configureAndroidLibrary()
 enablePublishing()
-
-android {
-    configureSdk()
-    configureSourceSets()
-}
 
 kotlin {
     configureTargets()

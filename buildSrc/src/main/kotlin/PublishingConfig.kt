@@ -6,7 +6,7 @@ import org.gradle.kotlin.dsl.credentials
 
 fun Project.enablePublishing() {
     apply(plugin = "maven-publish")
-    extensions.findByType(PublishingExtension::class.java)?.apply {
+    with(extensions.getByType(PublishingExtension::class.java)) {
         repositories {
             maven {
                 name = "cruGlobalMavenRepository"

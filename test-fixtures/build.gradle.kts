@@ -3,10 +3,7 @@ plugins {
     id("com.android.library")
 }
 
-android {
-    configureSdk()
-    configureSourceSets()
-}
+configureAndroidLibrary()
 
 kotlin {
     configureTargets()

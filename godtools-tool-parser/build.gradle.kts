@@ -3,12 +3,8 @@ plugins {
     id("com.android.library")
 }
 
+configureAndroidLibrary()
 enablePublishing()
-
-android {
-    configureSdk()
-    configureSourceSets()
-}
 
 kotlin {
     configureTargets()
