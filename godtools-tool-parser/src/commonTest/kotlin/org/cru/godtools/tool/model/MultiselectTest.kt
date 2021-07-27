@@ -10,7 +10,7 @@ import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.receive
+import org.cru.godtools.tool.internal.coroutines.receive
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
