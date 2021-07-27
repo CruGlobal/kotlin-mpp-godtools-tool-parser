@@ -57,10 +57,12 @@ private fun KotlinNativeTarget.copyTestResources() {
         .matching { it is TestExecutable }
         .configureEach {
             (this as TestExecutable).linkTask.doLast {
-                project.file("src/commonTest/resources").copyRecursively(
-                    target = outputDirectory,
-                    overwrite = true
-                )
+                project.file("src/commonTest/resources")
+                    .takeIf { it.exists() && it.isDirectory }
+                    ?.copyRecursively(
+                        target = outputDirectory,
+                        overwrite = true
+                    )
             }
         }
 }
@@ -72,10 +74,12 @@ private fun KotlinJsSubTargetDsl.copyTestResources() {
         val compileTask = compilation.compileKotlinTaskProvider.get()
         compileTask.doLast {
             // TODO: copy resources out of processedResources instead.
-            project.file("src/commonTest/resources").copyRecursively(
-                target = compileTask.outputFileProperty.get().resolve("../../resources").normalize(),
-                overwrite = true
-            )
+            project.file("src/commonTest/resources")
+                .takeIf { it.exists() && it.isDirectory }
+                ?.copyRecursively(
+                    target = compileTask.outputFileProperty.get().resolve("../../resources").normalize(),
+                    overwrite = true
+                )
         }
     }
 }

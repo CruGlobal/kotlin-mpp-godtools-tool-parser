@@ -1,8 +1,9 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.kotlin.plugin.parcelize")
 }
+
+enablePublishing()
 
 android {
     configureSdk()
@@ -15,8 +16,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":godtools-tool-state"))
+
                 implementation(kotlin("stdlib"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation(libs.kotlin.coroutines.core)
 
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
@@ -24,20 +27,9 @@ kotlin {
                 implementation(libs.splitties.bitflags)
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.annotation)
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation("androidx.test.ext:junit:1.1.3")
-                implementation("org.robolectric:robolectric:4.6.1")
             }
         }
         val jsMain by getting {

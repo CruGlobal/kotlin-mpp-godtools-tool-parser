@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    `maven-publish`
     id("org.ajoberstar.grgit") version "4.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
@@ -25,11 +24,34 @@ allprojects {
     }
 }
 
+subprojects {
+    afterEvaluate {
+        kotlin {
+            sourceSets {
+                val commonTest by getting {
+                    dependencies {
+                        implementation(project(":test-fixtures"))
+
+                        implementation(kotlin("test"))
+                    }
+                }
+                val androidTest by getting {
+                    dependencies {
+                        implementation("androidx.test.ext:junit:1.1.3")
+                        implementation("org.robolectric:robolectric:4.6.1")
+                    }
+                }
+            }
+        }
+    }
+}
+
 kotlin {
     configureIosTargets {
         binaries {
             withType(Framework::class.java).configureEach {
                 export(project(":godtools-tool-parser"))
+                export(project(":godtools-tool-state"))
             }
         }
     }
@@ -38,6 +60,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":godtools-tool-parser"))
+                api(project(":godtools-tool-state"))
             }
         }
     }
@@ -141,25 +164,3 @@ allprojects {
     }
 }
 // endregion KtLint
-
-// region Publishing
-subprojects {
-    apply(plugin = "maven-publish")
-    publishing {
-        repositories {
-            maven {
-                name = "cruGlobalMavenRepository"
-                setUrl(
-                    when {
-                        isSnapshotVersion ->
-                            "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/"
-                        else -> "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/"
-                    }
-                )
-
-                credentials(PasswordCredentials::class)
-            }
-        }
-    }
-}
-// endregion Publishing

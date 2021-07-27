@@ -1,4 +1,4 @@
-package org.cru.godtools.tool.internal
+package org.cru.godtools.tool.internal.coroutines
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.withTimeout

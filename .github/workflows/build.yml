@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ktlint-results
-          path: "build/reports/ktlint/"
+          path: "**/build/reports/ktlint/"
 
   android_tests:
     name: Android Unit Tests
@@ -80,12 +80,18 @@ jobs:
         with:
           fail_ci_if_error: true
           verbose: true
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-unit-test-results
+          path: "**/build/reports/tests/"
       - name: Archive jacoco results
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: jacoco-results
-          path: "build/reports/jacoco/"
+          path: "**/build/reports/jacoco/"
 
   ios_tests:
     name: iOS Unit Tests

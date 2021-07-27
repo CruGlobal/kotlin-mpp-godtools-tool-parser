@@ -1,8 +1,5 @@
 package org.cru.godtools.tool.internal
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.promise
 import okio.ExperimentalFileSystem
 import okio.FileNotFoundException
 import okio.NodeJsFileSystem
@@ -30,8 +27,3 @@ internal actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFac
 actual abstract class Runner
 actual class AndroidJUnit4 : Runner()
 // endregion Android Robolectric
-
-// region Kotlin Coroutines
-val testScope = MainScope()
-actual fun runBlockingTest(block: suspend CoroutineScope.() -> Unit): dynamic = testScope.promise { block() }
-// endregion Kotlin Coroutines
