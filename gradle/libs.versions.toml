@@ -1,4 +1,5 @@
 [versions]
+android-gradle-plugin = "7.0.0"
 androidx-annotation = "1.2.0"
 colormath = "2.1.0"
 fluidLocale = "0.9.6"
@@ -11,6 +12,7 @@ okio = "3.0.0-alpha.5"
 splitties = "3.0.0-beta01"
 
 [libraries]
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
