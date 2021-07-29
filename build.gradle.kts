@@ -14,6 +14,11 @@ allprojects {
     version = "0.2.0-SNAPSHOT"
 
     repositories {
+        maven("https://jitpack.io") {
+            content {
+                includeGroup("com.strumenta.antlr-kotlin")
+            }
+        }
         google()
         mavenCentral()
         jcenter {
@@ -26,6 +31,9 @@ allprojects {
 
 subprojects {
     afterEvaluate {
+        // don't evaluate if kotlin isn't enabled for this project
+        if (extensions.findByName("kotlin") == null) return@afterEvaluate
+
         kotlin {
             sourceSets {
                 val commonTest by getting {
@@ -156,7 +164,7 @@ subprojects {
 
 // region KtLint
 allprojects {
-    afterEvaluate {
+    beforeEvaluate {
         apply(plugin = "org.jlleitschuh.gradle.ktlint")
         ktlint {
             version.set(libs.versions.ktlint)
