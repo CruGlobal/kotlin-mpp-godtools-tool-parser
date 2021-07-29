@@ -9,6 +9,6 @@ repositories {
 
 dependencies {
     compileOnly(gradleKotlinDsl())
-    implementation("com.android.tools.build:gradle:4.2.2")
+    implementation(libs.android.gradle.plugin)
     implementation(libs.kotlin.plugin)
 }
