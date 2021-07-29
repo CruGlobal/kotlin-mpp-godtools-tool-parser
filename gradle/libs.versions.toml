@@ -12,12 +12,12 @@ okio = "3.0.0-alpha.5"
 splitties = "3.0.0-beta01"
 
 [libraries]
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem-js", version.ref = "okio" }
