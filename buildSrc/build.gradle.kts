@@ -9,6 +9,6 @@ repositories {
 
 dependencies {
     compileOnly(gradleKotlinDsl())
-    implementation(libs.android.gradle.plugin)
-    implementation(libs.kotlin.plugin)
+    implementation(libs.android.gradle)
+    implementation(libs.kotlin.gradle)
 }
