@@ -22,4 +22,9 @@ internal class ExpressionEvaluator(private val state: State) : ExpressionBaseVis
     }
 
     override fun visitNotExpr(ctx: ExpressionParser.NotExprContext) = !ctx.findExpr()!!.accept(this)
+
+    override fun visitOrExpr(ctx: ExpressionParser.OrExprContext) =
+        ctx.first!!.accept(this) || ctx.second!!.accept(this)
+    override fun visitAndExpr(ctx: ExpressionParser.AndExprContext) =
+        ctx.first!!.accept(this) && ctx.second!!.accept(this)
 }

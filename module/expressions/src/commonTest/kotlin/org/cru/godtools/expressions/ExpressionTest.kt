@@ -2,7 +2,9 @@ package org.cru.godtools.expressions
 
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ExpressionTest {
@@ -47,5 +49,29 @@ class ExpressionTest {
 
         state.removeValue("a", "test")
         assertFalse(expr.evaluate(state))
+    }
+
+    @Test
+    fun testEvaluateAnd() {
+        assertExpression("true && true", true)
+        assertExpression("true && false", false)
+        assertExpression("false && true", false)
+        assertExpression("false && false", false)
+        assertExpression("true && true && true", true)
+        assertExpression("true && true && false", false)
+        assertExpression("true && false && true", false)
+    }
+
+    @Test
+    fun testEvaluateOr() {
+        assertExpression("true || true", true)
+        assertExpression("true || false", true)
+        assertExpression("false || true", true)
+        assertExpression("false || false", false)
+    }
+
+    private fun assertExpression(expr: String, expected: Boolean, state: State = this.state) {
+        val compiled = assertNotNull(expr.toExpressionOrNull())
+        assertEquals(expected, compiled.evaluate(state), "'$expr` evaluated incorrectly")
     }
 }

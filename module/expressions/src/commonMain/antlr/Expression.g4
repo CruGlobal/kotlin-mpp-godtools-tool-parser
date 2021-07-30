@@ -1,14 +1,12 @@
 grammar Expression;
 
-//eval : expr;
-//
 expr
- : OPAR expr CPAR           #parExpr
- | NOT expr                 #notExpr
- | (TRUE | FALSE)           #booleanAtom
- | VAR op=(EQ | NEQ) STRING #eqExpr
-// | expr AND expr           #andExpr
-// | expr OR expr            #orExpr
+ : OPAR expr CPAR             #parExpr
+ | NOT expr                   #notExpr
+ | first=expr AND second=expr #andExpr
+ | first=expr OR second=expr  #orExpr
+ | VAR op=(EQ | NEQ) STRING   #eqExpr
+ | (TRUE | FALSE)             #booleanAtom
  ;
 
 //atom
