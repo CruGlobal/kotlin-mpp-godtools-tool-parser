@@ -26,29 +26,29 @@ class ExpressionTest {
 
     @Test
     fun testEvaluateBoolean() {
-        assertTrue("true".toExpressionOrNull()!!.evaluate(state))
-        assertFalse("false".toExpressionOrNull()!!.evaluate(state))
+        assertExpression("true", true)
+        assertExpression("false", false)
     }
 
     @Test
     fun testEvaluateNot() {
-        assertTrue("!false".toExpressionOrNull()!!.evaluate(state))
-        assertFalse("!true".toExpressionOrNull()!!.evaluate(state))
+        assertExpression("!false", true)
+        assertExpression("!true", false)
+        assertExpression("!!true", true)
     }
 
     @Test
     fun testEvaluateEquals() {
-        val expr = "a==\"test\"".toExpressionOrNull()!!
-        assertFalse(expr.evaluate(state))
+        assertExpression("a==\"test\"", false)
 
         state["a"] = "test"
-        assertTrue(expr.evaluate(state))
+        assertExpression("a==\"test\"", true)
 
         state["a"] = listOf("other", "test", "something")
-        assertTrue(expr.evaluate(state))
+        assertExpression("a==\"test\"", true)
 
         state.removeValue("a", "test")
-        assertFalse(expr.evaluate(state))
+        assertExpression("a==\"test\"", false)
     }
 
     @Test
