@@ -31,10 +31,7 @@ val commonMainAntlrTask = tasks.register<AntlrKotlinTask>("generateCommonMainAnt
 }
 
 kotlin {
-    configureAndroidTargets()
-    configureJsTargets()
-    // TODO: include ios targets
-//    configureTargets()
+    configureTargets()
 
     sourceSets {
         // TODO: is there a better way to attached generated sources to the commonMain source set?
