@@ -153,8 +153,8 @@ junitJacoco {
         // we exclude SaxXmlPullParser from reports because it is only used by iOS and JS
         "**/SaxXmlPullParser*",
 
-        // exclude the generated ANTLR Expression grammar parser
-        "**/internal/grammar/Expression*"
+        // exclude the generated ANTLR StateExpression grammar parser
+        "**/internal/grammar/StateExpression*"
     )
 }
 subprojects {

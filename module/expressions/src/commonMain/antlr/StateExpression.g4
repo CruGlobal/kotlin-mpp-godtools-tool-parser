@@ -1,4 +1,4 @@
-grammar Expression;
+grammar StateExpression;
 
 booleanExpr
  : OPAR expr=booleanExpr CPAR             #parExpr
