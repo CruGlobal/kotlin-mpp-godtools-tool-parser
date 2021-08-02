@@ -75,6 +75,20 @@ class ExpressionTest {
     }
 
     @Test
+    fun testEvaluateNotEquals() {
+        assertExpression("a!=\"test\"", true)
+
+        state["a"] = "test"
+        assertExpression("a!=\"test\"", false)
+
+        state["a"] = listOf("other", "test", "something")
+        assertExpression("a!=\"test\"", false)
+
+        state.removeValue("a", "test")
+        assertExpression("a!=\"test\"", true)
+    }
+
+    @Test
     fun testEvaluateParenthesis() {
         assertExpression("(true)", true)
         assertExpression("(false)", false)
