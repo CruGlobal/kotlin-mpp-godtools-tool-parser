@@ -6,10 +6,18 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 class ExpressionTest {
     private val state = State()
+
+    @Test
+    fun testParseEmptyExpression() {
+        assertNull("".toExpressionOrNull())
+        assertNull("   ".toExpressionOrNull())
+    }
 
     @Test
     fun testIsValid() {
@@ -28,6 +36,15 @@ class ExpressionTest {
             "()",
             "isSet(a==\"b\")"
         ).forEach { assertFalse(it.toExpressionOrNull()!!.isValid(), "'$it' should be an invalid expression") }
+    }
+
+    @Test
+    fun testEvaluateInvalidExpression() {
+        try {
+            assertNotNull("asdf".toExpressionOrNull()).evaluate(state)
+            fail("Invalid expressions should throw an IllegalStateException when evaluated")
+        } catch (_: IllegalStateException) {
+        }
     }
 
     @Test

@@ -16,7 +16,7 @@ class Expression internal constructor(private val expr: ExpressionParser.Boolean
 }
 
 fun String.toExpressionOrNull() = when {
-    isNullOrBlank() -> null
+    isBlank() -> null
     else -> Expression(
         try {
             val tokens = CommonTokenStream(ExpressionLexer(CharStreams.fromString(this)))
