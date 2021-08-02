@@ -2,7 +2,7 @@
 android-gradle-plugin = "7.0.0"
 androidx-annotation = "1.2.0"
 antlr-kotlin = "bbd4c72186"
-antlr-kotlin-fork = "0.0.7_263"
+antlr-kotlin-fork = "0.0.7_265"
 colormath = "2.1.0"
 fluidLocale = "0.9.6"
 jacoco = "0.8.7"
