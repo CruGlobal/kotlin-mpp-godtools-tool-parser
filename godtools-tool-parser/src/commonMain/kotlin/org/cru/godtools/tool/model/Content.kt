@@ -21,8 +21,8 @@ abstract class Content : BaseModel {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
         restrictTo = parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes() ?: DeviceType.ALL
-        requiredFeatures =
-            parser.getAttributeValue(XML_REQUIRED_FEATURES)?.split(REGEX_SEQUENCE_SEPARATOR)?.toSet().orEmpty()
+        requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
+            ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
