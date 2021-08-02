@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
@@ -52,6 +53,15 @@ class ButtonTest : UsesResources() {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
         assertFalse(button.isIgnored)
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
+        assertTrue(button.isIgnored)
+    }
+
+    @Test
+    fun testParseButtonRequiredFeatures() = runBlockingTest {
+        val button = Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))
+        ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
+        assertFalse(button.isIgnored)
+        ParserConfig.supportedFeatures = emptySet()
         assertTrue(button.isIgnored)
     }
 
