@@ -88,7 +88,7 @@ class MultiselectTest : UsesResources() {
         val flow = multiselect.options[0].isSelectedFlow(state)
             .onEach { flowOutput.send(it) }
             .launchIn(this)
-        assertFalse("Initially not selected") { flowOutput.receive(100) }
+        assertFalse("Initially not selected") { flowOutput.receive(500) }
 
         multiselect.options[0].toggleSelected(state)
         println("Toggled this option to true")

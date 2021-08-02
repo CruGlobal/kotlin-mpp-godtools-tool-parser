@@ -16,11 +16,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter {
-            content {
-                includeGroup("com.louiscad.splitties")
-            }
-        }
     }
 }
 
