@@ -13,16 +13,21 @@ class ExpressionTest {
 
     @Test
     fun testIsValid() {
-        listOf("true&&false", "true   && false", "     true    ").forEach {
+        listOf("true&&false", "true   && false", "     true    ", "isSet(var)", "isSet(   var   )").forEach {
             assertTrue(it.toExpressionOrNull()!!.isValid(), "'$it' should be a valid expression")
         }
     }
 
     @Test
     fun testIsValidInvalid() {
-        listOf("asdf", "true asdf", "true AND false", "1", "()").forEach {
-            assertFalse(it.toExpressionOrNull()!!.isValid(), "'$it' should be an invalid expression")
-        }
+        listOf(
+            "asdf",
+            "true asdf",
+            "true AND false",
+            "1",
+            "()",
+            "isSet(a==\"b\")"
+        ).forEach { assertFalse(it.toExpressionOrNull()!!.isValid(), "'$it' should be an invalid expression") }
     }
 
     @Test
@@ -77,6 +82,13 @@ class ExpressionTest {
         assertExpression("true || false", true)
         assertExpression("false || true", true)
         assertExpression("false || false", false)
+    }
+
+    @Test
+    fun testEvaluateFunctionIsSet() {
+        state["a"] = "test"
+        assertExpression("isSet(a)", true)
+        assertExpression("isSet(b)", false)
     }
 
     @Test

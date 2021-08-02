@@ -6,16 +6,10 @@ import org.cru.godtools.tool.state.State
 
 internal class ExpressionEvaluator(private val state: State) : ExpressionBaseVisitor<Boolean>() {
     override fun visitParExpr(ctx: ExpressionParser.ParExprContext) = ctx.expr!!.accept(this)
-
-    override fun visitEqExpr(ctx: ExpressionParser.EqExprContext): Boolean {
-        val varName = ctx.VAR()!!.text
-        val value = ctx.STRING()!!.text.run { substring(1, length - 1) }
-        return when (ctx.op!!.type) {
-            ExpressionParser.Tokens.EQ.id -> state.getAll(varName).contains(value)
-            ExpressionParser.Tokens.NEQ.id -> !state.getAll(varName).contains(value)
-            else -> throw IllegalStateException()
-        }
-    }
+    override fun visitNotExpr(ctx: ExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)
+    override fun visitOrExpr(ctx: ExpressionParser.OrExprContext) = ctx.left!!.accept(this) || ctx.right!!.accept(this)
+    override fun visitAndExpr(ctx: ExpressionParser.AndExprContext) =
+        ctx.left!!.accept(this) && ctx.right!!.accept(this)
 
     override fun visitBooleanAtom(ctx: ExpressionParser.BooleanAtomContext) = when (ctx.atom!!.type) {
         ExpressionParser.Tokens.TRUE.id -> true
@@ -23,9 +17,15 @@ internal class ExpressionEvaluator(private val state: State) : ExpressionBaseVis
         else -> throw IllegalStateException()
     }
 
-    override fun visitNotExpr(ctx: ExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)
+    override fun visitEqExpr(ctx: ExpressionParser.EqExprContext): Boolean {
+        val varName = ctx.varName!!.text!!
+        val value = ctx.value!!.text!!.run { substring(1, length - 1) }
+        return when (ctx.op!!.type) {
+            ExpressionParser.Tokens.EQ.id -> state.getAll(varName).contains(value)
+            ExpressionParser.Tokens.NEQ.id -> !state.getAll(varName).contains(value)
+            else -> throw IllegalStateException()
+        }
+    }
 
-    override fun visitOrExpr(ctx: ExpressionParser.OrExprContext) = ctx.left!!.accept(this) || ctx.right!!.accept(this)
-    override fun visitAndExpr(ctx: ExpressionParser.AndExprContext) =
-        ctx.left!!.accept(this) && ctx.right!!.accept(this)
+    override fun visitIsSetFunc(ctx: ExpressionParser.IsSetFuncContext) = !state.getAll(ctx.varName!!.text!!).isEmpty()
 }
