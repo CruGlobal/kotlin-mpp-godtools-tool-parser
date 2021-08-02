@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.DEFAULT_SUPPORTED_DEVICE_TYPES
+import org.cru.godtools.tool.FEATURE_ANIMATION
+import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
@@ -8,8 +9,6 @@ import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.tips.InlineTip
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -18,18 +17,29 @@ import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ContentTest : UsesResources() {
-    @BeforeTest
-    fun setupConfig() {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
-    }
-
-    @AfterTest
-    fun resetConfig() {
-        ParserConfig.supportedDeviceTypes = DEFAULT_SUPPORTED_DEVICE_TYPES
+    // region required-features
+    @Test
+    fun verifyRequiredFeaturesSupported() {
+        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)
+        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored)
+        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION)) {}.isIgnored)
+        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.isIgnored)
+        assertFalse(object : Content(requiredFeatures = emptySet()) {}.isIgnored)
     }
 
     @Test
+    fun verifyRequiredFeaturesNotSupported() {
+        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
+        assertTrue(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored)
+        assertTrue(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.isIgnored)
+        assertTrue(object : Content(requiredFeatures = setOf("kjlasdf")) {}.isIgnored)
+    }
+    // endregion required-features
+
+    // region restrictTo
+    @Test
     fun verifyRestrictToSupported() {
+        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.ALL) {}.isIgnored)
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.SUPPORTED) {}.isIgnored)
         assertFalse(object : Content(Manifest(), restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
@@ -37,10 +47,13 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyRestrictToNotSupported() {
+        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
         assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
         assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
     }
+    // endregion restrictTo
 
+    // region version
     @Test
     fun verifyVersionSupported() {
         assertFalse(object : Content(Manifest(), version = SCHEMA_VERSION) {}.isIgnored)
@@ -50,6 +63,7 @@ class ContentTest : UsesResources() {
     fun verifyVersionNotSupported() {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
+    // endregion version
 
     // region parseContentElement()
     @Test

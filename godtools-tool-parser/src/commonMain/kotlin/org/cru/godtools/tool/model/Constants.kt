@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model
 
 import kotlin.native.concurrent.SharedImmutable
 
-internal const val SCHEMA_VERSION = 1
+internal const val SCHEMA_VERSION = 2
 
 // XML namespaces
 internal const val XMLNS_MANIFEST = "https://mobile-content-api.cru.org/xmlns/manifest"
