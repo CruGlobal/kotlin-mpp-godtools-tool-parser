@@ -5,6 +5,8 @@ import org.cru.godtools.expressions.internal.grammar.ExpressionParser
 import org.cru.godtools.tool.state.State
 
 internal class ExpressionEvaluator(private val state: State) : ExpressionBaseVisitor<Boolean>() {
+    override fun visitParExpr(ctx: ExpressionParser.ParExprContext) = ctx.expr!!.accept(this)
+
     override fun visitEqExpr(ctx: ExpressionParser.EqExprContext): Boolean {
         val varName = ctx.VAR()!!.text
         val value = ctx.STRING()!!.text.run { substring(1, length - 1) }

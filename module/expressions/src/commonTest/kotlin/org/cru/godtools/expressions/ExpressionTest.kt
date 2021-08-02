@@ -53,6 +53,14 @@ class ExpressionTest {
     }
 
     @Test
+    fun testEvaluateParenthesis() {
+        assertExpression("(true)", true)
+        assertExpression("(false)", false)
+        assertExpression("(false && false) || true", true)
+        assertExpression("false && ((false) || true)", false)
+    }
+
+    @Test
     fun testEvaluateAnd() {
         assertExpression("true && true", true)
         assertExpression("true && false", false)
