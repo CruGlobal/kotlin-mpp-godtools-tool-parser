@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.model.tips.InlineTip
@@ -7,32 +9,41 @@ import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
+private const val XML_REQUIRED_FEATURES = "required-features"
 private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
 
 abstract class Content : BaseModel {
     private val version: Int
     private val restrictTo: Set<DeviceType>
+    private val requiredFeatures: Set<String>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
         restrictTo = parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes() ?: DeviceType.ALL
+        requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
+            ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        parent: Base,
+        parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,
-        restrictTo: Set<DeviceType> = DeviceType.ALL
+        restrictTo: Set<DeviceType> = DeviceType.ALL,
+        requiredFeatures: Set<String> = emptySet()
     ) : super(parent) {
         this.restrictTo = restrictTo
         this.version = version
+        this.requiredFeatures = requiredFeatures
     }
 
     /**
      * @return true if this content element should be completely ignored.
      */
-    open val isIgnored get() = version > SCHEMA_VERSION || restrictTo.none { it in DeviceType.SUPPORTED }
+    open val isIgnored
+        get() = version > SCHEMA_VERSION ||
+            !ParserConfig.supportedFeatures.containsAll(requiredFeatures) ||
+            restrictTo.none { it in DeviceType.SUPPORTED }
 
     open val tips get() = emptyList<Tip>()
 
