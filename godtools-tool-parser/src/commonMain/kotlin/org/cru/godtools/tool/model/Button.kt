@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
+import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_COLOR = "color"
@@ -15,10 +16,15 @@ private const val XML_STYLE = "style"
 private const val XML_STYLE_CONTAINED = "contained"
 private const val XML_STYLE_OUTLINED = "outlined"
 private const val XML_URL = "url"
+private const val XML_ICON = "icon"
+private const val XML_ICON_GRAVITY = "icon-gravity"
+private const val XML_ICON_SIZE = "icon-size"
 
 class Button : Content, Styles {
     internal companion object {
         internal const val XML_BUTTON = "button"
+
+        internal const val DEFAULT_ICON_SIZE = 18
     }
 
     val type: Type
@@ -32,6 +38,11 @@ class Button : Content, Styles {
     private val _buttonColor: PlatformColor?
     @get:AndroidColorInt
     override val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
+
+    private val iconName: String?
+    val icon get() = getResource(iconName)
+    val iconSize: Int
+    val iconGravity: ImageGravity
 
     val text: Text?
     override val textAlign get() = Text.Align.CENTER
@@ -52,6 +63,10 @@ class Button : Content, Styles {
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
+
+        iconName = parser.getAttributeValue(XML_ICON)
+        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toImageGravityOrNull() ?: ImageGravity.START
+        iconSize = parser.getAttributeValue(XML_ICON_SIZE)?.toIntOrNull() ?: DEFAULT_ICON_SIZE
 
         // process any child elements
         val analyticsEvents = mutableListOf<AnalyticsEvent>()
@@ -79,6 +94,10 @@ class Button : Content, Styles {
 
         _style = style
         _buttonColor = color
+
+        iconName = null
+        iconGravity = ImageGravity.START
+        iconSize = DEFAULT_ICON_SIZE
 
         analyticsEvents = emptySet()
         this.text = text?.invoke(this)
