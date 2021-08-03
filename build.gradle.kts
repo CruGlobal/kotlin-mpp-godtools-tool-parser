@@ -14,6 +14,16 @@ allprojects {
     version = "0.2.0-SNAPSHOT"
 
     repositories {
+        maven("https://jitpack.io") {
+            content {
+                includeGroup("com.strumenta.antlr-kotlin")
+            }
+        }
+        maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
+            content {
+                includeGroup("org.cru.mobile.fork.antlr-kotlin")
+            }
+        }
         google()
         mavenCentral()
     }
@@ -21,6 +31,9 @@ allprojects {
 
 subprojects {
     afterEvaluate {
+        // don't evaluate if kotlin isn't enabled for this project
+        if (extensions.findByName("kotlin") == null) return@afterEvaluate
+
         kotlin {
             sourceSets {
                 val commonTest by getting {
@@ -133,7 +146,10 @@ junitJacoco {
     includeNoLocationClasses = true
     excludes = listOf(
         // we exclude SaxXmlPullParser from reports because it is only used by iOS and JS
-        "**/SaxXmlPullParser*"
+        "**/SaxXmlPullParser*",
+
+        // exclude the generated ANTLR StateExpression grammar parser
+        "**/internal/grammar/StateExpression*"
     )
 }
 subprojects {
@@ -151,7 +167,7 @@ subprojects {
 
 // region KtLint
 allprojects {
-    afterEvaluate {
+    beforeEvaluate {
         apply(plugin = "org.jlleitschuh.gradle.ktlint")
         ktlint {
             version.set(libs.versions.ktlint)
