@@ -22,7 +22,7 @@ class Resource : BaseModel {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(manifest: Manifest, name: String? = null) : super(manifest) {
+    internal constructor(manifest: Manifest = Manifest(), name: String? = null) : super(manifest) {
         this.name = name
         localName = null
     }

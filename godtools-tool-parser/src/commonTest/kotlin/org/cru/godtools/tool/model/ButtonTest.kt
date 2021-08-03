@@ -13,6 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -68,6 +69,16 @@ class ButtonTest : UsesResources() {
         assertFalse(button.isIgnored)
         ParserConfig.supportedFeatures = emptySet()
         assertTrue(button.isIgnored)
+    }
+
+    @Test
+    fun testParseButtonIcon() = runBlockingTest {
+        val resource = Resource(name = "image.png")
+        with(Button(Manifest(resources = { listOf(resource) }), getTestXmlParser("button_icon.xml"))) {
+            assertSame(resource, icon)
+            assertTrue(iconGravity.isEnd)
+            assertEquals(24, iconSize)
+        }
     }
 
     @Test
