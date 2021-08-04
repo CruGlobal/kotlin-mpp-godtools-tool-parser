@@ -59,7 +59,7 @@ kotlin {
         binaries {
             withType(Framework::class.java).configureEach {
                 export(project(":godtools-tool-parser"))
-                export(project(":godtools-tool-state"))
+                export(project(":module:state"))
             }
         }
     }
@@ -68,7 +68,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":godtools-tool-parser"))
-                api(project(":godtools-tool-state"))
+                api(project(":module:state"))
             }
         }
     }

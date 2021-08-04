@@ -49,7 +49,7 @@ kotlin {
             dependsOn(generatedCommonMain)
 
             dependencies {
-                implementation(project(":godtools-tool-state"))
+                implementation(project(":module:state"))
             }
         }
     }
