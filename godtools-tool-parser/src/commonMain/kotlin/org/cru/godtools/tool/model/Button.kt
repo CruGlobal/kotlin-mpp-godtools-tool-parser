@@ -24,6 +24,7 @@ class Button : Content, Styles {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
+        internal val DEFAULT_ICON_GRAVITY = ImageGravity.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
 
@@ -65,7 +66,7 @@ class Button : Content, Styles {
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
 
         iconName = parser.getAttributeValue(XML_ICON)
-        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toImageGravityOrNull() ?: ImageGravity.START
+        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toImageGravityOrNull() ?: DEFAULT_ICON_GRAVITY
         iconSize = parser.getAttributeValue(XML_ICON_SIZE)?.toIntOrNull() ?: DEFAULT_ICON_SIZE
 
         // process any child elements
@@ -96,7 +97,7 @@ class Button : Content, Styles {
         _buttonColor = color
 
         iconName = null
-        iconGravity = ImageGravity.START
+        iconGravity = DEFAULT_ICON_GRAVITY
         iconSize = DEFAULT_ICON_SIZE
 
         analyticsEvents = emptySet()
@@ -134,3 +135,5 @@ class Button : Content, Styles {
 
 val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
 val Button?.textColor get() = this?.textColor ?: stylesParent.primaryTextColor
+val Button?.iconSize get() = this?.iconSize ?: Button.DEFAULT_ICON_SIZE
+val Button?.iconGravity get() = this?.iconGravity ?: Button.DEFAULT_ICON_GRAVITY
