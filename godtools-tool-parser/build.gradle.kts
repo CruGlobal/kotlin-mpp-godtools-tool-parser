@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":godtools-tool-state"))
+                api(project(":module:state"))
 
                 implementation(kotlin("stdlib"))
                 implementation(libs.kotlin.coroutines.core)
