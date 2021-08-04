@@ -36,17 +36,17 @@ class StateTest {
 
     @Test
     fun testChangeFlow() = runBlockingTest {
-        val channel = Channel<String>()
+        val channel = Channel<Unit>()
         val flow = state.changeFlow(KEY)
             .onEach { channel.send(it) }
             .launchIn(this)
 
         // initial value
-        assertEquals(KEY, channel.receive(500))
+        assertEquals(Unit, channel.receive(500))
 
         // update state for monitored key
         state[KEY] = "a"
-        assertEquals(KEY, channel.receive(500))
+        assertEquals(Unit, channel.receive(500))
 
         // update state for a different key
         state["other$KEY"] = "a"
