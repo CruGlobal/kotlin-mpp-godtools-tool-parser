@@ -41,13 +41,15 @@ abstract class Content : BaseModel {
         parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,
         restrictTo: Set<DeviceType> = DeviceType.ALL,
-        requiredFeatures: Set<String> = emptySet()
+        requiredFeatures: Set<String> = emptySet(),
+        invisibleIf: Expression? = null,
+        goneIf: Expression? = null
     ) : super(parent) {
         this.restrictTo = restrictTo
         this.version = version
         this.requiredFeatures = requiredFeatures
-        this.invisibleIf = null
-        this.goneIf = null
+        this.invisibleIf = invisibleIf
+        this.goneIf = goneIf
     }
 
     /**
