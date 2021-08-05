@@ -23,7 +23,7 @@ private const val BIT_CENTER = BIT_CENTER_X or BIT_CENTER_Y
 private const val MASK_X_AXIS = BIT_START or BIT_END or BIT_CENTER_X
 private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM or BIT_CENTER_Y
 
-class ImageGravity(private val gravity: Int) {
+class ImageGravity internal constructor(private val gravity: Int) {
     val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == BIT_CENTER
     val isCenterX get() = gravity and MASK_X_AXIS == BIT_CENTER_X
     val isCenterY get() = gravity and MASK_Y_AXIS == BIT_CENTER_Y
@@ -34,6 +34,7 @@ class ImageGravity(private val gravity: Int) {
 
     companion object {
         val CENTER = ImageGravity(BIT_CENTER)
+        internal val START = ImageGravity(BIT_START)
 
         internal fun String.toImageGravityOrNull() = try {
             var gravity = BIT_CENTER

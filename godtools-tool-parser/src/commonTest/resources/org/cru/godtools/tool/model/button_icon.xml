@@ -1,0 +1,4 @@
+<content:button xmlns:content="https://mobile-content-api.cru.org/xmlns/content" events="event1 event2" icon="image.png"
+    icon-gravity="end" icon-size="24" type="event">
+    <content:text>icon button</content:text>
+</content:button>

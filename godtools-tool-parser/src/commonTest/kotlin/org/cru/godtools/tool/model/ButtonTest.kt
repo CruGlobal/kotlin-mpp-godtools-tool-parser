@@ -13,6 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -26,13 +27,18 @@ class ButtonTest : UsesResources() {
     @Test
     fun testParseButtonEvent() = runBlockingTest {
         val manifest = Manifest()
-        val button = Button(manifest, getTestXmlParser("button_event.xml"))
-        assertFalse(button.isIgnored)
-        assertEquals(manifest.buttonStyle, button.style)
-        assertEquals(Button.Type.EVENT, button.type)
-        assertEquals(EventId.parse("event1 event2"), button.events)
-        assertEquals("event button", button.text!!.text)
-        assertEquals(TestColors.RED, button.buttonColor)
+        with(Button(manifest, getTestXmlParser("button_event.xml"))) {
+            assertFalse(isIgnored)
+            assertEquals(manifest.buttonStyle, style)
+            assertEquals(Button.Type.EVENT, type)
+            assertEquals(EventId.parse("event1 event2"), events)
+            assertEquals("event button", text!!.text)
+            assertEquals(TestColors.RED, buttonColor)
+
+            assertNull(icon)
+            assertTrue(iconGravity.isStart)
+            assertEquals(Button.DEFAULT_ICON_SIZE, iconSize)
+        }
     }
 
     @Test
@@ -63,6 +69,16 @@ class ButtonTest : UsesResources() {
         assertFalse(button.isIgnored)
         ParserConfig.supportedFeatures = emptySet()
         assertTrue(button.isIgnored)
+    }
+
+    @Test
+    fun testParseButtonIcon() = runBlockingTest {
+        val resource = Resource(name = "image.png")
+        with(Button(Manifest(resources = { listOf(resource) }), getTestXmlParser("button_icon.xml"))) {
+            assertSame(resource, icon)
+            assertTrue(iconGravity.isEnd)
+            assertEquals(24, iconSize)
+        }
     }
 
     @Test
