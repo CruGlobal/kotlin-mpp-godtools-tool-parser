@@ -171,6 +171,12 @@ class ExpressionTest {
         assertExpression("true || !true", true)
     }
 
+    @Test
+    fun testVars() {
+        assertEquals(setOf("a"), "a=='test'".toExpressionOrNull()!!.vars())
+        assertEquals(setOf("a", "b"), "(true && (a=='' && isSet(b)))".toExpressionOrNull()!!.vars())
+    }
+
     private fun assertExpression(expr: String, expected: Boolean, state: State = this.state) {
         val compiled = assertNotNull(expr.toExpressionOrNull())
         assertTrue(compiled.isValid(), "'$expr' should be a valid expression")
