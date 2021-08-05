@@ -91,8 +91,7 @@ class MultiselectTest : UsesResources() {
         assertFalse("Initially not selected") { flowOutput.receive(500) }
 
         multiselect.options[0].toggleSelected(state)
-        println("Toggled this option to true")
-        assertTrue(flowOutput.receive(500))
+        assertTrue(flowOutput.receive(500), "Toggled this option to true")
 
         multiselect.options[1].toggleSelected(state)
         assertFalse(flowOutput.receive(500), "Toggled other option to true")
