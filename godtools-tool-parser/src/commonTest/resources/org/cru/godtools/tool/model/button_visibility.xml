@@ -1,0 +1,4 @@
+<content:button xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    events="event1 event2" type="event" invisible-if="invisible=='true'" gone-if="hidden=='true'">
+    <content:text>event button</content:text>
+</content:button>

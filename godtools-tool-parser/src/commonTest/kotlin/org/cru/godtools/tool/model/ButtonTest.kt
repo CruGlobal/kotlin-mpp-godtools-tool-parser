@@ -8,6 +8,7 @@ import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
+import org.cru.godtools.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -23,12 +24,15 @@ class ButtonTest : UsesResources() {
         override var primaryColor = TestColors.BLACK
         override var primaryTextColor = TestColors.BLACK
     }
+    private val state = State()
 
     @Test
     fun testParseButtonEvent() = runBlockingTest {
         val manifest = Manifest()
         with(Button(manifest, getTestXmlParser("button_event.xml"))) {
             assertFalse(isIgnored)
+            assertFalse(isGone(state))
+            assertFalse(isInvisible(state))
             assertEquals(manifest.buttonStyle, style)
             assertEquals(Button.Type.EVENT, type)
             assertEquals(EventId.parse("event1 event2"), events)
@@ -78,6 +82,21 @@ class ButtonTest : UsesResources() {
             assertSame(resource, icon)
             assertTrue(iconGravity.isEnd)
             assertEquals(24, iconSize)
+        }
+    }
+
+    @Test
+    fun testParseButtonVisibility() = runBlockingTest {
+        with(Button(Manifest(), getTestXmlParser("button_visibility.xml"))) {
+            assertFalse(isIgnored)
+
+            assertFalse(isInvisible(state))
+            state["invisible"] = "true"
+            assertTrue(isInvisible(state))
+
+            assertFalse(isGone(state))
+            state["hidden"] = "true"
+            assertTrue(isGone(state))
         }
     }
 

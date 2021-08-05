@@ -14,7 +14,8 @@ class ExpressionTest {
     private val state = State()
 
     @Test
-    fun testParseEmptyExpression() {
+    fun testParseNullOrEmptyExpression() {
+        assertNull((null as String?).toExpressionOrNull())
         assertNull("".toExpressionOrNull())
         assertNull("   ".toExpressionOrNull())
     }

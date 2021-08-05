@@ -18,8 +18,8 @@ class Expression internal constructor(private val expr: StateExpressionParser.Bo
     fun vars() = expr?.vars()?.toSet().orEmpty()
 }
 
-fun String.toExpressionOrNull() = when {
-    isBlank() -> null
+fun String?.toExpressionOrNull() = when {
+    isNullOrBlank() -> null
     else -> Expression(
         try {
             val tokens = CommonTokenStream(StateExpressionLexer(CharStreams.fromString(this)))
