@@ -1,11 +1,5 @@
 import com.strumenta.antlrkotlin.gradleplugin.AntlrKotlinTask
 
-buildscript {
-    dependencies {
-        classpath(libs.antlr.kotlin.gradle)
-    }
-}
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
