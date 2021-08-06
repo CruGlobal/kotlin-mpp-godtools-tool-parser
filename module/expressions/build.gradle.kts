@@ -15,7 +15,7 @@ plugins {
 configureAndroidLibrary()
 enablePublishing()
 
-val commonMainAntlrTask = tasks.register<AntlrKotlinTask>("generateCommonMainAntlrSources") {
+val commonMainAntlrTask = tasks.register<AntlrKotlinTask>("generateCommonMainAntlrSource") {
     antlrClasspath = configurations.detachedConfiguration(
         project.dependencies.create(libs.antlr.kotlin.target.get())
     )
@@ -27,7 +27,7 @@ val commonMainAntlrTask = tasks.register<AntlrKotlinTask>("generateCommonMainAnt
         .srcDir("src/commonMain/antlr").apply {
             include("*.g4")
         }
-    outputDirectory = File("build/generated/source/antlr/commonMain")
+    outputDirectory = File(buildDir, "generated-src/antlr/commonMain")
 }
 
 kotlin {
