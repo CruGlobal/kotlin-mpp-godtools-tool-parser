@@ -51,5 +51,8 @@ internal class StateExpressionEvaluator(private val state: State) {
 
     val intExpr = object : StateExpressionBaseVisitor<Int>() {
         override fun visitIntAtom(ctx: StateExpressionParser.IntAtomContext) = ctx.value!!.text!!.toInt()
+
+        override fun visitValuesFunc(ctx: StateExpressionParser.ValuesFuncContext) =
+            state.getAll(ctx.varName!!.text!!).size
     }
 }

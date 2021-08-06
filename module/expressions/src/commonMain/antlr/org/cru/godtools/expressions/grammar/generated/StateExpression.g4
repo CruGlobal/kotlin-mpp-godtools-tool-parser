@@ -16,6 +16,7 @@ booleanExpr
 
 intExpr
  : OPAR expr=intExpr CPAR       #parIntExpr
+ | FUNC_VALUES varName=VAR CPAR #valuesFunc
  | value=INT                    #intAtom
  ;
 
@@ -43,7 +44,8 @@ TRUE  : 'true';
 FALSE : 'false';
 //NIL : 'nil';
 
-FUNC_ISSET : 'isSet' OPAR;
+FUNC_ISSET  : 'isSet' OPAR;
+FUNC_VALUES : 'values' OPAR;
 
 INT    : [0-9]+;
 STRING : ('"' ~["]* '"' | '\'' ~[']* '\'');

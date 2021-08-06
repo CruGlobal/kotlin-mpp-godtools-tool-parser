@@ -148,6 +148,14 @@ class ExpressionTest {
     }
 
     @Test
+    fun testEvaluateFunctionValues() {
+        state["a"] = "test"
+        assertExpression("values(a) == 1", true)
+        state["a"] = listOf("test", "test2")
+        assertExpression("values(a) == 2", true)
+    }
+
+    @Test
     @Ignore // antlr-kotlin doesn't correctly honor operator precedence at this time
     fun testEvaluateOperatorPrecedence() {
         // && has higher precedence than ||
