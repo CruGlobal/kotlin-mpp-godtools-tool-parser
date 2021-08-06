@@ -4,13 +4,19 @@ package org.cru.godtools.expressions.grammar.generated;
 }
 
 booleanExpr
- : OPAR expr=booleanExpr CPAR             #parExpr
- | NOT expr=booleanExpr                   #notExpr
- | left=booleanExpr AND right=booleanExpr #andExpr
- | left=booleanExpr OR right=booleanExpr  #orExpr
- | FUNC_ISSET varName=VAR CPAR            #isSetFunc
- | varName=VAR op=(EQ | NEQ) value=STRING #eqExpr
- | atom=(TRUE | FALSE)                    #booleanAtom
+ : OPAR expr=booleanExpr CPAR                                     #parExpr
+ | NOT expr=booleanExpr                                           #notExpr
+ | left=booleanExpr AND right=booleanExpr                         #andExpr
+ | left=booleanExpr OR right=booleanExpr                          #orExpr
+ | FUNC_ISSET varName=VAR CPAR                                    #isSetFunc
+ | varName=VAR op=(EQ | NEQ) value=STRING                         #eqExpr
+ | left=intExpr op=(EQ | NEQ | GTE | GT | LTE | LT) right=intExpr #intCmpExpr
+ | atom=(TRUE | FALSE)                                            #booleanAtom
+ ;
+
+intExpr
+ : OPAR expr=intExpr CPAR       #parIntExpr
+ | value=INT                    #intAtom
  ;
 
 //atom
@@ -20,20 +26,25 @@ booleanExpr
 // | NIL            #nilAtom
 // ;
 //
-EQ : '==';
+EQ  : '==';
 NEQ : '!=';
 AND : '&&';
-OR : '||';
+OR  : '||';
 NOT : '!';
+GTE : '>=';
+GT  : '>';
+LTE : '<=';
+LT  : '<';
 
 OPAR : '(';
 CPAR : ')';
-TRUE : 'true';
+
+TRUE  : 'true';
 FALSE : 'false';
 //NIL : 'nil';
 
-FUNC_ISSET: 'isSet' OPAR;
+FUNC_ISSET : 'isSet' OPAR;
 
-//INT : [0-9]+;
+INT    : [0-9]+;
 STRING : ('"' ~["]* '"' | '\'' ~[']* '\'');
-VAR : [a-zA-Z] [a-zA-Z_0-9]*;
+VAR    : [a-zA-Z] [a-zA-Z_0-9]*;

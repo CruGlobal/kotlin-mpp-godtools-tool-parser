@@ -31,8 +31,25 @@ internal class StateExpressionEvaluator(private val state: State) {
             }
         }
 
+        override fun visitIntCmpExpr(ctx: StateExpressionParser.IntCmpExprContext): Boolean {
+            val left = ctx.left!!.accept(intExpr)
+            val right = ctx.right!!.accept(intExpr)
+            return when (ctx.op!!.type) {
+                Tokens.EQ.id -> left == right
+                Tokens.NEQ.id -> left != right
+                Tokens.GT.id -> left > right
+                Tokens.GTE.id -> left >= right
+                Tokens.LT.id -> left < right
+                Tokens.LTE.id -> left <= right
+                else -> throw IllegalStateException()
+            }
+        }
+
         override fun visitIsSetFunc(ctx: StateExpressionParser.IsSetFuncContext) =
             state.getAll(ctx.varName!!.text!!).isNotEmpty()
     }
-    val intExpr = object : StateExpressionBaseVisitor<Int>() {}
+
+    val intExpr = object : StateExpressionBaseVisitor<Int>() {
+        override fun visitIntAtom(ctx: StateExpressionParser.IntAtomContext) = ctx.value!!.text!!.toInt()
+    }
 }

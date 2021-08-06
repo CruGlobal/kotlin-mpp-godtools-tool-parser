@@ -89,6 +89,31 @@ class ExpressionTest {
     }
 
     @Test
+    fun testEvaluateIntCompare() {
+        assertExpression("1 == 1", true)
+        assertExpression("1 == 2", false)
+
+        assertExpression("1 != 2", true)
+        assertExpression("1 != 1", false)
+
+        assertExpression("1 > 0", true)
+        assertExpression("1 > 1", false)
+        assertExpression("1 > 2", false)
+
+        assertExpression("1 >= 0", true)
+        assertExpression("1 >= 1", true)
+        assertExpression("1 >= 2", false)
+
+        assertExpression("1 < 0", false)
+        assertExpression("1 < 1", false)
+        assertExpression("1 < 2", true)
+
+        assertExpression("1 <= 0", false)
+        assertExpression("1 <= 1", true)
+        assertExpression("1 <= 2", true)
+    }
+
+    @Test
     fun testEvaluateParenthesis() {
         assertExpression("(true)", true)
         assertExpression("(false)", false)
