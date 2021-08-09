@@ -149,7 +149,7 @@ junitJacoco {
         "**/SaxXmlPullParser*",
 
         // exclude the generated ANTLR StateExpression grammar parser
-        "**/internal/grammar/StateExpression*"
+        "**/grammar/generated/StateExpression*"
     )
 }
 subprojects {
