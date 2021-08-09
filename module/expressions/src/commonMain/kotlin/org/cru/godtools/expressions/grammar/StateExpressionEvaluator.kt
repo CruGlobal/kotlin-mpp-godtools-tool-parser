@@ -1,7 +1,7 @@
 package org.cru.godtools.expressions.grammar
 
-import org.cru.godtools.expressions.internal.grammar.StateExpressionBaseVisitor
-import org.cru.godtools.expressions.internal.grammar.StateExpressionParser
+import org.cru.godtools.expressions.grammar.generated.StateExpressionBaseVisitor
+import org.cru.godtools.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) : StateExpressionBaseVisitor<Boolean>() {
