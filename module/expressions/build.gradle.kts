@@ -20,3 +20,9 @@ kotlin {
         }
     }
 }
+
+ktlint {
+    filter {
+        exclude("**/grammar/generated/**/*")
+    }
+}
