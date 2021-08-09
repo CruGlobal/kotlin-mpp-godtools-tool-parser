@@ -1,7 +1,8 @@
 package org.cru.godtools.expressions.grammar
 
-import org.cru.godtools.expressions.internal.grammar.StateExpressionBaseVisitor
-import org.cru.godtools.expressions.internal.grammar.StateExpressionParser
+import org.cru.godtools.expressions.grammar.generated.StateExpressionBaseVisitor
+import org.cru.godtools.expressions.grammar.generated.StateExpressionParser
+import org.cru.godtools.expressions.grammar.generated.StateExpressionParser.Tokens
 import org.cru.godtools.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) : StateExpressionBaseVisitor<Boolean>() {
@@ -13,8 +14,8 @@ internal class StateExpressionEvaluator(private val state: State) : StateExpress
         ctx.left!!.accept(this) && ctx.right!!.accept(this)
 
     override fun visitBooleanAtom(ctx: StateExpressionParser.BooleanAtomContext) = when (ctx.atom!!.type) {
-        StateExpressionParser.Tokens.TRUE.id -> true
-        StateExpressionParser.Tokens.FALSE.id -> false
+        Tokens.TRUE.id -> true
+        Tokens.FALSE.id -> false
         else -> throw IllegalStateException()
     }
 
@@ -22,8 +23,8 @@ internal class StateExpressionEvaluator(private val state: State) : StateExpress
         val varName = ctx.varName!!.text!!
         val value = ctx.value!!.text!!.run { substring(1, length - 1) }
         return when (ctx.op!!.type) {
-            StateExpressionParser.Tokens.EQ.id -> state.getAll(varName).contains(value)
-            StateExpressionParser.Tokens.NEQ.id -> !state.getAll(varName).contains(value)
+            Tokens.EQ.id -> state.getAll(varName).contains(value)
+            Tokens.NEQ.id -> !state.getAll(varName).contains(value)
             else -> throw IllegalStateException()
         }
     }

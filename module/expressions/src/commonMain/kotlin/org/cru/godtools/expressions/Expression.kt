@@ -6,8 +6,8 @@ import org.antlr.v4.kotlinruntime.CommonTokenStream
 import org.antlr.v4.kotlinruntime.Token
 import org.antlr.v4.kotlinruntime.misc.ParseCancellationException
 import org.cru.godtools.expressions.grammar.StateExpressionEvaluator
-import org.cru.godtools.expressions.internal.grammar.StateExpressionLexer
-import org.cru.godtools.expressions.internal.grammar.StateExpressionParser
+import org.cru.godtools.expressions.grammar.generated.StateExpressionLexer
+import org.cru.godtools.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.tool.state.State
 
 class Expression internal constructor(private val expr: StateExpressionParser.BooleanExprContext?) {
