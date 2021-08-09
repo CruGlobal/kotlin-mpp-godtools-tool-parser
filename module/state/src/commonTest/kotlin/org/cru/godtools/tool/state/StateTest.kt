@@ -12,6 +12,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 private const val KEY = "key"
+private const val KEY2 = "key2"
 
 class StateTest {
     private val state = State()
@@ -36,17 +37,22 @@ class StateTest {
 
     @Test
     fun testChangeFlow() = runBlockingTest {
-        val channel = Channel<String>()
-        val flow = state.changeFlow(KEY)
+        var i = 0
+        val channel = Channel<Int>()
+        val flow = state.changeFlow(KEY, KEY2) { i++ }
             .onEach { channel.send(it) }
             .launchIn(this)
 
         // initial value
-        assertEquals(KEY, channel.receive(500))
+        assertEquals(0, channel.receive(500))
 
         // update state for monitored key
         state[KEY] = "a"
-        assertEquals(KEY, channel.receive(500))
+        assertEquals(1, channel.receive(500))
+
+        // update state for other monitored key
+        state[KEY2] = "a"
+        assertEquals(2, channel.receive(500))
 
         // update state for a different key
         state["other$KEY"] = "a"
@@ -55,6 +61,30 @@ class StateTest {
 
         // shut down flow
         flow.cancel()
+        assertEquals(3, i)
+    }
+
+    @Test
+    fun testChangeFlowNoKeys() = runBlockingTest {
+        var i = 0
+        val channel = Channel<Int>()
+        val flow = state.changeFlow { i++ }
+            .onEach { channel.send(it) }
+            .launchIn(this)
+
+        // initial value
+        assertEquals(0, channel.receive(500))
+
+        // update state for multiple keys, should never emit a new value
+        for (i in 1..10) {
+            state["$KEY$i"] = "a"
+            delay(100)
+            assertTrue(channel.isEmpty)
+        }
+
+        // shut down flow
+        flow.cancel()
+        assertEquals(1, i)
     }
 
     @Test
