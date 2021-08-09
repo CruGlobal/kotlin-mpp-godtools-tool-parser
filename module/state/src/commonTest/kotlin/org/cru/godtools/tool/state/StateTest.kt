@@ -37,21 +37,22 @@ class StateTest {
 
     @Test
     fun testChangeFlow() = runBlockingTest {
-        val channel = Channel<Unit>()
-        val flow = state.changeFlow(KEY, KEY2)
+        var i = 0
+        val channel = Channel<Int>()
+        val flow = state.changeFlow(KEY, KEY2) { i++ }
             .onEach { channel.send(it) }
             .launchIn(this)
 
         // initial value
-        assertEquals(Unit, channel.receive(500))
+        assertEquals(0, channel.receive(500))
 
         // update state for monitored key
         state[KEY] = "a"
-        assertEquals(Unit, channel.receive(500))
+        assertEquals(1, channel.receive(500))
 
         // update state for other monitored key
         state[KEY2] = "a"
-        assertEquals(Unit, channel.receive(500))
+        assertEquals(2, channel.receive(500))
 
         // update state for a different key
         state["other$KEY"] = "a"
@@ -60,17 +61,19 @@ class StateTest {
 
         // shut down flow
         flow.cancel()
+        assertEquals(3, i)
     }
 
     @Test
     fun testChangeFlowNoKeys() = runBlockingTest {
-        val channel = Channel<Unit>()
-        val flow = state.changeFlow()
+        var i = 0
+        val channel = Channel<Int>()
+        val flow = state.changeFlow { i++ }
             .onEach { channel.send(it) }
             .launchIn(this)
 
         // initial value
-        assertEquals(Unit, channel.receive(500))
+        assertEquals(0, channel.receive(500))
 
         // update state for multiple keys, should never emit a new value
         for (i in 1..10) {
@@ -81,6 +84,7 @@ class StateTest {
 
         // shut down flow
         flow.cancel()
+        assertEquals(1, i)
     }
 
     @Test
