@@ -12,7 +12,7 @@ import org.cru.godtools.tool.state.State
 
 class Expression internal constructor(private val expr: StateExpressionParser.BooleanExprContext?) {
     fun isValid() = expr != null
-    fun evaluate(state: State) = checkNotNull(expr).accept(StateExpressionEvaluator(state))
+    fun evaluate(state: State) = checkNotNull(expr).accept(StateExpressionEvaluator(state).booleanExpr)
 }
 
 fun String.toExpressionOrNull() = when {
