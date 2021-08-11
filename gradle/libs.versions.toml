@@ -4,14 +4,14 @@ androidx-annotation = "1.2.0"
 antlr-kotlin = "bbd4c72186"
 antlr-kotlin-fork = "0.0.7_265"
 colormath = "2.1.0"
-fluidLocale = "0.9.6"
+fluidLocale = "0.10.0"
 jacoco = "0.8.7"
 kotlin = "1.5.21"
 kotlinCoroutines = "1.5.1"
-ktlint = "0.41.0"
+ktlint = "0.42.1"
 napier = "1.5.0"
-okio = "3.0.0-alpha.5"
-splitties = "3.0.0-rc01"
+okio = "3.0.0-alpha.9"
+splitties = "3.0.0-rc03"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
