@@ -1,14 +1,21 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.internal.coroutines.receive
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.tips.InlineTip
+import org.cru.godtools.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -17,6 +24,8 @@ import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ContentTest : UsesResources() {
+    private val state = State()
+
     // region required-features
     @Test
     fun verifyRequiredFeaturesSupported() {
@@ -64,6 +73,156 @@ class ContentTest : UsesResources() {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
     // endregion version
+
+    // region Visibility Attributes
+    @Test
+    fun verifyGoneIfInvalid() {
+        with(object : Content(goneIf = "invalid".toExpressionOrNull()) {}) {
+            assertTrue(isIgnored)
+        }
+    }
+
+    @Test
+    fun verifyIsGone() {
+        with(object : Content(goneIf = "isSet(a)".toExpressionOrNull()) {}) {
+            assertFalse(isGone(state))
+            state["a"] = "test"
+            assertTrue(isGone(state))
+        }
+    }
+
+    @Test
+    fun verifyIsGoneFlow() = runBlockingTest {
+        with(object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
+            val output = Channel<Boolean>(1)
+            val flow = isGoneFlow(state)
+                .onEach { output.send(it) }
+                .launchIn(this@runBlockingTest)
+            assertFalse("Initially not hidden") { output.receive(500) }
+
+            state["c"] = "test"
+            delay(100)
+            assertTrue(output.isEmpty, "'c' should have no effect on isHidden result")
+
+            state["a"] = "test"
+            assertTrue(output.receive(500), "'a' is now set")
+
+            state["a"] = emptyList()
+            assertFalse(output.receive(500), "'a' is no longer set")
+
+            state["b"] = "test"
+            assertTrue(output.receive(500), "'b' is now set")
+
+            state["a"] = "test"
+            delay(100)
+            assertTrue(output.isEmpty, "'a' is now set, but shouldn't change isHidden result")
+
+            state["b"] = emptyList()
+            delay(100)
+            assertTrue(output.isEmpty, "'a' is still set, so isHidden result shouldn't change")
+
+            state["a"] = emptyList()
+            assertFalse(output.receive(500), "'a' is no longer set")
+
+            flow.cancel()
+        }
+    }
+
+    @Test
+    fun verifyIsGoneDefault() = runBlockingTest {
+        with(object : Content() {}) {
+            val output = Channel<Boolean>(1)
+            val flow = isGoneFlow(state)
+                .onEach { output.send(it) }
+                .launchIn(this@runBlockingTest)
+            assertFalse("Initially not hidden") { output.receive(500) }
+            assertFalse(isGone(state))
+
+            for (i in 1..10) {
+                state["a$i"] = "test"
+                assertFalse(isGone(state))
+                delay(100)
+                assertTrue(output.isEmpty)
+            }
+
+            flow.cancel()
+        }
+    }
+
+    @Test
+    fun verifyInvisibleIfInvalid() {
+        with(object : Content(invisibleIf = "invalid".toExpressionOrNull()) {}) {
+            assertTrue(isIgnored)
+        }
+    }
+
+    @Test
+    fun verifyIsInvisible() {
+        with(object : Content(invisibleIf = "isSet(a)".toExpressionOrNull()) {}) {
+            assertFalse(isInvisible(state))
+            state["a"] = "test"
+            assertTrue(isInvisible(state))
+        }
+    }
+
+    @Test
+    fun verifyIsInvisibleFlow() = runBlockingTest {
+        with(object : Content(invisibleIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
+            val output = Channel<Boolean>(1)
+            val flow = isInvisibleFlow(state)
+                .onEach { output.send(it) }
+                .launchIn(this@runBlockingTest)
+            assertFalse("Initially not invisible") { output.receive(500) }
+
+            state["c"] = "test"
+            delay(100)
+            assertTrue(output.isEmpty, "'c' should have no effect on isInvisible result")
+
+            state["a"] = "test"
+            assertTrue(output.receive(500), "'a' is now set")
+
+            state["a"] = emptyList()
+            assertFalse(output.receive(500), "'a' is no longer set")
+
+            state["b"] = "test"
+            assertTrue(output.receive(500), "'b' is now set")
+
+            state["a"] = "test"
+            delay(100)
+            assertTrue(output.isEmpty, "'a' is now set, but shouldn't change isInvisible result")
+
+            state["b"] = emptyList()
+            delay(100)
+            assertTrue(output.isEmpty, "'a' is still set, so isInvisible result shouldn't change")
+
+            state["a"] = emptyList()
+            assertFalse(output.receive(500), "'a' is no longer set")
+
+            flow.cancel()
+        }
+    }
+
+    @Test
+    fun verifyIsInvisibleDefault() = runBlockingTest {
+        with(object : Content() {}) {
+            val output = Channel<Boolean>(1)
+            val flow = isInvisibleFlow(state)
+                .onEach { output.send(it) }
+                .launchIn(this@runBlockingTest)
+            assertFalse("Initially not invisible") { output.receive(500) }
+            assertFalse(isInvisible(state))
+
+            for (i in 1..10) {
+                state["a$i"] = "test"
+                assertFalse(isInvisible(state))
+                delay(100)
+                assertTrue(output.isEmpty)
+            }
+
+            flow.cancel()
+        }
+    }
+    // endregion Visibility Attributes
 
     // region parseContentElement()
     @Test

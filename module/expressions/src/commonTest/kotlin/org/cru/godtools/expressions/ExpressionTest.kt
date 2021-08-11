@@ -14,7 +14,8 @@ class ExpressionTest {
     private val state = State()
 
     @Test
-    fun testParseEmptyExpression() {
+    fun testParseNullOrEmptyExpression() {
+        assertNull((null as String?).toExpressionOrNull())
         assertNull("".toExpressionOrNull())
         assertNull("   ".toExpressionOrNull())
     }
@@ -169,6 +170,12 @@ class ExpressionTest {
         // ! has higher precedence than ||
         assertExpression("!true || true", true)
         assertExpression("true || !true", true)
+    }
+
+    @Test
+    fun testVars() {
+        assertEquals(setOf("a"), "a=='test'".toExpressionOrNull()!!.vars())
+        assertEquals(setOf("a", "b"), "(true && (a=='' && isSet(b)))".toExpressionOrNull()!!.vars())
     }
 
     private fun assertExpression(expr: String, expected: Boolean, state: State = this.state) {

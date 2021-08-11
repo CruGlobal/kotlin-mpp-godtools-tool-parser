@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.expressions.Expression
+import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.RestrictTo
@@ -7,22 +9,31 @@ import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
+import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_REQUIRED_FEATURES = "required-features"
 private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
+private const val XML_INVISIBLE_IF = "invisible-if"
+private const val XML_GONE_IF = "gone-if"
 
 abstract class Content : BaseModel {
     private val version: Int
     private val restrictTo: Set<DeviceType>
     private val requiredFeatures: Set<String>
 
+    private val invisibleIf: Expression?
+    private val goneIf: Expression?
+
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
         restrictTo = parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes() ?: DeviceType.ALL
         requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
             ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
+
+        invisibleIf = parser.getAttributeValue(XML_INVISIBLE_IF).toExpressionOrNull()
+        goneIf = parser.getAttributeValue(XML_GONE_IF).toExpressionOrNull()
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -30,11 +41,15 @@ abstract class Content : BaseModel {
         parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,
         restrictTo: Set<DeviceType> = DeviceType.ALL,
-        requiredFeatures: Set<String> = emptySet()
+        requiredFeatures: Set<String> = emptySet(),
+        invisibleIf: Expression? = null,
+        goneIf: Expression? = null
     ) : super(parent) {
         this.restrictTo = restrictTo
         this.version = version
         this.requiredFeatures = requiredFeatures
+        this.invisibleIf = invisibleIf
+        this.goneIf = goneIf
     }
 
     /**
@@ -43,7 +58,14 @@ abstract class Content : BaseModel {
     open val isIgnored
         get() = version > SCHEMA_VERSION ||
             !ParserConfig.supportedFeatures.containsAll(requiredFeatures) ||
-            restrictTo.none { it in DeviceType.SUPPORTED }
+            restrictTo.none { it in DeviceType.SUPPORTED } ||
+            invisibleIf?.isValid() == false ||
+            goneIf?.isValid() == false
+
+    fun isInvisible(state: State) = invisibleIf?.evaluate(state) ?: false
+    fun isInvisibleFlow(state: State) = state.changeFlow(invisibleIf?.vars()) { isInvisible(it) }
+    fun isGone(state: State) = goneIf?.evaluate(state) ?: false
+    fun isGoneFlow(state: State) = state.changeFlow(goneIf?.vars()) { isGone(it) }
 
     open val tips get() = emptyList<Tip>()
 
