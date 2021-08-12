@@ -6,7 +6,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
-import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
@@ -156,8 +155,8 @@ class Manifest : BaseModel, Styles {
         private set
     val aemImports: List<Uri>
 
-    @VisibleForTesting
-    internal val resources: Map<String?, Resource>
+    // XXX: make this visible to aid in iOS migration
+    val resources: Map<String?, Resource>
     var tips: Map<String, Tip> by setOnce()
         private set
 
