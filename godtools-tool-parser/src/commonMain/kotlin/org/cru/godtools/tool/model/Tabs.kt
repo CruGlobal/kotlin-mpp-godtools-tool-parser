@@ -34,7 +34,7 @@ class Tabs : Content {
         private val tabs: Tabs
         val position get() = tabs.tabs.indexOf(this)
 
-        val analyticsEvents: Collection<AnalyticsEvent>
+        val analyticsEvents: List<AnalyticsEvent>
         val listeners: Set<EventId>
         val label: Text?
 
@@ -46,7 +46,7 @@ class Tabs : Content {
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TAB)
             listeners = parser.getAttributeValue(XML_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
-            var analyticsEvents: Collection<AnalyticsEvent> = emptyList()
+            analyticsEvents = mutableListOf()
             var label: Text? = null
             content = parseContent(parser) {
                 when (parser.namespace) {
@@ -58,7 +58,6 @@ class Tabs : Content {
                     }
                 }
             }
-            this.analyticsEvents = analyticsEvents
             this.label = label
         }
     }
