@@ -58,7 +58,7 @@ class Card : BaseModel, Styles, Parent {
     val isHidden: Boolean
     val listeners: Set<EventId>
     val dismissListeners: Set<EventId>
-    val analyticsEvents: Collection<AnalyticsEvent>
+    val analyticsEvents: List<AnalyticsEvent>
 
     @AndroidColorInt
     private val _backgroundColor: PlatformColor?
@@ -131,7 +131,7 @@ class Card : BaseModel, Styles, Parent {
         this.isHidden = isHidden
         listeners = emptySet()
         dismissListeners = emptySet()
-        analyticsEvents = emptySet()
+        analyticsEvents = emptyList()
 
         _backgroundColor = backgroundColor
         _backgroundImage = backgroundImage

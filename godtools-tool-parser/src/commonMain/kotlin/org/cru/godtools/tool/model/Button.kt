@@ -53,7 +53,7 @@ class Button : Content, Styles {
             Style.OUTLINED -> buttonColor
         }
 
-    val analyticsEvents: Collection<AnalyticsEvent>
+    val analyticsEvents: List<AnalyticsEvent>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_BUTTON)
@@ -70,7 +70,7 @@ class Button : Content, Styles {
         iconSize = parser.getAttributeValue(XML_ICON_SIZE)?.toIntOrNull() ?: DEFAULT_ICON_SIZE
 
         // process any child elements
-        val analyticsEvents = mutableListOf<AnalyticsEvent>()
+        analyticsEvents = mutableListOf()
         text = parser.parseTextChild(this, XMLNS_CONTENT, XML_BUTTON) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
@@ -78,7 +78,6 @@ class Button : Content, Styles {
                 }
             }
         }
-        this.analyticsEvents = analyticsEvents
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -100,7 +99,7 @@ class Button : Content, Styles {
         iconGravity = DEFAULT_ICON_GRAVITY
         iconSize = DEFAULT_ICON_SIZE
 
-        analyticsEvents = emptySet()
+        analyticsEvents = emptyList()
         this.text = text?.invoke(this)
     }
 
