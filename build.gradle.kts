@@ -58,7 +58,7 @@ kotlin {
     configureIosTargets {
         binaries {
             withType(Framework::class.java).configureEach {
-                export(project(":godtools-tool-parser"))
+                export(project(":module:parser"))
                 export(project(":module:state"))
             }
         }
@@ -67,7 +67,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":godtools-tool-parser"))
+                api(project(":module:parser"))
                 api(project(":module:state"))
             }
         }

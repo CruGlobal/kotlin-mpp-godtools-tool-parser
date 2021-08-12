@@ -1,7 +1,7 @@
 rootProject.name = "GodtoolsToolParser"
 enableFeaturePreview("VERSION_CATALOGS")
 
-include("godtools-tool-parser")
+include("module:parser")
 include("module:state")
 include("module:expressions")
 
