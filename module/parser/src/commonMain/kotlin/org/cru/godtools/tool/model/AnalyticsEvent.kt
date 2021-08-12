@@ -46,8 +46,8 @@ class AnalyticsEvent : BaseModel {
 
     val action: String?
     val delay: Int
-    private val systems: Set<System>
-    private val trigger: Trigger
+    val systems: Set<System>
+    val trigger: Trigger
     val attributes: Map<String, String>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
