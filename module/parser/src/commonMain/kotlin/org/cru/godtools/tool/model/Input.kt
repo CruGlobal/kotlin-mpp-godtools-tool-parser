@@ -1,6 +1,5 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Input.Type.Companion.toTypeOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -28,8 +27,7 @@ class Input : Content {
     val type: Type
     val name: String?
     val value: String?
-    @VisibleForTesting
-    internal val required: Boolean
+    val isRequired: Boolean
     val label: Text?
     val placeholder: Text?
 
@@ -39,7 +37,7 @@ class Input : Content {
         type = parser.getAttributeValue(XML_TYPE)?.toTypeOrNull() ?: Type.DEFAULT
         name = parser.getAttributeValue(XML_NAME)
         value = parser.getAttributeValue(XML_VALUE)
-        required = parser.getAttributeValue(XML_REQUIRED)?.toBoolean() ?: false
+        isRequired = parser.getAttributeValue(XML_REQUIRED)?.toBoolean() ?: false
 
         // process any child elements
         var label: Text? = null
@@ -57,7 +55,7 @@ class Input : Content {
     }
 
     fun validateValue(raw: String?) = when {
-        required && raw.isNullOrBlank() -> Error.Required
+        isRequired && raw.isNullOrBlank() -> Error.Required
         type == Type.EMAIL && !raw.isNullOrBlank() && !REGEX_VALIDATE_EMAIL.matches(raw) -> Error.InvalidEmail
         else -> null
     }

@@ -19,7 +19,7 @@ class InputTest : UsesResources() {
         assertEquals(Input.Type.HIDDEN, input.type)
         assertEquals("destination_id", input.name)
         assertEquals("1", input.value)
-        assertFalse(input.required)
+        assertFalse(input.isRequired)
 
         // test validateValue
         assertNull(input.validateValue(null))
@@ -34,7 +34,7 @@ class InputTest : UsesResources() {
         assertEquals("name", input.name)
         assertEquals("Name", input.label!!.text)
         assertEquals("First Name and Last Name", input.placeholder!!.text)
-        assertTrue(input.required)
+        assertTrue(input.isRequired)
 
         // test validateValue
         assertEquals(Input.Error.Required, input.validateValue(null))
@@ -48,7 +48,7 @@ class InputTest : UsesResources() {
         val input = Input(Manifest(), getTestXmlParser("input_email.xml"))
         assertEquals(Input.Type.EMAIL, input.type)
         assertEquals("email", input.name)
-        assertTrue(input.required)
+        assertTrue(input.isRequired)
 
         // test validateValue
         assertEquals(Input.Error.Required, input.validateValue(null))
