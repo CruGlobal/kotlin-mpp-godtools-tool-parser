@@ -24,6 +24,7 @@ class Button : Content, Styles {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
+        internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
         internal val DEFAULT_ICON_GRAVITY = ImageGravity.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
@@ -39,6 +40,9 @@ class Button : Content, Styles {
     private val _buttonColor: PlatformColor?
     @get:AndroidColorInt
     override val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
+
+    @AndroidColorInt
+    val backgroundColor: PlatformColor
 
     private val iconName: String?
     val icon get() = getResource(iconName)
@@ -64,6 +68,7 @@ class Button : Content, Styles {
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
         iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toImageGravityOrNull() ?: DEFAULT_ICON_GRAVITY
@@ -94,6 +99,7 @@ class Button : Content, Styles {
 
         _style = style
         _buttonColor = color
+        backgroundColor = DEFAULT_BACKGROUND_COLOR
 
         iconName = null
         iconGravity = DEFAULT_ICON_GRAVITY
