@@ -38,6 +38,7 @@ class ButtonTest : UsesResources() {
             assertEquals(EventId.parse("event1 event2"), events)
             assertEquals("event button", text!!.text)
             assertEquals(TestColors.RED, buttonColor)
+            assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
 
             assertNull(icon)
             assertTrue(iconGravity.isStart)
@@ -51,6 +52,7 @@ class ButtonTest : UsesResources() {
         assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
         assertEquals(Button.Type.URL, button.type)
+        assertEquals(TestColors.GREEN, button.backgroundColor)
         assertEquals("https://www.google.com/", button.url!!.toString())
         assertEquals("url button", button.text!!.text)
         assertEquals(1, button.analyticsEvents.size)
