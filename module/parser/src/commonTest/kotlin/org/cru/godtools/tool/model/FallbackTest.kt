@@ -25,17 +25,15 @@ class FallbackTest : UsesResources() {
     @Test
     fun testParseFallback() = runBlockingTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback.xml"))
-        assertEquals(2, fallback.content.size)
-        assertEquals("Test", assertIs<Text>(fallback.content[0]).text)
-        assertEquals("Android", assertIs<Text>(fallback.content[1]).text)
+        assertEquals(1, fallback.content.size)
+        assertEquals("Test", assertIs<Text>(fallback.content.single()).text)
     }
 
     @Test
     fun testParseParagraphFallback() = runBlockingTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph.xml"))
-        assertEquals(2, fallback.content.size)
-        assertEquals("Test", assertIs<Text>(fallback.content[0]).text)
-        assertEquals("Android", assertIs<Text>(fallback.content[1]).text)
+        assertEquals(1, fallback.content.size)
+        assertEquals("Test", assertIs<Text>(fallback.content.single()).text)
     }
 
     @Test
@@ -54,6 +52,6 @@ class FallbackTest : UsesResources() {
 
     @Test
     fun testTipsPropertyNoChildren() {
-        assertTrue(Fallback(Manifest()).tips.isEmpty())
+        assertTrue(Fallback().tips.isEmpty())
     }
 }
