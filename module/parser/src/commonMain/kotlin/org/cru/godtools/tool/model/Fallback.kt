@@ -9,8 +9,9 @@ class Fallback : Content, Parent {
         internal const val XML_FALLBACK = "fallback"
     }
 
-    override val content: List<Content>
-    override val tips get() = content.firstOrNull()?.tips.orEmpty()
+    private val _content: List<Content>
+    override val content get() = _content.take(1)
+    override val tips get() = contentTips
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         when (parser.name) {
@@ -23,11 +24,11 @@ class Fallback : Content, Parent {
             else -> parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FALLBACK)
         }
 
-        content = parseContent(parser)
+        _content = parseContent(parser)
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base, content: ((Fallback) -> List<Content>)? = null) : super(parent) {
-        this.content = content?.invoke(this).orEmpty()
+    internal constructor(parent: Base = Manifest(), content: ((Fallback) -> List<Content>)? = null) : super(parent) {
+        _content = content?.invoke(this).orEmpty()
     }
 }
