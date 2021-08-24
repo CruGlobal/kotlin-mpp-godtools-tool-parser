@@ -30,10 +30,22 @@ class FallbackTest : UsesResources() {
     }
 
     @Test
+    fun testParseFallbackAllIgnored() = runBlockingTest {
+        val fallback = Fallback(Manifest(), getTestXmlParser("fallback_all_ignored.xml"))
+        assertTrue(fallback.content.isEmpty())
+    }
+
+    @Test
     fun testParseParagraphFallback() = runBlockingTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph.xml"))
         assertEquals(1, fallback.content.size)
         assertEquals("Test", assertIs<Text>(fallback.content.single()).text)
+    }
+
+    @Test
+    fun testParseParagraphFallbackAllIgnored() = runBlockingTest {
+        val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph_all_ignored.xml"))
+        assertTrue(fallback.content.isEmpty())
     }
 
     @Test

@@ -245,7 +245,8 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyParseContentElementFallback() = runBlockingTest {
-        assertIs<Fallback>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+        assertIs<Text>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+        assertNull(getTestXmlParser("fallback_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test
@@ -290,7 +291,8 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyParseContentElementParagraphFallback() = runBlockingTest {
-        assertIs<Fallback>(getTestXmlParser("fallback_paragraph.xml").parseContentElement(Manifest()))
+        assertIs<Text>(getTestXmlParser("fallback_paragraph.xml").parseContentElement(Manifest()))
+        assertNull(getTestXmlParser("fallback_paragraph_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test
