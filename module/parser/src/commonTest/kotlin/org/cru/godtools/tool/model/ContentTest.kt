@@ -245,8 +245,8 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyParseContentElementFallback() = runBlockingTest {
-        // first valid element in the fallback is a `Text` element
         assertIs<Text>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
+        assertNull(getTestXmlParser("fallback_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test
@@ -291,8 +291,8 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyParseContentElementParagraphFallback() = runBlockingTest {
-        // first valid element in fallback_paragraph.xml is a Text element
         assertIs<Text>(getTestXmlParser("fallback_paragraph.xml").parseContentElement(Manifest()))
+        assertNull(getTestXmlParser("fallback_paragraph_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test

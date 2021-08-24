@@ -1,0 +1,7 @@
+<content:paragraph fallback="true" xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <unrecognized />
+    <content:image resource="image.png" restrictTo="invalid" />
+    <content:image resource="image.png" version="999999" />
+    <content:button type="unrecognized"><content:text>events</content:text></content:button>
+    <content:video provider="invalid" video-id="alskjdf" />
+</content:paragraph>
