@@ -27,6 +27,7 @@ class MultiselectTest : UsesResources() {
     fun testParseMultiselect() = runBlockingTest {
         val multiselect = Multiselect(Manifest(), getTestXmlParser("multiselect.xml"))
         assertEquals("quiz1", multiselect.stateName)
+        assertEquals(2, multiselect.columns)
         assertEquals(2, multiselect.selectionLimit)
         assertEquals(3, multiselect.options.size)
         with(multiselect.options[0]) {
@@ -49,6 +50,7 @@ class MultiselectTest : UsesResources() {
         val manifest = Manifest(multiselectOptionSelectedColor = TestColors.RANDOM)
         val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
+        assertEquals(1, multiselect.columns)
         assertEquals(1, multiselect.selectionLimit)
         assertEquals(1, multiselect.options.size)
         with(multiselect.options.single()) {
