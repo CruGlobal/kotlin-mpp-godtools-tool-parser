@@ -4,6 +4,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
@@ -32,6 +33,7 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(TestColors.GREEN, page.controlColor)
         assertEquals(1.2345, page.textScale, 0.00001)
         assertEquals(1, page.content.size)
+        assertEquals(AnalyticsEvent.System.APPSFLYER, page.analyticsEvents.single().systems.single())
         assertIs<Text>(page.content[0])
         assertEquals("background.png", page._backgroundImage)
         assertEquals(TestColors.RED, page.multiselectOptionBackgroundColor)
@@ -51,6 +53,7 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(manifest.multiselectOptionBackgroundColor, page.multiselectOptionBackgroundColor)
         assertEquals(manifest.multiselectOptionSelectedColor, page.multiselectOptionSelectedColor)
         assertEquals(DEFAULT_TEXT_SCALE, page.textScale, 0.001)
+        assertTrue(page.analyticsEvents.isEmpty())
         assertTrue(page.content.isEmpty())
     }
 

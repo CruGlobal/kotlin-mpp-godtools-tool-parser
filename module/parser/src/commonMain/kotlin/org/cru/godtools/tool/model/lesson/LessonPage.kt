@@ -3,6 +3,8 @@ package org.cru.godtools.tool.model.lesson
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.AnalyticsEvent
+import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
@@ -17,6 +19,7 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.XMLNS_CONTENT
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
@@ -59,6 +62,9 @@ class LessonPage : BaseModel, Parent, Styles {
 
     val isHidden: Boolean
     val listeners: Set<EventId>
+
+    @VisibleForTesting
+    internal val analyticsEvents: List<AnalyticsEvent>
 
     @AndroidColorInt
     val backgroundColor: PlatformColor
@@ -114,9 +120,13 @@ class LessonPage : BaseModel, Parent, Styles {
 
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
+        analyticsEvents = mutableListOf()
         val content = mutableListOf<Content>()
         parser.parseChildren {
             when (parser.namespace) {
+                XMLNS_ANALYTICS -> when (parser.name) {
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                }
                 XMLNS_LESSON -> when (parser.name) {
                     XML_CONTENT -> content += parseContent(parser)
                 }
@@ -140,6 +150,8 @@ class LessonPage : BaseModel, Parent, Styles {
 
         isHidden = false
         listeners = emptySet()
+
+        this.analyticsEvents = emptyList()
 
         this.backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
