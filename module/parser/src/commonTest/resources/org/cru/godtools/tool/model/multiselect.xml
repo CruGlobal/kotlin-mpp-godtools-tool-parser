@@ -1,6 +1,6 @@
 <content:multiselect xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
     option-background-color="rgba(255,0,0,1)" option-selected-color="rgba(0,255,0,1)" state="quiz1"
-    selection-limit="2">
+    columns="2" selection-limit="2">
     <content:option value="answer1" selected-color="rgba(0,0,255,1)">
         <content:text>Answer 1</content:text>
     </content:option>

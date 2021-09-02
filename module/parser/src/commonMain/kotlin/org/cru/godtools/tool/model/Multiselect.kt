@@ -9,6 +9,7 @@ import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_STATE = "state"
+private const val XML_COLUMNS = "columns"
 private const val XML_SELECTION_LIMIT = "selection-limit"
 private const val XML_OPTION = "option"
 private const val XML_OPTION_VALUE = "value"
@@ -25,6 +26,8 @@ class Multiselect : Content {
 
     @VisibleForTesting
     internal val stateName: String
+
+    val columns: Int
     @VisibleForTesting
     internal val selectionLimit: Int
 
@@ -39,6 +42,8 @@ class Multiselect : Content {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_MULTISELECT)
 
         stateName = parser.getAttributeValue(XML_STATE).orEmpty()
+
+        columns = parser.getAttributeValue(XML_COLUMNS)?.toIntOrNull() ?: 1
         selectionLimit = (parser.getAttributeValue(XML_SELECTION_LIMIT)?.toIntOrNull() ?: 1).coerceAtLeast(1)
 
         _optionBackgroundColor = parser.getAttributeValue(XML_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
@@ -64,6 +69,7 @@ class Multiselect : Content {
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
         this.stateName = stateName
+        columns = 1
         this.selectionLimit = selectionLimit
         _optionBackgroundColor = optionBackgroundColor
         _optionSelectedColor = optionSelectedColor
@@ -77,7 +83,7 @@ class Multiselect : Content {
             private const val XML_SELECTED_COLOR = "selected-color"
         }
 
-        private val multiselect: Multiselect
+        val multiselect: Multiselect
 
         private val _backgroundColor: PlatformColor?
         val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
