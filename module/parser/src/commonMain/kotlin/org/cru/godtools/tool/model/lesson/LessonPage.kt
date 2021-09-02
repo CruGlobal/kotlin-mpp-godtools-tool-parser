@@ -5,9 +5,11 @@ import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.HasAnalyticsEvents
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
@@ -43,7 +45,7 @@ private const val XML_PAGE = "page"
 private const val XML_HIDDEN = "hidden"
 private const val XML_CONTENT = "content"
 
-class LessonPage : BaseModel, Parent, Styles {
+class LessonPage : BaseModel, Parent, Styles, HasAnalyticsEvents {
     internal companion object {
         @AndroidColorInt
         @VisibleForTesting
@@ -137,8 +139,9 @@ class LessonPage : BaseModel, Parent, Styles {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        manifest: Manifest,
+        manifest: Manifest = Manifest(),
         fileName: String? = null,
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
@@ -151,7 +154,7 @@ class LessonPage : BaseModel, Parent, Styles {
         isHidden = false
         listeners = emptySet()
 
-        this.analyticsEvents = emptyList()
+        this.analyticsEvents = analyticsEvents
 
         this.backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
@@ -166,6 +169,12 @@ class LessonPage : BaseModel, Parent, Styles {
         _textScale = textScale
 
         content = emptyList()
+    }
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
+        Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
+        else -> error("Analytics trigger type $type is not currently supported on Heroes")
     }
 }
 

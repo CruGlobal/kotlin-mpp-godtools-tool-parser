@@ -18,6 +18,7 @@ import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUN
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertSame
@@ -125,4 +126,18 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(6.0, LessonPage(manifest, textScale = 2.0).textScale, 0.001)
     }
     // endregion Attribute Behavior
+
+    @Test
+    fun testGetAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.DEFAULT)
+        val visibleEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.VISIBLE)
+        val hiddenEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.HIDDEN)
+        val selectedEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.SELECTED)
+        val page = LessonPage(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+
+        assertEquals(listOf(defaultEvent, visibleEvent), page.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE))
+        assertEquals(listOf(hiddenEvent), page.getAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN))
+        assertFailsWith(IllegalStateException::class) { page.getAnalyticsEvents(AnalyticsEvent.Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { page.getAnalyticsEvents(AnalyticsEvent.Trigger.SELECTED) }
+    }
 }
