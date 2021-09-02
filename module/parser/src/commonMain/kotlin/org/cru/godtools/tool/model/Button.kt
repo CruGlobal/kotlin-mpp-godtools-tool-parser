@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
@@ -20,7 +21,7 @@ private const val XML_ICON = "icon"
 private const val XML_ICON_GRAVITY = "icon-gravity"
 private const val XML_ICON_SIZE = "icon-size"
 
-class Button : Content, Styles {
+class Button : Content, Styles, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
@@ -87,10 +88,11 @@ class Button : Content, Styles {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        parent: Base,
+        parent: Base = Manifest(),
         type: Type = Type.DEFAULT,
         style: Style? = null,
         @AndroidColorInt color: PlatformColor? = null,
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
         text: ((Button) -> Text?)? = null
     ) : super(parent) {
         this.type = type
@@ -105,11 +107,16 @@ class Button : Content, Styles {
         iconGravity = DEFAULT_ICON_GRAVITY
         iconSize = DEFAULT_ICON_SIZE
 
-        analyticsEvents = emptyList()
+        this.analyticsEvents = analyticsEvents
         this.text = text?.invoke(this)
     }
 
     override val isIgnored get() = super.isIgnored || type == Type.UNKNOWN || style == Style.UNKNOWN
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+        else -> error("The $type trigger type is currently unsupported on Buttons")
+    }
 
     enum class Type {
         EVENT, URL, UNKNOWN;

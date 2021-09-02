@@ -80,6 +80,7 @@ class AnalyticsEvent : BaseModel {
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         action: String? = null,
+        trigger: Trigger = Trigger.DEFAULT,
         delay: Int = 0,
         systems: Set<System> = emptySet(),
         attributes: Map<String, String> = emptyMap()
@@ -87,7 +88,7 @@ class AnalyticsEvent : BaseModel {
         this.action = action
         this.delay = delay
         this.systems = systems
-        trigger = Trigger.DEFAULT
+        this.trigger = trigger
         this.attributes = attributes
     }
 

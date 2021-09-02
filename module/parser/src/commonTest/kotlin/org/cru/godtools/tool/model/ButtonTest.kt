@@ -6,11 +6,13 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
@@ -124,6 +126,18 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
+    fun testButtonGetAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val button = Button(analyticsEvents = listOf(defaultEvent, selectedEvent, visibleEvent))
+
+        assertEquals(listOf(defaultEvent, selectedEvent), button.getAnalyticsEvents(Trigger.SELECTED))
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
+    }
+
+    @Test
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
         assertEquals(manifest.primaryColor, Button(manifest).buttonColor)
@@ -191,6 +205,7 @@ class ButtonTest : UsesResources() {
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
     }
+
     // region Button.Style
     @Test
     fun verifyParseButtonStyle() {
