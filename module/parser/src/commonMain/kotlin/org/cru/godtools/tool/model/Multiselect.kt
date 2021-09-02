@@ -83,7 +83,7 @@ class Multiselect : Content {
             private const val XML_SELECTED_COLOR = "selected-color"
         }
 
-        private val multiselect: Multiselect
+        val multiselect: Multiselect
 
         private val _backgroundColor: PlatformColor?
         val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
