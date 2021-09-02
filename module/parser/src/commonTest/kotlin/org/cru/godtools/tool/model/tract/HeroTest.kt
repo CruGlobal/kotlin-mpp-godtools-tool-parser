@@ -5,6 +5,8 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.DeviceType
 import org.cru.godtools.tool.model.Image
 import org.cru.godtools.tool.model.Manifest
@@ -15,6 +17,7 @@ import org.cru.godtools.tool.model.Text
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
@@ -45,6 +48,20 @@ class HeroTest : UsesResources("model/tract") {
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])
         assertIs<Tabs>(hero.content[1])
+    }
+
+    @Test
+    fun testAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val hiddenEvent = AnalyticsEvent(trigger = Trigger.HIDDEN)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val hero = Hero(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+
+        assertEquals(listOf(defaultEvent, visibleEvent), hero.getAnalyticsEvents(Trigger.VISIBLE))
+        assertEquals(listOf(hiddenEvent), hero.getAnalyticsEvents(Trigger.HIDDEN))
+        assertFailsWith(IllegalStateException::class) { hero.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { hero.getAnalyticsEvents(Trigger.SELECTED) }
     }
 
     @Test
