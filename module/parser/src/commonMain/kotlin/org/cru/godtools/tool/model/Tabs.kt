@@ -1,6 +1,8 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -30,7 +32,12 @@ class Tabs : Content {
         }
     }
 
-    class Tab : BaseModel, Parent {
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(parent: Base = Manifest()) : super(parent) {
+        tabs = emptyList()
+    }
+
+    class Tab : BaseModel, Parent, HasAnalyticsEvents {
         private val tabs: Tabs
         val position get() = tabs.tabs.indexOf(this)
 
@@ -59,6 +66,23 @@ class Tabs : Content {
                 }
             }
             this.label = label
+        }
+
+        @RestrictTo(RestrictTo.Scope.TESTS)
+        internal constructor(
+            parent: Tabs = Tabs(),
+            analyticsEvents: List<AnalyticsEvent> = emptyList()
+        ) : super(parent) {
+            tabs = parent
+            this.analyticsEvents = analyticsEvents
+            listeners = emptySet()
+            label = null
+            content = emptyList()
+        }
+
+        override fun getAnalyticsEvents(type: Trigger) = when (type) {
+            Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+            else -> error("The $type trigger type is currently unsupported on Tabs")
         }
     }
 }
