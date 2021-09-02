@@ -4,10 +4,12 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.HasAnalyticsEvents
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
@@ -40,7 +42,7 @@ import org.cru.godtools.tool.xml.XmlPullParser
 private const val XML_LABEL = "label"
 private const val XML_HIDDEN = "hidden"
 
-class Card : BaseModel, Styles, Parent {
+class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_CARD = "card"
 
@@ -122,6 +124,7 @@ class Card : BaseModel, Styles, Parent {
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         isHidden: Boolean = false,
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
         label: ((Base) -> Text?)? = null,
         content: ((Card) -> List<Content>?)? = null
     ) : super(page) {
@@ -131,7 +134,7 @@ class Card : BaseModel, Styles, Parent {
         this.isHidden = isHidden
         listeners = emptySet()
         dismissListeners = emptySet()
-        analyticsEvents = emptyList()
+        this.analyticsEvents = analyticsEvents
 
         _backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
@@ -142,6 +145,12 @@ class Card : BaseModel, Styles, Parent {
 
         this.label = label?.invoke(labelParent)
         this.content = content?.invoke(this).orEmpty()
+    }
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
+        Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
+        else -> error("Analytics trigger type $type is not currently supported on Cards")
     }
 }
 
