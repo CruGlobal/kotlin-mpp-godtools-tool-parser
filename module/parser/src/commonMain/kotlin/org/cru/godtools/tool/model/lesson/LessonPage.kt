@@ -3,9 +3,13 @@ package org.cru.godtools.tool.model.lesson
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.AnalyticsEvent
+import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.HasAnalyticsEvents
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
@@ -17,6 +21,7 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.XMLNS_ANALYTICS
 import org.cru.godtools.tool.model.XMLNS_CONTENT
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
@@ -40,7 +45,7 @@ private const val XML_PAGE = "page"
 private const val XML_HIDDEN = "hidden"
 private const val XML_CONTENT = "content"
 
-class LessonPage : BaseModel, Parent, Styles {
+class LessonPage : BaseModel, Parent, Styles, HasAnalyticsEvents {
     internal companion object {
         @AndroidColorInt
         @VisibleForTesting
@@ -59,6 +64,9 @@ class LessonPage : BaseModel, Parent, Styles {
 
     val isHidden: Boolean
     val listeners: Set<EventId>
+
+    @VisibleForTesting
+    internal val analyticsEvents: List<AnalyticsEvent>
 
     @AndroidColorInt
     val backgroundColor: PlatformColor
@@ -114,9 +122,13 @@ class LessonPage : BaseModel, Parent, Styles {
 
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
+        analyticsEvents = mutableListOf()
         val content = mutableListOf<Content>()
         parser.parseChildren {
             when (parser.namespace) {
+                XMLNS_ANALYTICS -> when (parser.name) {
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                }
                 XMLNS_LESSON -> when (parser.name) {
                     XML_CONTENT -> content += parseContent(parser)
                 }
@@ -127,8 +139,9 @@ class LessonPage : BaseModel, Parent, Styles {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        manifest: Manifest,
+        manifest: Manifest = Manifest(),
         fileName: String? = null,
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
@@ -140,6 +153,8 @@ class LessonPage : BaseModel, Parent, Styles {
 
         isHidden = false
         listeners = emptySet()
+
+        this.analyticsEvents = analyticsEvents
 
         this.backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
@@ -154,6 +169,12 @@ class LessonPage : BaseModel, Parent, Styles {
         _textScale = textScale
 
         content = emptyList()
+    }
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
+        Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
+        else -> error("Analytics trigger type $type is not currently supported on Heroes")
     }
 }
 
