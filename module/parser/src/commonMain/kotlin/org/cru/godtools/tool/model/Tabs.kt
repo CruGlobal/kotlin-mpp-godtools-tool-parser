@@ -1,10 +1,13 @@
 package org.cru.godtools.tool.model
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
+
+private const val TAG = "Tabs"
 
 private const val XML_TAB = "tab"
 private const val XML_LABEL = "label"
@@ -66,6 +69,15 @@ class Tabs : Content {
                 }
             }
             this.label = label
+
+            // Log a non-fatal warning if any analytics event is still using the SELECTED trigger
+            analyticsEvents.forEach {
+                if (it.trigger == Trigger.SELECTED) {
+                    val message =
+                        "tool: ${manifest.code} locale: ${manifest.locale} action: ${it.action} trigger: ${it.trigger}"
+                    Napier.e(message, UnsupportedOperationException("XML Analytics Deprecated trigger $message"), TAG)
+                }
+            }
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
@@ -81,7 +93,8 @@ class Tabs : Content {
         }
 
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
-            Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+            Trigger.CLICKED ->
+                analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.SELECTED, Trigger.DEFAULT) }
             else -> error("The $type trigger type is currently unsupported on Tabs")
         }
     }

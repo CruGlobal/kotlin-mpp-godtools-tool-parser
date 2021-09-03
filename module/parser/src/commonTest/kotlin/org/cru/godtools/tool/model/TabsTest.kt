@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -54,13 +55,15 @@ class TabsTest : UsesResources() {
 
     @Test
     fun testTabGetAnalyticsEvents() {
-        val defaultEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.DEFAULT)
-        val selectedEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.SELECTED)
-        val visibleEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.VISIBLE)
-        val tab = Tabs.Tab(analyticsEvents = listOf(defaultEvent, selectedEvent, visibleEvent))
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val tab = Tabs.Tab(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
 
-        assertEquals(listOf(defaultEvent, selectedEvent), tab.getAnalyticsEvents(AnalyticsEvent.Trigger.SELECTED))
-        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(AnalyticsEvent.Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE) }
+        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), tab.getAnalyticsEvents(Trigger.CLICKED))
+        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.SELECTED) }
+        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 }
