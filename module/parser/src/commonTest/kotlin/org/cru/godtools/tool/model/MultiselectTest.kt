@@ -12,9 +12,11 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.coroutines.receive
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
@@ -33,6 +35,7 @@ class MultiselectTest : UsesResources() {
         with(multiselect.options[0]) {
             assertEquals(TestColors.RED, backgroundColor)
             assertEquals(TestColors.BLUE, selectedColor)
+            assertTrue(AnalyticsEvent.System.FIREBASE in analyticsEvents.single().systems)
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
@@ -57,6 +60,7 @@ class MultiselectTest : UsesResources() {
             assertEquals("valueAttr", value)
             assertEquals(manifest.backgroundColor, backgroundColor)
             assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)
+            assertTrue(analyticsEvents.isEmpty())
             assertTrue(content.isEmpty())
         }
     }
@@ -70,6 +74,22 @@ class MultiselectTest : UsesResources() {
 
         ParserConfig.supportedFeatures = emptySet()
         assertTrue(multiselect.isIgnored)
+    }
+
+    @Test
+    fun testOptionGetAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val option = Multiselect.Option(
+            analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent)
+        )
+
+        assertEquals(listOf(defaultEvent, clickedEvent), option.getAnalyticsEvents(Trigger.CLICKED))
+        assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.SELECTED) }
+        assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 
     @Test
