@@ -4,6 +4,8 @@ import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -78,7 +80,7 @@ class Multiselect : Content {
 
     override val isIgnored get() = FEATURE_MULTISELECT !in ParserConfig.supportedFeatures || super.isIgnored
 
-    class Option : Content, Parent {
+    class Option : Content, Parent, HasAnalyticsEvents {
         private companion object {
             private const val XML_SELECTED_COLOR = "selected-color"
         }
@@ -93,6 +95,8 @@ class Multiselect : Content {
         @VisibleForTesting
         internal val value: String
 
+        @VisibleForTesting
+        internal val analyticsEvents: List<AnalyticsEvent>
         override val content: List<Content>
 
         internal constructor(multiselect: Multiselect, parser: XmlPullParser) : super(multiselect, parser) {
@@ -104,12 +108,20 @@ class Multiselect : Content {
 
             value = parser.getAttributeValue(XML_OPTION_VALUE).orEmpty()
 
-            content = parseContent(parser)
+            analyticsEvents = mutableListOf()
+            content = parseContent(parser) {
+                when (parser.namespace) {
+                    XMLNS_ANALYTICS -> when (parser.name) {
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                    }
+                }
+            }
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
-            multiselect: Multiselect,
+            multiselect: Multiselect = Multiselect(),
+            analyticsEvents: List<AnalyticsEvent> = emptyList(),
             backgroundColor: PlatformColor? = null,
             selectedColor: PlatformColor? = null,
             value: String = ""
@@ -118,7 +130,13 @@ class Multiselect : Content {
             _backgroundColor = backgroundColor
             _selectedColor = selectedColor
             this.value = value
+            this.analyticsEvents = analyticsEvents
             content = emptyList()
+        }
+
+        override fun getAnalyticsEvents(type: Trigger) = when (type) {
+            Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
+            else -> error("The $type trigger type is currently unsupported on Multiselect Options")
         }
 
         fun isSelected(state: State) = value in state.getAll(multiselect.stateName)
