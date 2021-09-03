@@ -3,9 +3,11 @@ package org.cru.godtools.tool.model.tract
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
+import org.cru.godtools.tool.model.HasAnalyticsEvents
 import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
@@ -17,7 +19,7 @@ import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_HEADING = "heading"
 
-class Hero : BaseModel, Parent {
+class Hero : BaseModel, Parent, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_HERO = "hero"
     }
@@ -50,10 +52,16 @@ class Hero : BaseModel, Parent {
     constructor(
         page: TractPage = TractPage(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
-        heading: (Base) -> Text?
+        heading: ((Base) -> Text?)? = null
     ) : super(page) {
         this.analyticsEvents = analyticsEvents
-        this.heading = heading(headingParent)
+        this.heading = heading?.invoke(headingParent)
         content = emptyList()
+    }
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
+        Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
+        else -> error("Analytics trigger type $type is not currently supported on Heroes")
     }
 }

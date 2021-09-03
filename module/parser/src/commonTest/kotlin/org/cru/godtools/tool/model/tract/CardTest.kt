@@ -4,6 +4,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
@@ -16,6 +17,7 @@ import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
@@ -103,6 +105,20 @@ class CardTest : UsesResources("model/tract") {
         val page = TractPage(cardBackgroundColor = TestColors.GREEN)
         assertEquals(TestColors.GREEN, Card(page).backgroundColor)
         assertEquals(TestColors.BLUE, Card(page, backgroundColor = TestColors.BLUE).backgroundColor)
+    }
+
+    @Test
+    fun testAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.DEFAULT)
+        val visibleEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.VISIBLE)
+        val hiddenEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.HIDDEN)
+        val selectedEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.SELECTED)
+        val card = Card(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+
+        assertEquals(listOf(defaultEvent, visibleEvent), card.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE))
+        assertEquals(listOf(hiddenEvent), card.getAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN))
+        assertFailsWith(IllegalStateException::class) { card.getAnalyticsEvents(AnalyticsEvent.Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { card.getAnalyticsEvents(AnalyticsEvent.Trigger.SELECTED) }
     }
 
     @Test
