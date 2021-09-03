@@ -20,6 +20,7 @@ private const val XML_SYSTEM_FACEBOOK = "facebook"
 private const val XML_SYSTEM_FIREBASE = "firebase"
 private const val XML_SYSTEM_SNOWPLOW = "snowplow"
 private const val XML_TRIGGER = "trigger"
+private const val XML_TRIGGER_CLICKED = "clicked"
 private const val XML_TRIGGER_SELECTED = "selected"
 private const val XML_TRIGGER_VISIBLE = "visible"
 private const val XML_TRIGGER_HIDDEN = "hidden"
@@ -113,10 +114,16 @@ class AnalyticsEvent : BaseModel {
     }
 
     enum class Trigger {
-        SELECTED, VISIBLE, HIDDEN, DEFAULT, UNKNOWN;
+        @Deprecated(
+            "Since 0.3.0 (9/3/21), use CLICKED instead",
+            ReplaceWith("CLICKED", "org.cru.godtools.tool.model.AnalyticsEvent.Trigger.CLICKED")
+        )
+        SELECTED,
+        VISIBLE, HIDDEN, CLICKED, DEFAULT, UNKNOWN;
 
         internal companion object {
             fun String.toTrigger() = when (this) {
+                XML_TRIGGER_CLICKED -> CLICKED
                 XML_TRIGGER_SELECTED -> SELECTED
                 XML_TRIGGER_VISIBLE -> VISIBLE
                 XML_TRIGGER_HIDDEN -> HIDDEN

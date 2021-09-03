@@ -1,9 +1,12 @@
 package org.cru.godtools.tool.model
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
+
+private const val TAG = "Link"
 
 class Link : Content, Styles, HasAnalyticsEvents {
     internal companion object {
@@ -28,6 +31,15 @@ class Link : Content, Styles, HasAnalyticsEvents {
                     }
             }
         }
+
+        // Log a non-fatal warning if any analytics event is still using the SELECTED trigger
+        analyticsEvents.forEach {
+            if (it.trigger == Trigger.SELECTED) {
+                val message =
+                    "tool: ${manifest.code} locale: ${manifest.locale} action: ${it.action} trigger: ${it.trigger}"
+                Napier.e(message, UnsupportedOperationException("XML Analytics Event Deprecated trigger $message"), TAG)
+            }
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -42,7 +54,8 @@ class Link : Content, Styles, HasAnalyticsEvents {
     }
 
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
-        Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+        Trigger.CLICKED ->
+            analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.SELECTED, Trigger.DEFAULT) }
         else -> error("The $type trigger type is currently unsupported on Links")
     }
 }

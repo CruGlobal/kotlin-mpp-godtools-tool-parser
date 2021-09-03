@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -20,6 +21,8 @@ private const val XML_URL = "url"
 private const val XML_ICON = "icon"
 private const val XML_ICON_GRAVITY = "icon-gravity"
 private const val XML_ICON_SIZE = "icon-size"
+
+private const val TAG = "Button"
 
 class Button : Content, Styles, HasAnalyticsEvents {
     internal companion object {
@@ -84,6 +87,15 @@ class Button : Content, Styles, HasAnalyticsEvents {
                 }
             }
         }
+
+        // Log a non-fatal warning if any analytics event is still using the SELECTED trigger
+        analyticsEvents.forEach {
+            if (it.trigger == Trigger.SELECTED) {
+                val message =
+                    "tool: ${manifest.code} locale: ${manifest.locale} action: ${it.action} trigger: ${it.trigger}"
+                Napier.e(message, UnsupportedOperationException("XML Analytics Event Deprecated trigger $message"), TAG)
+            }
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
@@ -114,7 +126,8 @@ class Button : Content, Styles, HasAnalyticsEvents {
     override val isIgnored get() = super.isIgnored || type == Type.UNKNOWN || style == Style.UNKNOWN
 
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
-        Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+        Trigger.CLICKED ->
+            analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.SELECTED, Trigger.DEFAULT) }
         else -> error("The $type trigger type is currently unsupported on Buttons")
     }
 
