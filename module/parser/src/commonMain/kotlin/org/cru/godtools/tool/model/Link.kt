@@ -2,9 +2,10 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Link : Content, Styles {
+class Link : Content, Styles, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_LINK = "link"
     }
@@ -30,9 +31,18 @@ class Link : Content, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base, text: ((Base) -> Text?)? = null) : super(parent) {
-        analyticsEvents = emptyList()
+    internal constructor(
+        parent: Base = Manifest(),
+        analyticsEvents: List<AnalyticsEvent> = emptyList(),
+        text: ((Base) -> Text?)? = null
+    ) : super(parent) {
+        this.analyticsEvents = analyticsEvents
         events = emptyList()
         this.text = text?.invoke(this)
+    }
+
+    override fun getAnalyticsEvents(type: Trigger) = when (type) {
+        Trigger.SELECTED -> analyticsEvents.filter { it.isTriggerType(Trigger.SELECTED, Trigger.DEFAULT) }
+        else -> error("The $type trigger type is currently unsupported on Links")
     }
 }
