@@ -9,7 +9,7 @@ jacoco = "0.8.7"
 kotlin = "1.5.21"
 kotlinCoroutines = "1.5.1"
 ktlint = "0.42.1"
-napier = "2.0.0"
+napier = "2.1.0"
 okio = "3.0.0-alpha.9"
 splitties = "3.0.0"
 
