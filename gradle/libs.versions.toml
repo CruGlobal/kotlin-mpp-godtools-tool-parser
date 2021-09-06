@@ -11,7 +11,7 @@ kotlinCoroutines = "1.5.1"
 ktlint = "0.42.1"
 napier = "2.0.0"
 okio = "3.0.0-alpha.9"
-splitties = "3.0.0-rc03"
+splitties = "3.0.0"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
