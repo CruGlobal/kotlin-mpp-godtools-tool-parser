@@ -1,5 +1,5 @@
 [versions]
-android-gradle-plugin = "7.0.0"
+android-gradle-plugin = "7.0.2"
 androidx-annotation = "1.2.0"
 antlr-kotlin = "bbd4c72186"
 antlr-kotlin-fork = "0.0.7_265"
