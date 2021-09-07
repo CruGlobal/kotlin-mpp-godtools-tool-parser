@@ -78,7 +78,9 @@ kotlin {
         license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
 
-        frameworkName = "GodToolsToolParser"
+        framework {
+            baseName = "GodToolsToolParser"
+        }
 
         ios.deploymentTarget = "11.0"
     }
