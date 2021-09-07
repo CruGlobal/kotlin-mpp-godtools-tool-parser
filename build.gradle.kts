@@ -121,9 +121,9 @@ tasks.podspec.configure {
                 it.contains("syncFramework") -> """
                     |if [[ ${'$'}(echo ${'$'}CONFIGURATION | tr '[:upper:]' '[:lower:]') = 'debug' ]]
                     |then
-                    |    SANITIZED_CONFIGURATION=debug
+                    |    SANITIZED_CONFIGURATION=Debug
                     |else
-                    |    SANITIZED_CONFIGURATION=release
+                    |    SANITIZED_CONFIGURATION=Release
                     |fi
                     |$it
                 """.trimMargin()
