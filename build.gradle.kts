@@ -46,7 +46,7 @@ subprojects {
                 val androidTest by getting {
                     dependencies {
                         implementation("androidx.test.ext:junit:1.1.3")
-                        implementation("org.robolectric:robolectric:4.6.1")
+                        implementation(libs.robolectric)
                     }
                 }
             }
