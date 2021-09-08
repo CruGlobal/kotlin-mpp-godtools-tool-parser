@@ -69,18 +69,18 @@ class LessonPage : BaseModel, Parent, Styles, HasAnalyticsEvents {
     internal val analyticsEvents: List<AnalyticsEvent>
 
     @AndroidColorInt
-    val backgroundColor: PlatformColor
+    internal val backgroundColor: PlatformColor
 
     @VisibleForTesting
     internal val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    val backgroundImageGravity: ImageGravity
-    val backgroundImageScaleType: ImageScaleType
+    internal val backgroundImageGravity: ImageGravity
+    internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    val controlColor get() = _controlColor ?: manifest.lessonControlColor
+    internal val controlColor get() = _controlColor ?: manifest.lessonControlColor
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
