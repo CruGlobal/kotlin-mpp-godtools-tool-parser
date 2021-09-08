@@ -108,18 +108,20 @@ class Manifest : BaseModel, Styles {
     @AndroidColorInt
     private val _navBarColor: PlatformColor?
     @get:AndroidColorInt
-    val navBarColor get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
+    internal val navBarColor
+        get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
     @AndroidColorInt
     private val _navBarControlColor: PlatformColor?
     @get:AndroidColorInt
-    val navBarControlColor get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor
+    internal val navBarControlColor
+        get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor
 
     @AndroidColorInt
-    val backgroundColor: PlatformColor
+    internal val backgroundColor: PlatformColor
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    val backgroundImageGravity: ImageGravity
-    val backgroundImageScaleType: ImageScaleType
+    internal val backgroundImageGravity: ImageGravity
+    internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?
