@@ -61,11 +61,11 @@ class TractPage : BaseModel, Styles {
     val listeners: Set<EventId>
 
     @AndroidColorInt
-    val backgroundColor: PlatformColor
+    internal val backgroundColor: PlatformColor
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    val backgroundImageGravity: ImageGravity
-    val backgroundImageScaleType: ImageScaleType
+    internal val backgroundImageGravity: ImageGravity
+    internal val backgroundImageScaleType: ImageScaleType
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
