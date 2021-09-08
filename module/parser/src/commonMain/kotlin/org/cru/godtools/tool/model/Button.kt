@@ -50,8 +50,8 @@ class Button : Content, Styles, HasAnalyticsEvents {
 
     private val iconName: String?
     val icon get() = getResource(iconName)
-    val iconSize: Int
-    val iconGravity: ImageGravity
+    internal val iconSize: Int
+    internal val iconGravity: ImageGravity
 
     val text: Text?
     override val textAlign get() = Text.Align.CENTER

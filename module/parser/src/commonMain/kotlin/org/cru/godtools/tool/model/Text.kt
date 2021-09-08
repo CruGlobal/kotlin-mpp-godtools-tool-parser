@@ -37,13 +37,13 @@ class Text : Content {
     val text: String?
 
     private val _textAlign: Align?
-    val textAlign get() = _textAlign ?: stylesParent.textAlign
+    internal val textAlign get() = _textAlign ?: stylesParent.textAlign
     @AndroidColorInt
     private val _textColor: PlatformColor?
     @get:AndroidColorInt
-    val textColor get() = _textColor ?: stylesParent.textColor
+    internal val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
-    val textScale get() = _textScale * stylesParent.textScale
+    internal val textScale get() = _textScale * stylesParent.textScale
     val textStyles: Set<Style>
 
     @VisibleForTesting

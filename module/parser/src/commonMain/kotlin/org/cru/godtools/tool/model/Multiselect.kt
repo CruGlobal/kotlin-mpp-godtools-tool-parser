@@ -88,9 +88,10 @@ class Multiselect : Content {
         val multiselect: Multiselect
 
         private val _backgroundColor: PlatformColor?
-        val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
+        internal val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
         private val _selectedColor: PlatformColor?
-        val selectedColor get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
+        internal val selectedColor
+            get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
 
         @VisibleForTesting
         internal val value: String

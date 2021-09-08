@@ -32,7 +32,7 @@ class CallToAction : BaseModel {
     @AndroidColorInt
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    val controlColor get() = _controlColor ?: stylesParent.primaryColor
+    internal val controlColor get() = _controlColor ?: stylesParent.primaryColor
 
     @VisibleForTesting
     internal val tipId: String?
