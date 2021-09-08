@@ -16,21 +16,17 @@ fun KotlinMultiplatformExtension.configureAndroidTargets() {
     }
 }
 
-fun KotlinMultiplatformExtension.configureIosTargets(configure: KotlinNativeTarget.() -> Unit = {}) {
+fun KotlinMultiplatformExtension.configureIosTargets() {
     // HACK: workaround https://youtrack.jetbrains.com/issue/KT-40975
     //       See also: https://kotlinlang.org/docs/mobile/add-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
     //       This should be able to go away when we upgrade to Kotlin 1.5.30
     //       This fixes IDE support of ios framework classes in the iosMain source directory
-//    ios {
-//        copyTestResources()
-//        configure()
-//    }
+//    ios { copyTestResources() }
     val target = when {
         System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> iosArm64("ios")
         else -> iosX64("ios")
     }
     target.copyTestResources()
-    target.configure()
 
     // enable running ios tests on a background thread as well
     // configuration copied from: https://github.com/square/okio/pull/929
