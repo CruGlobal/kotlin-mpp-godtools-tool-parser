@@ -69,7 +69,7 @@ class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     internal val backgroundImageGravity: ImageGravity
-    val backgroundImageScaleType: ImageScaleType
+    internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
     private val _textColor: PlatformColor?
