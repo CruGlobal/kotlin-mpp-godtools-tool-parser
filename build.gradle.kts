@@ -1,5 +1,4 @@
 import org.ajoberstar.grgit.Grgit
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 
 plugins {
     kotlin("multiplatform")
@@ -55,14 +54,7 @@ subprojects {
 }
 
 kotlin {
-    configureIosTargets {
-        binaries {
-            withType(Framework::class.java).configureEach {
-                export(project(":module:parser"))
-                export(project(":module:state"))
-            }
-        }
-    }
+    configureIosTargets()
 
     sourceSets {
         val commonMain by getting {
@@ -80,6 +72,9 @@ kotlin {
 
         framework {
             baseName = "GodToolsToolParser"
+
+            export(project(":module:parser"))
+            export(project(":module:state"))
         }
 
         ios.deploymentTarget = "11.0"
