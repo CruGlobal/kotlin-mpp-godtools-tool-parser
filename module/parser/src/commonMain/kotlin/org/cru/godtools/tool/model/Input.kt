@@ -81,5 +81,3 @@ class Input : Content {
         }
     }
 }
-
-val Input?.type get() = this?.type ?: Input.Type.DEFAULT
