@@ -11,7 +11,7 @@ kotlin = "1.5.30"
 kotlinCoroutines = "1.5.2-native-mt"
 ktlint = "0.42.1"
 napier = "2.1.0"
-okio = "3.0.0-alpha.9"
+okio = "3.0.0-alpha.10"
 robolectric = "4.6.1"
 splitties = "3.0.0"
 
