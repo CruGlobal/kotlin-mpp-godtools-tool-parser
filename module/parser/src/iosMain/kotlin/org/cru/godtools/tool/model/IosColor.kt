@@ -1,6 +1,6 @@
 package org.cru.godtools.tool.model
 
-import com.github.ajalt.colormath.RGB
+import com.github.ajalt.colormath.model.RGB
 import kotlinx.cinterop.DoubleVar
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
@@ -12,10 +12,10 @@ import platform.UIKit.UIColor
 actual typealias PlatformColor = UIColor
 
 internal actual fun RGB.toPlatformColor() = UIColor(
-    red = r.toDouble() / 255.0,
-    green = g.toDouble() / 255.0,
-    blue = b.toDouble() / 255.0,
-    alpha = a.toDouble()
+    red = r.toDouble(),
+    green = g.toDouble(),
+    blue = b.toDouble(),
+    alpha = alpha.toDouble()
 )
 internal actual fun PlatformColor.toRGB(): RGB = memScoped {
     val red = alloc<DoubleVar>()

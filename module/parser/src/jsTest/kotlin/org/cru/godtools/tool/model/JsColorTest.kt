@@ -1,12 +1,12 @@
 package org.cru.godtools.tool.model
 
-import com.github.ajalt.colormath.RGB
+import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class JsColorTest {
     @Test
     fun testToPlatformColor() {
-        assertEquals("rgba(1, 2, 3, .5)", RGB(1, 2, 3, .5f).toPlatformColor())
+        assertEquals("rgba(64, 128, 191, 0.5)", RGB(.25, .50, .75, .5f).toPlatformColor())
     }
 }
