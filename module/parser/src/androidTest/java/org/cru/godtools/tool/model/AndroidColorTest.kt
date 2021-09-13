@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model
 
 import android.graphics.Color
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.ajalt.colormath.RGB
+import com.github.ajalt.colormath.model.RGB
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
@@ -11,11 +11,11 @@ import kotlin.test.assertEquals
 class AndroidColorTest {
     @Test
     fun testToPlatformColor() {
-        val color = RGB(1, 2, 3, .5f).toPlatformColor()
+        val color = RGB(.25, .5, .75, .5f).toPlatformColor()
 
-        assertEquals(1, Color.red(color))
-        assertEquals(2, Color.green(color))
-        assertEquals(3, Color.blue(color))
+        assertEquals(64, Color.red(color))
+        assertEquals(128, Color.green(color))
+        assertEquals(191, Color.blue(color))
         assertEquals(128, Color.alpha(color))
     }
 }

@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
-import com.github.ajalt.colormath.HSL
-import com.github.ajalt.colormath.RGB
+import com.github.ajalt.colormath.model.HSL
+import com.github.ajalt.colormath.model.RGB
 import org.cru.godtools.tool.internal.AndroidColorInt
 import kotlin.native.concurrent.SharedImmutable
 
@@ -28,4 +28,4 @@ internal inline fun color(red: Int, green: Int, blue: Int, alpha: Double) =
 internal expect fun PlatformColor.toRGB(): RGB
 internal expect fun RGB.toPlatformColor(): PlatformColor
 internal fun PlatformColor.toHSL() = toRGB().toHSL()
-internal fun HSL.toPlatformColor() = toRGB().toPlatformColor()
+internal fun HSL.toPlatformColor() = toSRGB().toPlatformColor()
