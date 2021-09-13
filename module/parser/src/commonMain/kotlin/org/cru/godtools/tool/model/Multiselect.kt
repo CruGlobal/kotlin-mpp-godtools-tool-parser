@@ -160,4 +160,4 @@ val Multiselect.Option?.selectedColor get() = this?.selectedColor ?: stylesParen
 
 @VisibleForTesting
 internal val Styles?.defaultSelectedColor
-    get() = primaryColor.toHSL().run { copy(a = 1f, l = l + 40) }.toPlatformColor()
+    get() = primaryColor.toHSL().run { copy(alpha = 1f, l = l + 0.4f) }.toPlatformColor()

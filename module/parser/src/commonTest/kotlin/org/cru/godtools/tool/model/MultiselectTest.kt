@@ -230,13 +230,13 @@ class MultiselectTest : UsesResources() {
     @Test
     fun testOptionSelectedColorFallback() {
         val parent = object : BaseModel(), Styles {
-            override val primaryColor = color(255, 0, 0, 0.5)
+            override var primaryColor = color(254, 0, 0, 0.5)
             override var multiselectOptionSelectedColor: PlatformColor? = null
         }
 
         // 40% lighter primary color w/ 100% alpha
         with(Multiselect.Option(Multiselect(parent))) {
-            assertEquals(color(255, 204, 204, 1.0), selectedColor)
+            assertEquals(color(255, 203, 203, 1.0), selectedColor)
         }
 
         parent.multiselectOptionSelectedColor = TestColors.RANDOM
