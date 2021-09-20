@@ -15,27 +15,27 @@ class ManifestParserTest : UsesResources("service") {
 
     @Test
     fun testParseManifest() = runBlockingTest {
-        val result = assertIs<Result.Data>(parser.parseManifest("manifest_valid.xml"))
+        val result = assertIs<ParserResult.Data>(parser.parseManifest("manifest_valid.xml"))
         assertEquals(2, result.manifest.tractPages.size)
     }
 
     @Test
     fun testParseManifestMissingManifest() = runBlockingTest {
-        assertIs<Result.Error.NotFound>(parser.parseManifest("missing.xml"))
+        assertIs<ParserResult.Error.NotFound>(parser.parseManifest("missing.xml"))
     }
 
     @Test
     fun testParseManifestInvalidManifest() = runBlockingTest {
-        assertIs<Result.Error.Corrupted>(parser.parseManifest("../model/accordion.xml"))
+        assertIs<ParserResult.Error.Corrupted>(parser.parseManifest("../model/accordion.xml"))
     }
 
     @Test
     fun testParseManifestMissingPage() = runBlockingTest {
-        assertIs<Result.Error.NotFound>(parser.parseManifest("manifest_missing_page.xml"))
+        assertIs<ParserResult.Error.NotFound>(parser.parseManifest("manifest_missing_page.xml"))
     }
 
     @Test
     fun testParseManifestInvalidPage() = runBlockingTest {
-        assertIs<Result.Error.Corrupted>(parser.parseManifest("manifest_invalid_page.xml"))
+        assertIs<ParserResult.Error.Corrupted>(parser.parseManifest("manifest_invalid_page.xml"))
     }
 }
