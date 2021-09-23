@@ -5,3 +5,5 @@ import kotlin.random.Random
 
 @SharedImmutable
 internal val TEST_GRAVITY = ImageGravity(Random.nextInt())
+
+expect val TEST_URL: Uri

@@ -5,11 +5,14 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
+import org.cru.godtools.tool.model.EventId.Companion.FOLLOWUP
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class LinkTest : UsesResources() {
@@ -56,5 +59,23 @@ class LinkTest : UsesResources() {
         assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.DEFAULT) }
         assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.SELECTED) }
         assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.VISIBLE) }
+    }
+
+    @Test
+    fun testIsIgnoredClickableState() {
+        with(Link()) {
+            assertFalse(isClickable)
+            assertTrue(isIgnored)
+        }
+
+        with(Link(events = listOf(FOLLOWUP))) {
+            assertTrue(isClickable)
+            assertFalse(isIgnored)
+        }
+
+        with(Link(url = TEST_URL)) {
+            assertTrue(isClickable)
+            assertFalse(isIgnored)
+        }
     }
 }
