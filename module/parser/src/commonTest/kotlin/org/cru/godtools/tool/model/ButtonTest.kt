@@ -105,14 +105,15 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testButtonTypeUnknown() {
-        val button = Button(Manifest(), type = Button.Type.UNKNOWN)
+    fun testButtonNotClickable() {
+        val button = Button()
+        assertFalse(button.isClickable)
         assertTrue(button.isIgnored)
     }
 
     @Test
     fun testButtonStyleUnknown() {
-        val button = Button(Manifest(), style = Button.Style.UNKNOWN)
+        val button = Button(style = Button.Style.UNKNOWN, events = listOf(EventId.FOLLOWUP))
         assertTrue(button.isIgnored)
     }
 
