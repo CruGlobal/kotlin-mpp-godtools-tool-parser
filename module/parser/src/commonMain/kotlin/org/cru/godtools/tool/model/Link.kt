@@ -8,7 +8,7 @@ import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val TAG = "Link"
 
-class Link : Content, Styles, HasAnalyticsEvents {
+class Link : Content, Styles, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_LINK = "link"
     }
@@ -16,12 +16,16 @@ class Link : Content, Styles, HasAnalyticsEvents {
     override val textColor get() = primaryColor
 
     val analyticsEvents: List<AnalyticsEvent>
-    val events: List<EventId>
+    override val events: List<EventId>
+    override val url: Uri?
     val text: Text?
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
-        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
+        parser.parseClickableAttrs { events, url ->
+            this.events = events
+            this.url = url
+        }
         analyticsEvents = mutableListOf()
         text = parser.parseTextChild(this, XMLNS_CONTENT, XML_LINK) {
             when (parser.namespace) {
@@ -42,14 +46,19 @@ class Link : Content, Styles, HasAnalyticsEvents {
         }
     }
 
+    override val isIgnored get() = super.isIgnored || !isClickable
+
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
         text: ((Base) -> Text?)? = null
     ) : super(parent) {
         this.analyticsEvents = analyticsEvents
-        events = emptyList()
+        this.events = events
+        this.url = url
         this.text = text?.invoke(this)
     }
 

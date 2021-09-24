@@ -1,11 +1,13 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
@@ -23,7 +25,9 @@ class ImageTest : UsesResources() {
 
     @Test
     fun testParseImageRestricted() = runBlockingTest {
-        val image = Image(Manifest(), getTestXmlParser("image_restricted.xml"))
+        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
+        val manifest = Manifest(resources = { listOf(Resource(it, "image.png")) })
+        val image = Image(manifest, getTestXmlParser("image_restricted.xml"))
         assertTrue(image.isIgnored)
     }
 
@@ -36,4 +40,14 @@ class ImageTest : UsesResources() {
         assertNull(Image(manifest, resource = "invalid.jpg").resource)
         assertNull(Image(manifest, resource = null).resource)
     }
+
+    // region isIgnored
+    @Test
+    fun testIsIgnoredMissingResource() {
+        val manifest = Manifest(resources = { listOf(Resource(it, "valid.png")) })
+        assertTrue(Image(manifest, resource = null).isIgnored)
+        assertTrue(Image(manifest, resource = "").isIgnored)
+        assertFalse(Image(manifest, resource = "valid.png").isIgnored)
+    }
+    // endregion isIgnored
 }

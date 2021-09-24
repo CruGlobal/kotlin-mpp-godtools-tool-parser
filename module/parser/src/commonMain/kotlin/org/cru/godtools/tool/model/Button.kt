@@ -17,14 +17,13 @@ private const val XML_TYPE_URL = "url"
 private const val XML_STYLE = "style"
 private const val XML_STYLE_CONTAINED = "contained"
 private const val XML_STYLE_OUTLINED = "outlined"
-private const val XML_URL = "url"
 private const val XML_ICON = "icon"
 private const val XML_ICON_GRAVITY = "icon-gravity"
 private const val XML_ICON_SIZE = "icon-size"
 
 private const val TAG = "Button"
 
-class Button : Content, Styles, HasAnalyticsEvents {
+class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
@@ -33,9 +32,13 @@ class Button : Content, Styles, HasAnalyticsEvents {
         internal const val DEFAULT_ICON_SIZE = 18
     }
 
-    val type: Type
-    val events: List<EventId>
-    val url: Uri?
+    @Deprecated("Since v0.4.0, Button Type no longer controls any functionality.")
+    val type get() = when {
+        url != null -> Type.URL
+        else -> Type.EVENT
+    }
+    override val events: List<EventId>
+    override val url: Uri?
 
     private val _style: Style?
     val style: Style get() = _style ?: stylesParent.buttonStyle
@@ -66,9 +69,11 @@ class Button : Content, Styles, HasAnalyticsEvents {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_BUTTON)
 
-        type = parser.getAttributeValue(XML_TYPE)?.toButtonTypeOrNull() ?: Type.DEFAULT
-        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
-        url = parser.getAttributeValue(XML_URL)?.toAbsoluteUri()
+        val type = parser.getAttributeValue(XML_TYPE).toButtonTypeOrNull()
+        parser.parseClickableAttrs { events, url ->
+            this.events = if (type == null || type == Type.EVENT) events else emptyList()
+            this.url = if (type == null || type == Type.URL) url else null
+        }
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
@@ -101,15 +106,15 @@ class Button : Content, Styles, HasAnalyticsEvents {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
-        type: Type = Type.DEFAULT,
         style: Style? = null,
         @AndroidColorInt color: PlatformColor? = null,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
         text: ((Button) -> Text?)? = null
     ) : super(parent) {
-        this.type = type
-        events = emptyList()
-        url = null
+        this.events = events
+        this.url = url
 
         _style = style
         _buttonColor = color
@@ -123,7 +128,7 @@ class Button : Content, Styles, HasAnalyticsEvents {
         this.text = text?.invoke(this)
     }
 
-    override val isIgnored get() = super.isIgnored || type == Type.UNKNOWN || style == Style.UNKNOWN
+    override val isIgnored get() = super.isIgnored || !isClickable || style == Style.UNKNOWN
 
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
         Trigger.CLICKED ->
@@ -137,7 +142,7 @@ class Button : Content, Styles, HasAnalyticsEvents {
         internal companion object {
             val DEFAULT = UNKNOWN
 
-            fun String.toButtonTypeOrNull() = when (this) {
+            fun String?.toButtonTypeOrNull() = when (this) {
                 XML_TYPE_EVENT -> EVENT
                 XML_TYPE_URL -> URL
                 else -> null
