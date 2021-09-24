@@ -110,10 +110,11 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         @AndroidColorInt color: PlatformColor? = null,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
+        url: Uri? = null,
         text: ((Button) -> Text?)? = null
     ) : super(parent) {
         this.events = events
-        url = null
+        this.url = url
 
         _style = style
         _buttonColor = color
