@@ -65,17 +65,17 @@ class LinkTest : UsesResources() {
     fun testIsIgnoredClickableState() {
         with(Link()) {
             assertFalse(isClickable)
-            assertTrue(isIgnored)
+            assertTrue(testIsIgnored)
         }
 
         with(Link(events = listOf(FOLLOWUP))) {
             assertTrue(isClickable)
-            assertFalse(isIgnored)
+            assertFalse(testIsIgnored)
         }
 
         with(Link(url = TEST_URL)) {
             assertTrue(isClickable)
-            assertFalse(isIgnored)
+            assertFalse(testIsIgnored)
         }
     }
 }

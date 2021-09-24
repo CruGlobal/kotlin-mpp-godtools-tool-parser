@@ -70,10 +70,10 @@ class MultiselectTest : UsesResources() {
         val multiselect = Multiselect()
 
         ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
-        assertFalse(multiselect.isIgnored)
+        assertFalse(multiselect.testIsIgnored)
 
         ParserConfig.supportedFeatures = emptySet()
-        assertTrue(multiselect.isIgnored)
+        assertTrue(multiselect.testIsIgnored)
     }
 
     @Test

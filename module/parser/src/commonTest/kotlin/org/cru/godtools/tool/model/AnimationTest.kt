@@ -40,9 +40,9 @@ class AnimationTest : UsesResources() {
         val animation = Animation()
 
         ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
-        assertFalse(animation.isIgnored)
+        assertFalse(animation.testIsIgnored)
 
         ParserConfig.supportedFeatures = emptySet()
-        assertTrue(animation.isIgnored)
+        assertTrue(animation.testIsIgnored)
     }
 }
