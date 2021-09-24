@@ -31,6 +31,8 @@ class Image : Content, Clickable {
         parser.skipTag()
     }
 
+    override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
+
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(parent: Base, resource: String? = null) : super(parent) {
         resourceName = resource
