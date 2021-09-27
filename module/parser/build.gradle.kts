@@ -27,6 +27,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.annotation)
+                implementation(libs.colormath.android.colorint)
             }
         }
         val jsMain by getting {
