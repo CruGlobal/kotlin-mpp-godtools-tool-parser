@@ -68,9 +68,9 @@ class StateTest {
 
     @Test
     fun testChangeFlowNoKeys() = runBlockingTest {
-        var i = 0
+        var count = 0
         val channel = Channel<Int>()
-        val flow = state.changeFlow { i++ }
+        val flow = state.changeFlow { count++ }
             .onEach { channel.send(it) }
             .launchIn(this)
 
@@ -86,7 +86,7 @@ class StateTest {
 
         // shut down flow
         flow.cancel()
-        assertEquals(1, i)
+        assertEquals(1, count)
     }
 
     @Test
