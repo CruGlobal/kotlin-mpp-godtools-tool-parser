@@ -55,7 +55,7 @@ abstract class Content : BaseModel {
     /**
      * @return true if this content element should be completely ignored.
      */
-    open val isIgnored
+    internal open val isIgnored
         get() = version > SCHEMA_VERSION ||
             !ParserConfig.supportedFeatures.containsAll(requiredFeatures) ||
             restrictTo.none { it in DeviceType.SUPPORTED } ||
@@ -103,3 +103,6 @@ abstract class Content : BaseModel {
         }
     }
 }
+
+@RestrictTo(RestrictTo.Scope.TESTS)
+internal val Content.testIsIgnored get() = isIgnored

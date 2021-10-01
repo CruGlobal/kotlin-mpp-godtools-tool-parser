@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.state
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -14,6 +15,7 @@ import kotlin.test.assertTrue
 private const val KEY = "key"
 private const val KEY2 = "key2"
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class StateTest {
     private val state = State()
 
@@ -66,9 +68,9 @@ class StateTest {
 
     @Test
     fun testChangeFlowNoKeys() = runBlockingTest {
-        var i = 0
+        var count = 0
         val channel = Channel<Int>()
-        val flow = state.changeFlow { i++ }
+        val flow = state.changeFlow { count++ }
             .onEach { channel.send(it) }
             .launchIn(this)
 
@@ -84,7 +86,7 @@ class StateTest {
 
         // shut down flow
         flow.cancel()
-        assertEquals(1, i)
+        assertEquals(1, count)
     }
 
     @Test
