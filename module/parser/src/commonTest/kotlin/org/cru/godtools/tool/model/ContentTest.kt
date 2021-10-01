@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -23,6 +24,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class ContentTest : UsesResources() {
     private val state = State()
 
