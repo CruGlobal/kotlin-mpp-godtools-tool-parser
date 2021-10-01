@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.service
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.FileNotFoundException
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.xml.XmlPullParserException
@@ -15,6 +16,9 @@ open class ManifestParser(private val parserFactory: XmlPullParserFactory) {
         ParserResult.Error.NotFound(e)
     } catch (e: XmlPullParserException) {
         ParserResult.Error.Corrupted(e)
+    } catch (e: Exception) {
+        Napier.d("Unexpected Parsing Exception", e, "ManifestParser")
+        ParserResult.Error(e)
     }
 }
 
