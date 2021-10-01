@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.state
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -14,6 +15,7 @@ import kotlin.test.assertTrue
 private const val KEY = "key"
 private const val KEY2 = "key2"
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class StateTest {
     private val state = State()
 
