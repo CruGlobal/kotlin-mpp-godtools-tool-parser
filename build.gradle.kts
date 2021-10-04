@@ -10,7 +10,7 @@ plugins {
 
 allprojects {
     group = "org.cru.godtools.kotlin"
-    version = "0.3.1-SNAPSHOT"
+    version = "0.3.1"
 
     repositories {
         maven("https://jitpack.io") {
