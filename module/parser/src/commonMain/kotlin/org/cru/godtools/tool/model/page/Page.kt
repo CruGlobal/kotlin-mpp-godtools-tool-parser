@@ -7,6 +7,7 @@ import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.BaseModel
+import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.HasAnalyticsEvents
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
@@ -23,6 +24,8 @@ import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.XML_DISMISS_LISTENERS
+import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.XML_TEXT_SCALE
 import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
@@ -30,6 +33,7 @@ import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
+import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.XmlPullParserException
 
@@ -65,6 +69,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
     }
 
+    val listeners: Set<EventId>
+    val dismissListeners: Set<EventId>
+
     @AndroidColorInt
     internal val backgroundColor: PlatformColor
 
@@ -86,6 +93,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
+
+        listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
+        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
         backgroundColor =
             parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
@@ -112,6 +122,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
+        listeners = emptySet()
+        dismissListeners = emptySet()
+
         this.backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
         this.backgroundImageGravity = backgroundImageGravity

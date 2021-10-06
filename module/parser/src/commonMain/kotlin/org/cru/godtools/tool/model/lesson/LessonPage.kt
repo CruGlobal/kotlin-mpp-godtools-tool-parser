@@ -6,7 +6,6 @@ import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.Content
-import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
@@ -14,14 +13,12 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
-import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.toColorOrNull
-import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -37,7 +34,6 @@ class LessonPage : Page, Parent {
     internal val fileName: String?
 
     val isHidden: Boolean
-    val listeners: Set<EventId>
 
     @VisibleForTesting
     override val analyticsEvents: List<AnalyticsEvent>
@@ -59,7 +55,6 @@ class LessonPage : Page, Parent {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
-        listeners = parser.getAttributeValue(XML_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
         _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
 
@@ -100,7 +95,6 @@ class LessonPage : Page, Parent {
         this.fileName = fileName
 
         isHidden = false
-        listeners = emptySet()
 
         this.analyticsEvents = analyticsEvents
 
