@@ -18,6 +18,7 @@ import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
+import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
@@ -74,12 +75,12 @@ class Manifest : BaseModel, Styles {
             coroutineScope {
                 // parse pages
                 launch {
-                    manifest.lessonPages = if (manifest.type == Type.LESSON) manifest.pagesToParse
-                        .map { (fileName, src) -> async { LessonPage(manifest, fileName, parseFile(src)) } }
-                        .awaitAll() else emptyList()
                     manifest.tractPages = if (manifest.type == Type.TRACT) manifest.pagesToParse
                         .map { (fileName, src) -> async { TractPage(manifest, fileName, parseFile(src)) } }
                         .awaitAll() else emptyList()
+                    manifest.pages = if (manifest.type != Type.TRACT) manifest.pagesToParse
+                        .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
+                        .awaitAll().filterNotNull() else emptyList()
                 }
 
                 // parse tips
@@ -151,8 +152,10 @@ class Manifest : BaseModel, Styles {
     val title: String? get() = _title?.text
 
     val categories: List<Category>
-    var lessonPages: List<LessonPage> by setOnce()
+    var pages: List<Page> by setOnce()
         private set
+    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
+    val lessonPages get() = pages.filterIsInstance<LessonPage>()
     var tractPages: List<TractPage> by setOnce()
         private set
     val aemImports: List<Uri>
@@ -278,7 +281,7 @@ class Manifest : BaseModel, Styles {
 
         aemImports = emptyList()
         categories = emptyList()
-        lessonPages = emptyList()
+        pages = emptyList()
         this.tractPages = tractPages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()

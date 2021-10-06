@@ -12,9 +12,9 @@ import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
-import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_COLOR
-import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.tool.model.lesson.LessonPage.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
 import kotlin.test.assertEquals
