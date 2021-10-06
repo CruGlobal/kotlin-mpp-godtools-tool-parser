@@ -27,12 +27,6 @@ private const val XML_HIDDEN = "hidden"
 private const val XML_CONTENT = "content"
 
 class LessonPage : Page, Parent {
-    val id by lazy { fileName ?: "${manifest.code}-$position" }
-    val position by lazy { manifest.lessonPages.indexOf(this) }
-
-    @VisibleForTesting
-    internal val fileName: String?
-
     val isHidden: Boolean
 
     @VisibleForTesting
@@ -49,9 +43,7 @@ class LessonPage : Page, Parent {
         manifest: Manifest,
         fileName: String?,
         parser: XmlPullParser
-    ) : super(manifest, parser) {
-        this.fileName = fileName
-
+    ) : super(manifest, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
@@ -76,7 +68,6 @@ class LessonPage : Page, Parent {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
-        fileName: String? = null,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -92,8 +83,6 @@ class LessonPage : Page, Parent {
         backgroundImageScaleType = backgroundImageScaleType,
         textScale = textScale
     ) {
-        this.fileName = fileName
-
         isHidden = false
 
         this.analyticsEvents = analyticsEvents

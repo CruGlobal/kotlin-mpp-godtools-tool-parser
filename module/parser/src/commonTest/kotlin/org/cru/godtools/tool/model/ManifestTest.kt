@@ -88,6 +88,7 @@ class ManifestTest : UsesResources() {
         assertEquals("page0.xml", manifest.lessonPages[0].fileName)
         assertEquals(1, manifest.pages.size)
         assertEquals("page0.xml", manifest.pages[0].fileName)
+        assertEquals("page_defaults", manifest.pages[0].id)
     }
 
     @Test

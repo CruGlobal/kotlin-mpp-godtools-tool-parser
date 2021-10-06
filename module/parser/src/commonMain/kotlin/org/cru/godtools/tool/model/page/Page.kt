@@ -39,6 +39,7 @@ import org.cru.godtools.tool.xml.XmlPullParserException
 
 private const val XML_PAGE = "page"
 private const val XML_TYPE = "type"
+private const val XML_ID = "id"
 
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal companion object {
@@ -69,6 +70,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
     }
 
+    val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
+    val position by lazy { manifest.pages.indexOf(this) }
+
+    private val _id: String?
+    @VisibleForTesting
+    internal val fileName: String?
+
     val listeners: Set<EventId>
     val dismissListeners: Set<EventId>
 
@@ -91,8 +99,11 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
 
-    internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
+    internal constructor(manifest: Manifest, fileName: String?, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
+
+        _id = parser.getAttributeValue(XML_ID)
+        this.fileName = fileName
 
         listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
@@ -122,6 +133,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
+        _id = null
+        fileName = null
+
         listeners = emptySet()
         dismissListeners = emptySet()
 
