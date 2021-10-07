@@ -89,6 +89,11 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal val backgroundImageGravity: ImageGravity
     internal val backgroundImageScaleType: ImageScaleType
 
+    @AndroidColorInt
+    private val _controlColor: PlatformColor?
+    @get:AndroidColorInt
+    internal val controlColor get() = _controlColor ?: manifest.pageControlColor
+
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
@@ -116,6 +121,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
+        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
+
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
         _multiselectOptionSelectedColor =
@@ -131,6 +138,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
+        controlColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         _id = null
@@ -143,6 +151,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _backgroundImage = backgroundImage
         this.backgroundImageGravity = backgroundImageGravity
         this.backgroundImageScaleType = backgroundImageScaleType
+
+        _controlColor = controlColor
 
         _multiselectOptionBackgroundColor = null
         _multiselectOptionSelectedColor = null

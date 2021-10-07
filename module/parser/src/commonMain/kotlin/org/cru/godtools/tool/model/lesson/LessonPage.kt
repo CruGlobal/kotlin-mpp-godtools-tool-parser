@@ -18,9 +18,7 @@ import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
-import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.parseContent
-import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -34,11 +32,6 @@ class LessonPage : Page, Parent {
     @VisibleForTesting
     override val analyticsEvents: List<AnalyticsEvent>
 
-    @AndroidColorInt
-    private val _controlColor: PlatformColor?
-    @get:AndroidColorInt
-    internal val controlColor get() = _controlColor ?: manifest.pageControlColor
-
     override val content: List<Content>
 
     internal constructor(
@@ -49,8 +42,6 @@ class LessonPage : Page, Parent {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
-
-        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
 
         analyticsEvents = mutableListOf()
         val content = mutableListOf<Content>()
@@ -83,13 +74,12 @@ class LessonPage : Page, Parent {
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
         backgroundImageScaleType = backgroundImageScaleType,
+        controlColor = controlColor,
         textScale = textScale
     ) {
         isHidden = false
 
         this.analyticsEvents = analyticsEvents
-
-        _controlColor = controlColor
 
         content = emptyList()
     }
