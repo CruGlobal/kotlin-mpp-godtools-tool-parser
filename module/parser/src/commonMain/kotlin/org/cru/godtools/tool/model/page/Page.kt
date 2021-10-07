@@ -40,12 +40,14 @@ import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.XmlPullParserException
 
-private const val XML_PAGE = "page"
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
+private const val XML_HIDDEN = "hidden"
 
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal companion object {
+        internal const val XML_PAGE = "page"
+
         @AndroidColorInt
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
@@ -80,6 +82,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @VisibleForTesting
     internal val fileName: String?
 
+    val isHidden: Boolean
+
     val listeners: Set<EventId>
     val dismissListeners: Set<EventId>
 
@@ -113,6 +117,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _id = parser.getAttributeValue(XML_ID)
         this.fileName = fileName
 
+        isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
+
         listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
@@ -136,7 +142,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES, RestrictTo.Scope.TESTS)
     internal constructor(
-        manifest: Manifest,
+        manifest: Manifest = Manifest(),
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
@@ -146,6 +152,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     ) : super(manifest) {
         _id = null
         fileName = null
+
+        isHidden = false
 
         listeners = emptySet()
         dismissListeners = emptySet()

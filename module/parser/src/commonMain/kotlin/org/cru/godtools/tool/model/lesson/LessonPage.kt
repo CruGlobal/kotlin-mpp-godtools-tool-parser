@@ -17,13 +17,9 @@ import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
-private const val XML_PAGE = "page"
-private const val XML_HIDDEN = "hidden"
 private const val XML_CONTENT = "content"
 
 class LessonPage : Page, Parent {
-    val isHidden: Boolean
-
     @VisibleForTesting
     override val analyticsEvents: List<AnalyticsEvent>
 
@@ -35,8 +31,6 @@ class LessonPage : Page, Parent {
         parser: XmlPullParser
     ) : super(manifest, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
-
-        isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
 
         analyticsEvents = mutableListOf()
         val content = mutableListOf<Content>()
@@ -72,8 +66,6 @@ class LessonPage : Page, Parent {
         controlColor = controlColor,
         textScale = textScale
     ) {
-        isHidden = false
-
         this.analyticsEvents = analyticsEvents
 
         content = emptyList()
