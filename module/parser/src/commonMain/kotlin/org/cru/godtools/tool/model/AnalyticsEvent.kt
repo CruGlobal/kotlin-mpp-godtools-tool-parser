@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
+import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger.Companion.toTrigger
@@ -74,7 +75,7 @@ class AnalyticsEvent : BaseModel {
         // Log a non-fatal warning if this is an adobe analytics event
         if (systems.contains(System.ADOBE)) {
             val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
-            Napier.e(message, UnsupportedOperationException("XML Adobe Analytics Event $message"), TAG)
+            Napier.e(message, DeprecationException("XML Adobe Analytics Event $message"), TAG)
         }
     }
 
