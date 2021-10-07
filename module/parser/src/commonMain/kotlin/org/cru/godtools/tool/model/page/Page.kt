@@ -37,6 +37,8 @@ import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
+import org.cru.godtools.tool.model.tract.TractPage
+import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_TYPE = "type"
@@ -51,15 +53,16 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
         @VisibleForTesting
-        internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
-        @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
+        @VisibleForTesting
+        internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
 
         fun parse(manifest: Manifest, fileName: String?, parser: XmlPullParser): Page? {
             parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
             return when (parser.namespace) {
                 XMLNS_LESSON -> LessonPage(manifest, fileName, parser)
+                XMLNS_TRACT -> TractPage(manifest, fileName, parser)
                 XMLNS_PAGE -> {
                     when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
                         else -> {
@@ -146,6 +149,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @RestrictTo(RestrictTo.Scope.SUBCLASSES, RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
+        fileName: String? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
@@ -154,7 +158,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         _id = null
-        fileName = null
+        this.fileName = fileName
 
         isHidden = false
 
@@ -190,8 +194,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
 @get:AndroidColorInt
 val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
-val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
+val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
 @get:AndroidColorInt
 val Page?.controlColor get() = this?.controlColor ?: DEFAULT_CONTROL_COLOR
