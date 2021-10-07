@@ -1,6 +1,5 @@
 package org.cru.godtools.tool.model.lesson
 
-import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
@@ -13,11 +12,7 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
-import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page
-import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
-import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -84,11 +79,3 @@ class LessonPage : Page, Parent {
         content = emptyList()
     }
 }
-
-@get:AndroidColorInt
-val LessonPage?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
-val LessonPage?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
-val LessonPage?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
-
-@get:AndroidColorInt
-val LessonPage?.controlColor get() = this?.controlColor ?: DEFAULT_CONTROL_COLOR

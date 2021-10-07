@@ -31,6 +31,9 @@ import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
 import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
@@ -171,3 +174,11 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     }
     // endregion HasAnalyticsEvents
 }
+
+@get:AndroidColorInt
+val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
+val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
+
+@get:AndroidColorInt
+val Page?.controlColor get() = this?.controlColor ?: DEFAULT_CONTROL_COLOR

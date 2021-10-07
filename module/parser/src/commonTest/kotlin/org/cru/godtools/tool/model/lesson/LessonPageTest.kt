@@ -16,6 +16,10 @@ import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.page.backgroundColor
+import org.cru.godtools.tool.model.page.backgroundImageGravity
+import org.cru.godtools.tool.model.page.backgroundImageScaleType
+import org.cru.godtools.tool.model.page.controlColor
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
 import kotlin.test.assertEquals
