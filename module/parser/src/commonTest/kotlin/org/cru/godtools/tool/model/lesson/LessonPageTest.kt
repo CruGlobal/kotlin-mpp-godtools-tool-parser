@@ -12,6 +12,7 @@ import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
+import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
@@ -50,7 +51,7 @@ class LessonPageTest : UsesResources("model/lesson") {
     fun testParsePageDefault() = runBlockingTest {
         val manifest = Manifest()
         val page = parsePageXml("page_defaults.xml", manifest)
-        assertEquals(manifest.lessonControlColor, page.controlColor)
+        assertEquals(manifest.pageControlColor, page.controlColor)
         assertEquals(manifest.multiselectOptionBackgroundColor, page.multiselectOptionBackgroundColor)
         assertEquals(manifest.multiselectOptionSelectedColor, page.multiselectOptionSelectedColor)
         assertEquals(DEFAULT_TEXT_SCALE, page.textScale, 0.001)
@@ -99,18 +100,18 @@ class LessonPageTest : UsesResources("model/lesson") {
 
     @Test
     fun testControlColor() {
-        assertEquals(DEFAULT_LESSON_CONTROL_COLOR, (null as LessonPage?).controlColor)
+        assertEquals(DEFAULT_CONTROL_COLOR, (null as LessonPage?).controlColor)
 
         with(LessonPage(Manifest(), controlColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, controlColor)
             assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
         }
 
-        with(LessonPage(Manifest(lessonControlColor = TestColors.GREEN))) {
+        with(LessonPage(Manifest(pageControlColor = TestColors.GREEN))) {
             assertEquals(TestColors.GREEN, controlColor)
             assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
         }
-        with(LessonPage(Manifest(lessonControlColor = TestColors.RED), controlColor = TestColors.GREEN)) {
+        with(LessonPage(Manifest(pageControlColor = TestColors.RED), controlColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, controlColor)
             assertEquals(TestColors.GREEN, (this as LessonPage?).controlColor)
         }

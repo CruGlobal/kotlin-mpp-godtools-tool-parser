@@ -13,10 +13,12 @@ import org.cru.godtools.tool.model.Parent
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XMLNS_ANALYTICS
+import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -35,7 +37,7 @@ class LessonPage : Page, Parent {
     @AndroidColorInt
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    internal val controlColor get() = _controlColor ?: manifest.lessonControlColor
+    internal val controlColor get() = _controlColor ?: manifest.pageControlColor
 
     override val content: List<Content>
 
@@ -99,4 +101,4 @@ val LessonPage?.backgroundImageScaleType get() = this?.backgroundImageScaleType 
 val LessonPage?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
 
 @get:AndroidColorInt
-val LessonPage?.controlColor get() = this?.controlColor ?: DEFAULT_LESSON_CONTROL_COLOR
+val LessonPage?.controlColor get() = this?.controlColor ?: DEFAULT_CONTROL_COLOR
