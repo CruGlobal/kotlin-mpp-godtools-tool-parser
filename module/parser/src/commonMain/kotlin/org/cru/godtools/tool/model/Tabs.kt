@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
+import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
@@ -75,7 +76,7 @@ class Tabs : Content {
                 if (it.trigger == Trigger.SELECTED) {
                     val message =
                         "tool: ${manifest.code} locale: ${manifest.locale} action: ${it.action} trigger: ${it.trigger}"
-                    Napier.e(message, UnsupportedOperationException("XML Analytics Deprecated trigger $message"), TAG)
+                    Napier.e(message, DeprecationException("XML Analytics Deprecated trigger $message"), TAG)
                 }
             }
         }
