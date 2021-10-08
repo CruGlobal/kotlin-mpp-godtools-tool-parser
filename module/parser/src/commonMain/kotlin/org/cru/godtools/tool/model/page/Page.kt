@@ -26,6 +26,9 @@ import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.XML_DISMISS_LISTENERS
 import org.cru.godtools.tool.model.XML_LISTENERS
+import org.cru.godtools.tool.model.XML_PRIMARY_COLOR
+import org.cru.godtools.tool.model.XML_PRIMARY_TEXT_COLOR
+import org.cru.godtools.tool.model.XML_TEXT_COLOR
 import org.cru.godtools.tool.model.XML_TEXT_SCALE
 import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
@@ -34,6 +37,9 @@ import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.primaryColor
+import org.cru.godtools.tool.model.primaryTextColor
+import org.cru.godtools.tool.model.textColor
 import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
@@ -94,6 +100,16 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     val dismissListeners: Set<EventId>
 
     @AndroidColorInt
+    private val _primaryColor: PlatformColor?
+    @get:AndroidColorInt
+    override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
+
+    @AndroidColorInt
+    private val _primaryTextColor: PlatformColor?
+    @get:AndroidColorInt
+    override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
+
+    @AndroidColorInt
     internal val backgroundColor: PlatformColor
 
     @VisibleForTesting
@@ -114,6 +130,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     override val multiselectOptionSelectedColor
         get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
 
+    @AndroidColorInt
+    private val _textColor: PlatformColor?
+    @get:AndroidColorInt
+    override val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
 
@@ -127,6 +147,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
+
+        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
+        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
 
         backgroundColor =
             parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
@@ -143,6 +166,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _multiselectOptionSelectedColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
+        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
     }
 
@@ -150,11 +174,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
+        primaryColor: PlatformColor? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
+        textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
         _id = null
@@ -164,6 +190,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         listeners = emptySet()
         dismissListeners = emptySet()
+
+        _primaryColor = primaryColor
+        _primaryTextColor = null
 
         this.backgroundColor = backgroundColor
         _backgroundImage = backgroundImage
@@ -175,6 +204,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _multiselectOptionBackgroundColor = null
         _multiselectOptionSelectedColor = null
 
+        _textColor = textColor
         _textScale = textScale
     }
 

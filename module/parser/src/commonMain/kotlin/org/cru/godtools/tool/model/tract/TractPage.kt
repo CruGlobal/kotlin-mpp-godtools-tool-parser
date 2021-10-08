@@ -9,13 +9,7 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
-import org.cru.godtools.tool.model.XML_PRIMARY_COLOR
-import org.cru.godtools.tool.model.XML_PRIMARY_TEXT_COLOR
-import org.cru.godtools.tool.model.XML_TEXT_COLOR
 import org.cru.godtools.tool.model.page.Page
-import org.cru.godtools.tool.model.primaryColor
-import org.cru.godtools.tool.model.primaryTextColor
-import org.cru.godtools.tool.model.textColor
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -37,21 +31,6 @@ class TractPage : Page, Styles {
     val callToAction: CallToAction
 
     @AndroidColorInt
-    private val _primaryColor: PlatformColor?
-    @get:AndroidColorInt
-    override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
-
-    @AndroidColorInt
-    private val _primaryTextColor: PlatformColor?
-    @get:AndroidColorInt
-    override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
-
-    @AndroidColorInt
-    private val _textColor: PlatformColor?
-    @get:AndroidColorInt
-    override val textColor get() = _textColor ?: stylesParent.textColor
-
-    @AndroidColorInt
     private val _cardTextColor: PlatformColor?
     @get:AndroidColorInt
     val cardTextColor get() = _cardTextColor ?: textColor
@@ -67,11 +46,6 @@ class TractPage : Page, Styles {
         parser: XmlPullParser
     ) : super(manifest, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
-
-        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
-        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
-
-        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
 
         _cardBackgroundColor = parser.getAttributeValue(XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
@@ -104,7 +78,7 @@ class TractPage : Page, Styles {
         fileName: String? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        @AndroidColorInt primaryColor: PlatformColor? = null,
+        primaryColor: PlatformColor? = null,
         backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textColor: PlatformColor? = null,
@@ -116,17 +90,14 @@ class TractPage : Page, Styles {
     ) : super(
         manifest,
         fileName = fileName,
+        primaryColor = primaryColor,
         backgroundColor = backgroundColor,
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
         backgroundImageScaleType = backgroundImageScaleType,
+        textColor = textColor,
         textScale = textScale
     ) {
-        _primaryColor = primaryColor
-        _primaryTextColor = null
-
-        _textColor = textColor
-
         _cardBackgroundColor = cardBackgroundColor
         _cardTextColor = cardTextColor
 
