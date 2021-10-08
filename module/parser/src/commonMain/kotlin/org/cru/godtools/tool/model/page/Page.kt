@@ -38,7 +38,6 @@ import org.cru.godtools.tool.model.textScale
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
-import org.cru.godtools.tool.xml.XmlPullParserException
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
@@ -70,8 +69,12 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                         }
                     }
                 }
-                else -> throw XmlPullParserException("Unrecognized page namespace: ${parser.namespace}")
-            }
+                else -> {
+                    val message = "Unrecognized page namespace: ${parser.namespace}"
+                    Napier.e(message, UnsupportedOperationException(message), "Page")
+                    null
+                }
+            }?.takeIf { it.supports(manifest.type) }
         }
     }
 
@@ -170,6 +173,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _textScale = textScale
     }
+
+    internal abstract fun supports(type: Manifest.Type): Boolean
 
     // region HasAnalyticsEvents
     @VisibleForTesting
