@@ -33,7 +33,7 @@ class LessonPage : Page, Parent {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
         analyticsEvents = mutableListOf()
-        val content = mutableListOf<Content>()
+        content = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
@@ -44,7 +44,6 @@ class LessonPage : Page, Parent {
                 }
             }
         }
-        this.content = content
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
