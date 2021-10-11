@@ -1,10 +1,12 @@
 package org.cru.godtools.tool.model
 
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
@@ -13,11 +15,13 @@ import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNu
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
-import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_CONTROL_COLOR
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
-import org.cru.godtools.tool.model.lesson.XML_CONTROL_COLOR
+import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
+import org.cru.godtools.tool.model.page.Page
+import org.cru.godtools.tool.model.page.XMLNS_PAGE
+import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
@@ -74,12 +78,12 @@ class Manifest : BaseModel, Styles {
             coroutineScope {
                 // parse pages
                 launch {
-                    manifest.lessonPages = if (manifest.type == Type.LESSON) manifest.pagesToParse
-                        .map { (fileName, src) -> async { LessonPage(manifest, fileName, parseFile(src)) } }
-                        .awaitAll() else emptyList()
                     manifest.tractPages = if (manifest.type == Type.TRACT) manifest.pagesToParse
                         .map { (fileName, src) -> async { TractPage(manifest, fileName, parseFile(src)) } }
                         .awaitAll() else emptyList()
+                    manifest.pages = if (manifest.type != Type.TRACT) manifest.pagesToParse
+                        .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
+                        .awaitAll().filterNotNull() else emptyList()
                 }
 
                 // parse tips
@@ -134,7 +138,7 @@ class Manifest : BaseModel, Styles {
     internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
 
     @AndroidColorInt
-    internal val lessonControlColor: PlatformColor
+    internal val pageControlColor: PlatformColor
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
@@ -151,8 +155,10 @@ class Manifest : BaseModel, Styles {
     val title: String? get() = _title?.text
 
     val categories: List<Category>
-    var lessonPages: List<LessonPage> by setOnce()
+    var pages: List<Page> by setOnce()
         private set
+    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
+    val lessonPages get() = pages.filterIsInstance<LessonPage>()
     var tractPages: List<TractPage> by setOnce()
         private set
     val aemImports: List<Uri>
@@ -190,8 +196,13 @@ class Manifest : BaseModel, Styles {
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
-        lessonControlColor =
-            parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull() ?: DEFAULT_LESSON_CONTROL_COLOR
+        val lessonControlColor = parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
+            val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
+            Napier.e(message, DeprecationException(message), "Manifest")
+        }
+        pageControlColor =
+            parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull() ?: lessonControlColor
+                ?: DEFAULT_CONTROL_COLOR
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
@@ -239,7 +250,7 @@ class Manifest : BaseModel, Styles {
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: PlatformColor? = null,
         categoryLabelColor: PlatformColor? = null,
-        lessonControlColor: PlatformColor = DEFAULT_LESSON_CONTROL_COLOR,
+        pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
         multiselectOptionSelectedColor: PlatformColor? = null,
         textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
@@ -266,7 +277,7 @@ class Manifest : BaseModel, Styles {
 
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor
-        this.lessonControlColor = lessonControlColor
+        this.pageControlColor = pageControlColor
 
         _multiselectOptionBackgroundColor = null
         this.multiselectOptionSelectedColor = multiselectOptionSelectedColor
@@ -278,7 +289,7 @@ class Manifest : BaseModel, Styles {
 
         aemImports = emptyList()
         categories = emptyList()
-        lessonPages = emptyList()
+        pages = emptyList()
         this.tractPages = tractPages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
