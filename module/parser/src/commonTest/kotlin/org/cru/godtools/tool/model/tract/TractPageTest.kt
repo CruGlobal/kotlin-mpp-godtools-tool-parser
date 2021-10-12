@@ -10,6 +10,12 @@ import org.cru.godtools.tool.model.Resource
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.TEST_GRAVITY
 import org.cru.godtools.tool.model.TestColors
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
+import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.tool.model.page.backgroundColor
+import org.cru.godtools.tool.model.page.backgroundImageGravity
+import org.cru.godtools.tool.model.page.backgroundImageScaleType
 import org.cru.godtools.tool.model.textColor
 import org.cru.godtools.tool.model.toEventIds
 import kotlin.test.Test
@@ -54,7 +60,7 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testIsLastPage() {
-        val manifest = Manifest(tractPages = { manifest -> List(3) { TractPage(manifest) } })
+        val manifest = Manifest(pages = { manifest -> List(3) { TractPage(manifest) } })
         assertEquals(3, manifest.tractPages.size)
         assertFalse(manifest.tractPages[0].isLastPage)
         assertFalse(manifest.tractPages[1].isLastPage)
@@ -74,9 +80,9 @@ class TractPageTest : UsesResources("model/tract") {
         val resource = manifest.resources["background.png"]
 
         with(null as TractPage?) {
-            assertEquals(TractPage.DEFAULT_BACKGROUND_COLOR, backgroundColor)
-            assertEquals(TractPage.DEFAULT_BACKGROUND_IMAGE_GRAVITY, backgroundImageGravity)
-            assertEquals(TractPage.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
+            assertEquals(DEFAULT_BACKGROUND_COLOR, backgroundColor)
+            assertEquals(DEFAULT_BACKGROUND_IMAGE_GRAVITY, backgroundImageGravity)
+            assertEquals(DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
         }
         with(page as TractPage?) {
             assertEquals(TestColors.GREEN, backgroundColor)

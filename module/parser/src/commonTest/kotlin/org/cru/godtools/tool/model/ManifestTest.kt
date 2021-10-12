@@ -102,7 +102,7 @@ class ManifestTest : UsesResources() {
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
         assertTrue(manifest.lessonPages.isEmpty())
-        assertTrue(manifest.pages.isEmpty())
+        assertEquals(2, manifest.pages.size)
         assertEquals(2, manifest.tractPages.size)
         assertEquals("page0.xml", manifest.tractPages[0].fileName)
         assertEquals(0, manifest.tractPages[0].position)
@@ -145,7 +145,7 @@ class ManifestTest : UsesResources() {
 
     @Test
     fun testManifestFindTractPage() {
-        val manifest = Manifest(code = "tool", tractPages = { manifest -> List(10) { TractPage(manifest) } })
+        val manifest = Manifest(code = "tool", pages = { manifest -> List(10) { TractPage(manifest) } })
         assertNull(manifest.findTractPage("invalid"))
         manifest.tractPages.forEach { page ->
             assertSame(page, manifest.findTractPage(page.id))

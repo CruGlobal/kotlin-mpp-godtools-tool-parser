@@ -78,12 +78,9 @@ class Manifest : BaseModel, Styles {
             coroutineScope {
                 // parse pages
                 launch {
-                    manifest.tractPages = if (manifest.type == Type.TRACT) manifest.pagesToParse
-                        .map { (fileName, src) -> async { TractPage(manifest, fileName, parseFile(src)) } }
-                        .awaitAll() else emptyList()
-                    manifest.pages = if (manifest.type != Type.TRACT) manifest.pagesToParse
+                    manifest.pages = manifest.pagesToParse
                         .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
-                        .awaitAll().filterNotNull() else emptyList()
+                        .awaitAll().filterNotNull()
                 }
 
                 // parse tips
@@ -159,8 +156,8 @@ class Manifest : BaseModel, Styles {
         private set
     @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
     val lessonPages get() = pages.filterIsInstance<LessonPage>()
-    var tractPages: List<TractPage> by setOnce()
-        private set
+    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
+    val tractPages get() = pages.filterIsInstance<TractPage>()
     val aemImports: List<Uri>
 
     // XXX: make this visible to aid in iOS migration
@@ -256,7 +253,7 @@ class Manifest : BaseModel, Styles {
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
-        tractPages: ((Manifest) -> List<TractPage>)? = null
+        pages: ((Manifest) -> List<Page>)? = null
     ) {
         this.code = code
         this.locale = locale
@@ -289,8 +286,7 @@ class Manifest : BaseModel, Styles {
 
         aemImports = emptyList()
         categories = emptyList()
-        pages = emptyList()
-        this.tractPages = tractPages?.invoke(this).orEmpty()
+        this.pages = pages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
