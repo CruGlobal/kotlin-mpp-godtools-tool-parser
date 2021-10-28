@@ -10,10 +10,10 @@ fun Project.configureAndroidLibrary() {
 }
 
 private fun BaseExtension.configureSdk() {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 31
     }
 }
 
