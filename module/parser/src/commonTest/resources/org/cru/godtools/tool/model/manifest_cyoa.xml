@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    type="cyoa" tool="cyoa1" locale="fr">
+    <title>
+        <content:text>title</content:text>
+    </title>
+
+    <pages>
+        <page filename="page0.xml" src="page/page_content.xml" />
+    </pages>
+</manifest>

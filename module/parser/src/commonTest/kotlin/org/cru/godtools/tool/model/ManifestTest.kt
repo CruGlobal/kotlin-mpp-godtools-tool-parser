@@ -71,6 +71,18 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
+    fun testParseManifestCyoa() = runBlockingTest {
+        val manifest = parseManifest("manifest_cyoa.xml")
+        assertEquals("title", manifest.title)
+        assertEquals("cyoa1", manifest.code)
+        assertEquals(Locale.forLanguage("fr"), manifest.locale?.toCommon())
+        assertEquals(Manifest.Type.CYOA, manifest.type)
+
+        assertEquals(1, manifest.pages.size)
+        assertEquals("page0.xml", manifest.pages[0].fileName)
+    }
+
+    @Test
     fun testParseManifestLesson() = runBlockingTest {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)

@@ -35,6 +35,7 @@ private const val XML_TOOL = "tool"
 private const val XML_LOCALE = "locale"
 private const val XML_TYPE = "type"
 private const val XML_TYPE_ARTICLE = "article"
+private const val XML_TYPE_CYOA = "cyoa"
 private const val XML_TYPE_LESSON = "lesson"
 private const val XML_TYPE_TRACT = "tract"
 private const val XML_NAVBAR_COLOR = "navbar-color"
@@ -298,8 +299,13 @@ class Manifest : BaseModel, Styles {
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
-    fun findTractPage(id: String?) = tractPages.firstOrNull { it.id.equals(id, ignoreCase = true) }
+    fun findPage(id: String?) = pages.firstOrNull { it.id == id }
     fun findTip(id: String?) = tips[id]
+    @Deprecated(
+        "Since v0.4.0, use findPage(id) instead which will support different page types in the future.",
+        ReplaceWith("findPage(id)")
+    )
+    fun findTractPage(id: String?) = findPage(id) as? TractPage
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
@@ -365,13 +371,14 @@ class Manifest : BaseModel, Styles {
     }
 
     enum class Type {
-        TRACT, ARTICLE, LESSON, UNKNOWN;
+        ARTICLE, CYOA, LESSON, TRACT, UNKNOWN;
 
         internal companion object {
             internal val DEFAULT = TRACT
 
             internal fun parseOrNull(value: String?) = when (value) {
                 XML_TYPE_ARTICLE -> ARTICLE
+                XML_TYPE_CYOA -> CYOA
                 XML_TYPE_LESSON -> LESSON
                 XML_TYPE_TRACT -> TRACT
                 null -> null

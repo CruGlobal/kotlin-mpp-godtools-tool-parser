@@ -34,6 +34,7 @@ import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
 import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
+import org.cru.godtools.tool.model.page.ContentPage.Companion.TYPE_CONTENT
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
@@ -46,6 +47,7 @@ import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.model.tract.XMLNS_TRACT
 import org.cru.godtools.tool.xml.XmlPullParser
+import org.cru.godtools.tool.xml.XmlPullParserException
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
@@ -71,6 +73,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                 XMLNS_TRACT -> TractPage(manifest, fileName, parser)
                 XMLNS_PAGE -> {
                     when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
+                        TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
                         else -> {
                             val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
                             Napier.e(message, UnsupportedOperationException(message), "Page")
@@ -84,6 +87,11 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                     null
                 }
             }?.takeIf { it.supports(manifest.type) }
+        }
+
+        internal fun XmlPullParser.requirePageType(type: String) {
+            val actual = getAttributeValue(XMLNS_XSI, XML_TYPE)
+            if (type != actual) throw XmlPullParserException("expected $type not $actual")
         }
     }
 
