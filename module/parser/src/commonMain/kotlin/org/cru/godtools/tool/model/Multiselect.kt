@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
@@ -61,7 +62,7 @@ class Multiselect : Content {
         }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         stateName: String = "",
@@ -119,7 +120,7 @@ class Multiselect : Content {
             }
         }
 
-        @RestrictTo(RestrictTo.Scope.TESTS)
+        @RestrictTo(RestrictToScope.TESTS)
         internal constructor(
             multiselect: Multiselect = Multiselect(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),

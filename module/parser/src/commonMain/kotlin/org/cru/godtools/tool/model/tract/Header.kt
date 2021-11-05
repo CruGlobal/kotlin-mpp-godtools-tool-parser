@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.PlatformColor
@@ -60,7 +61,7 @@ class Header : BaseModel, Styles {
         this.title = title
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
         backgroundColor: PlatformColor? = null,

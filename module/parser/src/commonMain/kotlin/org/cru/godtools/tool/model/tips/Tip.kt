@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model.tips
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Styles
@@ -44,7 +45,7 @@ class Tip : BaseModel, Styles {
         }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(manifest: Manifest? = null, id: String = "", type: Type = Type.DEFAULT) : super(manifest) {
         this.id = id
         this.type = type

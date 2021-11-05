@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
 
 class Paragraph : Content, Parent {
@@ -17,7 +18,7 @@ class Paragraph : Content, Parent {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(parent: Base, content: (Paragraph) -> List<Content>) : super(parent) {
         this.content = content(this)
     }

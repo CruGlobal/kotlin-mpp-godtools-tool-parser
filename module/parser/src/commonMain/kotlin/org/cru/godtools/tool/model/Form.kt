@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
 
 class Form : Content, Parent {
@@ -16,7 +17,7 @@ class Form : Content, Parent {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(parent: Base, content: (Form) -> List<Content>) : super(parent) {
         this.content = content(this)
     }

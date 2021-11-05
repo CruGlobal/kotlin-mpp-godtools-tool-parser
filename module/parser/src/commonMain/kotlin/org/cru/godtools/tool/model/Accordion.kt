@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -30,7 +31,7 @@ class Accordion : Content {
         }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(parent: Base, sections: (Accordion) -> List<Section>) : super(parent) {
         this.sections = sections(this)
     }
@@ -58,7 +59,7 @@ class Accordion : Content {
             this.header = header
         }
 
-        @RestrictTo(RestrictTo.Scope.TESTS)
+        @RestrictTo(RestrictToScope.TESTS)
         internal constructor(accordion: Accordion, content: (Section) -> List<Content>) : super(accordion) {
             this.accordion = accordion
             header = null

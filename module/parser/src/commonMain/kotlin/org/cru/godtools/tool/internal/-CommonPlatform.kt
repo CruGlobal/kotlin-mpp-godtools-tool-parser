@@ -18,6 +18,12 @@ expect annotation class AndroidColorInt()
 @Retention(AnnotationRetention.BINARY)
 expect annotation class AndroidDimension(val unit: Int)
 internal const val DP = 0
+
+@OptIn(ExperimentalMultiplatform::class)
+@OptionalExpectation
+@Target(AnnotationTarget.CONSTRUCTOR, AnnotationTarget.PROPERTY_GETTER)
+internal expect annotation class RestrictTo(vararg val value: RestrictToScope)
+internal expect enum class RestrictToScope { TESTS, SUBCLASSES }
 // endregion Android Annotations
 
 // region IOException

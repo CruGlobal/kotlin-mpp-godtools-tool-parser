@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -49,7 +50,7 @@ class Link : Content, Styles, HasAnalyticsEvents, Clickable {
 
     override val isIgnored get() = super.isIgnored || !isClickable
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),

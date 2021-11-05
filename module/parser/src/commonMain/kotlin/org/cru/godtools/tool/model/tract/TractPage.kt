@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.ImageGravity
 import org.cru.godtools.tool.model.ImageScaleType
@@ -72,7 +73,7 @@ class TractPage : Page, Styles {
         this.callToAction = callToAction ?: CallToAction(this)
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,

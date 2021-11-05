@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model.page
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
@@ -178,7 +179,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
     }
 
-    @RestrictTo(RestrictTo.Scope.SUBCLASSES, RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.SUBCLASSES, RestrictToScope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
