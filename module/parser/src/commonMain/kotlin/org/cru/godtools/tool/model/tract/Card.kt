@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
@@ -116,7 +117,7 @@ class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         this.label = label
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
         backgroundColor: PlatformColor? = null,

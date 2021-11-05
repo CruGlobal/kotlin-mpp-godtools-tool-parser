@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.Spacer.Mode.Companion.toModeOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
@@ -27,7 +28,7 @@ class Spacer : Content {
         parser.skipTag()
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(parent: Base, mode: Mode = Mode.AUTO, height: Int = 0) : super(parent) {
         this.mode = mode
         this.height = height

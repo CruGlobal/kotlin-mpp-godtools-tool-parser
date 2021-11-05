@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model.lesson
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -46,7 +47,7 @@ class LessonPage : Page, Parent {
         }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),

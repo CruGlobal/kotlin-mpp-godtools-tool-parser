@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.AndroidDimension
 import org.cru.godtools.tool.internal.DP
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
@@ -73,7 +74,7 @@ class Text : Content {
         text = parser.nextText()
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(
         parent: Base,
         text: String? = null,

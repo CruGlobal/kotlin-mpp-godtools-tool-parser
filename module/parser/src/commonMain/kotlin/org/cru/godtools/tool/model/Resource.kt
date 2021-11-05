@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
 
@@ -21,7 +22,7 @@ class Resource : BaseModel {
         parser.skipTag()
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(manifest: Manifest = Manifest(), name: String? = null) : super(manifest) {
         this.name = name
         localName = null

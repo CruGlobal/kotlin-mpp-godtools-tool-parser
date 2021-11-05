@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
@@ -235,7 +236,7 @@ class Manifest : BaseModel, Styles {
         this.resources = resources.associateBy { it.name }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(
         type: Type = Type.DEFAULT,
         code: String? = null,

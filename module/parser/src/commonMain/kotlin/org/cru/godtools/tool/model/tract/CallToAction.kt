@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.EventId
@@ -57,7 +58,7 @@ class CallToAction : BaseModel {
         label = parser.parseTextChild(this, XMLNS_TRACT, XML_CALL_TO_ACTION)
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(
         page: TractPage = TractPage(),
         label: ((CallToAction) -> Text)? = null,

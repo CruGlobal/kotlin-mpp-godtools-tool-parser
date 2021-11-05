@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.skipTag
@@ -33,7 +34,7 @@ class Image : Content, Clickable {
 
     override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(parent: Base, resource: String? = null) : super(parent) {
         resourceName = resource
         events = emptyList()

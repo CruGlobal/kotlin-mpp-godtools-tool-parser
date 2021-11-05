@@ -4,6 +4,7 @@ import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger.Companion.toTrigger
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -79,7 +80,7 @@ class AnalyticsEvent : BaseModel {
         }
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     constructor(
         action: String? = null,
         trigger: Trigger = Trigger.DEFAULT,

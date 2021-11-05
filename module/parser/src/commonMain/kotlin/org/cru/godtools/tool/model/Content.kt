@@ -5,6 +5,7 @@ import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
@@ -36,7 +37,7 @@ abstract class Content : BaseModel {
         goneIf = parser.getAttributeValue(XML_GONE_IF).toExpressionOrNull()
     }
 
-    @RestrictTo(RestrictTo.Scope.TESTS)
+    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,
@@ -105,5 +106,5 @@ abstract class Content : BaseModel {
 }
 
 // HACK: This is a workaround for a Kotlin/JS IR compiler issue when running tests. This should be fixed in Kotlin 1.6
-@RestrictTo(RestrictTo.Scope.TESTS)
+@get:RestrictTo(RestrictToScope.TESTS)
 internal val Content.testIsIgnored get() = isIgnored
