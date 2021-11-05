@@ -104,5 +104,6 @@ abstract class Content : BaseModel {
     }
 }
 
+// HACK: This is a workaround for a Kotlin/JS IR compiler issue when running tests. This should be fixed in Kotlin 1.6
 @RestrictTo(RestrictTo.Scope.TESTS)
 internal val Content.testIsIgnored get() = isIgnored
