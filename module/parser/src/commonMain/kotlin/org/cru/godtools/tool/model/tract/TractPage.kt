@@ -10,6 +10,8 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import org.cru.godtools.tool.model.backgroundColor
+import org.cru.godtools.tool.model.manifest
 import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -137,3 +139,8 @@ class TractPage : Page, Styles {
         }
     }
 }
+
+@get:AndroidColorInt
+val Card?.backgroundColor get() = this?.backgroundColor ?: manifest.backgroundColor
+val Card?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Card.DEFAULT_BACKGROUND_IMAGE_GRAVITY
+val Card?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: Card.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

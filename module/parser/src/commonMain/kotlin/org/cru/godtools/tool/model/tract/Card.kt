@@ -27,17 +27,13 @@ import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.model.XML_DISMISS_LISTENERS
 import org.cru.godtools.tool.model.XML_LISTENERS
 import org.cru.godtools.tool.model.XML_TEXT_COLOR
-import org.cru.godtools.tool.model.backgroundColor
 import org.cru.godtools.tool.model.contentTips
 import org.cru.godtools.tool.model.getResource
-import org.cru.godtools.tool.model.manifest
 import org.cru.godtools.tool.model.parseContent
 import org.cru.godtools.tool.model.parseTextChild
 import org.cru.godtools.tool.model.stylesOverride
 import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
-import org.cru.godtools.tool.model.tract.Card.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.tool.model.tract.Card.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_LABEL = "label"
@@ -154,8 +150,3 @@ class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         else -> error("Analytics trigger type $type is not currently supported on Cards")
     }
 }
-
-@get:AndroidColorInt
-val Card?.backgroundColor get() = this?.backgroundColor ?: manifest.backgroundColor
-val Card?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
-val Card?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
