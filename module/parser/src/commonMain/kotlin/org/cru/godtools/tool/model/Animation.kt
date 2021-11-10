@@ -14,7 +14,7 @@ private const val XML_AUTOPLAY = "autoplay"
 private const val XML_PLAY_LISTENERS = "play-listeners"
 private const val XML_STOP_LISTENERS = "stop-listeners"
 
-class Animation : Content {
+class Animation : Content, Clickable {
     internal companion object {
         internal const val XML_ANIMATION = "animation"
     }
@@ -26,9 +26,11 @@ class Animation : Content {
     val loop: Boolean
     val autoPlay: Boolean
 
-    val events: List<EventId>
     val playListeners: Set<EventId>
     val stopListeners: Set<EventId>
+
+    override val events: List<EventId>
+    override val url: Uri?
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ANIMATION)
@@ -37,9 +39,13 @@ class Animation : Content {
         loop = parser.getAttributeValue(null, XML_LOOP)?.toBoolean() ?: true
         autoPlay = parser.getAttributeValue(null, XML_AUTOPLAY)?.toBoolean() ?: true
 
-        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
         playListeners = parser.getAttributeValue(XML_PLAY_LISTENERS).toEventIds().toSet()
         stopListeners = parser.getAttributeValue(XML_STOP_LISTENERS).toEventIds().toSet()
+
+        parser.parseClickableAttrs { events, url ->
+            this.events = events
+            this.url = url
+        }
 
         parser.skipTag()
     }
@@ -50,6 +56,7 @@ class Animation : Content {
         loop = true
         autoPlay = true
         events = emptyList()
+        url = null
         playListeners = emptySet()
         stopListeners = emptySet()
     }
