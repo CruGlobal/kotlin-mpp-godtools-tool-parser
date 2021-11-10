@@ -15,6 +15,7 @@ import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.toEventIds
+import org.cru.godtools.tool.model.tract.TractPage.Card
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -24,7 +25,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class CardTest : UsesResources("model/tract") {
+class TractPageCardTest : UsesResources("model/tract") {
     @Test
     fun verifyParseCard() = runBlockingTest {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
