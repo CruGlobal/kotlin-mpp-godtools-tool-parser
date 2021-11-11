@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"
-    xmlns:content="https://mobile-content-api.cru.org/xmlns/content" primary-color="rgba(255,0,0,1)"
-    primary-text-color="rgba(0,0,255,1)" navbar-color="rgba(0,255,0,1)" navbar-control-color="rgba(255,0,255,1)"
-    text-scale="1.2345">
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    xmlns:page="https://mobile-content-api.cru.org/xmlns/page"
+    navbar-color="rgba(0,255,0,1)" navbar-control-color="rgba(255,0,255,1)"
+    primary-color="rgba(255,0,0,1)" primary-text-color="rgba(0,0,255,1)"
+    text-scale="1.2345" page:control-color="rgba(255,255,0,1)">
     <title>
         <content:text>title</content:text>
     </title>

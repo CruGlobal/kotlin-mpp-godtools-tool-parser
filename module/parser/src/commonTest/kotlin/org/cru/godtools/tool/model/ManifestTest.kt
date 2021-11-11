@@ -112,6 +112,7 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.BLUE, manifest.primaryTextColor)
         assertEquals(TestColors.GREEN, manifest.navBarColor)
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
+        assertEquals(color(255, 255, 0, 1.0), manifest.pageControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
         assertTrue(manifest.lessonPages.isEmpty())
         assertEquals(2, manifest.pages.size)
