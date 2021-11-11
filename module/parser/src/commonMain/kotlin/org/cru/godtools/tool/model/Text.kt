@@ -17,6 +17,7 @@ private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"
 private const val XML_END_IMAGE = "end-image"
 private const val XML_END_IMAGE_SIZE = "end-image-size"
+private const val XML_MINIMUM_LINES = "minimum-lines"
 private const val XML_TEXT_ALIGN = "text-align"
 private const val XML_TEXT_ALIGN_START = "start"
 private const val XML_TEXT_ALIGN_CENTER = "center"
@@ -33,6 +34,8 @@ class Text : Content {
         @VisibleForTesting
         @AndroidDimension(unit = DP)
         internal const val DEFAULT_IMAGE_SIZE = 40
+        @VisibleForTesting
+        internal const val DEFAULT_MINIMUM_LINES = 0
     }
 
     val text: String?
@@ -46,6 +49,8 @@ class Text : Content {
     private val _textScale: Double
     internal val textScale get() = _textScale * stylesParent.textScale
     val textStyles: Set<Style>
+
+    val minimumLines: Int
 
     @VisibleForTesting
     internal val startImageName: String?
@@ -65,6 +70,9 @@ class Text : Content {
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
         textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
+
+        minimumLines =
+            parser.getAttributeValue(XML_MINIMUM_LINES)?.toIntOrNull()?.takeIf { it >= 0 } ?: DEFAULT_MINIMUM_LINES
 
         startImageName = parser.getAttributeValue(XML_START_IMAGE)
         startImageSize = parser.getAttributeValue(XML_START_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
@@ -90,6 +98,9 @@ class Text : Content {
         _textColor = textColor
         _textScale = textScale
         this.textStyles = textStyles
+
+        minimumLines = DEFAULT_MINIMUM_LINES
+
         startImageName = startImage
         startImageSize = DEFAULT_IMAGE_SIZE
         endImageName = endImage
