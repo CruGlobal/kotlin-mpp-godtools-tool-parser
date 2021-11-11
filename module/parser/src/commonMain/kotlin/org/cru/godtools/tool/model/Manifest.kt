@@ -195,12 +195,12 @@ class Manifest : BaseModel, Styles {
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
-        val lessonControlColor = parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
-            val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
-            Napier.e(message, DeprecationException(message), "Manifest")
-        }
         pageControlColor =
-            parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull() ?: lessonControlColor
+            parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
+                ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
+                    val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
+                    Napier.e(message, DeprecationException(message), "Manifest")
+                }
                 ?: DEFAULT_CONTROL_COLOR
 
         _multiselectOptionBackgroundColor =
