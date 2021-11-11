@@ -1,0 +1,13 @@
+<content:flow xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training">
+    <content:spacer height="20" mode="fixed" />
+    <content:invalid />
+    <content:item>
+        <content:text>Test</content:text>
+        <content:spacer height="20" mode="fixed" />
+    </content:item>
+    <training:invalid />
+    <content:paragraph>
+        <content:text />
+    </content:paragraph>
+    <training:tip id="test" />
+</content:flow>

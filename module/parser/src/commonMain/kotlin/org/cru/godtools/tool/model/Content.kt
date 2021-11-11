@@ -79,6 +79,7 @@ abstract class Content : BaseModel {
                     Animation.XML_ANIMATION -> Animation(parent, this)
                     Button.XML_BUTTON -> Button(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this).content.firstOrNull()
+                    Flow.XML_FLOW -> Flow(parent, this)
                     Form.XML_FORM -> Form(parent, this)
                     Image.XML_IMAGE -> Image(parent, this)
                     Input.XML_INPUT -> Input(parent, this)
