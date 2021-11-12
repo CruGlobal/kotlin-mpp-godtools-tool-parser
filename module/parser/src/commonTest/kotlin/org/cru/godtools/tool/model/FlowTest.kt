@@ -4,16 +4,26 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
+import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_COLUMNS
 import org.cru.godtools.tool.model.tips.InlineTip
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FlowTest : UsesResources() {
     @Test
+    fun testParseFlowDefaults() = runBlockingTest {
+        val flow = Flow(Manifest(), getTestXmlParser("flow_defaults.xml"))
+        assertEquals(DEFAULT_COLUMNS, flow.columns)
+        assertTrue(flow.items.isEmpty())
+    }
+
+    @Test
     fun testParseFlow() = runBlockingTest {
         val flow = Flow(Manifest(), getTestXmlParser("flow.xml"))
+        assertEquals(3, flow.columns)
         assertEquals(4, flow.items.size)
         assertIs<Spacer>(flow.items[0].content.single())
         with(flow.items[1]) {

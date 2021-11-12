@@ -2,30 +2,42 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
+
+private const val XML_COLUMNS = "columns"
+private const val XML_ITEM = "item"
 
 class Flow : Content {
     internal companion object {
         internal const val XML_FLOW = "flow"
-        private const val XML_ITEM = "item"
+
+        @VisibleForTesting
+        internal const val DEFAULT_COLUMNS = 1
     }
+
+    val columns: Int
 
     val items: List<Item>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
+        columns = parser.getAttributeValue(XML_COLUMNS)?.toIntOrNull()?.takeUnless { it < 1 } ?: DEFAULT_COLUMNS
+
         items = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_CONTENT -> when (parser.name) {
                     XML_ITEM -> items += Item(this, parser)
-                    else -> {
-                        val item = Item(this) { parser.parseContentElement(it)?.takeUnless { it.isIgnored } }
-                        if (item.content.isNotEmpty()) items += item
-                    }
                 }
+            }
+
+            // we haven't handled this tag yet, if it's a content element wrap it in an Item.
+            if (parser.eventType == XmlPullParser.START_TAG) {
+                val item = Item(this) { parser.parseContentElement(it)?.takeUnless { it.isIgnored } }
+                if (item.content.isNotEmpty()) items += item
             }
         }
     }
