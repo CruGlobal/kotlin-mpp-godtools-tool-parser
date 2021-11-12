@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_FLOW
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -27,6 +29,8 @@ class Flow : Content {
             }
         }
     }
+
+    override val isIgnored get() = FEATURE_FLOW !in ParserConfig.supportedFeatures || super.isIgnored
 
     class Item : BaseModel, Parent {
         val flow: Flow
