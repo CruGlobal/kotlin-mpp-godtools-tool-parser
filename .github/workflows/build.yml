@@ -95,7 +95,7 @@ jobs:
 
   ios_tests:
     name: iOS Unit Tests
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -146,7 +146,7 @@ jobs:
 
   lint_ios_podspec:
     name: Lint iOS Podspec
-    runs-on: macos-latest
+    runs-on: macos-11
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
@@ -208,7 +208,7 @@ jobs:
 
   deploy_ios_podspec:
     name: Publish iOS Podspec
-    runs-on: macos-latest
+    runs-on: macos-11
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
     needs: [ static_checks, ios_tests ]
     steps:
