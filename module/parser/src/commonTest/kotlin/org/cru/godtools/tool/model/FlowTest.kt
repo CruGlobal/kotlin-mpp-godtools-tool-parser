@@ -27,6 +27,7 @@ class FlowTest : UsesResources() {
         assertEquals(4, flow.items.size)
         assertIs<Spacer>(flow.items[0].content.single())
         with(flow.items[1]) {
+            assertEquals(25, assertIs<Dimension.Pixels>(width).value)
             assertEquals(2, content.size)
             assertIs<Text>(content[0])
             assertIs<Spacer>(content[1])

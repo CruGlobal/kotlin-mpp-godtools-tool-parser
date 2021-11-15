@@ -3,11 +3,13 @@ package org.cru.godtools.tool.model
 import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_COLUMNS = "columns"
 private const val XML_ITEM = "item"
+private const val XML_ITEM_WIDTH = "width"
 
 class Flow : Content {
     internal companion object {
@@ -18,6 +20,7 @@ class Flow : Content {
     }
 
     val columns: Int
+    private val itemWidth get() = Dimension.Percent(1f / columns)
 
     val items: List<Item>
 
@@ -47,16 +50,23 @@ class Flow : Content {
     class Item : BaseModel, Parent {
         val flow: Flow
 
+        private val _width: Dimension?
+        val width get() = _width ?: flow.itemWidth
+
         override val content: List<Content>
 
         internal constructor(flow: Flow, parser: XmlPullParser) : super(flow) {
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ITEM)
             this.flow = flow
+
+            _width = parser.getAttributeValue(XML_ITEM_WIDTH).toDimensionOrNull()
+
             content = parseContent(parser)
         }
 
         internal constructor(flow: Flow, content: (Item) -> Content?) : super(flow) {
             this.flow = flow
+            _width = null
             this.content = listOfNotNull(content(this))
         }
     }

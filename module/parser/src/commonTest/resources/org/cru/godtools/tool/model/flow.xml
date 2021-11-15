@@ -2,7 +2,7 @@
     xmlns:training="https://mobile-content-api.cru.org/xmlns/training" columns="3">
     <content:spacer height="20" mode="fixed" />
     <content:invalid />
-    <content:item>
+    <content:item width="25">
         <content:text>Test</content:text>
         <content:spacer height="20" mode="fixed" />
     </content:item>
