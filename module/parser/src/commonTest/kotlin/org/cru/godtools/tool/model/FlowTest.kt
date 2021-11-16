@@ -45,4 +45,11 @@ class FlowTest : UsesResources() {
             assertEquals(DEFAULT_ROW_GRAVITY, rowGravity)
         }
     }
+
+    @Test
+    fun testItemWidth() {
+        with(null as Flow.Item?) {
+            assertEquals(DEFAULT_ITEM_WIDTH, width)
+        }
+    }
 }

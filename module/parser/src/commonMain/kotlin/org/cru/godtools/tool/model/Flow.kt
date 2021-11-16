@@ -4,6 +4,7 @@ import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
+import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -61,7 +62,7 @@ class Flow : Content {
         val flow: Flow
 
         private val _width: Dimension?
-        val width get() = _width ?: flow.itemWidth
+        internal val width get() = _width ?: flow.itemWidth
 
         override val content: List<Content>
 
@@ -83,3 +84,4 @@ class Flow : Content {
 }
 
 val Flow?.rowGravity get() = this?.rowGravity ?: DEFAULT_ROW_GRAVITY
+val Flow.Item?.width get() = this?.width ?: DEFAULT_ITEM_WIDTH
