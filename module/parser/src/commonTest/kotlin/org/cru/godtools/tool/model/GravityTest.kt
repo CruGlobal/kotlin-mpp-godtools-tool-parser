@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -17,6 +18,8 @@ class GravityTest {
             assertFalse(isTop)
             assertFalse(isBottom)
             assertFalse(isCenter)
+            assertEquals(Gravity.Horizontal.START, horizontal)
+            assertEquals(Gravity.Vertical.CENTER, vertical)
         }
 
         with("center end".toGravityOrNull()!!) {
@@ -27,6 +30,8 @@ class GravityTest {
             assertFalse(isTop)
             assertFalse(isBottom)
             assertFalse(isCenter)
+            assertEquals(Gravity.Horizontal.END, horizontal)
+            assertEquals(Gravity.Vertical.CENTER, vertical)
         }
 
         with("center".toGravityOrNull()!!) {
@@ -37,6 +42,8 @@ class GravityTest {
             assertFalse(isTop)
             assertFalse(isBottom)
             assertTrue(isCenter)
+            assertEquals(Gravity.Horizontal.CENTER, horizontal)
+            assertEquals(Gravity.Vertical.CENTER, vertical)
         }
 
         with("start top center".toGravityOrNull()!!) {
@@ -46,6 +53,8 @@ class GravityTest {
             assertTrue(isTop)
             assertFalse(isBottom)
             assertFalse(isCenterY)
+            assertEquals(Gravity.Horizontal.START, horizontal)
+            assertEquals(Gravity.Vertical.TOP, vertical)
         }
     }
 
