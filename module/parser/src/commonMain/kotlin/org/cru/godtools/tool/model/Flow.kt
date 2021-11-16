@@ -4,6 +4,7 @@ import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
+import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -18,14 +19,13 @@ class Flow : Content {
 
         @VisibleForTesting
         internal val DEFAULT_ITEM_WIDTH = Dimension.Percent(1f)
-        @VisibleForTesting
         internal val DEFAULT_ROW_GRAVITY = Gravity.Horizontal.START
     }
 
     @VisibleForTesting
     internal val itemWidth: Dimension
 
-    val rowGravity: Gravity.Horizontal
+    internal val rowGravity: Gravity.Horizontal
 
     val items: List<Item>
 
@@ -81,3 +81,5 @@ class Flow : Content {
         }
     }
 }
+
+val Flow?.rowGravity get() = this?.rowGravity ?: DEFAULT_ROW_GRAVITY

@@ -38,4 +38,11 @@ class FlowTest : UsesResources() {
         assertIs<Paragraph>(flow.items[2].content.single())
         assertIs<InlineTip>(flow.items[3].content.single())
     }
+
+    @Test
+    fun testRowGravity() {
+        with(null as Flow?) {
+            assertEquals(DEFAULT_ROW_GRAVITY, rowGravity)
+        }
+    }
 }
