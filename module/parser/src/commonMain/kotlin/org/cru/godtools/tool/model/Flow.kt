@@ -4,10 +4,12 @@ import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_COLUMNS = "columns"
+private const val XML_ROW_GRAVITY = "row-gravity"
 private const val XML_ITEM = "item"
 private const val XML_ITEM_WIDTH = "width"
 
@@ -17,10 +19,14 @@ class Flow : Content {
 
         @VisibleForTesting
         internal const val DEFAULT_COLUMNS = 1
+        @VisibleForTesting
+        internal val DEFAULT_ROW_GRAVITY = Gravity.Horizontal.START
     }
 
-    val columns: Int
+    internal val columns: Int
     private val itemWidth get() = Dimension.Percent(1f / columns)
+
+    val rowGravity: Gravity.Horizontal
 
     val items: List<Item>
 
@@ -28,6 +34,7 @@ class Flow : Content {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
         columns = parser.getAttributeValue(XML_COLUMNS)?.toIntOrNull()?.takeUnless { it < 1 } ?: DEFAULT_COLUMNS
+        rowGravity = parser.getAttributeValue(XML_ROW_GRAVITY)?.toGravityOrNull()?.horizontal ?: DEFAULT_ROW_GRAVITY
 
         items = mutableListOf()
         parser.parseChildren {

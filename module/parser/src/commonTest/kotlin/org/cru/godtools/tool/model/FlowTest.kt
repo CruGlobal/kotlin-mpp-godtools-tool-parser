@@ -5,6 +5,7 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_COLUMNS
+import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.tool.model.tips.InlineTip
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,6 +18,7 @@ class FlowTest : UsesResources() {
     fun testParseFlowDefaults() = runBlockingTest {
         val flow = Flow(Manifest(), getTestXmlParser("flow_defaults.xml"))
         assertEquals(DEFAULT_COLUMNS, flow.columns)
+        assertEquals(DEFAULT_ROW_GRAVITY, flow.rowGravity)
         assertTrue(flow.items.isEmpty())
     }
 
@@ -24,6 +26,7 @@ class FlowTest : UsesResources() {
     fun testParseFlow() = runBlockingTest {
         val flow = Flow(Manifest(), getTestXmlParser("flow.xml"))
         assertEquals(3, flow.columns)
+        assertEquals(Gravity.Horizontal.END, flow.rowGravity)
         assertEquals(4, flow.items.size)
         assertIs<Spacer>(flow.items[0].content.single())
         with(flow.items[1]) {
