@@ -8,23 +8,22 @@ import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
-private const val XML_COLUMNS = "columns"
 private const val XML_ROW_GRAVITY = "row-gravity"
 private const val XML_ITEM = "item"
-private const val XML_ITEM_WIDTH = "width"
 
 class Flow : Content {
     internal companion object {
         internal const val XML_FLOW = "flow"
+        private const val XML_ITEM_WIDTH = "item-width"
 
         @VisibleForTesting
-        internal const val DEFAULT_COLUMNS = 1
+        internal val DEFAULT_ITEM_WIDTH = Dimension.Percent(1f)
         @VisibleForTesting
         internal val DEFAULT_ROW_GRAVITY = Gravity.Horizontal.START
     }
 
-    internal val columns: Int
-    private val itemWidth get() = Dimension.Percent(1f / columns)
+    @VisibleForTesting
+    internal val itemWidth: Dimension
 
     val rowGravity: Gravity.Horizontal
 
@@ -33,7 +32,7 @@ class Flow : Content {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
-        columns = parser.getAttributeValue(XML_COLUMNS)?.toIntOrNull()?.takeUnless { it < 1 } ?: DEFAULT_COLUMNS
+        itemWidth = parser.getAttributeValue(XML_ITEM_WIDTH).toDimensionOrNull() ?: DEFAULT_ITEM_WIDTH
         rowGravity = parser.getAttributeValue(XML_ROW_GRAVITY)?.toGravityOrNull()?.horizontal ?: DEFAULT_ROW_GRAVITY
 
         items = mutableListOf()
@@ -55,6 +54,10 @@ class Flow : Content {
     override val isIgnored get() = FEATURE_FLOW !in ParserConfig.supportedFeatures || super.isIgnored
 
     class Item : BaseModel, Parent {
+        companion object {
+            private const val XML_WIDTH = "width"
+        }
+
         val flow: Flow
 
         private val _width: Dimension?
@@ -66,7 +69,7 @@ class Flow : Content {
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ITEM)
             this.flow = flow
 
-            _width = parser.getAttributeValue(XML_ITEM_WIDTH).toDimensionOrNull()
+            _width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()
 
             content = parseContent(parser)
         }

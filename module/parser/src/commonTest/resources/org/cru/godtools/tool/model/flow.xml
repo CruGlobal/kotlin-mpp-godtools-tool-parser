@@ -1,5 +1,5 @@
 <content:flow xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    xmlns:training="https://mobile-content-api.cru.org/xmlns/training" columns="3"
+    xmlns:training="https://mobile-content-api.cru.org/xmlns/training" item-width="33%"
     row-gravity="end">
     <content:spacer height="20" mode="fixed" />
     <content:invalid />

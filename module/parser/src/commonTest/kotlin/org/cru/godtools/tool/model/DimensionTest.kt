@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 
-private const val TOLERANCE = 0.0001f
+internal const val DIMENSION_TOLERANCE = 0.0001f
 
 class DimensionTest {
     @Test
@@ -23,12 +23,12 @@ class DimensionTest {
 
     @Test
     fun testToDimensionOrNullValidPercentages() {
-        assertEquals(0f, assertIs<Dimension.Percent>("0%".toDimensionOrNull()).value, TOLERANCE)
-        assertEquals(.5f, assertIs<Dimension.Percent>("50%".toDimensionOrNull()).value, TOLERANCE)
-        assertEquals(1f, assertIs<Dimension.Percent>("100%".toDimensionOrNull()).value, TOLERANCE)
-        assertEquals(1f, assertIs<Dimension.Percent>(" 100%".toDimensionOrNull()).value, TOLERANCE)
-        assertEquals(1f, assertIs<Dimension.Percent>("100% ".toDimensionOrNull()).value, TOLERANCE)
-        assertEquals(1f, assertIs<Dimension.Percent>("\t 100%\t ".toDimensionOrNull()).value, TOLERANCE)
+        assertEquals(0f, assertIs<Dimension.Percent>("0%".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
+        assertEquals(.5f, assertIs<Dimension.Percent>("50%".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
+        assertEquals(1f, assertIs<Dimension.Percent>("100%".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
+        assertEquals(1f, assertIs<Dimension.Percent>(" 100%".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
+        assertEquals(1f, assertIs<Dimension.Percent>("100% ".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
+        assertEquals(1f, assertIs<Dimension.Percent>("\t 100%\t ".toDimensionOrNull()).value, DIMENSION_TOLERANCE)
     }
 
     @Test
