@@ -9,9 +9,9 @@ import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.Gravity
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.model.HasAnalyticsEvents
-import org.cru.godtools.tool.model.ImageGravity
-import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
@@ -62,7 +62,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
         @VisibleForTesting
-        internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
+        internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
 
@@ -124,7 +124,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @VisibleForTesting
     internal val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    internal val backgroundImageGravity: ImageGravity
+    internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
@@ -163,7 +163,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundColor =
             parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
-        backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toImageGravityOrNull()
+        backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
@@ -186,7 +186,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         primaryColor: PlatformColor? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
         textColor: PlatformColor? = null,

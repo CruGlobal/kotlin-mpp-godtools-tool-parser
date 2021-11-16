@@ -1,15 +1,15 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class ImageGravityTest {
+class GravityTest {
     @Test
     fun verifyParse() {
-        with("start unrecognized center".toImageGravityOrNull()!!) {
+        with("start unrecognized center".toGravityOrNull()!!) {
             assertFalse(isCenterX)
             assertTrue(isStart)
             assertFalse(isEnd)
@@ -19,7 +19,7 @@ class ImageGravityTest {
             assertFalse(isCenter)
         }
 
-        with("center end".toImageGravityOrNull()!!) {
+        with("center end".toGravityOrNull()!!) {
             assertFalse(isCenterX)
             assertFalse(isStart)
             assertTrue(isEnd)
@@ -29,7 +29,7 @@ class ImageGravityTest {
             assertFalse(isCenter)
         }
 
-        with("center".toImageGravityOrNull()!!) {
+        with("center".toGravityOrNull()!!) {
             assertTrue(isCenterX)
             assertFalse(isStart)
             assertFalse(isEnd)
@@ -39,7 +39,7 @@ class ImageGravityTest {
             assertTrue(isCenter)
         }
 
-        with("start top center".toImageGravityOrNull()!!) {
+        with("start top center".toGravityOrNull()!!) {
             assertTrue(isStart)
             assertFalse(isEnd)
             assertFalse(isCenterX)
@@ -51,10 +51,10 @@ class ImageGravityTest {
 
     @Test
     fun verifyParseConflictingGravity() {
-        assertNull("start end".toImageGravityOrNull())
-        assertNull("end start".toImageGravityOrNull())
-        assertNull("start top end".toImageGravityOrNull())
-        assertNull("top bottom end".toImageGravityOrNull())
-        assertNull("bottom top end".toImageGravityOrNull())
+        assertNull("start end".toGravityOrNull())
+        assertNull("end start".toGravityOrNull())
+        assertNull("start top end".toGravityOrNull())
+        assertNull("top bottom end".toGravityOrNull())
+        assertNull("bottom top end".toGravityOrNull())
     }
 }

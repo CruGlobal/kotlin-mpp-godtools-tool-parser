@@ -11,7 +11,7 @@ import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
-import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
@@ -66,7 +66,7 @@ class Manifest : BaseModel, Styles {
 
         @AndroidColorInt
         internal val DEFAULT_BACKGROUND_COLOR = color(255, 255, 255, 1.0)
-        internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
+        internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL
 
         internal val DEFAULT_BUTTON_STYLE = Button.Style.CONTAINED
@@ -123,7 +123,7 @@ class Manifest : BaseModel, Styles {
     internal val backgroundColor: PlatformColor
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    internal val backgroundImageGravity: ImageGravity
+    internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
@@ -188,7 +188,7 @@ class Manifest : BaseModel, Styles {
 
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(null, XML_BACKGROUND_IMAGE)
-        backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toImageGravityOrNull()
+        backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

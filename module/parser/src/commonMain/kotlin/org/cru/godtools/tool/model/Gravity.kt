@@ -23,7 +23,7 @@ private const val BIT_CENTER = BIT_CENTER_X or BIT_CENTER_Y
 private const val MASK_X_AXIS = BIT_START or BIT_END or BIT_CENTER_X
 private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM or BIT_CENTER_Y
 
-class ImageGravity internal constructor(private val gravity: Int) {
+class Gravity internal constructor(private val gravity: Int) {
     val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == BIT_CENTER
     val isCenterX get() = gravity and MASK_X_AXIS == BIT_CENTER_X
     val isCenterY get() = gravity and MASK_Y_AXIS == BIT_CENTER_Y
@@ -33,10 +33,10 @@ class ImageGravity internal constructor(private val gravity: Int) {
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
 
     companion object {
-        val CENTER = ImageGravity(BIT_CENTER)
-        internal val START = ImageGravity(BIT_START)
+        val CENTER = Gravity(BIT_CENTER)
+        internal val START = Gravity(BIT_START)
 
-        internal fun String.toImageGravityOrNull() = try {
+        internal fun String.toGravityOrNull() = try {
             var gravity = BIT_CENTER
             var seenX = false
             var seenY = false
@@ -69,9 +69,9 @@ class ImageGravity internal constructor(private val gravity: Int) {
                 }
             }
 
-            ImageGravity(gravity)
+            Gravity(gravity)
         } catch (e: IllegalArgumentException) {
-            Napier.e(tag = "ImageGravity", throwable = e, message = { "error parsing ImageGravity: $this" })
+            Napier.e(tag = "Gravity", throwable = e, message = { "error parsing Gravity: $this" })
             null
         }
     }
