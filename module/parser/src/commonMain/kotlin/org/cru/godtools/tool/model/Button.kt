@@ -9,7 +9,7 @@ import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
-import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_COLOR = "color"
@@ -30,7 +30,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         internal const val XML_BUTTON = "button"
 
         internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
-        internal val DEFAULT_ICON_GRAVITY = ImageGravity.START
+        internal val DEFAULT_ICON_GRAVITY = Gravity.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
 
@@ -56,7 +56,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     private val iconName: String?
     val icon get() = getResource(iconName)
     internal val iconSize: Int
-    internal val iconGravity: ImageGravity
+    internal val iconGravity: Gravity
 
     val text: Text?
     override val textAlign get() = Text.Align.CENTER
@@ -82,7 +82,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
-        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toImageGravityOrNull() ?: DEFAULT_ICON_GRAVITY
+        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toGravityOrNull() ?: DEFAULT_ICON_GRAVITY
         iconSize = parser.getAttributeValue(XML_ICON_SIZE)?.toIntOrNull() ?: DEFAULT_ICON_SIZE
 
         // process any child elements

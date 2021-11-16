@@ -10,9 +10,9 @@ import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Content
 import org.cru.godtools.tool.model.EventId
+import org.cru.godtools.tool.model.Gravity
+import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.model.HasAnalyticsEvents
-import org.cru.godtools.tool.model.ImageGravity
-import org.cru.godtools.tool.model.ImageGravity.Companion.toImageGravityOrNull
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.tool.model.Manifest
@@ -96,7 +96,7 @@ class TractPage : Page, Styles {
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         primaryColor: PlatformColor? = null,
-        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
@@ -150,7 +150,7 @@ class TractPage : Page, Styles {
             private const val XML_HIDDEN = "hidden"
 
             internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
-            internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = ImageGravity.CENTER
+            internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         }
 
         val page: TractPage
@@ -171,7 +171,7 @@ class TractPage : Page, Styles {
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
         private val _backgroundImage: String?
         val backgroundImage get() = getResource(_backgroundImage)
-        internal val backgroundImageGravity: ImageGravity
+        internal val backgroundImageGravity: Gravity
         internal val backgroundImageScaleType: ImageScaleType
 
         @AndroidColorInt
@@ -196,7 +196,7 @@ class TractPage : Page, Styles {
 
             _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
             _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
-            backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toImageGravityOrNull()
+            backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
                 ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
             backgroundImageScaleType =
                 parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
@@ -225,7 +225,7 @@ class TractPage : Page, Styles {
             page: TractPage = TractPage(),
             backgroundColor: PlatformColor? = null,
             backgroundImage: String? = null,
-            backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+            backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
             backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
             isHidden: Boolean = false,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),

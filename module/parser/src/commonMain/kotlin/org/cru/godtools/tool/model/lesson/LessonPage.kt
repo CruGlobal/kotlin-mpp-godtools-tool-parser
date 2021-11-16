@@ -6,7 +6,7 @@ import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.Content
-import org.cru.godtools.tool.model.ImageGravity
+import org.cru.godtools.tool.model.Gravity
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Parent
@@ -53,7 +53,7 @@ class LessonPage : Page, Parent {
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        backgroundImageGravity: ImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
