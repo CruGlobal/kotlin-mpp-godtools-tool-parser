@@ -32,6 +32,21 @@ class Gravity internal constructor(private val gravity: Int) {
     val isTop get() = gravity and MASK_Y_AXIS == BIT_TOP
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
 
+    val horizontal
+        get() = when {
+            isStart -> Horizontal.START
+            isCenterX -> Horizontal.CENTER
+            isEnd -> Horizontal.END
+            else -> Horizontal.CENTER
+        }
+    val vertical
+        get() = when {
+            isTop -> Vertical.TOP
+            isCenterY -> Vertical.CENTER
+            isBottom -> Vertical.BOTTOM
+            else -> Vertical.CENTER
+        }
+
     companion object {
         val CENTER = Gravity(BIT_CENTER)
         internal val START = Gravity(BIT_START)
@@ -75,4 +90,7 @@ class Gravity internal constructor(private val gravity: Int) {
             null
         }
     }
+
+    enum class Horizontal { START, CENTER, END }
+    enum class Vertical { TOP, CENTER, BOTTOM }
 }
