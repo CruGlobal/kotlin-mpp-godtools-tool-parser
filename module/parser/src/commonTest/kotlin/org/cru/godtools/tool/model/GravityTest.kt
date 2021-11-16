@@ -56,6 +56,17 @@ class GravityTest {
             assertEquals(Gravity.Horizontal.START, horizontal)
             assertEquals(Gravity.Vertical.TOP, vertical)
         }
+
+        with("end bottom".toGravityOrNull()!!) {
+            assertFalse(isStart)
+            assertTrue(isEnd)
+            assertFalse(isCenterX)
+            assertFalse(isTop)
+            assertTrue(isBottom)
+            assertFalse(isCenterY)
+            assertEquals(Gravity.Horizontal.END, horizontal)
+            assertEquals(Gravity.Vertical.BOTTOM, vertical)
+        }
     }
 
     @Test
