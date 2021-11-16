@@ -16,43 +16,37 @@ private const val BIT_END = 1 shl 1
 private const val BIT_TOP = 1 shl 2
 private const val BIT_BOTTOM = 1 shl 3
 
-private const val BIT_CENTER_X = BIT_START or BIT_END
-private const val BIT_CENTER_Y = BIT_TOP or BIT_BOTTOM
-private const val BIT_CENTER = BIT_CENTER_X or BIT_CENTER_Y
-
-private const val MASK_X_AXIS = BIT_START or BIT_END or BIT_CENTER_X
-private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM or BIT_CENTER_Y
+private const val MASK_X_AXIS = BIT_START or BIT_END
+private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM
 
 class Gravity internal constructor(private val gravity: Int) {
-    val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == BIT_CENTER
-    val isCenterX get() = gravity and MASK_X_AXIS == BIT_CENTER_X
-    val isCenterY get() = gravity and MASK_Y_AXIS == BIT_CENTER_Y
     val isStart get() = gravity and MASK_X_AXIS == BIT_START
     val isEnd get() = gravity and MASK_X_AXIS == BIT_END
+    val isCenterX get() = gravity and MASK_X_AXIS == 0
     val isTop get() = gravity and MASK_Y_AXIS == BIT_TOP
     val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
+    val isCenterY get() = gravity and MASK_Y_AXIS == 0
+    val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == 0
 
     val horizontal
         get() = when {
             isStart -> Horizontal.START
-            isCenterX -> Horizontal.CENTER
             isEnd -> Horizontal.END
             else -> Horizontal.CENTER
         }
     val vertical
         get() = when {
             isTop -> Vertical.TOP
-            isCenterY -> Vertical.CENTER
             isBottom -> Vertical.BOTTOM
             else -> Vertical.CENTER
         }
 
     companion object {
-        val CENTER = Gravity(BIT_CENTER)
+        val CENTER = Gravity(0)
         internal val START = Gravity(BIT_START)
 
         internal fun String.toGravityOrNull() = try {
-            var gravity = BIT_CENTER
+            var gravity = 0
             var seenX = false
             var seenY = false
             REGEX_SEQUENCE_SEPARATOR.split(this).forEach {
@@ -77,10 +71,7 @@ class Gravity internal constructor(private val gravity: Int) {
                         gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_BOTTOM)
                         seenY = true
                     }
-                    XML_CENTER -> {
-                        if (!seenX) gravity = gravity.withFlag(BIT_CENTER_X)
-                        if (!seenY) gravity = gravity.withFlag(BIT_CENTER_Y)
-                    }
+                    XML_CENTER -> Unit
                 }
             }
 
