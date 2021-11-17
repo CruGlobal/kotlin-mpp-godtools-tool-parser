@@ -252,6 +252,11 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementFlow() = runBlockingTest {
+        assertIs<Flow>(getTestXmlParser("flow.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementForm() = runBlockingTest {
         assertIs<Form>(getTestXmlParser("form.xml").parseContentElement(Manifest()))
         assertIs<Form>(getTestXmlParser("form_ignored_content.xml").parseContentElement(Manifest()))

@@ -3,6 +3,7 @@ package org.cru.godtools.tool
 import org.cru.godtools.tool.model.DeviceType
 
 const val FEATURE_ANIMATION = "animation"
+const val FEATURE_FLOW = "flow"
 const val FEATURE_MULTISELECT = "multiselect"
 
 expect object ParserConfig {
