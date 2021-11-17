@@ -24,14 +24,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -39,7 +31,9 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run Static Checks
-        run: ./gradlew ktlintCheck lint --parallel
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ktlintCheck lint
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
@@ -53,14 +47,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -74,7 +60,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Android Unit Tests
-        run: ./gradlew test jacocoTestReport --parallel
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test jacocoTestReport
       - name: Codecov
         uses: codecov/codecov-action@v2
         with:
@@ -99,14 +87,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -119,7 +99,9 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Run iOS Unit Tests
-        run: ./gradlew iosTest iosBackgroundTest --parallel
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: iosTest iosBackgroundTest
 
   js_tests:
     name: JS Unit Tests
@@ -127,14 +109,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -142,7 +116,9 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run JS Unit Tests
-        run: ./gradlew jsTest --parallel
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jsTest
 
   lint_ios_podspec:
     name: Lint iOS Podspec
@@ -153,14 +129,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -175,7 +143,9 @@ jobs:
       - name: Install CocoaPods
         run: bundle install
       - name: Create podspec
-        run: ./gradlew podspec
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: podspec
       - name: Lint podspec
         run: pod spec lint *.podspec --allow-warnings
 
@@ -187,14 +157,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Configure JFrog credentials
         env:
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
@@ -204,7 +166,9 @@ jobs:
           echo cruGlobalMavenRepositoryUsername=$JFROG_USERNAME >> $HOME/.gradle/gradle.properties
           echo cruGlobalMavenRepositoryPassword=$JFROG_PASSWORD >> $HOME/.gradle/gradle.properties
       - name: Publish library
-        run: ./gradlew publish --parallel
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publish
 
   deploy_ios_podspec:
     name: Publish iOS Podspec
@@ -214,14 +178,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-gradle-
       - name: Cache Konan
         uses: actions/cache@v2
         with:
@@ -236,7 +192,9 @@ jobs:
       - name: Install CocoaPods
         run: bundle install
       - name: Create podspec
-        run: ./gradlew podspec
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: podspec
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
