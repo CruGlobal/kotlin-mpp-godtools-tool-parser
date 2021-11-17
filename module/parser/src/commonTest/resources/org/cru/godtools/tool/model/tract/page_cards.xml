@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <page xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    xmlns="https://mobile-content-api.cru.org/xmlns/tract">
+    xmlns="https://mobile-content-api.cru.org/xmlns/tract"
+    content:card-background-color="rgba(0,255,0,1)">
     <cards>
-        <card card-background-color="rgba(0,0,0,1)">
+        <card background-color="rgba(0,0,0,1)">
             <label>
                 <content:text>Card 1</content:text>
             </label>

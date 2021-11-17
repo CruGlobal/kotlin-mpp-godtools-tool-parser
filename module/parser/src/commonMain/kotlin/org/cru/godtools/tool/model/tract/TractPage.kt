@@ -64,7 +64,6 @@ class TractPage : Page {
     ) : super(manifest, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
 
-        _cardBackgroundColor = parser.getAttributeValue(XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
 
         // process any child elements
@@ -112,10 +111,10 @@ class TractPage : Page {
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
         backgroundImageScaleType = backgroundImageScaleType,
+        cardBackgroundColor = cardBackgroundColor,
         textColor = textColor,
         textScale = textScale
     ) {
-        _cardBackgroundColor = cardBackgroundColor
         _cardTextColor = cardTextColor
 
         header = null
@@ -137,11 +136,6 @@ class TractPage : Page {
     private val _cardTextColor: PlatformColor?
     @get:AndroidColorInt
     val cardTextColor get() = _cardTextColor ?: textColor
-
-    @AndroidColorInt
-    private val _cardBackgroundColor: PlatformColor?
-    @get:AndroidColorInt
-    val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
 
     class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         internal companion object {

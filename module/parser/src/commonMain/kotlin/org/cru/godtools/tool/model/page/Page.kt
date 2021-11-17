@@ -8,6 +8,7 @@ import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.BaseModel
+import org.cru.godtools.tool.model.Card
 import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.Gravity
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
@@ -132,6 +133,11 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @get:AndroidColorInt
     internal val controlColor get() = _controlColor ?: manifest.pageControlColor
 
+    @AndroidColorInt
+    private val _cardBackgroundColor: PlatformColor?
+    @get:AndroidColorInt
+    internal val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
+
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
@@ -170,6 +176,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
 
+        _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
+
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
         _multiselectOptionSelectedColor =
@@ -189,6 +197,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
+        cardBackgroundColor: PlatformColor? = null,
         textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
@@ -209,6 +218,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         this.backgroundImageScaleType = backgroundImageScaleType
 
         _controlColor = controlColor
+
+        _cardBackgroundColor = cardBackgroundColor
 
         _multiselectOptionBackgroundColor = null
         _multiselectOptionSelectedColor = null
