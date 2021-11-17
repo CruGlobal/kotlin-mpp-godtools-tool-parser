@@ -15,7 +15,7 @@ interface Clickable : Base {
 }
 
 @OptIn(ExperimentalContracts::class)
-internal inline fun XmlPullParser.parseClickableAttrs(block: (List<EventId>, Uri?) -> Unit) {
+internal inline fun XmlPullParser.parseClickableAttrs(block: (events: List<EventId>, url: Uri?) -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
