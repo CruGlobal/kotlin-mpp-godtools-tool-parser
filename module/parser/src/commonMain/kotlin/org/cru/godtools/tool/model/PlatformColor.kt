@@ -16,7 +16,7 @@ private val VALID_ALPHA = 0f..1f
 expect class PlatformColor
 
 @AndroidColorInt
-internal fun String.toColorOrNull(): PlatformColor? = COLOR_REGEX.matchEntire(this)?.let {
+internal fun String?.toColorOrNull(): PlatformColor? = this?.let { COLOR_REGEX.matchEntire(it) }?.let {
     try {
         val red = it.groupValues[1].toInt().also { require(it in VALID_RGB) }
         val green = it.groupValues[2].toInt().also { require(it in VALID_RGB) }
