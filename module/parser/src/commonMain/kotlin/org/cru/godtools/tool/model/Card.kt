@@ -7,6 +7,8 @@ import org.cru.godtools.tool.xml.XmlPullParser
 class Card : Content, Parent, Clickable {
     internal companion object {
         internal const val XML_CARD = "card"
+
+        internal const val XML_CARD_BACKGROUND_COLOR = "card-background-color"
     }
 
     override val content: List<Content>
