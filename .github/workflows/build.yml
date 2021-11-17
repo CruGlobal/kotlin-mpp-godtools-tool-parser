@@ -119,6 +119,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: jsTest
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: js-unit-test-results
+          path: "**/build/reports/tests/"
 
   lint_ios_podspec:
     name: Lint iOS Podspec
