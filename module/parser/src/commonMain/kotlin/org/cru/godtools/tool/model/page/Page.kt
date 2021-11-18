@@ -136,7 +136,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?
     @get:AndroidColorInt
-    internal val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
+    override val cardBackgroundColor get() = _cardBackgroundColor ?: manifest.cardBackgroundColor
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor

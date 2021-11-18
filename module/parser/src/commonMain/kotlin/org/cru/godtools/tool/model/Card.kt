@@ -11,6 +11,8 @@ class Card : Content, Parent, Clickable {
         internal const val XML_CARD_BACKGROUND_COLOR = "card-background-color"
     }
 
+    internal val _backgroundColor: PlatformColor?
+
     override val content: List<Content>
 
     override val events: List<EventId>
@@ -18,6 +20,8 @@ class Card : Content, Parent, Clickable {
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_CARD)
+
+        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR).toColorOrNull()
 
         parser.parseClickableAttrs { events, url ->
             this.events = events
@@ -29,3 +33,5 @@ class Card : Content, Parent, Clickable {
 
     override val isIgnored get() = FEATURE_CONTENT_CARD !in ParserConfig.supportedFeatures || super.isIgnored
 }
+
+val Card?.backgroundColor get() = this?._backgroundColor ?: stylesParent.cardBackgroundColor

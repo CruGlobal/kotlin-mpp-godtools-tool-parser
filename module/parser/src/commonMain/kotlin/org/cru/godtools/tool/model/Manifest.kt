@@ -127,7 +127,7 @@ class Manifest : BaseModel, Styles {
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?
     @get:AndroidColorInt
-    val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
+    override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
     private val _categoryLabelColor: PlatformColor?
