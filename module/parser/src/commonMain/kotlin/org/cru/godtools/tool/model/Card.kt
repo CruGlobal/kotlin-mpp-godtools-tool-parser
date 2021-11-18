@@ -2,6 +2,8 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_CONTENT_CARD
 import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
 
 class Card : Content, Parent, Clickable {
@@ -29,6 +31,14 @@ class Card : Content, Parent, Clickable {
         }
 
         content = parseContent(parser)
+    }
+
+    @RestrictTo(RestrictToScope.TESTS)
+    internal constructor(parent: Base = Manifest(), backgroundColor: PlatformColor? = null) : super(parent) {
+        _backgroundColor = backgroundColor
+        content = emptyList()
+        events = emptyList()
+        url = null
     }
 
     override val isIgnored get() = FEATURE_CONTENT_CARD !in ParserConfig.supportedFeatures || super.isIgnored

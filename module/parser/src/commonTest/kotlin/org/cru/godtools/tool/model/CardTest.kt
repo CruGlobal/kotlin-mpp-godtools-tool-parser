@@ -30,4 +30,14 @@ class CardTest : UsesResources() {
         assertFalse(card.isClickable)
         assertTrue(card.content.isEmpty())
     }
+
+    @Test
+    fun testCardBackgroundColorFallbackBehavior() {
+        val parent = object : BaseModel(), Styles {
+            override val multiselectOptionBackgroundColor = TestColors.RANDOM
+        }
+        assertEquals(parent.cardBackgroundColor, Card(parent).backgroundColor)
+        assertEquals(TestColors.GREEN, Card(parent, backgroundColor = TestColors.GREEN).backgroundColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, (null as Card?).backgroundColor)
+    }
 }
