@@ -55,13 +55,13 @@ class HeroTest : UsesResources("model/tract") {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
         val hiddenEvent = AnalyticsEvent(trigger = Trigger.HIDDEN)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
-        val hero = Hero(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
+        val hero = Hero(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, clickedEvent))
 
         assertEquals(listOf(defaultEvent, visibleEvent), hero.getAnalyticsEvents(Trigger.VISIBLE))
         assertEquals(listOf(hiddenEvent), hero.getAnalyticsEvents(Trigger.HIDDEN))
         assertFailsWith(IllegalStateException::class) { hero.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { hero.getAnalyticsEvents(Trigger.SELECTED) }
+        assertFailsWith(IllegalStateException::class) { hero.getAnalyticsEvents(Trigger.CLICKED) }
     }
 
     @Test

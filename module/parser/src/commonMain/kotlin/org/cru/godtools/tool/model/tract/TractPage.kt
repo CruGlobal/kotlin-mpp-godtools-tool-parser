@@ -47,7 +47,7 @@ private const val XML_CARD_TEXT_COLOR = "card-text-color"
 private const val XML_CARDS = "cards"
 private const val XML_MODALS = "modals"
 
-class TractPage : Page, Styles {
+class TractPage : Page {
     val isLastPage get() = manifest.pages.lastOrNull() == this
 
     override val analyticsEvents = emptyList<AnalyticsEvent>()

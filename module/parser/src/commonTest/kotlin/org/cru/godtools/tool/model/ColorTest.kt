@@ -20,6 +20,7 @@ class ColorTest {
 
     @Test
     fun testParseColorInvalid() {
+        assertNull((null as String?).toColorOrNull())
         assertNull("akjsdf".toColorOrNull())
         assertNull("rgba(-1,0,0,0)".toColorOrNull())
         assertNull("rgba(256,0,0,1)".toColorOrNull())
