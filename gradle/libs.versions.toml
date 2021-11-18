@@ -12,7 +12,7 @@ kotlinCoroutines = "1.5.2-native-mt"
 ktlint = "0.42.1"
 napier = "2.2.0"
 okio = "3.0.0"
-robolectric = "4.7"
+robolectric = "4.7.1"
 splitties = "3.0.0"
 
 [libraries]
