@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.tool.FEATURE_CONTENT_CARD
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -29,6 +31,17 @@ class CardTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, card.backgroundColor)
         assertFalse(card.isClickable)
         assertTrue(card.content.isEmpty())
+    }
+
+    @Test
+    fun testIsIgnored() {
+        val card = Card()
+
+        ParserConfig.supportedFeatures = setOf(FEATURE_CONTENT_CARD)
+        assertFalse(card.isIgnored)
+
+        ParserConfig.supportedFeatures = emptySet()
+        assertTrue(card.isIgnored)
     }
 
     @Test
