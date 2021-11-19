@@ -78,6 +78,7 @@ abstract class Content : BaseModel {
                     Accordion.XML_ACCORDION -> Accordion(parent, this)
                     Animation.XML_ANIMATION -> Animation(parent, this)
                     Button.XML_BUTTON -> Button(parent, this)
+                    Card.XML_CARD -> Card(parent, this)
                     Fallback.XML_FALLBACK -> Fallback(parent, this).content.firstOrNull()
                     Flow.XML_FLOW -> Flow(parent, this)
                     Form.XML_FORM -> Form(parent, this)

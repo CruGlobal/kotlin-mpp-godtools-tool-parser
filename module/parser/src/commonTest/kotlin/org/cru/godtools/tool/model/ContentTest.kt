@@ -246,6 +246,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
+    fun verifyParseContentElementCard() = runBlockingTest {
+        assertIs<Card>(getTestXmlParser("card.xml").parseContentElement(Manifest()))
+        assertIs<Card>(getTestXmlParser("card_defaults.xml").parseContentElement(Manifest()))
+    }
+
+    @Test
     fun verifyParseContentElementFallback() = runBlockingTest {
         assertIs<Text>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
         assertNull(getTestXmlParser("fallback_all_ignored.xml").parseContentElement(Manifest()))

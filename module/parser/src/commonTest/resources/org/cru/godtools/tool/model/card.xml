@@ -1,0 +1,5 @@
+<content:card xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    background-color="rgba(255,0,0,1)" events="event" url="https://www.example.com">
+    <content:spacer height="10" mode="fixed" />
+    <content:text>Text</content:text>
+</content:card>

@@ -25,8 +25,6 @@ import org.cru.godtools.tool.model.page.XMLNS_PAGE
 import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.model.tract.TractPage
-import org.cru.godtools.tool.model.tract.XMLNS_TRACT
-import org.cru.godtools.tool.model.tract.XML_CARD_BACKGROUND_COLOR
 import org.cru.godtools.tool.util.setOnce
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -129,7 +127,7 @@ class Manifest : BaseModel, Styles {
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?
     @get:AndroidColorInt
-    val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
+    override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
     private val _categoryLabelColor: PlatformColor?
@@ -193,7 +191,7 @@ class Manifest : BaseModel, Styles {
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-        _cardBackgroundColor = parser.getAttributeValue(XMLNS_TRACT, XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
+        _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         pageControlColor =
             parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
