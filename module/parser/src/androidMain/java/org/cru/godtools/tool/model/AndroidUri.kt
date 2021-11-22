@@ -8,4 +8,4 @@ import android.net.Uri as AndroidUri
 actual typealias Uri = AndroidUri
 internal actual inline val Uri.scheme get() = scheme
 
-internal actual fun String.toUri() = AndroidUri.parse(this)
+internal actual fun String?.toUriOrNull() = this?.let { AndroidUri.parse(this) }

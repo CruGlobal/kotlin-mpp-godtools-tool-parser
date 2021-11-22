@@ -19,17 +19,17 @@ class UriTest {
 
     @Test
     fun testScheme() {
-        assertEquals("http", "http://example.com".toUri().scheme)
-        assertEquals("https", "https://example.com".toUri().scheme)
-        assertEquals("mailto", "mailto:user@example.com".toUri().scheme)
-        assertNull("invalid-uri".toUri().scheme)
+        assertEquals("http", "http://example.com".toUriOrNull()!!.scheme)
+        assertEquals("https", "https://example.com".toUriOrNull()!!.scheme)
+        assertEquals("mailto", "mailto:user@example.com".toUriOrNull()!!.scheme)
+        assertNull("invalid-uri".toUriOrNull()!!.scheme)
     }
 
     @Test
     fun testIsHttpUrl() {
-        assertTrue("http://example.com".toUri().isHttpUrl)
-        assertTrue("https://example.com".toUri().isHttpUrl)
-        assertFalse("mailto:user@example.com".toUri().isHttpUrl)
-        assertFalse("invalid-uri".toUri().isHttpUrl)
+        assertTrue("http://example.com".toUriOrNull()!!.isHttpUrl)
+        assertTrue("https://example.com".toUriOrNull()!!.isHttpUrl)
+        assertFalse("mailto:user@example.com".toUriOrNull()!!.isHttpUrl)
+        assertFalse("invalid-uri".toUriOrNull()!!.isHttpUrl)
     }
 }
