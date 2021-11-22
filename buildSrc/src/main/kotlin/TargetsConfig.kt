@@ -71,16 +71,18 @@ private fun KotlinNativeTarget.copyTestResources() {
 // region Js Test Resources
 private fun KotlinJsSubTargetDsl.copyTestResources() {
     testTask {
+        // TODO: copy resources out of processedResources instead.
+        val source = project.file("src/commonTest/resources").takeIf { it.exists() && it.isDirectory }
+            ?: return@testTask
+
         val compileTask = compilation.compileKotlinTaskProvider.get()
-        compileTask.doLast {
-            // TODO: copy resources out of processedResources instead.
-            project.file("src/commonTest/resources")
-                .takeIf { it.exists() && it.isDirectory }
-                ?.copyRecursively(
-                    target = compileTask.outputFileProperty.get().resolve("../../resources").normalize(),
-                    overwrite = true
-                )
-        }
+        val target = compileTask.outputFileProperty.get().resolve("../../resources").normalize()
+        compileTask.doLast { source.copyRecursively(target = target, overwrite = true) }
+
+        // add target resources directory to appropriate task inputs/outputs
+        compileTask.inputs.dir(source)
+        compileTask.outputs.dir(target)
+        inputs.dir(target)
     }
 }
 // endregion Js Test Resources
