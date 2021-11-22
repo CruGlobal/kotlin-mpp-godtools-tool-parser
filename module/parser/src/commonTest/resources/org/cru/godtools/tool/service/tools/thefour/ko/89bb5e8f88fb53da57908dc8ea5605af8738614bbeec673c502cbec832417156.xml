@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" background-image="thefour-bkg-image-0.jpg" background-image-scale-type="fill">
+<hero>
+    <content:paragraph>
+        <content:image resource="thefour-title.png" restrictTo="mobile"/>
+    </content:paragraph>
+    <content:paragraph>
+        <content:image resource="Web-thefour-home.png" restrictTo="web"/>
+    </content:paragraph>
+
+    <content:paragraph>
+        <content:button type="url" url="thefour.com">
+            <content:text i18n-id="ae643d40-90ac-44d3-bba0-d27c285508e5">thefour.com</content:text>
+        </content:button>
+    </content:paragraph>
+    
+     <content:paragraph>
+            <content:text i18n-id="08_phrase7" text-color="rgba(255,255,255,1)" text-align="center">예수님이 누구인지 아직 확실하지 않으신가요?</content:text>
+        </content:paragraph>
+        <content:paragraph>
+            <content:button type="url" url="everykoreanstudent.com">
+                <content:text i18n-id="08_phrase2">everykoreanstudent.com</content:text>
+            </content:button>
+        </content:paragraph>
+
+       
+
+        <content:paragraph>
+            <content:text i18n-id="08_phrase5" text-color="rgba(255,255,255,1)" text-align="center">성경을 읽어보세요</content:text>
+        </content:paragraph>
+        <content:paragraph>
+            <content:button type="url" url="Bible.com/bible/111/JHN.1.NIV&#10;">
+                <content:text i18n-id="08_phrase6">Bible.com/bible/111/JHN.1.NIV
+</content:text>
+            </content:button>
+        </content:paragraph>
+</hero>
+</page>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" background-image="thefour-bkg-image-0.jpg" background-image-scale-type="fill" listeners="information-form-card-close followup-form-no-thanks">
+    <hero>
+        <heading>
+            <content:text i18n-id="6e2ce879-100b-4ea3-8999-8210915b4500" text-scale="1.0" text-align="center" text-color="rgba(255,255,255,1)">당신을 위한 권면</content:text>
+        </heading>
+        
+        <content:paragraph>
+            <training:tip id="Next_Tip1"/>
+        </content:paragraph>
+        
+    </hero>
+
+    <cards>
+        <card>
+            <label>
+                <content:text i18n-id="4147f2e9-2710-424c-a18c-b291705983f6">하나님께 기도하세요.</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="d79ae2df-56da-4685-a2ba-86d9229e9ed7">기도는 하나님과 이야기하는 것입니다.</content:text>
+            </content:paragraph>
+        </card>
+
+        <card>
+            <label>
+                <content:text i18n-id="4105d3eb-723e-4160-bb1c-661a871cad2c">하나님의 말씀인 성경을 읽으세요.</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="c1376694-dd25-4d96-ad67-9b1535be9633">요한복음부터 읽으면 도움이 됩니다. </content:text>
+            </content:paragraph>
+        </card>
+
+        <card>
+            <label>
+                <content:text i18n-id="86c9fd19-5e6a-44a8-bede-eec0fd44e669">하나님의 말씀을 올바로 전하는 교회에 출석하세요.</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="0d871d0d-d9be-432c-98c8-081b9aee9b6d">좋은 공동체는 당신의 믿음을 성장하게 할 것입니다.</content:text>
+            </content:paragraph>
+        </card>
+
+        <card>
+            <label>
+                <content:text i18n-id="9b2c9f10-c13b-4f11-ac66-34110b9a2994">다른 사람에게 전하기</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="8a49e4cb-fb7e-4da2-966e-57a198b4cffd">당신이 경험 했던 하나님과, 예수님께서 사람들을 위해 하셨던 일도 나눠보세요. (THE FOUR를 사용해보세요)</content:text>
+            </content:paragraph>
+        </card>
+    </cards>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" background-image="thefour-bkg-image-4.jpg" background-image-scale-type="fill">
+	<hero>
+		<heading>
+			<content:text i18n-id="82441539-1343-4f97-8589-5b82e35db0b0" text-scale="1.0" text-align="center" text-color="rgba(255,255,255,1)">당신은 어떻게 하시겠습니까?</content:text>
+		</heading>
+        <content:paragraph>
+             <content:image resource="thefour-icon-question.png" restrictTo="mobile"/>
+        </content:paragraph>
+        <content:paragraph>
+        <content:image resource="Web-thefour-bkg-image-4.png" restrictTo="web"/>
+    </content:paragraph>
+	</hero>
+
+    <cards>
+          <card>
+            <label>
+                <content:text i18n-id="b1a9277c-1a13-4af7-8828-325477fdcaad">성경구절</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="06535965-d963-485b-b9fc-5747c67e5380">영접하는 자 곧 그 이름을 믿는 자들에게는 하나님의 자녀가 되는 권세를 주셨으니</content:text>
+                <content:text i18n-id="449fb968-82d7-4faf-ba66-24fb328eefca">요한복음 1:12</content:text>
+            </content:paragraph>
+
+            <content:paragraph>
+                <content:text i18n-id="a4c7ead1-cb08-4fdf-ab30-577674a8d999">볼지어다 내가 문 밖에 서서 두드리노니 누구든지 내 음성을 듣고 문을 열면 내가 그에게로 들어가 그와 더불어 먹고 그는 나와 더불어 먹으리라</content:text>
+                <content:text i18n-id="4d77d810-5cee-4a1b-8728-f46e9aa92f86">요한계시록 3:20</content:text>
+            </content:paragraph>
+            
+            <content:paragraph>
+                <training:tip id="Question_Tip1"/>
+            </content:paragraph>
+            
+        </card>
+        <card>
+            <label>
+                <content:text i18n-id="54a529c7-c365-4950-b1e8-935cd935613f">예수님을 따르시겠습니까?</content:text>
+            </label>
+            <content:paragraph>
+				<content:image resource="thefour-icon-question-group.png" restrictTo="mobile"/>
+			</content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="f7b43d36-f775-40ce-904e-9cc5da0d09de">이 특별하고 소중한 이야기는 당신의 믿음을 필요로 합니다. 당신은 이것을 믿을 수도 있고, 그렇지 않을수도 있습니다. 마음의 문을 열지 않는다면 당신과 전혀 상관없는 이야기가 됩니다. 그러나 이 사실을 믿고 기도한다면, 예수님이 당신의 삶에 들어오실 것입니다. (요한복음1:12).</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="5aeb1d37-70a3-49a6-93de-6da054240f24">그분은 우리를 결코 떠나지 않으며, 끝까지 사랑하실 것입니다. 예수님은 당신을 기다리고 계십니다.</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="2c3a83c4-b059-4318-b334-4d29d11a533b">당신은 어떻게 하시겠습니까?</content:text>
+            </content:paragraph>
+            
+            <content:paragraph>
+                <training:tip id="Question_Tip2"/>
+            </content:paragraph>
+            
+        </card>
+        
+        
+    </cards>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

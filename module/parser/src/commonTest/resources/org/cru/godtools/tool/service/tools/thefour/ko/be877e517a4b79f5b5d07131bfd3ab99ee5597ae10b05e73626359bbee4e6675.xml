@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" background-image="thefour-bkg-image-1.jpg" background-image-scale-type="fill">
+	<hero>
+		<heading>
+			<content:text i18n-id="854d3f89-3236-447b-9da5-07ac738e9329" text-scale="1.0" text-color="rgba(255,255,255,1)" text-align="center">하나님은 당신을 사랑하십니다</content:text>
+		</heading>
+        <content:paragraph>
+             <content:image resource="thefour-icon-heart.png" restrictTo="mobile"/>
+        </content:paragraph>
+         <content:paragraph>
+        <content:image resource="Web-thefour-bkg-image-1.png" restrictTo="web"/>
+    </content:paragraph>
+	</hero>
+
+    <cards>
+        <card>
+            <label>
+                <content:text i18n-id="33c0212b-b906-4772-b8d9-8b5b8f4b8b3a">하나님은 당신을 사랑하십니다.</content:text>
+            </label>
+            <content:paragraph>
+                	
+				<content:image resource="thefour-icon-heart-group.png" restrictTo="mobile"/>
+			</content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="ab48e20d-f0ff-49f7-9616-746a03d101f9">사람들은 누구나 사랑을 이야기합니다. 음악이나 책, 영화들은 끊임없이 사랑을 노래합니다. 우리는 늘 진정한 사랑을 갈망하지만, 불완전 세상 속에서 우리의 사랑은 완전하지 못합니다.</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="c4938ac0-d724-4fc6-9e75-6b3e54c1cf48">그렇다면 진정한 사랑은 어디에서 찾을 수 있을까요? 성경은 하나님이 사랑 그 자체라고 말합니다. (요한일서4:16). 하나님은 아주 오래전부터 당신을 알고 계셨습니다. 그분은 어떠한 조건 없이 당신을 있는 그대로 사랑하고 계십니다.</content:text>
+            </content:paragraph>
+        </card>
+        
+        <card>
+            <label>
+                <content:text i18n-id="1c0ba7f8-9a34-4069-b39c-c5f52a58c86d">성경구절</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="8372d53b-30bc-4ac9-a4bf-0f3cfb6ea7fd">하나님이 우리를 사랑하시는 사랑을 우리가 알고 믿었노니 하나님은 사랑이시라 사랑 안에 거하는 자는 하나님 안에 거하고 하나님도 그의 안에 거하시느니라.</content:text>
+                <content:text i18n-id="1bdb1e42-ff82-49ea-9d05-ee2f0a4eabf5">요한1서 4:16</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="d445730a-4a02-4e44-a948-d800553db7c1">주께서 생명의 길을 내게 보이시리니 주의 앞에는 충만한 기쁨이 있고 주의 오른쪽에는 영원한 즐거움이 있나이다.</content:text>
+                <content:text i18n-id="9f126ba0-d511-4127-9c51-3d782fcca30f">시편 16:11</content:text>
+            </content:paragraph>
+            
+            <content:paragraph>
+                <training:tip id="Love_Tip1"/>
+            </content:paragraph>
+
+        </card>
+    </cards>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

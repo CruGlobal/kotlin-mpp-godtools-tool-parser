@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" background-image="thefour-bkg-image-3.jpg" background-image-scale-type="fill">
+	<hero>
+		<heading>
+			<content:text i18n-id="006996b4-e699-4a62-843b-34ed3c4bebd0" text-scale="1.0" text-align="center" text-color="rgba(255,255,255,1)">예수님은 우리에게 모든 것을 주셨습니다</content:text>
+		</heading>
+        <content:paragraph>
+             <content:image resource="thefour-icon-cross.png" restrictTo="mobile"/>
+        </content:paragraph>
+        <content:paragraph>
+        <content:image resource="Web-thefour-bkg-image-3.png" restrictTo="web"/>
+    </content:paragraph>
+	</hero>
+
+    <cards>
+        <card>
+            <label>
+                <content:text i18n-id="08dc73c5-58c9-4823-add5-d5f27bdf815a">예수님은 우리에게 모든 것을 주셨습니다</content:text>
+            </label>
+            <content:paragraph>
+				<content:image resource="thefour-icon-cross-group.png" restrictTo="mobile"/>
+			</content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="2b76c193-3aca-4dc4-bcec-99ee7ce1bd00">우리의 힘으로 죄의 문제를 해결할 수 없어 괴로워할때,하나님도 함께 아파하셨습니다. 하나님은 우리와 나뉘어진 관계를 회복하기 위해 자신의 하나뿐인 아들 예수님을 이 세상에 보내주셨습니다. (요한복음3:16).</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="721b509f-6b8d-4836-8991-532bc126ebff">죄의 대가는 죽음이기에 (로마서6:23), 아무 죄 없는 예수님이 우리를 대신하여 십자가에서 죽으심으로 그 값을 치르셨습니다. 또한 죄를 이기고 다시 살아나셔서 우리를 죄로부터 자유롭게 하셨습니다.</content:text>
+            </content:paragraph>
+        </card>
+        
+        <card>
+            <label>
+                <content:text i18n-id="4ebb6108-bc17-4bd8-ae2e-aa365b04284f">성경구절</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="b85103f7-01c4-40a7-b19d-33a00e1b97f6">하나님이 세상을 이처럼 사랑하사 독생자(예수그리스도)를 주셨으니 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라</content:text>
+                <content:text i18n-id="dd837be1-8b3e-448c-953c-6c7012bc10f6">요한복음 3:16</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="f9edd361-487f-4edc-ab66-8b4c561590b1">그리스도께서도 단번에 죄를 위하여 죽으사 의인으로서 불의한 자를 대신하셨으니 이는 우리를 하나님 앞으로 인도하려 하심이라 육체로는 죽임을 당하시고 영으로는 살리심을 받으셨으니 </content:text>
+                <content:text i18n-id="19490652-19eb-4d06-ba6b-79275e64a915">베드로전서 3:18</content:text>
+            </content:paragraph>
+            
+            <content:paragraph>
+                <training:tip id="Cross_Tip1"/>
+            </content:paragraph>
+
+        </card>
+    </cards>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

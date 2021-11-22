@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-image="thefour-bkg-image-4-prayer.jpg" background-image-scale-type="fill">
+    <hero>
+        <heading>
+            <content:text i18n-id="3df2e3f6-1a31-40ea-8625-f56c79588d86" text-scale="1.0" text-align="center" text-color="rgba(255,255,255,1)">이렇게 기도해보세요</content:text>
+        </heading>
+        
+        <analytics:events>
+    <analytics:event action="thefour_gospel_presented" delay="8" system="firebase" trigger="visible">
+      <analytics:attribute key="cru.presentingthegospel" value="1"/>
+    </analytics:event>
+     <analytics:event action="gospel-presented" delay="8" system="appsflyer" trigger="visible"/>
+  </analytics:events>
+ 
+        <content:paragraph>
+            <content:text i18n-id="7b005769-123b-4a66-b501-d5256bbc588e" text-color="rgba(255,255,255,1)">예수님, 저는 사랑해 주셔서 감사합니다. 또한 십자가에서 죽으시고, 내 죄의 대가를 치러주시니 감사합니다. </content:text>
+        </content:paragraph>
+        <content:paragraph>
+            <content:text i18n-id="10129533-3488-4b2c-b2ce-d0d3bb3d6b3f" text-color="rgba(255,255,255,1)">저는 이제 그 사실을 믿고 마음의 문을 열어 예수님을 나의 구원자로 받아들이려 합니다. 저의 삶에 들어와 주시고, 당신의 사랑을 더 알아가도록 도와주세요. 예수님의 이름으로 기도합니다.</content:text>
+        </content:paragraph>
+        <content:paragraph>
+            <content:text i18n-id="606555f8-ea76-4158-b3be-9d65b586105b" text-color="rgba(255,255,255,1)">아멘</content:text>
+        </content:paragraph>
+        
+        <content:paragraph>
+            <training:tip id="Prayer_Tip1"/>
+        </content:paragraph>
+       
+    </hero>
+
+    <cards>
+        <card dismiss-listeners="followup-form-no">
+            <label>
+                <content:text i18n-id="4d4ca096-0d22-4e62-9c8a-70cd1bff3cce">이 기도문으로 기도했나요?</content:text>
+            </label>
+            <content:paragraph>
+                <content:button type="event" events="followup-form-no">
+                    <content:text i18n-id="50319faa-d895-4b61-aadd-8713601a183b">아직 준비되지 않았어요</content:text>
+                    <analytics:events>
+    <analytics:event action="thefour_not_ready_to_decide" system="firebase">
+      <analytics:attribute key="cru.notreadytodecide" value="1"/>
+    </analytics:event>
+  </analytics:events>
+                </content:button>
+            </content:paragraph>
+
+            <content:paragraph>
+                <content:button type="event" events="followup-form">
+                    <content:text i18n-id="5727382d-39bc-469a-bac9-0fdde23475ba">네</content:text>
+<analytics:events>
+    <analytics:event action="thefour_new_professing_believer" system="firebase">
+      <analytics:attribute key="cru.newprofessingbelievers" value="1"/>
+    </analytics:event>
+  </analytics:events>                     
+                </content:button>
+            </content:paragraph>
+
+            <content:paragraph>
+                <content:link events="followup-form">
+                    <content:text i18n-id="0162d41c-3b83-4f29-a811-2ac61c85e79b">이미 결정했습니다</content:text>
+                      <analytics:events>
+    <analytics:event action="thefour_already_made_decision" system="firebase">
+      <analytics:attribute key="cru.alreadydecided" value="1"/>
+    </analytics:event>
+  </analytics:events>
+                </content:link>
+            </content:paragraph>
+        </card>
+
+       <card hidden="true" listeners="followup-form" dismiss-listeners="followup-form-no-thanks">
+            <label>
+                <content:text i18n-id="923ce0e3-e243-4117-a5f1-ed69893b0b76">예수님은 약속하신 대로 당신 삶에 들어오실 것입니다.</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="74cbe592-c709-4a08-a031-10be311a8203" text-scale="0.9">관계가 돈독해지기 위해서는 그 사람에 대해서 더 잘 알아야 합니다.
+'새생활 시리즈'라고 하는, 예수 그리스도와의 새로운 관계를 안내해 줄 자료를 이메일로 받아보시겠습니까?</content:text>
+            </content:paragraph>
+            <content:form>
+                <content:input name="destination_id" type="hidden" value="1"/>
+                <content:input type="text" name="name" required="true">
+                    <content:label>
+                        <content:text i18n-id="842fc2f3-8274-44d0-8e08-ec3c9e07d7f3">이름</content:text>
+                    </content:label>
+                    <content:placeholder>
+                        <content:text>First Name and Last Name</content:text>
+                    </content:placeholder>
+                </content:input>
+                <content:input type="email" name="email" required="true">
+                    <content:label>
+                        <content:text i18n-id="69577ccd-fd53-4e81-9736-eb622c7aa091">이메일</content:text>
+                    </content:label>
+                    <content:placeholder>
+                        <content:text>Email</content:text>
+                    </content:placeholder>
+                </content:input>
+                <content:paragraph>
+                    <content:button type="event" events="followup:send send-information-modal">
+                        <content:text i18n-id="264a35c6-bbc0-4370-8f5e-38bf0150b50f">전송</content:text>
+                         <analytics:events>
+                            <analytics:event action="thefour_email_sign_up" system="firebase">
+                                <analytics:attribute key="cru.emailsignup" value="true"/>
+                                <analytics:attribute key="cru.emaillist" value="1"/>
+                            </analytics:event>
+                        </analytics:events>
+                    </content:button>
+                </content:paragraph>
+                    <content:paragraph>
+                    <content:link events="followup-form-no-thanks">
+                        <content:text i18n-id="c4da865a-e49a-4b39-8bc5-b2e5ceea4624">괜찮습니다</content:text>
+                    </content:link>
+                </content:paragraph>
+            </content:form>
+        </card>
+    </cards>
+    <modals>
+        <modal listeners="send-information-modal" dismiss-listeners="send-information-modal-close">
+            <title>
+                <content:text i18n-id="c45bfebd-d8d8-48b7-a8b2-8142ef63f405">감사합니다</content:text>
+            </title>
+            <content:paragraph>
+                <content:text i18n-id="ca50ce2a-2f80-4eb4-8ea9-3619f53e66b2">Check your email soon for your first study in following Jesus Christ.</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="8188d63c-f4e4-492b-bea5-8f9161048dc7">만약 메일을 받지 못했다면, 스팸 메일함을 확인하세요.</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:button type="event" events="send-information-modal-close information-form-card-close">
+                    <content:text i18n-id="b199fba2-d242-460c-b5c1-c4911b02f3fe">완료</content:text>
+                </content:button>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="56aad1dd-efc7-459f-a32f-6951ead8942e" text-scale="0.75">완료되려면 반드시 인터넷이 연결되어 있어야 합니다.</content:text>
+            </content:paragraph>
+        </modal>
+    </modals>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

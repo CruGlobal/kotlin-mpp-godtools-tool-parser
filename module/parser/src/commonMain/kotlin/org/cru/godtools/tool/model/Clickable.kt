@@ -19,5 +19,5 @@ internal inline fun XmlPullParser.parseClickableAttrs(block: (events: List<Event
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
-    block(getAttributeValue(XML_EVENTS).toEventIds(), getAttributeValue(XML_URL)?.toAbsoluteUri())
+    block(getAttributeValue(XML_EVENTS).toEventIds(), getAttributeValue(XML_URL).toAbsoluteUriOrNull())
 }

@@ -11,25 +11,25 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class UriTest {
     @Test
-    fun testToAbsoluteUri() {
-        assertEquals("https://example.com/path", "https://example.com/path".toAbsoluteUri().toString())
-        assertEquals("http://example.com/path", "example.com/path".toAbsoluteUri().toString())
-        assertEquals("mailto:someone@example.com", "mailto:someone@example.com".toAbsoluteUri().toString())
+    fun testToAbsoluteUriOrNull() {
+        assertEquals("https://example.com/path", "https://example.com/path".toAbsoluteUriOrNull().toString())
+        assertEquals("http://example.com/path", "example.com/path".toAbsoluteUriOrNull().toString())
+        assertEquals("mailto:someone@example.com", "mailto:someone@example.com".toAbsoluteUriOrNull().toString())
     }
 
     @Test
     fun testScheme() {
-        assertEquals("http", "http://example.com".toUri().scheme)
-        assertEquals("https", "https://example.com".toUri().scheme)
-        assertEquals("mailto", "mailto:user@example.com".toUri().scheme)
-        assertNull("invalid-uri".toUri().scheme)
+        assertEquals("http", "http://example.com".toUriOrNull()!!.scheme)
+        assertEquals("https", "https://example.com".toUriOrNull()!!.scheme)
+        assertEquals("mailto", "mailto:user@example.com".toUriOrNull()!!.scheme)
+        assertNull("invalid-uri".toUriOrNull()!!.scheme)
     }
 
     @Test
     fun testIsHttpUrl() {
-        assertTrue("http://example.com".toUri().isHttpUrl)
-        assertTrue("https://example.com".toUri().isHttpUrl)
-        assertFalse("mailto:user@example.com".toUri().isHttpUrl)
-        assertFalse("invalid-uri".toUri().isHttpUrl)
+        assertTrue("http://example.com".toUriOrNull()!!.isHttpUrl)
+        assertTrue("https://example.com".toUriOrNull()!!.isHttpUrl)
+        assertFalse("mailto:user@example.com".toUriOrNull()!!.isHttpUrl)
+        assertFalse("invalid-uri".toUriOrNull()!!.isHttpUrl)
     }
 }
