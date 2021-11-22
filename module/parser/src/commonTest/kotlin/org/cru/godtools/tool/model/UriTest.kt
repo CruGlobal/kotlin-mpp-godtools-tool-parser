@@ -11,10 +11,10 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class UriTest {
     @Test
-    fun testToAbsoluteUri() {
-        assertEquals("https://example.com/path", "https://example.com/path".toAbsoluteUri().toString())
-        assertEquals("http://example.com/path", "example.com/path".toAbsoluteUri().toString())
-        assertEquals("mailto:someone@example.com", "mailto:someone@example.com".toAbsoluteUri().toString())
+    fun testToAbsoluteUriOrNull() {
+        assertEquals("https://example.com/path", "https://example.com/path".toAbsoluteUriOrNull().toString())
+        assertEquals("http://example.com/path", "example.com/path".toAbsoluteUriOrNull().toString())
+        assertEquals("mailto:someone@example.com", "mailto:someone@example.com".toAbsoluteUriOrNull().toString())
     }
 
     @Test

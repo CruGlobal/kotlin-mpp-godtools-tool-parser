@@ -6,5 +6,5 @@ internal val Uri.isHttpUrl: Boolean get() = scheme?.matches(Regex("https?", Rege
 
 internal expect fun String.toUri(): Uri
 
-internal fun String.toAbsoluteUri(defaultScheme: String = "http"): Uri = makeAbsolute(defaultScheme).toUri()
+internal fun String?.toAbsoluteUriOrNull(defaultScheme: String = "http") = this?.makeAbsolute(defaultScheme)?.toUri()
 private fun String.makeAbsolute(defaultScheme: String) = if (this.contains(':')) this else "$defaultScheme://$this"
