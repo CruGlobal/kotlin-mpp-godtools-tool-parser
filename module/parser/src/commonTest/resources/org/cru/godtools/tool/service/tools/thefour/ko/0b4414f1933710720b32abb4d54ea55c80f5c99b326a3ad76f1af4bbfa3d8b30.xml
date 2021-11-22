@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-image="thefour-bkg-image-0.jpg" background-image-scale-type="fill">
+    <hero>
+        <heading>
+            <content:text i18n-id="078f594a-77bf-4cdc-b35d-6d3fb40b6e06" text-scale="1.2" text-color="rgba(255,255,255,1)" text-align="center">THE FOUR의 네 개의 심볼은 복음의 핵심 메시지를 아주 잘 나타내고 있습니다.</content:text>
+		</heading>
+		
+		<analytics:events>
+            <analytics:event action="thefour-0" system="appsflyer"/>
+        </analytics:events>
+
+		<content:paragraph>
+		    <content:image resource="thefour-title.png" restrictTo="mobile"/>
+		</content:paragraph>
+		 <content:paragraph>
+        <content:image resource="Web-thefour-home.png" restrictTo="web"/>
+    </content:paragraph>
+    
+    <content:paragraph>
+        <training:tip id="Home_Tip1"/>
+    </content:paragraph>
+    
+    <content:paragraph>
+        <training:tip id="Home_Tip2"/>
+    </content:paragraph>
+		
+	</hero>
+	
+	<call-to-action control-color="rgba(255,255,255,1)">
+		<content:text/>
+	</call-to-action>
+</page>

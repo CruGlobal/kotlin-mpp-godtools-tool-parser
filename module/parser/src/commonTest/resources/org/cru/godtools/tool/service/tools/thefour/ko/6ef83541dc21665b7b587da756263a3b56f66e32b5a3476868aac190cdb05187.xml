@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:training="https://mobile-content-api.cru.org/xmlns/training" background-image="thefour-bkg-image-2.jpg" background-image-scale-type="fill">
+	<hero>
+		<heading>
+			<content:text i18n-id="cb79e5ff-66a6-47a2-9848-45c39e856b55" text-align="center" text-scale="1.0" text-color="rgba(255,255,255,1)">사람은 하나님과 나누어졌습니다.</content:text>
+		</heading>
+        <content:paragraph>
+             <content:image resource="thefour-icon-division.png" restrictTo="mobile"/>
+        </content:paragraph>
+        <content:paragraph>
+        <content:image resource="Web-thefour-bkg-image-2.png" restrictTo="web"/>
+    </content:paragraph>
+	</hero>
+
+    <cards>
+        <card>
+            <label>
+                <content:text i18n-id="103cadfc-346c-4c79-aaab-221e58533950">사람은 하나님과 나누어졌습니다</content:text>
+            </label>
+            <content:paragraph>
+				<content:image resource="thefour-icon-division-group.png" restrictTo="mobile"/>
+			</content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="517074b0-e83d-4ec5-88d8-38600d0b2a4b">우리는 하나님과 나누어졌기에 그 사랑은 모른 채 살아갑니다. 하나님을 신뢰하지 않으며 자신에게그분이 피요하다는 사실조차도 깨닫지 못합니다. 
+성경은 이것을 죄때문이라고 말합니다. (로마서3:23).</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="a46d165f-31e9-429b-9a84-12e7a96166ba">죄는 하나님에 대하여 무관심하게 만들고, 이기적인 마음을 품게 합니다. 서로 상처를 주고 받으며 사람들과의 관계도 깨뜨립니다. 이렇듯 죄는 우리의 삶을 서서히 망가뜨립니다.</content:text>
+            </content:paragraph>
+
+        </card>        <card>
+            <label>
+                <content:text i18n-id="891ea72d-6eea-4468-9f7c-62983905da0a">성경구절</content:text>
+            </label>
+            <content:paragraph>
+                <content:text i18n-id="ec609afd-21cf-44b5-b348-b25a420bcfe5">모든 사람이 죄를 범하였으매 하나님의 영광에 이르지 못하더니</content:text>
+                <content:text i18n-id="ad1cb4d7-a6a4-49f7-842b-26abd8842fb9">로마서 3:23</content:text>
+            </content:paragraph>
+            <content:paragraph>
+                <content:text i18n-id="876bad40-cbfc-4554-850f-37d932fd6e74">오직 너희 죄악이 너희와 너희 하나님 사이를 갈라 놓았고 너희 죄가 그의 얼굴을 가리어서 너희에게서 듣지 않으시게 함이니라</content:text>
+                <content:text i18n-id="90c35b60-60b9-4814-95fa-f86fcdcd3e9f">이사야 59:2</content:text>
+            </content:paragraph>
+            
+            <content:paragraph>
+                <training:tip id="Sin_Tip1"/>
+            </content:paragraph>
+
+        </card>
+    </cards>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>
