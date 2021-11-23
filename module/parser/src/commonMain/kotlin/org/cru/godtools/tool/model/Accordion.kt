@@ -16,7 +16,6 @@ class Accordion : Content {
     val sections: List<Section>
     override val tips get() = sections.flatMap { it.contentTips }
 
-    @OptIn(ExperimentalStdlibApi::class)
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ACCORDION)
 

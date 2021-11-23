@@ -252,7 +252,6 @@ class TractPage : Page {
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun XmlPullParser.parseCardsXml() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CARDS)
         parseChildren {
@@ -265,7 +264,6 @@ class TractPage : Page {
     }
     // endregion Cards
 
-    @OptIn(ExperimentalStdlibApi::class)
     private fun XmlPullParser.parseModalsXml() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_MODALS)
         parseChildren {
