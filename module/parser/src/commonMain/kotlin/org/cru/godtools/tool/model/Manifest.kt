@@ -54,7 +54,6 @@ private const val XML_TIPS_TIP = "tip"
 private const val XML_TIPS_TIP_ID = "id"
 private const val XML_TIPS_TIP_SRC = "src"
 
-@OptIn(ExperimentalStdlibApi::class)
 class Manifest : BaseModel, Styles {
     internal companion object {
         @AndroidColorInt

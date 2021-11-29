@@ -30,7 +30,6 @@ private const val XML_ATTRIBUTE = "attribute"
 private const val XML_ATTRIBUTE_KEY = "key"
 private const val XML_ATTRIBUTE_VALUE = "value"
 
-@OptIn(ExperimentalStdlibApi::class)
 class AnalyticsEvent : BaseModel {
     internal companion object {
         internal const val XML_EVENTS = "events"

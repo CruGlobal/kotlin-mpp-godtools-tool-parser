@@ -10,7 +10,6 @@ private const val XML_LABEL = "label"
 private const val XML_BANNER = "banner"
 private const val XML_AEM_TAG = "aem-tag"
 
-@OptIn(ExperimentalStdlibApi::class)
 class Category : BaseModel, Styles {
     internal companion object {
         internal const val XML_CATEGORY = "category"

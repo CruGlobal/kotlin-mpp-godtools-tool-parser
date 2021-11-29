@@ -18,7 +18,6 @@ private const val XML_TYPE_PREPARE = "prepare"
 private const val XML_TYPE_QUOTE = "quote"
 private const val XML_PAGES = "pages"
 
-@OptIn(ExperimentalStdlibApi::class)
 class Tip : BaseModel, Styles {
     val id: String
     val type: Type
