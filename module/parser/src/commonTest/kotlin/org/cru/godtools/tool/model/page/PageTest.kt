@@ -15,6 +15,14 @@ import kotlin.test.assertNull
 class PageTest : UsesResources("model/page") {
     // region Page.parse()
     @Test
+    fun testParseCardCollectionPage() = runBlockingTest {
+        assertIs<CardCollectionPage>(
+            Page.parse(Manifest(type = Manifest.Type.CYOA), null, getTestXmlParser("page_cardcollection.xml"))
+        )
+        assertNull(Page.parse(Manifest(type = Manifest.Type.LESSON), null, getTestXmlParser("page_cardcollection.xml")))
+    }
+
+    @Test
     fun testParseContentPage() = runBlockingTest {
         assertIs<ContentPage>(
             Page.parse(Manifest(type = Manifest.Type.CYOA), null, getTestXmlParser("page_content.xml"))
