@@ -3,7 +3,7 @@ import org.ajoberstar.grgit.Grgit
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
-    id("org.ajoberstar.grgit") version "4.1.0"
+    id("org.ajoberstar.grgit") version "4.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
     id("com.vanniktech.android.junit.jacoco") version "0.16.0"
 }
