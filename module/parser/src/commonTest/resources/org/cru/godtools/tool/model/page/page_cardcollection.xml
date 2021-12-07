@@ -15,7 +15,7 @@
                 </content:paragraph>
             </content>
         </card>
-        <card background-color="rgba(0,255,0,1)">
+        <card id="card2" background-color="rgba(0,255,0,1)">
             <analytics:events>
                 <analytics:event action="card2" system="facebook" />
             </analytics:events>

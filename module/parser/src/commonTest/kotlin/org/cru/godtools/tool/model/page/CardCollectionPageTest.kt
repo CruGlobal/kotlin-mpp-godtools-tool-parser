@@ -29,6 +29,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
             }
             assertEquals(2, cards.size)
             with(cards[0]) {
+                assertEquals("${page.id}-0", id)
                 assertTrue(getAnalyticsEvents(Trigger.VISIBLE).isEmpty())
                 assertEquals(page.cardBackgroundColor, backgroundColor)
                 assertEquals(2, content.size)
@@ -36,6 +37,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
                 assertIs<Paragraph>(content[1])
             }
             with(cards[1]) {
+                assertEquals("card2", id)
                 with(getAnalyticsEvents(Trigger.VISIBLE)) {
                     assertEquals(1, size)
                     assertEquals("card2", this[0].action)
