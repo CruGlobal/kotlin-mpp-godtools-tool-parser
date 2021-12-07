@@ -31,6 +31,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
             with(cards[0]) {
                 assertEquals("${page.id}-0", id)
                 assertTrue(getAnalyticsEvents(Trigger.VISIBLE).isEmpty())
+                assertTrue(getAnalyticsEvents(Trigger.HIDDEN).isEmpty())
                 assertEquals(page.cardBackgroundColor, backgroundColor)
                 assertEquals(2, content.size)
                 assertIs<Spacer>(content[0])
@@ -39,10 +40,17 @@ class CardCollectionPageTest : UsesResources("model/page") {
             with(cards[1]) {
                 assertEquals("card2", id)
                 with(getAnalyticsEvents(Trigger.VISIBLE)) {
-                    assertEquals(1, size)
+                    assertEquals(2, size)
                     assertEquals("card2", this[0].action)
+                    assertEquals(Trigger.DEFAULT, this[0].trigger)
+                    assertEquals("visible", this[1].action)
+                    assertEquals(Trigger.VISIBLE, this[1].trigger)
                 }
-                assertTrue(getAnalyticsEvents(Trigger.HIDDEN).isEmpty())
+                with(getAnalyticsEvents(Trigger.HIDDEN)) {
+                    assertEquals(1, size)
+                    assertEquals("hidden", this[0].action)
+                    assertEquals(Trigger.HIDDEN, this[0].trigger)
+                }
                 assertEquals(TestColors.GREEN, backgroundColor)
                 assertTrue(content.isEmpty())
             }

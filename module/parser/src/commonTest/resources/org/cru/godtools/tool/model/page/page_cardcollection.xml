@@ -18,6 +18,8 @@
         <card id="card2" background-color="rgba(0,255,0,1)">
             <analytics:events>
                 <analytics:event action="card2" system="facebook" />
+                <analytics:event action="visible" system="facebook" trigger="visible" />
+                <analytics:event action="hidden" system="facebook" trigger="hidden" />
             </analytics:events>
             <content />
         </card>
