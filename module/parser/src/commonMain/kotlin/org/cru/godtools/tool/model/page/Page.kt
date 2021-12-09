@@ -36,6 +36,7 @@ import org.cru.godtools.tool.model.color
 import org.cru.godtools.tool.model.getResource
 import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
+import org.cru.godtools.tool.model.page.CardCollectionPage.Companion.TYPE_CARD_COLLECTION
 import org.cru.godtools.tool.model.page.ContentPage.Companion.TYPE_CONTENT
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -75,6 +76,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                 XMLNS_TRACT -> TractPage(manifest, fileName, parser)
                 XMLNS_PAGE -> {
                     when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
+                        TYPE_CARD_COLLECTION -> CardCollectionPage(manifest, fileName, parser)
                         TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
                         else -> {
                             val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"

@@ -1,0 +1,114 @@
+package org.cru.godtools.tool.model.page
+
+import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.model.AnalyticsEvent
+import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
+import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
+import org.cru.godtools.tool.model.BaseModel
+import org.cru.godtools.tool.model.Content
+import org.cru.godtools.tool.model.HasAnalyticsEvents
+import org.cru.godtools.tool.model.Manifest
+import org.cru.godtools.tool.model.Parent
+import org.cru.godtools.tool.model.PlatformColor
+import org.cru.godtools.tool.model.XMLNS_ANALYTICS
+import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
+import org.cru.godtools.tool.model.contentTips
+import org.cru.godtools.tool.model.page.CardCollectionPage.Card.Companion.XML_CARD
+import org.cru.godtools.tool.model.parseContent
+import org.cru.godtools.tool.model.toColorOrNull
+import org.cru.godtools.tool.xml.XmlPullParser
+import org.cru.godtools.tool.xml.parseChildren
+
+private const val XML_CARDS = "cards"
+
+class CardCollectionPage : Page {
+    internal companion object {
+        const val TYPE_CARD_COLLECTION = "cardcollection"
+    }
+
+    override val analyticsEvents: List<AnalyticsEvent>
+    val cards: List<Card>
+
+    internal constructor(
+        manifest: Manifest,
+        fileName: String?,
+        parser: XmlPullParser
+    ) : super(manifest, fileName, parser) {
+        parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_PAGE)
+        parser.requirePageType(TYPE_CARD_COLLECTION)
+
+        analyticsEvents = mutableListOf()
+        cards = mutableListOf()
+        parser.parseChildren {
+            when (parser.namespace) {
+                XMLNS_ANALYTICS -> when (parser.name) {
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                }
+                XMLNS_PAGE -> when (parser.name) {
+                    XML_CARDS -> cards += parseCards(parser)
+                }
+            }
+        }
+    }
+
+    private fun parseCards(parser: XmlPullParser) = buildList {
+        parser.parseChildren {
+            if (parser.namespace == XMLNS_PAGE && parser.name == XML_CARD) {
+                add(Card(this@CardCollectionPage, parser))
+            }
+        }
+    }
+
+    override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA
+
+    class Card : BaseModel, Parent, HasAnalyticsEvents {
+        internal companion object {
+            internal const val XML_CARD = "card"
+            private const val XML_ID = "id"
+            private const val XML_CONTENT = "content"
+        }
+
+        private val page: CardCollectionPage
+
+        private val _id: String?
+        val id get() = _id ?: "${page.id}-$position"
+        val position get() = page.cards.indexOf(this)
+
+        @AndroidColorInt
+        private val _backgroundColor: PlatformColor?
+        @get:AndroidColorInt
+        internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
+
+        private val analyticsEvents: List<AnalyticsEvent>
+        override val content: List<Content>
+        val tips get() = contentTips
+
+        internal constructor(page: CardCollectionPage, parser: XmlPullParser) : super(page) {
+            this.page = page
+            parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_CARD)
+
+            _id = parser.getAttributeValue(XML_ID)
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
+
+            // process any child elements
+            analyticsEvents = mutableListOf()
+            content = mutableListOf()
+            parser.parseChildren {
+                when (parser.namespace) {
+                    XMLNS_ANALYTICS -> when (parser.name) {
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                    }
+                    XMLNS_PAGE -> when (parser.name) {
+                        XML_CONTENT -> content += parseContent(parser)
+                    }
+                }
+            }
+        }
+
+        override fun getAnalyticsEvents(type: Trigger) = when (type) {
+            Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
+            Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
+            else -> error("Analytics trigger type $type is not currently supported on CardCollection Cards")
+        }
+    }
+}

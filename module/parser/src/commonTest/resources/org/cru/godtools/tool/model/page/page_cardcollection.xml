@@ -1,0 +1,27 @@
+<page xmlns="https://mobile-content-api.cru.org/xmlns/page"
+    xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="cardcollection"
+    content:card-background-color="rgba(255,0,0,1)">
+    <analytics:events>
+        <analytics:event action="page" system="firebase" />
+    </analytics:events>
+    <cards>
+        <card>
+            <content>
+                <content:spacer />
+                <content:paragraph>
+                    <content:text>Text</content:text>
+                </content:paragraph>
+            </content>
+        </card>
+        <card id="card2" background-color="rgba(0,255,0,1)">
+            <analytics:events>
+                <analytics:event action="card2" system="facebook" />
+                <analytics:event action="visible" system="facebook" trigger="visible" />
+                <analytics:event action="hidden" system="facebook" trigger="hidden" />
+            </analytics:events>
+            <content />
+        </card>
+    </cards>
+</page>
