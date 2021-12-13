@@ -9,6 +9,7 @@ internal const val XMLNS_MANIFEST = "https://mobile-content-api.cru.org/xmlns/ma
 internal const val XMLNS_ARTICLE = "https://mobile-content-api.cru.org/xmlns/article"
 internal const val XMLNS_ANALYTICS = "https://mobile-content-api.cru.org/xmlns/analytics"
 internal const val XMLNS_CONTENT = "https://mobile-content-api.cru.org/xmlns/content"
+internal const val XMLNS_CYOA = "https://mobile-content-api.cru.org/xmlns/cyoa"
 
 // common XML attributes
 internal const val XML_PRIMARY_COLOR = "primary-color"

@@ -297,7 +297,7 @@ class Manifest : BaseModel, Styles {
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
-    fun findPage(id: String?) = pages.firstOrNull { it.id == id }
+    fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
     fun findTip(id: String?) = tips[id]
     @Deprecated(
         "Since v0.4.0, use findPage(id) instead which will support different page types in the future.",
