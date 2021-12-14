@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model.page
 
+import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.Content
@@ -40,6 +42,16 @@ class ContentPage : Page, Parent {
                 }
             }
         }
+    }
+
+    @RestrictTo(RestrictToScope.TESTS)
+    internal constructor(
+        manifest: Manifest,
+        id: String? = null,
+        parentPage: String? = null
+    ) : super(manifest, id = id, parentPage = parentPage) {
+        analyticsEvents = emptyList()
+        content = emptyList()
     }
 
     override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA

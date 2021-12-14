@@ -22,6 +22,7 @@ import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Styles
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.XMLNS_CONTENT
+import org.cru.godtools.tool.model.XMLNS_CYOA
 import org.cru.godtools.tool.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.tool.model.XML_BACKGROUND_IMAGE_GRAVITY
@@ -54,6 +55,7 @@ import org.cru.godtools.tool.xml.XmlPullParserException
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
+private const val XML_PARENT = "parent"
 private const val XML_HIDDEN = "hidden"
 
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
@@ -105,6 +107,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _id: String?
     @VisibleForTesting
     internal val fileName: String?
+
+    private val _parentPage: String?
+    val parentPage get() = manifest.findPage(_parentPage)
 
     val isHidden: Boolean
 
@@ -159,6 +164,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _id = parser.getAttributeValue(XML_ID)
         this.fileName = fileName
+        _parentPage = parser.getAttributeValue(XMLNS_CYOA, XML_PARENT)
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
 
@@ -192,7 +198,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @RestrictTo(RestrictToScope.SUBCLASSES, RestrictToScope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
+        id: String? = null,
         fileName: String? = null,
+        parentPage: String? = null,
         primaryColor: PlatformColor? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -203,8 +211,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
-        _id = null
+        _id = id
         this.fileName = fileName
+        _parentPage = parentPage
 
         isHidden = false
 

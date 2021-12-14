@@ -10,6 +10,7 @@ import org.cru.godtools.tool.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class PageTest : UsesResources("model/page") {
@@ -60,4 +61,17 @@ class PageTest : UsesResources("model/page") {
         }
     }
     // endregion Page.parse()
+
+    // region Page.parent
+    @Test
+    fun testParentPage() {
+        val manifest = Manifest(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2", parentPage = "page1")) }
+        )
+
+        val page1 = manifest.findPage("page1")!!
+        val page2 = manifest.findPage("page2")!!
+        assertSame(page1, page2.parentPage)
+    }
+    // endregion Page.parent
 }
