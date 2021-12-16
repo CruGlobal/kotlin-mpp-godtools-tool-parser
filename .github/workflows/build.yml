@@ -30,10 +30,18 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
-      - name: Run Static Checks
+      - name: Ktlint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintCheck lint
+          arguments: ktlintCheck
+      - name: Lint
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: lint
+      - name: Publication Metadata
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: generateMetadataFileForKotlinMultiplatformPublication
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v2
