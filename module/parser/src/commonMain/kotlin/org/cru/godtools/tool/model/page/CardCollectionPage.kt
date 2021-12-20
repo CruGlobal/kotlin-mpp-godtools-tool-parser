@@ -68,7 +68,7 @@ class CardCollectionPage : Page {
             private const val XML_CONTENT = "content"
         }
 
-        private val page: CardCollectionPage
+        val page: CardCollectionPage
 
         private val _id: String?
         val id get() = _id ?: "${page.id}-$position"
