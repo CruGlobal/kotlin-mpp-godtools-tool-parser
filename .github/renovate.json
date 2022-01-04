@@ -8,8 +8,7 @@
     {
       "matchManagers": ["gradle"],
       "matchPackagePrefixes": ["org.jetbrains.kotlinx:kotlinx-coroutines-"],
-      "groupName": "kotlinx.coroutines",
-      "allowedVersions": "/-native-mt$/"
+      "groupName": "kotlinx.coroutines"
     }
   ]
 }
