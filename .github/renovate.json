@@ -3,5 +3,13 @@
     "config:base"
   ],
   "labels": [ "dependencies" ],
-  "dependencyDashboard": true
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchManagers": ["gradle"],
+      "matchPackagePrefixes": ["org.jetbrains.kotlinx:kotlinx-coroutines-"],
+      "groupName": "kotlinx.coroutines",
+      "allowedVersions": "/-native-mt$/"
+    }
+  ]
 }
