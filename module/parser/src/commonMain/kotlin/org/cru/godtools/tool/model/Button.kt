@@ -9,6 +9,8 @@ import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
+import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
+import org.cru.godtools.tool.model.Dimension.Pixels
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.tool.xml.XmlPullParser
 
@@ -19,6 +21,8 @@ private const val XML_TYPE_URL = "url"
 private const val XML_STYLE = "style"
 private const val XML_STYLE_CONTAINED = "contained"
 private const val XML_STYLE_OUTLINED = "outlined"
+private const val XML_GRAVITY = "gravity"
+private const val XML_WIDTH = "width"
 private const val XML_ICON = "icon"
 private const val XML_ICON_GRAVITY = "icon-gravity"
 private const val XML_ICON_SIZE = "icon-size"
@@ -29,6 +33,8 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
+        private val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
+        private val DEFAULT_WIDTH = Dimension.Percent(1f)
         internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
         internal val DEFAULT_ICON_GRAVITY = Gravity.Horizontal.START
         internal const val DEFAULT_ICON_SIZE = 18
@@ -44,6 +50,9 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
 
     private val _style: Style?
     val style: Style get() = _style ?: stylesParent.buttonStyle
+
+    val gravity: Gravity.Horizontal
+    val width: Dimension
 
     @AndroidColorInt
     private val _buttonColor: PlatformColor?
@@ -78,6 +87,8 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         }
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
+        gravity = parser.getAttributeValue(XML_GRAVITY)?.toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
+        width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
@@ -119,6 +130,8 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         this.url = url
 
         _style = style
+        gravity = DEFAULT_GRAVITY
+        width = DEFAULT_WIDTH
         _buttonColor = color
         backgroundColor = DEFAULT_BACKGROUND_COLOR
 
