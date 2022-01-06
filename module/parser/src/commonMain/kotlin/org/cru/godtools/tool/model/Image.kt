@@ -17,8 +17,8 @@ class Image : Content, Clickable {
     internal companion object {
         internal const val XML_IMAGE = "image"
 
-        private val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
-        private val DEFAULT_WIDTH = Dimension.Percent(1f)
+        internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
+        internal val DEFAULT_WIDTH = Dimension.Percent(1f)
     }
 
     override val events: List<EventId>
@@ -28,8 +28,8 @@ class Image : Content, Clickable {
     internal val resourceName: String?
     val resource get() = getResource(resourceName)
 
-    val gravity: Gravity.Horizontal
-    val width: Dimension
+    internal val gravity: Gravity.Horizontal
+    internal val width: Dimension
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_IMAGE)
@@ -57,3 +57,6 @@ class Image : Content, Clickable {
         url = null
     }
 }
+
+val Image?.gravity get() = this?.gravity ?: Image.DEFAULT_GRAVITY
+val Image?.width get() = this?.width ?: Image.DEFAULT_WIDTH
