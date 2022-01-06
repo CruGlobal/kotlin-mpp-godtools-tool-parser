@@ -33,8 +33,8 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
-        private val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
-        private val DEFAULT_WIDTH = Dimension.Percent(1f)
+        internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
+        internal val DEFAULT_WIDTH = Dimension.Percent(1f)
         internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
         internal val DEFAULT_ICON_GRAVITY = Gravity.Horizontal.START
         internal const val DEFAULT_ICON_SIZE = 18
@@ -51,8 +51,8 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     private val _style: Style?
     val style: Style get() = _style ?: stylesParent.buttonStyle
 
-    val gravity: Gravity.Horizontal
-    val width: Dimension
+    internal val gravity: Gravity.Horizontal
+    internal val width: Dimension
 
     @AndroidColorInt
     private val _buttonColor: PlatformColor?
@@ -177,6 +177,9 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         }
     }
 }
+
+val Button?.gravity get() = this?.gravity ?: Button.DEFAULT_GRAVITY
+val Button?.width get() = this?.width ?: Button.DEFAULT_WIDTH
 
 val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
 val Button?.textColor get() = this?.textColor ?: stylesParent.primaryTextColor
