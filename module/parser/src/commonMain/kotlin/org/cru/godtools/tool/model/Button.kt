@@ -87,7 +87,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         }
 
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
-        gravity = parser.getAttributeValue(XML_GRAVITY)?.toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
+        gravity = parser.getAttributeValue(XML_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
         width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
