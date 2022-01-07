@@ -30,7 +30,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         internal const val XML_BUTTON = "button"
 
         internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
-        internal val DEFAULT_ICON_GRAVITY = Gravity.START
+        internal val DEFAULT_ICON_GRAVITY = Gravity.Horizontal.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
 
@@ -56,7 +56,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     private val iconName: String?
     val icon get() = getResource(iconName)
     internal val iconSize: Int
-    internal val iconGravity: Gravity
+    internal val iconGravity: Gravity.Horizontal
 
     val text: Text?
     override val textAlign get() = Text.Align.CENTER
@@ -82,7 +82,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
-        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY)?.toGravityOrNull() ?: DEFAULT_ICON_GRAVITY
+        iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_ICON_GRAVITY
         iconSize = parser.getAttributeValue(XML_ICON_SIZE)?.toIntOrNull() ?: DEFAULT_ICON_SIZE
 
         // process any child elements

@@ -33,3 +33,8 @@ okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 splitties-bitflags = { module = "com.louiscad.splitties:splitties-bitflags", version.ref = "splitties" }
+
+[plugins]
+grgit = { id = "org.ajoberstar.grgit", version = "4.1.1" }
+junitJacoco = { id = "com.vanniktech.android.junit.jacoco", version = "0.16.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "10.2.1" }

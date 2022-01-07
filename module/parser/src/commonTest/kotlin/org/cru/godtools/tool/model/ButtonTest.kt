@@ -43,7 +43,7 @@ class ButtonTest : UsesResources() {
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
 
             assertNull(icon)
-            assertTrue(iconGravity.isStart)
+            assertEquals(Gravity.Horizontal.START, iconGravity)
             assertEquals(Button.DEFAULT_ICON_SIZE, iconSize)
         }
     }
@@ -84,7 +84,7 @@ class ButtonTest : UsesResources() {
         val resource = Resource(name = "image.png")
         with(Button(Manifest(resources = { listOf(resource) }), getTestXmlParser("button_icon.xml"))) {
             assertSame(resource, icon)
-            assertTrue(iconGravity.isEnd)
+            assertEquals(Gravity.Horizontal.END, iconGravity)
             assertEquals(24, iconSize)
         }
     }

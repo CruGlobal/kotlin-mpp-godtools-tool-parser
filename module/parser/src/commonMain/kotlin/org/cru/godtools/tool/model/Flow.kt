@@ -18,7 +18,6 @@ class Flow : Content {
         internal const val XML_FLOW = "flow"
         private const val XML_ITEM_WIDTH = "item-width"
 
-        @VisibleForTesting
         internal val DEFAULT_ITEM_WIDTH = Dimension.Percent(1f)
         internal val DEFAULT_ROW_GRAVITY = Gravity.Horizontal.START
     }
