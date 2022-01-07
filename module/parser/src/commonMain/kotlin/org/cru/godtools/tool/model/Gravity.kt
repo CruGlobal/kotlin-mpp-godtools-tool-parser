@@ -45,40 +45,43 @@ class Gravity internal constructor(private val gravity: Int) {
         val CENTER = Gravity(0)
         internal val START = Gravity(BIT_START)
 
-        internal fun String.toGravityOrNull() = try {
-            var gravity = 0
-            var seenX = false
-            var seenY = false
-            REGEX_SEQUENCE_SEPARATOR.split(this).forEach {
-                when (it) {
-                    XML_START -> {
-                        require(!seenX) { "multiple X-Axis gravities in: $this" }
-                        gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_START)
-                        seenX = true
+        internal fun String?.toGravityOrNull(): Gravity? {
+            if (this == null) return null
+            try {
+                var gravity = 0
+                var seenX = false
+                var seenY = false
+                REGEX_SEQUENCE_SEPARATOR.split(this).forEach {
+                    when (it) {
+                        XML_START -> {
+                            require(!seenX) { "multiple X-Axis gravities in: $this" }
+                            gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_START)
+                            seenX = true
+                        }
+                        XML_END -> {
+                            require(!seenX) { "multiple X-Axis gravities in: $this" }
+                            gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_END)
+                            seenX = true
+                        }
+                        XML_TOP -> {
+                            require(!seenY) { "multiple Y-Axis gravities in: $this" }
+                            gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_TOP)
+                            seenY = true
+                        }
+                        XML_BOTTOM -> {
+                            require(!seenY) { "multiple Y-Axis gravities in: $this" }
+                            gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_BOTTOM)
+                            seenY = true
+                        }
+                        XML_CENTER -> Unit
                     }
-                    XML_END -> {
-                        require(!seenX) { "multiple X-Axis gravities in: $this" }
-                        gravity = gravity.minusFlag(MASK_X_AXIS).withFlag(BIT_END)
-                        seenX = true
-                    }
-                    XML_TOP -> {
-                        require(!seenY) { "multiple Y-Axis gravities in: $this" }
-                        gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_TOP)
-                        seenY = true
-                    }
-                    XML_BOTTOM -> {
-                        require(!seenY) { "multiple Y-Axis gravities in: $this" }
-                        gravity = gravity.minusFlag(MASK_Y_AXIS).withFlag(BIT_BOTTOM)
-                        seenY = true
-                    }
-                    XML_CENTER -> Unit
                 }
-            }
 
-            Gravity(gravity)
-        } catch (e: IllegalArgumentException) {
-            Napier.e(tag = "Gravity", throwable = e, message = { "error parsing Gravity: $this" })
-            null
+                return Gravity(gravity)
+            } catch (e: IllegalArgumentException) {
+                Napier.e(tag = "Gravity", throwable = e, message = { "error parsing Gravity: $this" })
+                return null
+            }
         }
     }
 

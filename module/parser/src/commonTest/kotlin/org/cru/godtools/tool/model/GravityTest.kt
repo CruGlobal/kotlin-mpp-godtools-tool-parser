@@ -70,7 +70,8 @@ class GravityTest {
     }
 
     @Test
-    fun verifyParseConflictingGravity() {
+    fun verifyParseInvalidGravity() {
+        assertNull((null as String?).toGravityOrNull())
         assertNull("start end".toGravityOrNull())
         assertNull("end start".toGravityOrNull())
         assertNull("start top end".toGravityOrNull())
