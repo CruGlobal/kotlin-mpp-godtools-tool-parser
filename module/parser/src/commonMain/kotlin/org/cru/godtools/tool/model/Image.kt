@@ -49,10 +49,15 @@ class Image : Content, Clickable {
     override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
 
     @RestrictTo(RestrictToScope.TESTS)
-    constructor(parent: Base, resource: String? = null) : super(parent) {
+    constructor(
+        parent: Base = Manifest(),
+        resource: String? = null,
+        gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
+        width: Dimension = DEFAULT_WIDTH
+    ) : super(parent) {
         resourceName = resource
-        gravity = DEFAULT_GRAVITY
-        width = DEFAULT_WIDTH
+        this.gravity = gravity
+        this.width = width
         events = emptyList()
         url = null
     }

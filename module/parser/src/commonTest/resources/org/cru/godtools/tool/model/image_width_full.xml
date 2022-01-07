@@ -1,2 +1,2 @@
 <content:image xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    resource="image.png" />
+    resource="image.png" width="100%" />
