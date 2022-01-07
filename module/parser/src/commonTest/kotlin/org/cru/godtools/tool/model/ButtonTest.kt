@@ -41,6 +41,8 @@ class ButtonTest : UsesResources() {
             assertEquals("event button", text!!.text)
             assertEquals(TestColors.RED, buttonColor)
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
+            assertEquals(Dimension.Pixels(50), width)
+            assertEquals(Gravity.Horizontal.END, gravity)
 
             assertNull(icon)
             assertEquals(Gravity.Horizontal.START, iconGravity)
@@ -59,6 +61,8 @@ class ButtonTest : UsesResources() {
         assertEquals("url button", button.text!!.text)
         assertEquals(1, button.analyticsEvents.size)
         assertEquals("firebase action", button.analyticsEvents.single().action)
+        assertEquals(Button.DEFAULT_WIDTH, button.width)
+        assertEquals(Button.DEFAULT_GRAVITY, button.gravity)
     }
 
     @Test
