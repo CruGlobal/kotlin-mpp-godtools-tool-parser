@@ -1,10 +1,11 @@
 package org.cru.godtools.tool.model.tract
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.DeviceType
@@ -23,6 +24,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class HeroTest : UsesResources("model/tract") {
     @BeforeTest
     fun setupConfig() {
@@ -30,7 +32,7 @@ class HeroTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun testParseHero() = runBlockingTest {
+    fun testParseHero() = runTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero.xml")).hero)
         assertEquals(1, hero.analyticsEvents.size)
         assertEquals("Heading", hero.heading!!.text)
@@ -43,7 +45,7 @@ class HeroTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun testParseHeroIgnoredContent() = runBlockingTest {
+    fun testParseHeroIgnoredContent() = runTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero_ignored_content.xml")).hero)
         assertEquals(2, hero.content.size)
         assertIs<Paragraph>(hero.content[0])

@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model.tract
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.primaryColor
@@ -17,7 +17,7 @@ import kotlin.test.assertNull
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeaderTest : UsesResources("model/tract") {
     @Test
-    fun testParseHeader() = runBlockingTest {
+    fun testParseHeader() = runTest {
         val header = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("header.xml")).header)
         assertEquals("5", header.number!!.text)
         assertEquals("title", header.title!!.text)
@@ -26,7 +26,7 @@ class HeaderTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun testParseHeaderDefaults() = runBlockingTest {
+    fun testParseHeaderDefaults() = runTest {
         val page = TractPage(Manifest(), null, getTestXmlParser("header_defaults.xml"))
         val header = assertNotNull(page.header)
 

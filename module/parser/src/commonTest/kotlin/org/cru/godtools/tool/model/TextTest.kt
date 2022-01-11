@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.tool.model.Text.Style.Companion.toTextStyles
@@ -25,7 +25,7 @@ class TextTest : UsesResources() {
 
     // region Parsing
     @Test
-    fun testTextParsingDefaults() = runBlockingTest {
+    fun testTextParsingDefaults() = runTest {
         val manifest = Manifest()
         val text = Text(manifest, getTestXmlParser("text_defaults.xml"))
 
@@ -40,7 +40,7 @@ class TextTest : UsesResources() {
     }
 
     @Test
-    fun testTextParsingAttributes() = runBlockingTest {
+    fun testTextParsingAttributes() = runTest {
         val manifest = Manifest()
         val text = Text(parent, getTestXmlParser("text_attributes.xml"))
 

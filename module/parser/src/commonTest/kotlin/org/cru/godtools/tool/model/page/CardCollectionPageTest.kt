@@ -1,9 +1,10 @@
 package org.cru.godtools.tool.model.page
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Paragraph
@@ -17,10 +18,11 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class CardCollectionPageTest : UsesResources("model/page") {
     // region Parse XML
     @Test
-    fun testParseCardCollectionPage() = runBlockingTest {
+    fun testParseCardCollectionPage() = runTest {
         with(CardCollectionPage(Manifest(), "file.ext", getTestXmlParser("page_cardcollection.xml"))) {
             val page = this
             with(getAnalyticsEvents(Trigger.VISIBLE)) {
@@ -58,7 +60,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
     }
 
     @Test
-    fun testParseCardCollectionPageInvalidType() = runBlockingTest {
+    fun testParseCardCollectionPageInvalidType() = runTest {
         assertFailsWith(XmlPullParserException::class) {
             CardCollectionPage(Manifest(), null, getTestXmlParser("page_invalid_type.xml"))
         }

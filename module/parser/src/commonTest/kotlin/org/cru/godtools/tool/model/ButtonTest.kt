@@ -1,11 +1,11 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
@@ -29,7 +29,7 @@ class ButtonTest : UsesResources() {
     private val state = State()
 
     @Test
-    fun testParseButtonEvent() = runBlockingTest {
+    fun testParseButtonEvent() = runTest {
         val manifest = Manifest()
         with(Button(manifest, getTestXmlParser("button_event.xml"))) {
             assertFalse(testIsIgnored)
@@ -51,7 +51,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonUrl() = runBlockingTest {
+    fun testParseButtonUrl() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
         assertFalse(button.testIsIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
@@ -66,7 +66,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonRestrictTo() = runBlockingTest {
+    fun testParseButtonRestrictTo() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_restrictTo.xml"))
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
         assertFalse(button.testIsIgnored)
@@ -75,7 +75,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonRequiredFeatures() = runBlockingTest {
+    fun testParseButtonRequiredFeatures() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))
         ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
         assertFalse(button.testIsIgnored)
@@ -84,7 +84,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonIcon() = runBlockingTest {
+    fun testParseButtonIcon() = runTest {
         val resource = Resource(name = "image.png")
         with(Button(Manifest(resources = { listOf(resource) }), getTestXmlParser("button_icon.xml"))) {
             assertSame(resource, icon)
@@ -94,7 +94,7 @@ class ButtonTest : UsesResources() {
     }
 
     @Test
-    fun testParseButtonVisibility() = runBlockingTest {
+    fun testParseButtonVisibility() = runTest {
         with(Button(Manifest(), getTestXmlParser("button_visibility.xml"))) {
             assertFalse(testIsIgnored)
 

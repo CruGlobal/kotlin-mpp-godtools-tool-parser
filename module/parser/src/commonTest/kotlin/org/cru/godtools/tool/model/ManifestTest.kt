@@ -1,11 +1,12 @@
 package org.cru.godtools.tool.model
 
 import io.fluidsonic.locale.Locale
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.fluidlocale.toCommon
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
@@ -18,10 +19,11 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class ManifestTest : UsesResources() {
     // region parse Manifest
     @Test
-    fun testParseManifestEmpty() = runBlockingTest {
+    fun testParseManifestEmpty() = runTest {
         val manifest = parseManifest("manifest_empty.xml")
         assertNull(manifest.title)
         assertNull(manifest.code)
@@ -53,7 +55,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestArticle() = runBlockingTest {
+    fun testParseManifestArticle() = runTest {
         val manifest = parseManifest("manifest_article.xml")
         assertEquals(Manifest.Type.ARTICLE, manifest.type)
         assertEquals(TestColors.GREEN, manifest.categoryLabelColor)
@@ -71,7 +73,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestCyoa() = runBlockingTest {
+    fun testParseManifestCyoa() = runTest {
         val manifest = parseManifest("manifest_cyoa.xml")
         assertEquals("title", manifest.title)
         assertEquals("cyoa1", manifest.code)
@@ -83,7 +85,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestLesson() = runBlockingTest {
+    fun testParseManifestLesson() = runTest {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)
         assertEquals("lesson1", manifest.code)
@@ -104,7 +106,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestTract() = runBlockingTest {
+    fun testParseManifestTract() = runTest {
         val manifest = parseManifest("manifest_tract.xml")
         assertEquals("title", manifest.title)
         assertEquals(Manifest.Type.TRACT, manifest.type)
@@ -124,7 +126,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestBackgroundAttrs() = runBlockingTest {
+    fun testParseManifestBackgroundAttrs() = runTest {
         val manifest = parseManifest("manifest_background.xml")
         assertEquals(TestColors.GREEN, manifest.backgroundColor)
         assertEquals(TestColors.BLUE, manifest.cardBackgroundColor)
@@ -137,7 +139,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestContainingTips() = runBlockingTest {
+    fun testParseManifestContainingTips() = runTest {
         val manifest = parseManifest("manifest_tips.xml")
         assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)
@@ -146,7 +148,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestInvalidTips() = runBlockingTest {
+    fun testParseManifestInvalidTips() = runTest {
         val manifest = parseManifest("manifest_tips_invalid.xml")
         assertEquals(0, manifest.tractPages.size)
         assertEquals(0, manifest.resources.size)

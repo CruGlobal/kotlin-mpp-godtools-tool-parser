@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.EventId.Companion.FOLLOWUP
 import kotlin.test.Test
@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class LinkTest : UsesResources() {
     @Test
-    fun testParseLink() = runBlockingTest {
+    fun testParseLink() = runTest {
         val link = Link(Manifest(), getTestXmlParser("link.xml"))
         assertEquals("Test", link.text!!.text)
         assertEquals(2, link.events.size)

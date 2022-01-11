@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model.tips
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Manifest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +13,7 @@ import kotlin.test.assertSame
 @RunOnAndroidWith(AndroidJUnit4::class)
 class InlineTipTest : UsesResources("model/tips") {
     @Test
-    fun verifyParseInlineTip() = runBlockingTest {
+    fun verifyParseInlineTip() = runTest {
         val tip = InlineTip(Manifest(), getTestXmlParser("inline_tip.xml"))
         assertEquals("tip1", tip.id)
     }

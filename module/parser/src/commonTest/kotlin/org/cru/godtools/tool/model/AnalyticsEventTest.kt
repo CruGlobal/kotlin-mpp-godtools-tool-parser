@@ -1,9 +1,10 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger.Companion.toTrigger
@@ -15,9 +16,10 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class AnalyticsEventTest : UsesResources() {
     @Test
-    fun testParseAnalyticsEventDefaults() = runBlockingTest {
+    fun testParseAnalyticsEventDefaults() = runTest {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event_defaults.xml"))
         assertNull(event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.APPSFLYER))
@@ -30,7 +32,7 @@ class AnalyticsEventTest : UsesResources() {
     }
 
     @Test
-    fun testParseAnalyticsEvent() = runBlockingTest {
+    fun testParseAnalyticsEvent() = runTest {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event.xml"))
         assertEquals("test", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.FIREBASE))
@@ -45,7 +47,7 @@ class AnalyticsEventTest : UsesResources() {
     }
 
     @Test
-    fun testParseAnalyticsEvents() = runBlockingTest {
+    fun testParseAnalyticsEvents() = runTest {
         val events = getTestXmlParser("analytics_events.xml").parseAnalyticsEvents(Manifest())
         assertEquals(2, events.size)
         assertEquals("event1", events[0].action)

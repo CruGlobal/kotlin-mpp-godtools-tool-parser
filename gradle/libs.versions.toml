@@ -27,6 +27,7 @@ colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "co
 colormath-android-colorint = { module = "com.github.ajalt.colormath.extensions:colormath-ext-android-colorint", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }

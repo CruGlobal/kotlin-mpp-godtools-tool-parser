@@ -1,10 +1,11 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import kotlin.test.Test
@@ -12,9 +13,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class FormTest : UsesResources() {
     @Test
-    fun testParseForm() = runBlockingTest {
+    fun testParseForm() = runTest {
         val form = Form(Manifest(), getTestXmlParser("form.xml"))
         assertEquals(2, form.content.size)
         assertIs<Image>(form.content[0])
@@ -22,7 +24,7 @@ class FormTest : UsesResources() {
     }
 
     @Test
-    fun testParseParagraphIgnoredContent() = runBlockingTest {
+    fun testParseParagraphIgnoredContent() = runTest {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
         val form = Form(Manifest(), getTestXmlParser("form_ignored_content.xml"))
         assertEquals(1, form.content.size)
