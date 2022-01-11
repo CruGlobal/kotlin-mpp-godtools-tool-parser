@@ -1,11 +1,11 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -14,7 +14,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class AnimationTest : UsesResources() {
     @Test
-    fun testParseAnimationDefaults() = runBlockingTest {
+    fun testParseAnimationDefaults() = runTest {
         val animation = Animation(Manifest(), getTestXmlParser("animation_defaults.xml"))
         assertEquals("animation.json", animation.resourceName)
         assertTrue(animation.autoPlay)
@@ -25,7 +25,7 @@ class AnimationTest : UsesResources() {
     }
 
     @Test
-    fun testParseAnimation() = runBlockingTest {
+    fun testParseAnimation() = runTest {
         val animation = Animation(Manifest(), getTestXmlParser("animation.xml"))
         assertEquals("animation.json", animation.resourceName)
         assertFalse(animation.autoPlay)

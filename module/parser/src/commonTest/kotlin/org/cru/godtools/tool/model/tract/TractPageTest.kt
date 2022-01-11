@@ -1,9 +1,10 @@
 package org.cru.godtools.tool.model.tract
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
@@ -25,9 +26,10 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class TractPageTest : UsesResources("model/tract") {
     @Test
-    fun verifyParse() = runBlockingTest {
+    fun verifyParse() = runTest {
         val page = parsePageXml("page.xml")
         assertEquals(TestColors.RED, page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
@@ -43,7 +45,7 @@ class TractPageTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun verifyParseCards() = runBlockingTest {
+    fun verifyParseCards() = runTest {
         val page = parsePageXml("page_cards.xml")
         assertEquals(2, page.cards.size)
         assertEquals(TestColors.GREEN, page.cardBackgroundColor)
@@ -58,7 +60,7 @@ class TractPageTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun verifyParseModals() = runBlockingTest {
+    fun verifyParseModals() = runTest {
         val page = parsePageXml("page_modals.xml")
         assertEquals(2, page.modals.size)
         assertEquals("Modal 1", page.modals[0].title?.text)

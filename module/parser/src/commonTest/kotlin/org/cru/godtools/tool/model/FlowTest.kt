@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.tool.model.tips.InlineTip
@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FlowTest : UsesResources() {
     @Test
-    fun testParseFlowDefaults() = runBlockingTest {
+    fun testParseFlowDefaults() = runTest {
         val flow = Flow(Manifest(), getTestXmlParser("flow_defaults.xml"))
         assertEquals(DEFAULT_ITEM_WIDTH, flow.itemWidth)
         assertEquals(DEFAULT_ROW_GRAVITY, flow.rowGravity)
@@ -23,7 +23,7 @@ class FlowTest : UsesResources() {
     }
 
     @Test
-    fun testParseFlow() = runBlockingTest {
+    fun testParseFlow() = runTest {
         val flow = Flow(Manifest(), getTestXmlParser("flow.xml"))
         assertEquals(0.33f, assertIs<Dimension.Percent>(flow.itemWidth).value, DIMENSION_TOLERANCE)
         assertEquals(Gravity.Horizontal.END, flow.rowGravity)

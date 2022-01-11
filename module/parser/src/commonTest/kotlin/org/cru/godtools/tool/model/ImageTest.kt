@@ -1,10 +1,10 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
 class ImageTest : UsesResources() {
     // region parse Image
     @Test
-    fun testParseImageDefaults() = runBlockingTest {
+    fun testParseImageDefaults() = runTest {
         val image = Image(Manifest(), getTestXmlParser("image.xml"))
         assertEquals("image.png", image.resourceName)
         assertEquals(0, image.events.size)
@@ -27,7 +27,7 @@ class ImageTest : UsesResources() {
     }
 
     @Test
-    fun testParseImageAttrs() = runBlockingTest {
+    fun testParseImageAttrs() = runTest {
         val image = Image(Manifest(), getTestXmlParser("image_attrs.xml"))
         assertEquals("image.png", image.resourceName)
         assertEquals(2, image.events.size)
@@ -39,19 +39,19 @@ class ImageTest : UsesResources() {
     }
 
     @Test
-    fun testParseImageWidthFull() = runBlockingTest {
+    fun testParseImageWidthFull() = runTest {
         val image = Image(Manifest(), getTestXmlParser("image_width_full.xml"))
         assertEquals(Dimension.Percent(1f), image.width)
     }
 
     @Test
-    fun testParseImageWidthInvalid() = runBlockingTest {
+    fun testParseImageWidthInvalid() = runTest {
         val image = Image(Manifest(), getTestXmlParser("image_width_invalid.xml"))
         assertEquals(Image.DEFAULT_WIDTH, image.width)
     }
 
     @Test
-    fun testParseImageRestricted() = runBlockingTest {
+    fun testParseImageRestricted() = runTest {
         ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
         val manifest = Manifest(resources = { listOf(Resource(it, "image.png")) })
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))

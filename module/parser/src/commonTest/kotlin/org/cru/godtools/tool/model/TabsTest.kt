@@ -1,10 +1,11 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -13,6 +14,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class TabsTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
@@ -20,13 +22,13 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabsEmpty() = runBlockingTest {
+    fun testParseTabsEmpty() = runTest {
         val tabs = Tabs(Manifest(), getTestXmlParser("tabs_empty.xml"))
         assertEquals(0, tabs.tabs.size)
     }
 
     @Test
-    fun testParseTabsSingle() = runBlockingTest {
+    fun testParseTabsSingle() = runTest {
         val tab = Tabs(Manifest(), getTestXmlParser("tabs_single.xml")).tabs.single()
         assertEquals(0, tab.position)
         assertEquals("Tab 1", tab.label!!.text)
@@ -39,7 +41,7 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabsMultiple() = runBlockingTest {
+    fun testParseTabsMultiple() = runTest {
         val tabs = Tabs(Manifest(), getTestXmlParser("tabs_multiple.xml"))
         assertEquals(2, tabs.tabs.size)
         assertEquals(0, tabs.tabs[0].position)
@@ -47,7 +49,7 @@ class TabsTest : UsesResources() {
     }
 
     @Test
-    fun testParseTabsIgnoredContent() = runBlockingTest {
+    fun testParseTabsIgnoredContent() = runTest {
         val tab = Tabs(Manifest(), getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
         assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])

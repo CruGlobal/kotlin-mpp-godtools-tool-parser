@@ -5,8 +5,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.coroutines.receive
-import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -38,7 +38,7 @@ class StateTest {
     }
 
     @Test
-    fun testChangeFlow() = runBlockingTest {
+    fun testChangeFlow() = runTest {
         var i = 0
         val channel = Channel<Int>()
         val flow = state.changeFlow(KEY, KEY2) { i++ }
@@ -67,7 +67,7 @@ class StateTest {
     }
 
     @Test
-    fun testChangeFlowNoKeys() = runBlockingTest {
+    fun testChangeFlowNoKeys() = runTest {
         var count = 0
         val channel = Channel<Int>()
         val flow = state.changeFlow { count++ }

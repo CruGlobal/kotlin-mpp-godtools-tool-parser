@@ -5,6 +5,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.FEATURE_MULTISELECT
@@ -13,7 +14,6 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.coroutines.receive
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.state.State
@@ -94,12 +94,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
-    fun verifyIsGoneFlow() = runBlockingTest {
+    fun verifyIsGoneFlow() = runTest {
         with(object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
             val output = Channel<Boolean>(1)
             val flow = isGoneFlow(state)
                 .onEach { output.send(it) }
-                .launchIn(this@runBlockingTest)
+                .launchIn(this@runTest)
             assertFalse("Initially not hidden") { output.receive(500) }
 
             state["c"] = "test"
@@ -131,12 +131,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
-    fun verifyIsGoneDefault() = runBlockingTest {
+    fun verifyIsGoneDefault() = runTest {
         with(object : Content() {}) {
             val output = Channel<Boolean>(1)
             val flow = isGoneFlow(state)
                 .onEach { output.send(it) }
-                .launchIn(this@runBlockingTest)
+                .launchIn(this@runTest)
             assertFalse("Initially not hidden") { output.receive(500) }
             assertFalse(isGone(state))
 
@@ -168,12 +168,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
-    fun verifyIsInvisibleFlow() = runBlockingTest {
+    fun verifyIsInvisibleFlow() = runTest {
         with(object : Content(invisibleIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
             val output = Channel<Boolean>(1)
             val flow = isInvisibleFlow(state)
                 .onEach { output.send(it) }
-                .launchIn(this@runBlockingTest)
+                .launchIn(this@runTest)
             assertFalse("Initially not invisible") { output.receive(500) }
 
             state["c"] = "test"
@@ -205,12 +205,12 @@ class ContentTest : UsesResources() {
     }
 
     @Test
-    fun verifyIsInvisibleDefault() = runBlockingTest {
+    fun verifyIsInvisibleDefault() = runTest {
         with(object : Content() {}) {
             val output = Channel<Boolean>(1)
             val flow = isInvisibleFlow(state)
                 .onEach { output.send(it) }
-                .launchIn(this@runBlockingTest)
+                .launchIn(this@runTest)
             assertFalse("Initially not invisible") { output.receive(500) }
             assertFalse(isInvisible(state))
 
@@ -228,112 +228,112 @@ class ContentTest : UsesResources() {
 
     // region parseContentElement()
     @Test
-    fun verifyParseContentElementAccordion() = runBlockingTest {
+    fun verifyParseContentElementAccordion() = runTest {
         assertIs<Accordion>(getTestXmlParser("accordion.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementAnimation() = runBlockingTest {
+    fun verifyParseContentElementAnimation() = runTest {
         assertIs<Animation>(getTestXmlParser("animation.xml").parseContentElement(Manifest()))
         assertIs<Animation>(getTestXmlParser("animation_defaults.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementButton() = runBlockingTest {
+    fun verifyParseContentElementButton() = runTest {
         assertIs<Button>(getTestXmlParser("button_event.xml").parseContentElement(Manifest()))
         assertIs<Button>(getTestXmlParser("button_restrictTo.xml").parseContentElement(Manifest()))
         assertIs<Button>(getTestXmlParser("button_url.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementCard() = runBlockingTest {
+    fun verifyParseContentElementCard() = runTest {
         assertIs<Card>(getTestXmlParser("card.xml").parseContentElement(Manifest()))
         assertIs<Card>(getTestXmlParser("card_defaults.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementFallback() = runBlockingTest {
+    fun verifyParseContentElementFallback() = runTest {
         assertIs<Text>(getTestXmlParser("fallback.xml").parseContentElement(Manifest()))
         assertNull(getTestXmlParser("fallback_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementFlow() = runBlockingTest {
+    fun verifyParseContentElementFlow() = runTest {
         assertIs<Flow>(getTestXmlParser("flow.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementForm() = runBlockingTest {
+    fun verifyParseContentElementForm() = runTest {
         assertIs<Form>(getTestXmlParser("form.xml").parseContentElement(Manifest()))
         assertIs<Form>(getTestXmlParser("form_ignored_content.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementImage() = runBlockingTest {
+    fun verifyParseContentElementImage() = runTest {
         assertIs<Image>(getTestXmlParser("image.xml").parseContentElement(Manifest()))
         assertIs<Image>(getTestXmlParser("image_restricted.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementInlineTip() = runBlockingTest {
+    fun verifyParseContentElementInlineTip() = runTest {
         assertIs<InlineTip>(getTestXmlParser("tips/inline_tip.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementInput() = runBlockingTest {
+    fun verifyParseContentElementInput() = runTest {
         assertIs<Input>(getTestXmlParser("input_email.xml").parseContentElement(Manifest()))
         assertIs<Input>(getTestXmlParser("input_hidden.xml").parseContentElement(Manifest()))
         assertIs<Input>(getTestXmlParser("input_text.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementLink() = runBlockingTest {
+    fun verifyParseContentElementLink() = runTest {
         assertIs<Link>(getTestXmlParser("link.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementMultiselect() = runBlockingTest {
+    fun verifyParseContentElementMultiselect() = runTest {
         assertIs<Multiselect>(getTestXmlParser("multiselect.xml").parseContentElement(Manifest()))
         assertIs<Multiselect>(getTestXmlParser("multiselect_defaults.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementParagraph() = runBlockingTest {
+    fun verifyParseContentElementParagraph() = runTest {
         assertIs<Paragraph>(getTestXmlParser("paragraph.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementParagraphFallback() = runBlockingTest {
+    fun verifyParseContentElementParagraphFallback() = runTest {
         assertIs<Text>(getTestXmlParser("fallback_paragraph.xml").parseContentElement(Manifest()))
         assertNull(getTestXmlParser("fallback_paragraph_all_ignored.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementSpacer() = runBlockingTest {
+    fun verifyParseContentElementSpacer() = runTest {
         assertIs<Spacer>(getTestXmlParser("spacer.xml").parseContentElement(Manifest()))
         assertIs<Spacer>(getTestXmlParser("spacer_fixed.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementTabs() = runBlockingTest {
+    fun verifyParseContentElementTabs() = runTest {
         assertIs<Tabs>(getTestXmlParser("tabs_empty.xml").parseContentElement(Manifest()))
         assertIs<Tabs>(getTestXmlParser("tabs_single.xml").parseContentElement(Manifest()))
         assertIs<Tabs>(getTestXmlParser("tabs_multiple.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementText() = runBlockingTest {
+    fun verifyParseContentElementText() = runTest {
         assertIs<Text>(getTestXmlParser("text_attributes.xml").parseContentElement(Manifest()))
         assertIs<Text>(getTestXmlParser("text_defaults.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementVideo() = runBlockingTest {
+    fun verifyParseContentElementVideo() = runTest {
         assertIs<Video>(getTestXmlParser("video.xml").parseContentElement(Manifest()))
     }
 
     @Test
-    fun verifyParseContentElementUnrecognized() = runBlockingTest {
+    fun verifyParseContentElementUnrecognized() = runTest {
         assertNull(getTestXmlParser("content_unrecognized.xml").parseContentElement(Manifest()))
     }
     // endregion parseContentElement()

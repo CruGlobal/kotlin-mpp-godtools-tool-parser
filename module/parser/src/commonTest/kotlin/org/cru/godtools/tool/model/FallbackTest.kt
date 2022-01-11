@@ -1,10 +1,10 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.xml.XmlPullParserException
@@ -23,33 +23,33 @@ class FallbackTest : UsesResources() {
     }
 
     @Test
-    fun testParseFallback() = runBlockingTest {
+    fun testParseFallback() = runTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback.xml"))
         assertEquals(1, fallback.content.size)
         assertEquals("Test", assertIs<Text>(fallback.content.single()).text)
     }
 
     @Test
-    fun testParseFallbackAllIgnored() = runBlockingTest {
+    fun testParseFallbackAllIgnored() = runTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_all_ignored.xml"))
         assertTrue(fallback.content.isEmpty())
     }
 
     @Test
-    fun testParseParagraphFallback() = runBlockingTest {
+    fun testParseParagraphFallback() = runTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph.xml"))
         assertEquals(1, fallback.content.size)
         assertEquals("Test", assertIs<Text>(fallback.content.single()).text)
     }
 
     @Test
-    fun testParseParagraphFallbackAllIgnored() = runBlockingTest {
+    fun testParseParagraphFallbackAllIgnored() = runTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback_paragraph_all_ignored.xml"))
         assertTrue(fallback.content.isEmpty())
     }
 
     @Test
-    fun testParseParagraphFallbackInvalid() = runBlockingTest {
+    fun testParseParagraphFallbackInvalid() = runTest {
         assertFailsWith(XmlPullParserException::class) {
             Fallback(Manifest(), getTestXmlParser("paragraph.xml"))
         }

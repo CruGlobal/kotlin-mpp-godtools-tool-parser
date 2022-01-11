@@ -5,13 +5,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.coroutines.receive
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
@@ -22,11 +22,12 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class MultiselectTest : UsesResources() {
     private val state by lazy { State() }
 
     @Test
-    fun testParseMultiselect() = runBlockingTest {
+    fun testParseMultiselect() = runTest {
         val multiselect = Multiselect(Manifest(), getTestXmlParser("multiselect.xml"))
         assertEquals("quiz1", multiselect.stateName)
         assertEquals(2, multiselect.columns)
@@ -49,7 +50,7 @@ class MultiselectTest : UsesResources() {
     }
 
     @Test
-    fun testParseMultiselectDefaults() = runBlockingTest {
+    fun testParseMultiselectDefaults() = runTest {
         val manifest = Manifest(multiselectOptionSelectedColor = TestColors.RANDOM)
         val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
@@ -102,8 +103,7 @@ class MultiselectTest : UsesResources() {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun testOptionIsSelectedFlow() = runBlockingTest {
+    fun testOptionIsSelectedFlow() = runTest {
         val multiselect = Multiselect { it.options(2) }
 
         val flowOutput = Channel<Boolean>(1)

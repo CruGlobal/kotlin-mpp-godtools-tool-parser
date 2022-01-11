@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -12,7 +12,7 @@ import kotlin.test.assertNotNull
 @RunOnAndroidWith(AndroidJUnit4::class)
 class CategoryTest : UsesResources() {
     @Test
-    fun testParseCategory() = runBlockingTest {
+    fun testParseCategory() = runTest {
         val category = Manifest.parse("categories.xml") { getTestXmlParser(it) }.categories.single()
         assertEquals("testParseCategory", category.id)
         assertNotNull(category.banner).also {

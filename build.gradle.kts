@@ -40,6 +40,7 @@ subprojects {
                         implementation(project(":test-fixtures"))
 
                         implementation(kotlin("test"))
+                        implementation(libs.kotlin.coroutines.test)
                     }
                 }
                 val androidTest by getting {

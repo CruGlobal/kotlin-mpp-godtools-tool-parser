@@ -1,9 +1,9 @@
 package org.cru.godtools.tool.model.lesson
 
+import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.runBlockingTest
 import org.cru.godtools.tool.model.AnalyticsEvent
 import org.cru.godtools.tool.model.ImageScaleType
 import org.cru.godtools.tool.model.Manifest
@@ -33,7 +33,7 @@ import kotlin.test.assertTrue
 class LessonPageTest : UsesResources("model/lesson") {
     // region parsePage
     @Test
-    fun testParsePage() = runBlockingTest {
+    fun testParsePage() = runTest {
         val page = parsePageXml("page.xml")
         assertFalse(page.isHidden)
         assertEquals(TestColors.GREEN, page.controlColor)
@@ -52,7 +52,7 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
 
     @Test
-    fun testParsePageDefault() = runBlockingTest {
+    fun testParsePageDefault() = runTest {
         val manifest = Manifest()
         val page = parsePageXml("page_defaults.xml", manifest)
         assertEquals(manifest.pageControlColor, page.controlColor)
@@ -64,7 +64,7 @@ class LessonPageTest : UsesResources("model/lesson") {
     }
 
     @Test
-    fun testParsePageHidden() = runBlockingTest {
+    fun testParsePageHidden() = runTest {
         val page = parsePageXml("page_hidden.xml")
         assertTrue(page.isHidden)
     }
