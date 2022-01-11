@@ -1,0 +1,2 @@
+<content:image xmlns:content="https://mobile-content-api.cru.org/xmlns/content" events="event1 event2"
+    gravity="start" resource="image.png" url="https://example.com" width="50" />
