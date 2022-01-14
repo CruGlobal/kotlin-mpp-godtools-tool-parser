@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.expressions.Expression
 import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -53,7 +54,7 @@ class Flow : Content {
 
     override val isIgnored get() = FEATURE_FLOW !in ParserConfig.supportedFeatures || super.isIgnored
 
-    class Item : BaseModel, Parent {
+    class Item : BaseModel, Parent, Visibility {
         companion object {
             private const val XML_WIDTH = "width"
         }
@@ -63,6 +64,9 @@ class Flow : Content {
         private val _width: Dimension?
         internal val width get() = _width ?: flow.itemWidth
 
+        override val invisibleIf: Expression?
+        override val goneIf: Expression?
+
         override val content: List<Content>
 
         internal constructor(flow: Flow, parser: XmlPullParser) : super(flow) {
@@ -71,12 +75,19 @@ class Flow : Content {
 
             _width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()
 
+            parser.parseVisibilityAttrs { invisibleIf, goneIf ->
+                this.invisibleIf = invisibleIf
+                this.goneIf = goneIf
+            }
+
             content = parseContent(parser)
         }
 
         internal constructor(flow: Flow, content: (Item) -> Content?) : super(flow) {
             this.flow = flow
             _width = null
+            invisibleIf = null
+            goneIf = null
             this.content = listOfNotNull(content(this))
         }
     }
