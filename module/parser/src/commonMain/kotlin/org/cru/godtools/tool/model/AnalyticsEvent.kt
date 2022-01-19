@@ -21,6 +21,7 @@ private const val XML_SYSTEM_APPSFLYER = "appsflyer"
 private const val XML_SYSTEM_FACEBOOK = "facebook"
 private const val XML_SYSTEM_FIREBASE = "firebase"
 private const val XML_SYSTEM_SNOWPLOW = "snowplow"
+private const val XML_SYSTEM_USER = "user"
 private const val XML_TRIGGER = "trigger"
 private const val XML_TRIGGER_CLICKED = "clicked"
 private const val XML_TRIGGER_SELECTED = "selected"
@@ -98,7 +99,7 @@ class AnalyticsEvent : BaseModel {
     fun isForSystem(system: System) = systems.contains(system)
 
     enum class System {
-        ADOBE, APPSFLYER, FACEBOOK, FIREBASE, SNOWPLOW;
+        ADOBE, APPSFLYER, FACEBOOK, FIREBASE, SNOWPLOW, USER;
 
         internal companion object {
             fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
@@ -108,6 +109,7 @@ class AnalyticsEvent : BaseModel {
                     XML_SYSTEM_FACEBOOK -> FACEBOOK
                     XML_SYSTEM_FIREBASE -> FIREBASE
                     XML_SYSTEM_SNOWPLOW -> SNOWPLOW
+                    XML_SYSTEM_USER -> USER
                     else -> null
                 }
             }
