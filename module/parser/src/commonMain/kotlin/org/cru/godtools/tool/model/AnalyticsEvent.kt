@@ -99,7 +99,9 @@ class AnalyticsEvent : BaseModel {
     fun isForSystem(system: System) = systems.contains(system)
 
     enum class System {
-        ADOBE, APPSFLYER, FACEBOOK, FIREBASE, SNOWPLOW, USER;
+        @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
+        ADOBE,
+        APPSFLYER, FACEBOOK, FIREBASE, SNOWPLOW, USER;
 
         internal companion object {
             fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
