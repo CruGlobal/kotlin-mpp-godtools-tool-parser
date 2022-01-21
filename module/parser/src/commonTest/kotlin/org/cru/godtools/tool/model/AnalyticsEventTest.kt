@@ -61,6 +61,7 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals(setOf(AnalyticsEvent.System.FACEBOOK), "facebook".toAnalyticsSystems())
         assertEquals(setOf(AnalyticsEvent.System.FIREBASE), "firebase".toAnalyticsSystems())
         assertEquals(setOf(AnalyticsEvent.System.SNOWPLOW), "snowplow".toAnalyticsSystems())
+        assertEquals(setOf(AnalyticsEvent.System.USER), "user".toAnalyticsSystems())
         assertEquals(0, "jkalsdf".toAnalyticsSystems().size)
     }
 
