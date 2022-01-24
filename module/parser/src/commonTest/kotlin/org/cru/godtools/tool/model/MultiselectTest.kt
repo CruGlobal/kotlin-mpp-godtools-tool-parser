@@ -34,12 +34,14 @@ class MultiselectTest : UsesResources() {
         assertEquals(2, multiselect.selectionLimit)
         assertEquals(3, multiselect.options.size)
         with(multiselect.options[0]) {
+            assertEquals(Multiselect.Option.Style.CARD, style)
             assertEquals(TestColors.RED, backgroundColor)
             assertEquals(TestColors.BLUE, selectedColor)
             assertTrue(AnalyticsEvent.System.FIREBASE in analyticsEvents.single().systems)
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
+            assertEquals(Multiselect.Option.Style.FLAT, style)
             assertEquals(TestColors.BLUE, backgroundColor)
             assertEquals(TestColors.GREEN, selectedColor)
             assertEquals(1, content.size)
@@ -58,6 +60,7 @@ class MultiselectTest : UsesResources() {
         assertEquals(1, multiselect.selectionLimit)
         assertEquals(1, multiselect.options.size)
         with(multiselect.options.single()) {
+            assertEquals(Multiselect.Option.DEFAULT_STYLE, style)
             assertEquals("valueAttr", value)
             assertEquals(manifest.backgroundColor, backgroundColor)
             assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)

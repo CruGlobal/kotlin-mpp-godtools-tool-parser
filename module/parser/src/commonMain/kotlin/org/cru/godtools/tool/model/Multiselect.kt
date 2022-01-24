@@ -8,6 +8,7 @@ import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
+import org.cru.godtools.tool.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
 import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -16,7 +17,7 @@ private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"
 private const val XML_SELECTION_LIMIT = "selection-limit"
 private const val XML_OPTION = "option"
-private const val XML_OPTION_VALUE = "value"
+private const val XML_OPTION_STYLE = "option-style"
 
 class Multiselect : Content {
     internal companion object {
@@ -35,6 +36,7 @@ class Multiselect : Content {
     @VisibleForTesting
     internal val selectionLimit: Int
 
+    private val optionStyle: Option.Style
     private val _optionBackgroundColor: PlatformColor?
     private val optionBackgroundColor get() = _optionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
     private val _optionSelectedColor: PlatformColor?
@@ -50,6 +52,8 @@ class Multiselect : Content {
         columns = parser.getAttributeValue(XML_COLUMNS)?.toIntOrNull() ?: 1
         selectionLimit = (parser.getAttributeValue(XML_SELECTION_LIMIT)?.toIntOrNull() ?: 1).coerceAtLeast(1)
 
+        optionStyle =
+            parser.getAttributeValue(XML_OPTION_STYLE).toMultiselectOptionStyleOrNull() ?: Option.DEFAULT_STYLE
         _optionBackgroundColor = parser.getAttributeValue(XML_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
         _optionSelectedColor = parser.getAttributeValue(XML_OPTION_SELECTED_COLOR)?.toColorOrNull()
 
@@ -68,6 +72,7 @@ class Multiselect : Content {
         parent: Base = Manifest(),
         stateName: String = "",
         selectionLimit: Int = 1,
+        optionStyle: Option.Style = Option.DEFAULT_STYLE,
         optionBackgroundColor: PlatformColor? = null,
         optionSelectedColor: PlatformColor? = null,
         options: ((Multiselect) -> List<Option>)? = null
@@ -75,6 +80,7 @@ class Multiselect : Content {
         this.stateName = stateName
         columns = 1
         this.selectionLimit = selectionLimit
+        this.optionStyle = optionStyle
         _optionBackgroundColor = optionBackgroundColor
         _optionSelectedColor = optionSelectedColor
         this.options = options?.invoke(this).orEmpty()
@@ -83,11 +89,21 @@ class Multiselect : Content {
     override val isIgnored get() = FEATURE_MULTISELECT !in ParserConfig.supportedFeatures || super.isIgnored
 
     class Option : Content, Parent, HasAnalyticsEvents {
-        private companion object {
+        internal companion object {
             private const val XML_SELECTED_COLOR = "selected-color"
+
+            private const val XML_VALUE = "value"
+            private const val XML_STYLE = "style"
+            private const val XML_STYLE_CARD = "card"
+            private const val XML_STYLE_FLAT = "flat"
+
+            internal val DEFAULT_STYLE = Style.CARD
         }
 
         val multiselect: Multiselect
+
+        private val _style: Style?
+        val style get() = _style ?: multiselect.optionStyle
 
         private val _backgroundColor: PlatformColor?
         internal val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
@@ -106,10 +122,12 @@ class Multiselect : Content {
             this.multiselect = multiselect
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_OPTION)
 
+            _style = parser.getAttributeValue(XML_STYLE).toMultiselectOptionStyleOrNull()
+
             _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
             _selectedColor = parser.getAttributeValue(XML_SELECTED_COLOR)?.toColorOrNull()
 
-            value = parser.getAttributeValue(XML_OPTION_VALUE).orEmpty()
+            value = parser.getAttributeValue(XML_VALUE).orEmpty()
 
             analyticsEvents = mutableListOf()
             content = parseContent(parser) {
@@ -124,12 +142,14 @@ class Multiselect : Content {
         @RestrictTo(RestrictToScope.TESTS)
         internal constructor(
             multiselect: Multiselect = Multiselect(),
+            style: Style? = null,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             backgroundColor: PlatformColor? = null,
             selectedColor: PlatformColor? = null,
             value: String = ""
         ) : super(multiselect) {
             this.multiselect = multiselect
+            _style = style
             _backgroundColor = backgroundColor
             _selectedColor = selectedColor
             this.value = value
@@ -154,6 +174,18 @@ class Multiselect : Content {
                 else -> return false
             }
             return true
+        }
+
+        enum class Style {
+            CARD, FLAT;
+
+            internal companion object {
+                internal fun String?.toMultiselectOptionStyleOrNull() = when (this) {
+                    XML_STYLE_CARD -> CARD
+                    XML_STYLE_FLAT -> FLAT
+                    else -> null
+                }
+            }
         }
     }
 }
