@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.expressions.Expression
 import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.state.State
@@ -16,9 +17,9 @@ interface Visibility {
     val goneIf: Expression?
 
     fun isInvisible(state: State) = invisibleIf?.evaluate(state) ?: false
-    fun isInvisibleFlow(state: State) = state.changeFlow(invisibleIf?.vars()) { isInvisible(it) }
+    fun isInvisibleFlow(state: State) = state.changeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
     fun isGone(state: State) = goneIf?.evaluate(state) ?: false
-    fun isGoneFlow(state: State) = state.changeFlow(goneIf?.vars()) { isGone(it) }
+    fun isGoneFlow(state: State) = state.changeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
 }
 
 @OptIn(ExperimentalContracts::class)
