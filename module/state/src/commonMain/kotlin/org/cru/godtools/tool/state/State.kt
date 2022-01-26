@@ -2,7 +2,6 @@ package org.cru.godtools.tool.state
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -19,7 +18,7 @@ class State internal constructor(private val state: MutableMap<String, List<Stri
     fun <T> changeFlow(keys: Collection<String>?, block: (State) -> T) = when {
         keys.isNullOrEmpty() -> flowOf(Unit)
         else -> changeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
-    }.map { block(this) }.distinctUntilChanged()
+    }.map { block(this) }
 
     operator fun get(key: String) = state[key]?.firstOrNull()
     fun getAll(key: String) = state[key].orEmpty()
