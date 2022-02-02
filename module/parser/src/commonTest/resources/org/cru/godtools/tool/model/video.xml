@@ -1,1 +1,2 @@
-<content:video xmlns:content="https://mobile-content-api.cru.org/xmlns/content" provider="youtube" video-id="test-id" />
+<content:video xmlns:content="https://mobile-content-api.cru.org/xmlns/content" aspect-ratio="1:1"
+    gravity="end" provider="youtube" video-id="test-id" width="50" />
