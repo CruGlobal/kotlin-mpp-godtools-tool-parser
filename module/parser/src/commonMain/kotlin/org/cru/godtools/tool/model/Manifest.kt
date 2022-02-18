@@ -18,7 +18,6 @@ import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
-import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page
@@ -151,15 +150,10 @@ class Manifest : BaseModel, Styles {
     private val _title: Text?
     val title: String? get() = _title?.text
 
+    val aemImports: List<Uri>
     val categories: List<Category>
     var pages: List<Page> by setOnce()
         private set
-    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
-    val lessonPages get() = pages.filterIsInstance<LessonPage>()
-    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
-    val tractPages get() = pages.filterIsInstance<TractPage>()
-    val aemImports: List<Uri>
-
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
     var tips: Map<String, Tip> by setOnce()
