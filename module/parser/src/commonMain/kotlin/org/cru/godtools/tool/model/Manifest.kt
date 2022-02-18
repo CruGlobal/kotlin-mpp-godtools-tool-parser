@@ -9,6 +9,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
@@ -159,8 +160,8 @@ class Manifest : BaseModel, Styles {
     val tractPages get() = pages.filterIsInstance<TractPage>()
     val aemImports: List<Uri>
 
-    // XXX: make this visible to aid in iOS migration
-    val resources: Map<String?, Resource>
+    @VisibleForTesting
+    internal val resources: Map<String?, Resource>
     var tips: Map<String, Tip> by setOnce()
         private set
 
