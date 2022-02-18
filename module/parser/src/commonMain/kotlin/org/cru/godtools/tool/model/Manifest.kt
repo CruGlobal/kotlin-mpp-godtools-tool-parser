@@ -24,7 +24,6 @@ import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.XMLNS_PAGE
 import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
-import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.util.setOnce
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -293,11 +292,6 @@ class Manifest : BaseModel, Styles {
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
     fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
     fun findTip(id: String?) = tips[id]
-    @Deprecated(
-        "Since v0.4.0, use findPage(id) instead which will support different page types in the future.",
-        ReplaceWith("findPage(id)")
-    )
-    fun findTractPage(id: String?) = findPage(id) as? TractPage
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
