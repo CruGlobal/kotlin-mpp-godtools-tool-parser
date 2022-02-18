@@ -211,7 +211,7 @@ class Manifest : BaseModel, Styles {
         var title: Text? = null
         aemImports = mutableListOf()
         categories = mutableListOf()
-        val resources = mutableListOf<Resource>()
+        resources = mutableMapOf()
         pagesToParse = mutableListOf()
         tipsToParse = mutableListOf()
         parser.parseChildren {
@@ -224,14 +224,13 @@ class Manifest : BaseModel, Styles {
                         aemImports += result.aemImports
                         pagesToParse += result.pages
                     }
-                    XML_RESOURCES -> resources += parser.parseResources()
+                    XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
                     XML_TIPS -> tipsToParse += parser.parseTips()
                 }
             }
         }
 
         _title = title
-        this.resources = resources.associateBy { it.name }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
