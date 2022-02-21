@@ -64,6 +64,19 @@ class FlowTest : UsesResources() {
     }
 
     @Test
+    fun testParseFlowItemVisibilityInvalid() = runTest {
+        val flow = Flow(Manifest(), getTestXmlParser("flow_visibility_invalid.xml"))
+        assertEquals(1, flow.items.size)
+        with(flow.items[0]) {
+            assertNull(invisibleIf)
+            assertFalse(isInvisible(state))
+
+            assertNull(goneIf)
+            assertFalse(isGone(state))
+        }
+    }
+
+    @Test
     fun testRowGravity() {
         with(null as Flow?) {
             assertEquals(DEFAULT_ROW_GRAVITY, rowGravity)
