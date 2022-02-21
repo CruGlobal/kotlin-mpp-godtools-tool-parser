@@ -1,0 +1,7 @@
+<image xmlns="https://mobile-content-api.cru.org/xmlns/shareable"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    id="id" resource="resource.jpg">
+    <description>
+        <content:text>Description</content:text>
+    </description>
+</image>
