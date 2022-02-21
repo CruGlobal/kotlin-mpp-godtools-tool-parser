@@ -354,7 +354,7 @@ class Manifest : BaseModel, Styles, HasPages {
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     @JsExport.Ignore
-    fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
+    fun findCategory(category: String?) = category?.let { categories.firstOrNull { it.id == category } }
     @JsExport.Ignore
     fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
     @JsExport.Ignore
