@@ -1,0 +1,5 @@
+<content:flow xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <content:item gone-if="a====c" invisible-if="a====c">
+        <content:text>Test</content:text>
+    </content:item>
+</content:flow>

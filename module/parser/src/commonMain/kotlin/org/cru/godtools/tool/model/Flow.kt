@@ -76,8 +76,8 @@ class Flow : Content {
             _width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()
 
             parser.parseVisibilityAttrs { invisibleIf, goneIf ->
-                this.invisibleIf = invisibleIf
-                this.goneIf = goneIf
+                this.invisibleIf = invisibleIf?.takeIf { it.isValid() }
+                this.goneIf = goneIf?.takeIf { it.isValid() }
             }
 
             content = parseContent(parser)

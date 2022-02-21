@@ -70,10 +70,10 @@ class TractPageTest : UsesResources("model/tract") {
     @Test
     fun testIsLastPage() {
         val manifest = Manifest(pages = { manifest -> List(3) { TractPage(manifest) } })
-        assertEquals(3, manifest.tractPages.size)
-        assertFalse(manifest.tractPages[0].isLastPage)
-        assertFalse(manifest.tractPages[1].isLastPage)
-        assertTrue(manifest.tractPages[2].isLastPage)
+        assertEquals(3, manifest.pages.size)
+        assertFalse((manifest.pages[0] as TractPage).isLastPage)
+        assertFalse((manifest.pages[1] as TractPage).isLastPage)
+        assertTrue((manifest.pages[2] as TractPage).isLastPage)
     }
 
     @Test

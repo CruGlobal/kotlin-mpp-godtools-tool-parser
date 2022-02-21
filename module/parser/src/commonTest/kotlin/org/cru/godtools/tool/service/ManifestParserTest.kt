@@ -19,7 +19,7 @@ class ManifestParserTest : UsesResources("service") {
     @Test
     fun testParseManifest() = runTest {
         val result = assertIs<ParserResult.Data>(parser.parseManifest("manifest_valid.xml"))
-        assertEquals(2, result.manifest.tractPages.size)
+        assertEquals(2, result.manifest.pages.size)
     }
 
     @Test

@@ -48,8 +48,6 @@ class ManifestTest : UsesResources() {
         assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
         assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.pages.isEmpty())
-        assertTrue(manifest.lessonPages.isEmpty())
-        assertTrue(manifest.tractPages.isEmpty())
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
     }
@@ -97,9 +95,8 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.RED, manifest.multiselectOptionBackgroundColor)
         assertEquals(TestColors.GREEN, manifest.multiselectOptionSelectedColor)
 
-        assertTrue(manifest.tractPages.isEmpty())
-        assertEquals(1, manifest.lessonPages.size)
-        assertEquals("page0.xml", manifest.lessonPages[0].fileName)
+        assertEquals(1, manifest.pages.size)
+        assertEquals("page0.xml", manifest.pages[0].fileName)
         assertEquals(1, manifest.pages.size)
         assertEquals("page0.xml", manifest.pages[0].fileName)
         assertEquals("page_defaults", manifest.pages[0].id)
@@ -116,13 +113,11 @@ class ManifestTest : UsesResources() {
         assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
         assertEquals(color(255, 255, 0, 1.0), manifest.pageControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
-        assertTrue(manifest.lessonPages.isEmpty())
         assertEquals(2, manifest.pages.size)
-        assertEquals(2, manifest.tractPages.size)
-        assertEquals("page0.xml", manifest.tractPages[0].fileName)
-        assertEquals(0, manifest.tractPages[0].position)
-        assertEquals(null, manifest.tractPages[1].fileName)
-        assertEquals(1, manifest.tractPages[1].position)
+        assertEquals("page0.xml", manifest.pages[0].fileName)
+        assertEquals(0, manifest.pages[0].position)
+        assertEquals(null, manifest.pages[1].fileName)
+        assertEquals(1, manifest.pages[1].position)
     }
 
     @Test
@@ -141,7 +136,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestContainingTips() = runTest {
         val manifest = parseManifest("manifest_tips.xml")
-        assertEquals(0, manifest.tractPages.size)
+        assertEquals(0, manifest.pages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(1, manifest.tips.size)
         assertEquals("tip1", manifest.findTip("tip1")!!.id)
@@ -150,7 +145,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestInvalidTips() = runTest {
         val manifest = parseManifest("manifest_tips_invalid.xml")
-        assertEquals(0, manifest.tractPages.size)
+        assertEquals(0, manifest.pages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
     }
@@ -159,11 +154,11 @@ class ManifestTest : UsesResources() {
     // endregion parse Manifest
 
     @Test
-    fun testManifestFindTractPage() {
+    fun testManifestFindPage() {
         val manifest = Manifest(code = "tool", pages = { manifest -> List(10) { TractPage(manifest) } })
-        assertNull(manifest.findTractPage("invalid"))
-        manifest.tractPages.forEach { page ->
-            assertSame(page, manifest.findTractPage(page.id))
+        assertNull(manifest.findPage("invalid"))
+        manifest.pages.forEach { page ->
+            assertSame(page, manifest.findPage(page.id))
         }
     }
 

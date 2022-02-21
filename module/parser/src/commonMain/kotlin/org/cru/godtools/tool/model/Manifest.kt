@@ -9,6 +9,7 @@ import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.tool.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.tool.model.Gravity.Companion.toGravityOrNull
@@ -17,14 +18,12 @@ import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_
 import org.cru.godtools.tool.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
-import org.cru.godtools.tool.model.lesson.LessonPage
 import org.cru.godtools.tool.model.lesson.XMLNS_LESSON
 import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.XMLNS_PAGE
 import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.tool.model.tips.Tip
-import org.cru.godtools.tool.model.tract.TractPage
 import org.cru.godtools.tool.util.setOnce
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
@@ -150,17 +149,12 @@ class Manifest : BaseModel, Styles {
     private val _title: Text?
     val title: String? get() = _title?.text
 
+    val aemImports: List<Uri>
     val categories: List<Category>
     var pages: List<Page> by setOnce()
         private set
-    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
-    val lessonPages get() = pages.filterIsInstance<LessonPage>()
-    @Deprecated("Since v0.4.0, use pages instead which will support different page types in the future.")
-    val tractPages get() = pages.filterIsInstance<TractPage>()
-    val aemImports: List<Uri>
-
-    // XXX: make this visible to aid in iOS migration
-    val resources: Map<String?, Resource>
+    @VisibleForTesting
+    internal val resources: Map<String?, Resource>
     var tips: Map<String, Tip> by setOnce()
         private set
 
@@ -211,7 +205,7 @@ class Manifest : BaseModel, Styles {
         var title: Text? = null
         aemImports = mutableListOf()
         categories = mutableListOf()
-        val resources = mutableListOf<Resource>()
+        resources = mutableMapOf()
         pagesToParse = mutableListOf()
         tipsToParse = mutableListOf()
         parser.parseChildren {
@@ -224,14 +218,13 @@ class Manifest : BaseModel, Styles {
                         aemImports += result.aemImports
                         pagesToParse += result.pages
                     }
-                    XML_RESOURCES -> resources += parser.parseResources()
+                    XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
                     XML_TIPS -> tipsToParse += parser.parseTips()
                 }
             }
         }
 
         _title = title
-        this.resources = resources.associateBy { it.name }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
@@ -299,11 +292,6 @@ class Manifest : BaseModel, Styles {
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
     fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
     fun findTip(id: String?) = tips[id]
-    @Deprecated(
-        "Since v0.4.0, use findPage(id) instead which will support different page types in the future.",
-        ReplaceWith("findPage(id)")
-    )
-    fun findTractPage(id: String?) = findPage(id) as? TractPage
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
