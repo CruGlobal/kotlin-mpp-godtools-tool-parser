@@ -9,6 +9,7 @@ import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Resource
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -25,4 +26,16 @@ class ShareableImageTest : UsesResources("model/shareable") {
         }
     }
     // endregion ShareableImage XML
+
+    // region Property - id
+    @Test
+    fun testIdBehavior() {
+        val id = "id"
+        val resource = "resource"
+        assertNull(ShareableImage().id)
+        assertEquals(id, ShareableImage(id = id).id)
+        assertEquals(id, ShareableImage(id = id, resource = resource).id)
+        assertEquals(resource, ShareableImage(resource = resource).id)
+    }
+    // endregion Property - id
 }

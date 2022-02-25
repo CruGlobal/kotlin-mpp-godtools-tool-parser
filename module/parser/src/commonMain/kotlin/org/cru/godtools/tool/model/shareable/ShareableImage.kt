@@ -40,8 +40,12 @@ class ShareableImage : Shareable {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(manifest: Manifest = Manifest(), id: String? = null) : super(manifest, id) {
-        resourceName = null
+    internal constructor(
+        manifest: Manifest = Manifest(),
+        id: String? = null,
+        resource: String? = null
+    ) : super(manifest, id) {
+        resourceName = resource
         description = null
     }
 }
