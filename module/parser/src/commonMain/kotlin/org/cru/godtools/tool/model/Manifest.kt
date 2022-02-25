@@ -23,6 +23,9 @@ import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.tool.model.page.Page
 import org.cru.godtools.tool.model.page.XMLNS_PAGE
 import org.cru.godtools.tool.model.page.XML_CONTROL_COLOR
+import org.cru.godtools.tool.model.shareable.Shareable
+import org.cru.godtools.tool.model.shareable.Shareable.Companion.parseShareableItems
+import org.cru.godtools.tool.model.shareable.XMLNS_SHAREABLE
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.util.setOnce
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -155,6 +158,7 @@ class Manifest : BaseModel, Styles {
         private set
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
+    val shareables: List<Shareable>
     var tips: Map<String, Tip> by setOnce()
         private set
 
@@ -206,6 +210,7 @@ class Manifest : BaseModel, Styles {
         aemImports = mutableListOf()
         categories = mutableListOf()
         resources = mutableMapOf()
+        shareables = mutableListOf()
         pagesToParse = mutableListOf()
         tipsToParse = mutableListOf()
         parser.parseChildren {
@@ -220,6 +225,9 @@ class Manifest : BaseModel, Styles {
                     }
                     XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
                     XML_TIPS -> tipsToParse += parser.parseTips()
+                }
+                XMLNS_SHAREABLE -> when (parser.name) {
+                    Shareable.XML_ITEMS -> shareables += parser.parseShareableItems(this)
                 }
             }
         }
@@ -244,6 +252,7 @@ class Manifest : BaseModel, Styles {
         textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
+        shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
         pages: ((Manifest) -> List<Page>)? = null
     ) {
@@ -280,6 +289,7 @@ class Manifest : BaseModel, Styles {
         categories = emptyList()
         this.pages = pages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
+        this.shareables = shareables?.invoke(this).orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
         pagesToParse = emptyList()
@@ -291,6 +301,7 @@ class Manifest : BaseModel, Styles {
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
     fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
+    fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
     fun findTip(id: String?) = tips[id]
 
     private fun XmlPullParser.parseCategories() = buildList {

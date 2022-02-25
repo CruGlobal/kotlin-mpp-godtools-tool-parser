@@ -10,6 +10,7 @@ import org.cru.godtools.tool.internal.fluidlocale.toCommon
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
+import org.cru.godtools.tool.model.shareable.ShareableImage
 import org.cru.godtools.tool.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -48,8 +49,9 @@ class ManifestTest : UsesResources() {
         assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
         assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.pages.isEmpty())
-        assertEquals(0, manifest.resources.size)
-        assertEquals(0, manifest.tips.size)
+        assertTrue(manifest.resources.isEmpty())
+        assertTrue(manifest.shareables.isEmpty())
+        assertTrue(manifest.tips.isEmpty())
     }
 
     @Test
@@ -150,6 +152,14 @@ class ManifestTest : UsesResources() {
         assertEquals(0, manifest.tips.size)
     }
 
+    @Test
+    fun testParseManifestShareables() = runTest {
+        val manifest = parseManifest("manifest_shareables.xml")
+        assertEquals(2, manifest.shareables.size)
+        assertEquals("shareable1", manifest.findShareable("shareable1")!!.id)
+        assertEquals("shareable2", manifest.findShareable("shareable2")!!.id)
+    }
+
     private suspend fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
     // endregion parse Manifest
 
@@ -159,6 +169,16 @@ class ManifestTest : UsesResources() {
         assertNull(manifest.findPage("invalid"))
         manifest.pages.forEach { page ->
             assertSame(page, manifest.findPage(page.id))
+        }
+    }
+
+    @Test
+    fun testManifestFindShareable() {
+        val manifest = Manifest(code = "tool", shareables = { List(5) { ShareableImage(id = "shareable$it") } })
+        assertNull(manifest.findShareable(null))
+        assertNull(manifest.findShareable("invalid"))
+        manifest.shareables.forEach { page ->
+            assertSame(page, manifest.findShareable(page.id))
         }
     }
 

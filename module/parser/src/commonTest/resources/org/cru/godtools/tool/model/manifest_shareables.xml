@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<manifest dismiss-listeners="dismiss_event" locale="ar" tool="lesson1"
+    xmlns="https://mobile-content-api.cru.org/xmlns/manifest" xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+
+    <items xmlns="https://mobile-content-api.cru.org/xmlns/shareable">
+        <content:invalid />
+        <image id="shareable1" resource="shareable1.png" />
+        <image id="shareable2" resource="shareable2.png" />
+        <invalid />
+    </items>
+</manifest>
