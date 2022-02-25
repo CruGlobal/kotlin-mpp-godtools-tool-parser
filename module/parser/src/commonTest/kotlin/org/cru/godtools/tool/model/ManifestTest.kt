@@ -10,6 +10,7 @@ import org.cru.godtools.tool.internal.fluidlocale.toCommon
 import org.cru.godtools.tool.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.tool.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.tool.model.page.DEFAULT_CONTROL_COLOR
+import org.cru.godtools.tool.model.shareable.ShareableImage
 import org.cru.godtools.tool.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -168,6 +169,16 @@ class ManifestTest : UsesResources() {
         assertNull(manifest.findPage("invalid"))
         manifest.pages.forEach { page ->
             assertSame(page, manifest.findPage(page.id))
+        }
+    }
+
+    @Test
+    fun testManifestFindShareable() {
+        val manifest = Manifest(code = "tool", shareables = { List(5) { ShareableImage(id = "shareable$it") } })
+        assertNull(manifest.findShareable(null))
+        assertNull(manifest.findShareable("invalid"))
+        manifest.shareables.forEach { page ->
+            assertSame(page, manifest.findShareable(page.id))
         }
     }
 

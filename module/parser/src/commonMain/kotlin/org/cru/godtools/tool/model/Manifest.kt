@@ -252,6 +252,7 @@ class Manifest : BaseModel, Styles {
         textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
+        shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
         pages: ((Manifest) -> List<Page>)? = null
     ) {
@@ -288,7 +289,7 @@ class Manifest : BaseModel, Styles {
         categories = emptyList()
         this.pages = pages?.invoke(this).orEmpty()
         this.resources = resources?.invoke(this)?.associateBy { it.name }.orEmpty()
-        shareables = emptyList()
+        this.shareables = shareables?.invoke(this).orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
         pagesToParse = emptyList()

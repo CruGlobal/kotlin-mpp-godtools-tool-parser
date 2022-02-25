@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model.shareable
 
+import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.Manifest
 import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.model.getResource
@@ -35,5 +37,11 @@ class ShareableImage : Shareable {
             }
         }
         this.description = description
+    }
+
+    @RestrictTo(RestrictToScope.TESTS)
+    internal constructor(manifest: Manifest = Manifest(), id: String? = null) : super(manifest, id) {
+        resourceName = null
+        description = null
     }
 }

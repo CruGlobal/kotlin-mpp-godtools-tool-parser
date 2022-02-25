@@ -1,5 +1,7 @@
 package org.cru.godtools.tool.model.shareable
 
+import org.cru.godtools.tool.internal.RestrictTo
+import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Manifest
@@ -43,5 +45,10 @@ sealed class Shareable : BaseModel {
     constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         parser.require(XmlPullParser.START_TAG, XMLNS_SHAREABLE)
         id = parser.getAttributeValue(XML_ID)
+    }
+
+    @RestrictTo(RestrictToScope.TESTS)
+    constructor(parent: Base, id: String? = null) : super(parent) {
+        this.id = id
     }
 }
