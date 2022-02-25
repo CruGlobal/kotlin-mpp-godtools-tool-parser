@@ -48,8 +48,9 @@ class ManifestTest : UsesResources() {
         assertEquals(DEFAULT_TEXT_SCALE, manifest.textScale, 0.0001)
         assertEquals(0, manifest.aemImports.size)
         assertTrue(manifest.pages.isEmpty())
-        assertEquals(0, manifest.resources.size)
-        assertEquals(0, manifest.tips.size)
+        assertTrue(manifest.resources.isEmpty())
+        assertTrue(manifest.shareables.isEmpty())
+        assertTrue(manifest.tips.isEmpty())
     }
 
     @Test
@@ -148,6 +149,14 @@ class ManifestTest : UsesResources() {
         assertEquals(0, manifest.pages.size)
         assertEquals(0, manifest.resources.size)
         assertEquals(0, manifest.tips.size)
+    }
+
+    @Test
+    fun testParseManifestShareables() = runTest {
+        val manifest = parseManifest("manifest_shareables.xml")
+        assertEquals(2, manifest.shareables.size)
+        assertEquals("shareable1", manifest.findShareable("shareable1")!!.id)
+        assertEquals("shareable2", manifest.findShareable("shareable2")!!.id)
     }
 
     private suspend fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
