@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model.lesson
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
@@ -30,6 +31,7 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class LessonPageTest : UsesResources("model/lesson") {
     // region parsePage
     @Test
