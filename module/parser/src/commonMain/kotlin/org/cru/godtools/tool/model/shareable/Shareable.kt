@@ -5,7 +5,6 @@ import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.model.Base
 import org.cru.godtools.tool.model.BaseModel
 import org.cru.godtools.tool.model.Manifest
-import org.cru.godtools.tool.model.Text
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
@@ -14,7 +13,6 @@ private const val XML_ID = "id"
 sealed class Shareable : BaseModel {
     internal companion object {
         internal const val XML_ITEMS = "items"
-        internal const val XML_DESCRIPTION = "description"
 
         fun XmlPullParser.parseShareableItems(manifest: Manifest) = buildList {
             require(XmlPullParser.START_TAG, XMLNS_SHAREABLE, XML_ITEMS)
@@ -39,8 +37,6 @@ sealed class Shareable : BaseModel {
     }
 
     open val id: String?
-
-    abstract val description: Text?
 
     constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         parser.require(XmlPullParser.START_TAG, XMLNS_SHAREABLE)
