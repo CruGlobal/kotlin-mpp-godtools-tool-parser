@@ -9,6 +9,9 @@ import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
 private const val XML_ID = "id"
+private const val XML_ORDER = "order"
+
+private const val DEFAULT_ORDER = 0
 
 sealed class Shareable : BaseModel {
     internal companion object {
@@ -37,14 +40,17 @@ sealed class Shareable : BaseModel {
     }
 
     open val id: String?
+    val order: Int
 
     constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         parser.require(XmlPullParser.START_TAG, XMLNS_SHAREABLE)
         id = parser.getAttributeValue(XML_ID)
+        order = parser.getAttributeValue(XML_ORDER)?.toIntOrNull() ?: DEFAULT_ORDER
     }
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(parent: Base, id: String? = null) : super(parent) {
         this.id = id
+        order = DEFAULT_ORDER
     }
 }
