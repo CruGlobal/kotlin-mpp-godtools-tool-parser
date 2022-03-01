@@ -42,7 +42,7 @@ class ButtonTest : UsesResources() {
             assertEquals(manifest.buttonStyle, style)
             assertEquals(Button.Type.EVENT, type)
             assertEquals(EventId.parse("event1 event2"), events)
-            assertEquals("event button", text!!.text)
+            assertEquals("event button", text.text)
             assertEquals(TestColors.RED, buttonColor)
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
             assertEquals(Dimension.Pixels(50), width)
@@ -62,7 +62,7 @@ class ButtonTest : UsesResources() {
         assertEquals(Button.Type.URL, button.type)
         assertEquals(TestColors.GREEN, button.backgroundColor)
         assertEquals("https://www.google.com/", button.url!!.toString())
-        assertEquals("url button", button.text!!.text)
+        assertEquals("url button", button.text.text)
         assertEquals(1, button.analyticsEvents.size)
         assertEquals("firebase action", button.analyticsEvents.single().action)
         assertEquals(Button.DEFAULT_WIDTH, button.width)
@@ -189,14 +189,14 @@ class ButtonTest : UsesResources() {
 
         // Buttons default to center aligned text
         with(Button(parent, text = { Text(it) })) {
-            assertNotEquals(parent.textAlign, text!!.textAlign)
-            assertEquals(Text.Align.CENTER, text!!.textAlign)
+            assertNotEquals(parent.textAlign, text.textAlign)
+            assertEquals(Text.Align.CENTER, text.textAlign)
         }
 
         // Text Align can still be overridden on the text element
         with(Button(parent, text = { Text(it, textAlign = Text.Align.END) })) {
-            assertNotEquals(parent.textAlign, text!!.textAlign)
-            assertEquals(Text.Align.END, text!!.textAlign)
+            assertNotEquals(parent.textAlign, text.textAlign)
+            assertEquals(Text.Align.END, text.textAlign)
         }
     }
     // endregion Property - text - textAlign
@@ -208,16 +208,16 @@ class ButtonTest : UsesResources() {
         parent.primaryTextColor = TestColors.GREEN
 
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it) })) {
-            assertNotEquals(parent.primaryColor, text!!.textColor)
-            assertNotEquals(parent.textColor, text!!.textColor)
-            assertNotEquals(buttonColor, text!!.textColor)
-            assertEquals(parent.primaryTextColor, text!!.textColor)
-            assertEquals(TestColors.GREEN, text!!.textColor)
+            assertNotEquals(parent.primaryColor, text.textColor)
+            assertNotEquals(parent.textColor, text.textColor)
+            assertNotEquals(buttonColor, text.textColor)
+            assertEquals(parent.primaryTextColor, text.textColor)
+            assertEquals(TestColors.GREEN, text.textColor)
         }
 
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
-            assertNotEquals(parent.primaryTextColor, text!!.textColor)
-            assertEquals(TestColors.BLUE, text!!.textColor)
+            assertNotEquals(parent.primaryTextColor, text.textColor)
+            assertEquals(TestColors.BLUE, text.textColor)
         }
     }
 
@@ -227,11 +227,11 @@ class ButtonTest : UsesResources() {
         parent.primaryTextColor = TestColors.RED
 
         with(Button(parent, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
-            assertNotEquals(parent.primaryColor, text!!.textColor)
-            assertNotEquals(parent.primaryTextColor, text!!.textColor)
-            assertNotEquals(parent.textColor, text!!.textColor)
-            assertEquals(buttonColor, text!!.textColor)
-            assertEquals(TestColors.GREEN, text!!.textColor)
+            assertNotEquals(parent.primaryColor, text.textColor)
+            assertNotEquals(parent.primaryTextColor, text.textColor)
+            assertNotEquals(parent.textColor, text.textColor)
+            assertEquals(buttonColor, text.textColor)
+            assertEquals(TestColors.GREEN, text.textColor)
         }
 
         with(
@@ -242,8 +242,8 @@ class ButtonTest : UsesResources() {
                 text = { Text(it, textColor = TestColors.GREEN) }
             )
         ) {
-            assertNotEquals(buttonColor, text!!.textColor)
-            assertEquals(TestColors.GREEN, text!!.textColor)
+            assertNotEquals(buttonColor, text.textColor)
+            assertEquals(TestColors.GREEN, text.textColor)
         }
     }
     // endregion Property - text - textColor

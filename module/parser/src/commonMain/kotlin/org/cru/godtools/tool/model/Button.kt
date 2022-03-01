@@ -78,7 +78,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
             }
         )
     }
-    val text: Text?
+    val text: Text
 
     val analyticsEvents: List<AnalyticsEvent>
 
@@ -109,7 +109,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                 }
             }
-        }
+        } ?: Text(defaultTextStyles)
 
         // Log a non-fatal warning if any analytics event is still using the SELECTED trigger
         analyticsEvents.forEach {
@@ -145,7 +145,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         iconSize = DEFAULT_ICON_SIZE
 
         this.analyticsEvents = analyticsEvents
-        this.text = text?.invoke(defaultTextStyles)
+        this.text = text?.invoke(defaultTextStyles) ?: Text(defaultTextStyles)
     }
 
     override val isIgnored get() = super.isIgnored || !isClickable || style == Style.UNKNOWN
