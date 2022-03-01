@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
@@ -20,6 +21,7 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class ButtonTest : UsesResources() {
     private val parent = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
@@ -28,6 +30,7 @@ class ButtonTest : UsesResources() {
     }
     private val state = State()
 
+    // region Parse Button
     @Test
     fun testParseButtonEvent() = runTest {
         val manifest = Manifest()
@@ -107,8 +110,9 @@ class ButtonTest : UsesResources() {
             assertTrue(isGone(state))
         }
     }
+    // endregion Parse Button
 
-    // region isIgnored
+    // region Property - isIgnored
     @Test
     fun testIsIgnoredClickable() {
         with(Button()) {
@@ -132,8 +136,9 @@ class ButtonTest : UsesResources() {
         val button = Button(style = Button.Style.UNKNOWN, events = listOf(EventId.FOLLOWUP))
         assertTrue(button.testIsIgnored)
     }
-    // endregion isIgnored
+    // endregion Property - isIgnored
 
+    // region Property - buttonStyle
     @Test
     fun testButtonStyleUtilizesStylesDefault() {
         val button = Button(parent)
@@ -142,21 +147,9 @@ class ButtonTest : UsesResources() {
         parent.buttonStyle = Button.Style.OUTLINED
         assertEquals(Button.Style.OUTLINED, button.buttonStyle)
     }
+    // endregion Property - buttonStyle
 
-    @Test
-    fun testButtonGetAnalyticsEvents() {
-        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
-        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
-        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
-        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
-
-        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.SELECTED) }
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
-    }
-
+    // region Property - buttonColor
     @Test
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
@@ -179,7 +172,9 @@ class ButtonTest : UsesResources() {
             assertNotEquals(manifest.primaryColor, buttonColor)
         }
     }
+    // endregion Property - buttonColor
 
+    // region Property - text - textColor
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
         parent.primaryColor = TestColors.RED
@@ -224,6 +219,21 @@ class ButtonTest : UsesResources() {
             assertNotEquals(textColor, text!!.textColor)
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
+    }
+    // endregion Property - text - textColor
+
+    @Test
+    fun testButtonGetAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
+
+        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.SELECTED) }
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 
     // region Button.Style
