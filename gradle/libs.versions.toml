@@ -12,7 +12,6 @@ ktlint = "0.42.1"
 napier = "2.4.0"
 okio = "3.0.0"
 robolectric = "4.7.3"
-splitties = "3.0.0"
 
 [libraries]
 android-gradle = "com.android.tools.build:gradle:7.1.2"
@@ -32,7 +31,6 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-splitties-bitflags = { module = "com.louiscad.splitties:splitties-bitflags", version.ref = "splitties" }
 
 [plugins]
 grgit = { id = "org.ajoberstar.grgit", version = "5.0.0" }

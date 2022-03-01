@@ -21,7 +21,6 @@ kotlin {
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
                 implementation(libs.napier)
-                implementation(libs.splitties.bitflags)
             }
         }
         val androidMain by getting {
