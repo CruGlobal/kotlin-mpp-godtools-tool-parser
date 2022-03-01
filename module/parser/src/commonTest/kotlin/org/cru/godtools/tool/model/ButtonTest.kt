@@ -139,16 +139,23 @@ class ButtonTest : UsesResources() {
     }
     // endregion Property - isIgnored
 
-    // region Property - buttonStyle
+    // region Property - style
     @Test
     fun testButtonStyleUtilizesStylesDefault() {
-        val button = Button(parent)
+        with(Button(parent)) {
+            parent.buttonStyle = Button.Style.CONTAINED
+            assertEquals(Button.Style.CONTAINED, style)
+            parent.buttonStyle = Button.Style.OUTLINED
+            assertEquals(Button.Style.OUTLINED, style)
+        }
+
         parent.buttonStyle = Button.Style.CONTAINED
-        assertEquals(Button.Style.CONTAINED, button.buttonStyle)
-        parent.buttonStyle = Button.Style.OUTLINED
-        assertEquals(Button.Style.OUTLINED, button.buttonStyle)
+        with(Button(parent, style = Button.Style.OUTLINED)) {
+            assertNotEquals(parent.buttonStyle, style)
+            assertEquals(Button.Style.OUTLINED, style)
+        }
     }
-    // endregion Property - buttonStyle
+    // endregion Property - style
 
     // region Property - buttonColor
     @Test
