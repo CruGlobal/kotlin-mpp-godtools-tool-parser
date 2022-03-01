@@ -19,27 +19,25 @@ private const val BIT_BOTTOM = 1 shl 3
 private const val MASK_X_AXIS = BIT_START or BIT_END
 private const val MASK_Y_AXIS = BIT_TOP or BIT_BOTTOM
 
-class Gravity internal constructor(private val gravity: Int) {
-    val isStart get() = gravity and MASK_X_AXIS == BIT_START
-    val isEnd get() = gravity and MASK_X_AXIS == BIT_END
-    val isCenterX get() = gravity and MASK_X_AXIS == 0
-    val isTop get() = gravity and MASK_Y_AXIS == BIT_TOP
-    val isBottom get() = gravity and MASK_Y_AXIS == BIT_BOTTOM
-    val isCenterY get() = gravity and MASK_Y_AXIS == 0
-    val isCenter get() = gravity and (MASK_X_AXIS or MASK_Y_AXIS) == 0
+class Gravity internal constructor(gravity: Int) {
+    val horizontal = when {
+        gravity and MASK_X_AXIS == BIT_START -> Horizontal.START
+        gravity and MASK_X_AXIS == BIT_END -> Horizontal.END
+        else -> Horizontal.CENTER
+    }
+    val vertical = when {
+        gravity and MASK_Y_AXIS == BIT_TOP -> Vertical.TOP
+        gravity and MASK_Y_AXIS == BIT_BOTTOM -> Vertical.BOTTOM
+        else -> Vertical.CENTER
+    }
 
-    val horizontal
-        get() = when {
-            isStart -> Horizontal.START
-            isEnd -> Horizontal.END
-            else -> Horizontal.CENTER
-        }
-    val vertical
-        get() = when {
-            isTop -> Vertical.TOP
-            isBottom -> Vertical.BOTTOM
-            else -> Vertical.CENTER
-        }
+    val isStart get() = horizontal == Horizontal.START
+    val isEnd get() = horizontal == Horizontal.END
+    val isCenterX get() = horizontal == Horizontal.CENTER
+    val isTop get() = vertical == Vertical.TOP
+    val isBottom get() = vertical == Vertical.BOTTOM
+    val isCenterY get() = vertical == Vertical.CENTER
+    val isCenter get() = isCenterX && isCenterY
 
     companion object {
         val CENTER = Gravity(0)
