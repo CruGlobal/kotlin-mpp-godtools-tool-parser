@@ -27,6 +27,7 @@ class ButtonTest : UsesResources() {
         override lateinit var buttonStyle: Button.Style
         override var primaryColor = TestColors.BLACK
         override var primaryTextColor = TestColors.BLACK
+        override var textAlign = Text.Align.START
     }
     private val state = State()
 
@@ -173,6 +174,25 @@ class ButtonTest : UsesResources() {
         }
     }
     // endregion Property - buttonColor
+
+    // region Property - text - textAlign
+    @Test
+    fun testButtonTextTextAlignFallbackBehavior() {
+        parent.textAlign = Text.Align.START
+
+        // Buttons default to center aligned text
+        with(Button(parent, text = { Text(it) })) {
+            assertNotEquals(parent.textAlign, text!!.textAlign)
+            assertEquals(Text.Align.CENTER, text!!.textAlign)
+        }
+
+        // Text Align can still be overridden on the text element
+        with(Button(parent, text = { Text(it, textAlign = Text.Align.END) })) {
+            assertNotEquals(parent.textAlign, text!!.textAlign)
+            assertEquals(Text.Align.END, text!!.textAlign)
+        }
+    }
+    // endregion Property - text - textAlign
 
     // region Property - text - textColor
     @Test
