@@ -2,6 +2,7 @@ package org.cru.godtools.tool.model
 
 import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
+import org.cru.godtools.tool.internal.VisibleForTesting
 
 private const val XML_START = "start"
 private const val XML_END = "end"
@@ -9,7 +10,7 @@ private const val XML_TOP = "top"
 private const val XML_BOTTOM = "bottom"
 private const val XML_CENTER = "center"
 
-class Gravity internal constructor(val horizontal: Horizontal, val vertical: Vertical) {
+class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val vertical: Vertical) {
     val isStart get() = horizontal == Horizontal.START
     val isEnd get() = horizontal == Horizontal.END
     val isCenterX get() = horizontal == Horizontal.CENTER
