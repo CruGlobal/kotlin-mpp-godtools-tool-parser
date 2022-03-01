@@ -203,13 +203,13 @@ class ButtonTest : UsesResources() {
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it) })) {
             assertNotEquals(parent.primaryColor, text!!.textColor)
             assertNotEquals(parent.textColor, text!!.textColor)
-            assertEquals(primaryTextColor, text!!.textColor)
+            assertNotEquals(buttonColor, text!!.textColor)
+            assertEquals(parent.primaryTextColor, text!!.textColor)
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
 
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
-            assertNotEquals(primaryTextColor, text!!.textColor)
-            assertNotEquals(textColor, text!!.textColor)
+            assertNotEquals(parent.primaryTextColor, text!!.textColor)
             assertEquals(TestColors.BLUE, text!!.textColor)
         }
     }
@@ -236,7 +236,6 @@ class ButtonTest : UsesResources() {
             )
         ) {
             assertNotEquals(buttonColor, text!!.textColor)
-            assertNotEquals(textColor, text!!.textColor)
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
     }
