@@ -41,7 +41,6 @@ class Gravity internal constructor(gravity: Int) {
 
     companion object {
         val CENTER = Gravity(0)
-        internal val START = Gravity(BIT_START)
 
         internal fun String?.toGravityOrNull(): Gravity? {
             if (this == null) return null
