@@ -4,8 +4,9 @@
 
     <items xmlns="https://mobile-content-api.cru.org/xmlns/shareable">
         <content:invalid />
-        <image id="shareable1" resource="shareable1.png" />
-        <image id="shareable2" resource="shareable2.png" />
+        <image id="shareable_last" resource="shareable_last.png" />
+        <image id="shareable1" resource="shareable1.png" order="1" />
         <invalid />
+        <image id="shareable0" resource="shareable0.png" order="0" />
     </items>
 </manifest>

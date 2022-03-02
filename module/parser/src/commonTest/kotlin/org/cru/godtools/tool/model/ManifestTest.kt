@@ -155,9 +155,19 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestShareables() = runTest {
         val manifest = parseManifest("manifest_shareables.xml")
-        assertEquals(2, manifest.shareables.size)
-        assertEquals("shareable1", manifest.findShareable("shareable1")!!.id)
-        assertEquals("shareable2", manifest.findShareable("shareable2")!!.id)
+        assertEquals(3, manifest.shareables.size)
+        with(manifest.findShareable("shareable0")!!) {
+            assertSame(manifest.shareables[0], this)
+            assertEquals("shareable0", id)
+        }
+        with(manifest.findShareable("shareable1")!!) {
+            assertSame(manifest.shareables[1], this)
+            assertEquals("shareable1", id)
+        }
+        with(manifest.findShareable("shareable_last")!!) {
+            assertSame(manifest.shareables[2], this)
+            assertEquals("shareable_last", id)
+        }
     }
 
     private suspend fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }

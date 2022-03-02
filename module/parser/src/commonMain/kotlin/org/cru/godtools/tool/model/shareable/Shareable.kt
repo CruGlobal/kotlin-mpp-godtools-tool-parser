@@ -11,7 +11,7 @@ import org.cru.godtools.tool.xml.parseChildren
 private const val XML_ID = "id"
 private const val XML_ORDER = "order"
 
-private const val DEFAULT_ORDER = 0
+private const val DEFAULT_ORDER = Int.MAX_VALUE
 
 sealed class Shareable : BaseModel {
     internal companion object {

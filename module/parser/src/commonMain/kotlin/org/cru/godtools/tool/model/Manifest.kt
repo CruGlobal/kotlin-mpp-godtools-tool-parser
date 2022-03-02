@@ -210,7 +210,7 @@ class Manifest : BaseModel, Styles {
         aemImports = mutableListOf()
         categories = mutableListOf()
         resources = mutableMapOf()
-        shareables = mutableListOf()
+        val shareables = mutableListOf<Shareable>()
         pagesToParse = mutableListOf()
         tipsToParse = mutableListOf()
         parser.parseChildren {
@@ -231,6 +231,7 @@ class Manifest : BaseModel, Styles {
                 }
             }
         }
+        this.shareables = shareables.distinctBy { it.id }.sortedBy { it.order }
 
         _title = title
     }
