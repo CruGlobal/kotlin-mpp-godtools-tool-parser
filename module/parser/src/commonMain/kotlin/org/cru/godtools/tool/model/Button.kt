@@ -29,7 +29,7 @@ private const val XML_ICON_SIZE = "icon-size"
 
 private const val TAG = "Button"
 
-class Button : Content, Styles, HasAnalyticsEvents, Clickable {
+class Button : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
@@ -57,7 +57,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     @AndroidColorInt
     private val _buttonColor: PlatformColor?
     @get:AndroidColorInt
-    override val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
+    val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
 
     @AndroidColorInt
     val backgroundColor: PlatformColor
@@ -67,13 +67,18 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
     internal val iconSize: Int
     internal val iconGravity: Gravity.Horizontal
 
+    private val defaultTextStyles by lazy {
+        stylesOverride(
+            textAlign = { Text.Align.CENTER },
+            textColor = {
+                when (style) {
+                    Style.CONTAINED, Style.UNKNOWN -> stylesParent.primaryTextColor
+                    Style.OUTLINED -> buttonColor
+                }
+            }
+        )
+    }
     val text: Text?
-    override val textAlign get() = Text.Align.CENTER
-    override val textColor
-        get() = when (style) {
-            Style.CONTAINED, Style.UNKNOWN -> primaryTextColor
-            Style.OUTLINED -> buttonColor
-        }
 
     val analyticsEvents: List<AnalyticsEvent>
 
@@ -98,7 +103,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
 
         // process any child elements
         analyticsEvents = mutableListOf()
-        text = parser.parseTextChild(this, XMLNS_CONTENT, XML_BUTTON) {
+        text = parser.parseTextChild(defaultTextStyles, XMLNS_CONTENT, XML_BUTTON) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
@@ -124,7 +129,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
-        text: ((Button) -> Text?)? = null
+        text: ((Base) -> Text?)? = null
     ) : super(parent) {
         this.events = events
         this.url = url
@@ -140,7 +145,7 @@ class Button : Content, Styles, HasAnalyticsEvents, Clickable {
         iconSize = DEFAULT_ICON_SIZE
 
         this.analyticsEvents = analyticsEvents
-        this.text = text?.invoke(this)
+        this.text = text?.invoke(defaultTextStyles)
     }
 
     override val isIgnored get() = super.isIgnored || !isClickable || style == Style.UNKNOWN
@@ -182,6 +187,5 @@ val Button?.gravity get() = this?.gravity ?: Button.DEFAULT_GRAVITY
 val Button?.width get() = this?.width ?: Button.DEFAULT_WIDTH
 
 val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
-val Button?.textColor get() = this?.textColor ?: stylesParent.primaryTextColor
 val Button?.iconSize get() = this?.iconSize ?: Button.DEFAULT_ICON_SIZE
 val Button?.iconGravity get() = this?.iconGravity ?: Button.DEFAULT_ICON_GRAVITY

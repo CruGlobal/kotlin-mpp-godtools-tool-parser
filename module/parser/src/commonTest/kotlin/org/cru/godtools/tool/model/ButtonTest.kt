@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
@@ -20,14 +21,17 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class ButtonTest : UsesResources() {
     private val parent = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
         override var primaryColor = TestColors.BLACK
         override var primaryTextColor = TestColors.BLACK
+        override var textAlign = Text.Align.START
     }
     private val state = State()
 
+    // region Parse Button
     @Test
     fun testParseButtonEvent() = runTest {
         val manifest = Manifest()
@@ -107,8 +111,9 @@ class ButtonTest : UsesResources() {
             assertTrue(isGone(state))
         }
     }
+    // endregion Parse Button
 
-    // region isIgnored
+    // region Property - isIgnored
     @Test
     fun testIsIgnoredClickable() {
         with(Button()) {
@@ -132,31 +137,27 @@ class ButtonTest : UsesResources() {
         val button = Button(style = Button.Style.UNKNOWN, events = listOf(EventId.FOLLOWUP))
         assertTrue(button.testIsIgnored)
     }
-    // endregion isIgnored
+    // endregion Property - isIgnored
 
+    // region Property - style
     @Test
     fun testButtonStyleUtilizesStylesDefault() {
-        val button = Button(parent)
+        with(Button(parent)) {
+            parent.buttonStyle = Button.Style.CONTAINED
+            assertEquals(Button.Style.CONTAINED, style)
+            parent.buttonStyle = Button.Style.OUTLINED
+            assertEquals(Button.Style.OUTLINED, style)
+        }
+
         parent.buttonStyle = Button.Style.CONTAINED
-        assertEquals(Button.Style.CONTAINED, button.buttonStyle)
-        parent.buttonStyle = Button.Style.OUTLINED
-        assertEquals(Button.Style.OUTLINED, button.buttonStyle)
+        with(Button(parent, style = Button.Style.OUTLINED)) {
+            assertNotEquals(parent.buttonStyle, style)
+            assertEquals(Button.Style.OUTLINED, style)
+        }
     }
+    // endregion Property - style
 
-    @Test
-    fun testButtonGetAnalyticsEvents() {
-        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
-        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
-        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
-        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
-
-        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.SELECTED) }
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
-    }
-
+    // region Property - buttonColor
     @Test
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
@@ -179,7 +180,28 @@ class ButtonTest : UsesResources() {
             assertNotEquals(manifest.primaryColor, buttonColor)
         }
     }
+    // endregion Property - buttonColor
 
+    // region Property - text - textAlign
+    @Test
+    fun testButtonTextTextAlignFallbackBehavior() {
+        parent.textAlign = Text.Align.START
+
+        // Buttons default to center aligned text
+        with(Button(parent, text = { Text(it) })) {
+            assertNotEquals(parent.textAlign, text!!.textAlign)
+            assertEquals(Text.Align.CENTER, text!!.textAlign)
+        }
+
+        // Text Align can still be overridden on the text element
+        with(Button(parent, text = { Text(it, textAlign = Text.Align.END) })) {
+            assertNotEquals(parent.textAlign, text!!.textAlign)
+            assertEquals(Text.Align.END, text!!.textAlign)
+        }
+    }
+    // endregion Property - text - textAlign
+
+    // region Property - text - textColor
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
         parent.primaryColor = TestColors.RED
@@ -188,13 +210,13 @@ class ButtonTest : UsesResources() {
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it) })) {
             assertNotEquals(parent.primaryColor, text!!.textColor)
             assertNotEquals(parent.textColor, text!!.textColor)
-            assertEquals(primaryTextColor, text!!.textColor)
+            assertNotEquals(buttonColor, text!!.textColor)
+            assertEquals(parent.primaryTextColor, text!!.textColor)
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
 
         with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
-            assertNotEquals(primaryTextColor, text!!.textColor)
-            assertNotEquals(textColor, text!!.textColor)
+            assertNotEquals(parent.primaryTextColor, text!!.textColor)
             assertEquals(TestColors.BLUE, text!!.textColor)
         }
     }
@@ -221,9 +243,23 @@ class ButtonTest : UsesResources() {
             )
         ) {
             assertNotEquals(buttonColor, text!!.textColor)
-            assertNotEquals(textColor, text!!.textColor)
             assertEquals(TestColors.GREEN, text!!.textColor)
         }
+    }
+    // endregion Property - text - textColor
+
+    @Test
+    fun testButtonGetAnalyticsEvents() {
+        val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
+        val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
+        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
+        val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
+        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
+
+        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.SELECTED) }
+        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 
     // region Button.Style
