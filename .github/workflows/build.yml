@@ -44,7 +44,7 @@ jobs:
           arguments: generateMetadataFileForKotlinMultiplatformPublication
       - name: Archive ktlint results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ktlint-results
           path: "**/build/reports/ktlint/"
@@ -78,13 +78,13 @@ jobs:
           verbose: true
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: android-unit-test-results
           path: "**/build/reports/tests/"
       - name: Archive jacoco results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-results
           path: "**/build/reports/jacoco/"
@@ -129,7 +129,7 @@ jobs:
           arguments: jsTest --scan
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: js-unit-test-results
           path: "**/build/reports/tests/"
