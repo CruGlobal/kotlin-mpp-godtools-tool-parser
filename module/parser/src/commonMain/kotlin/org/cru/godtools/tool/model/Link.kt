@@ -6,17 +6,17 @@ import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.xml.XmlPullParser
 
-class Link : Content, Styles, HasAnalyticsEvents, Clickable {
+class Link : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_LINK = "link"
     }
 
-    override val textColor get() = primaryColor
-
     val analyticsEvents: List<AnalyticsEvent>
     override val events: List<EventId>
     override val url: Uri?
-    val text: Text?
+
+    private val defaultTextStyles by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
+    val text: Text
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
@@ -25,14 +25,14 @@ class Link : Content, Styles, HasAnalyticsEvents, Clickable {
             this.url = url
         }
         analyticsEvents = mutableListOf()
-        text = parser.parseTextChild(this, XMLNS_CONTENT, XML_LINK) {
+        text = parser.parseTextChild(defaultTextStyles, XMLNS_CONTENT, XML_LINK) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS ->
                     when (parser.name) {
                         AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                     }
             }
-        }
+        } ?: Text(defaultTextStyles)
     }
 
     override val isIgnored get() = super.isIgnored || !isClickable
@@ -48,7 +48,7 @@ class Link : Content, Styles, HasAnalyticsEvents, Clickable {
         this.analyticsEvents = analyticsEvents
         this.events = events
         this.url = url
-        this.text = text?.invoke(this)
+        this.text = text?.invoke(defaultTextStyles) ?: Text(defaultTextStyles)
     }
 
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
