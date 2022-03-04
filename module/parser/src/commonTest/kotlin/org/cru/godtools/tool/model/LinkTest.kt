@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
@@ -15,11 +16,12 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class LinkTest : UsesResources() {
     @Test
     fun testParseLink() = runTest {
         val link = Link(Manifest(), getTestXmlParser("link.xml"))
-        assertEquals("Test", link.text!!.text)
+        assertEquals("Test", link.text.text)
         assertEquals(2, link.events.size)
         assertEquals("event1", link.events[0].name)
         assertEquals("event2", link.events[1].name)
@@ -33,17 +35,17 @@ class LinkTest : UsesResources() {
             override val primaryColor = TestColors.BLUE
         }
 
-        assertEquals(parent.primaryColor, Link(parent).textColor)
+        assertEquals(parent.primaryColor, Link(parent).text.textColor)
 
         with(Link(parent) { Text(it) }) {
-            assertNotEquals(parent.textColor, text!!.textColor)
-            assertEquals(parent.primaryColor, text!!.textColor)
-            assertEquals(TestColors.BLUE, text!!.textColor)
+            assertNotEquals(parent.textColor, text.textColor)
+            assertEquals(parent.primaryColor, text.textColor)
+            assertEquals(TestColors.BLUE, text.textColor)
         }
 
         with(Link(parent) { Text(it, textColor = TestColors.GREEN) }) {
-            assertNotEquals(parent.primaryColor, text!!.textColor)
-            assertEquals(TestColors.GREEN, text!!.textColor)
+            assertNotEquals(parent.primaryColor, text.textColor)
+            assertEquals(TestColors.GREEN, text.textColor)
         }
     }
 
