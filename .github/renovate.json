@@ -6,7 +6,7 @@
   "dependencyDashboard": true,
   "packageRules": [
     {
-      "matchDatasources": ["gradle"],
+      "matchManagers": ["gradle"],
       "registryUrls": [
         "https://cruglobal.jfrog.io/artifactory/maven-mobile/",
         "https://jitpack.io"
