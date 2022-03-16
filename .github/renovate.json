@@ -6,6 +6,13 @@
   "dependencyDashboard": true,
   "packageRules": [
     {
+      "matchDatasources": ["gradle"],
+      "registryUrls": [
+        "https://cruglobal.jfrog.io/artifactory/maven-mobile/",
+        "https://jitpack.io"
+      ]
+    },
+    {
       "matchManagers": ["gradle"],
       "matchPackagePrefixes": ["org.jetbrains.kotlinx:kotlinx-coroutines-"],
       "groupName": "kotlinx.coroutines"
