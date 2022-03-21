@@ -25,7 +25,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
@@ -56,13 +56,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Cache Maven
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ github.sha }}
@@ -96,7 +96,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
@@ -118,7 +118,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
@@ -144,7 +144,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
@@ -188,7 +188,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Cache Konan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
