@@ -8,4 +8,5 @@ internal expect fun String?.toUriOrNull(): Uri?
 
 internal fun String?.toAbsoluteUriOrNull(defaultScheme: String = "http") =
     this?.makeAbsolute(defaultScheme).toUriOrNull()
-private fun String.makeAbsolute(defaultScheme: String) = if (this.contains(':')) this else "$defaultScheme://$this"
+internal fun String.isAbsoluteUri() = contains(':')
+private fun String.makeAbsolute(defaultScheme: String) = if (isAbsoluteUri()) this else "$defaultScheme://$this"
