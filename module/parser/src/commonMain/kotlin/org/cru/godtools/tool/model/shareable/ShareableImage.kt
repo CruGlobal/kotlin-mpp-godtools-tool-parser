@@ -9,6 +9,7 @@ import org.cru.godtools.tool.model.parseTextChild
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
+private const val XML_DESCRIPTION = "description"
 private const val XML_RESOURCE = "resource"
 
 class ShareableImage : Shareable {
@@ -21,7 +22,7 @@ class ShareableImage : Shareable {
     private val resourceName: String?
     val resource get() = getResource(resourceName)
 
-    override val description: Text?
+    val description: Text?
 
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_SHAREABLE, XML_IMAGE)

@@ -21,6 +21,7 @@ class ShareableImageTest : UsesResources("model/shareable") {
         val image = Resource(name = "resource.jpg")
         with(ShareableImage(Manifest(resources = { listOf(image) }), getTestXmlParser("shareable_image.xml"))) {
             assertEquals("id", id)
+            assertEquals(50, order)
             assertEquals("Description", description!!.text)
             assertSame(image, resource)
         }
