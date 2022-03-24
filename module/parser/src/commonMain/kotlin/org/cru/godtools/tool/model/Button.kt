@@ -86,7 +86,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_BUTTON)
 
         val type = parser.getAttributeValue(XML_TYPE).toButtonTypeOrNull()
-        parser.parseClickableAttrs { events, url ->
+        parseClickableAttrs(parser) { events, url ->
             this.events = if (type == null || type == Type.EVENT) events else emptyList()
             this.url = if (type == null || type == Type.URL) url else null
         }

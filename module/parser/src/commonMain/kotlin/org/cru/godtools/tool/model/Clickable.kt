@@ -17,20 +17,23 @@ interface Clickable : Base {
 }
 
 @OptIn(ExperimentalContracts::class)
-internal inline fun XmlPullParser.parseClickableAttrs(block: (events: List<EventId>, url: Uri?) -> Unit) {
+internal inline fun Clickable.parseClickableAttrs(
+    parser: XmlPullParser,
+    block: (events: List<EventId>, url: Uri?) -> Unit
+) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val rawUrl = getAttributeValue(XML_URL)
+    val rawUrl = parser.getAttributeValue(XML_URL)
     val uri = when {
         rawUrl?.isAbsoluteUri() == false -> {
-            val message = "Non-absolute uri parsed: $rawUrl"
+            val message = "Non-absolute uri tool: ${manifest.code} locale: ${manifest.locale} uri: $rawUrl"
             Napier.d(message, DeprecationException(message), "Uri")
             rawUrl.toAbsoluteUriOrNull()
         }
         else -> rawUrl.toUriOrNull()
     }
 
-    block(getAttributeValue(XML_EVENTS).toEventIds(), uri)
+    block(parser.getAttributeValue(XML_EVENTS).toEventIds(), uri)
 }

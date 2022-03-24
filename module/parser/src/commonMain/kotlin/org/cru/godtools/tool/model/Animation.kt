@@ -42,7 +42,7 @@ class Animation : Content, Clickable {
         playListeners = parser.getAttributeValue(XML_PLAY_LISTENERS).toEventIds().toSet()
         stopListeners = parser.getAttributeValue(XML_STOP_LISTENERS).toEventIds().toSet()
 
-        parser.parseClickableAttrs { events, url ->
+        parseClickableAttrs(parser) { events, url ->
             this.events = events
             this.url = url
         }

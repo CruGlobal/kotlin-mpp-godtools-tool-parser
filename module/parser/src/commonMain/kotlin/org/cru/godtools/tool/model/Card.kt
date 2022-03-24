@@ -25,7 +25,7 @@ class Card : Content, Parent, Clickable {
 
         _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR).toColorOrNull()
 
-        parser.parseClickableAttrs { events, url ->
+        parseClickableAttrs(parser) { events, url ->
             this.events = events
             this.url = url
         }

@@ -20,7 +20,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
-        parser.parseClickableAttrs { events, url ->
+        parseClickableAttrs(parser) { events, url ->
             this.events = events
             this.url = url
         }
