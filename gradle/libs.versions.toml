@@ -9,7 +9,7 @@ jacoco = "0.8.7"
 kotlin = "1.6.20"
 kotlinCoroutines = "1.6.0-native-mt"
 ktlint = "0.42.1"
-napier = "2.4.0"
+napier = "2.5.0"
 okio = "3.0.0"
 robolectric = "4.7.3"
 
