@@ -35,7 +35,7 @@ class Image : Content, Clickable {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_IMAGE)
 
         resourceName = parser.getAttributeValue(XML_RESOURCE)
-        parser.parseClickableAttrs { events, url ->
+        parseClickableAttrs(parser) { events, url ->
             this.events = events
             this.url = url
         }
