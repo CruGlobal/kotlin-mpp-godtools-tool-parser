@@ -27,7 +27,7 @@ internal inline fun Clickable.parseClickableAttrs(
 
     val rawUrl = parser.getAttributeValue(XML_URL)
     val uri = when {
-        rawUrl?.isAbsoluteUri() == false -> {
+        rawUrl?.hasUriScheme == false -> {
             val message = "Non-absolute uri tool: ${manifest.code} locale: ${manifest.locale} uri: $rawUrl"
             Napier.d(message, DeprecationException(message), "Uri")
             rawUrl.toAbsoluteUriOrNull()
