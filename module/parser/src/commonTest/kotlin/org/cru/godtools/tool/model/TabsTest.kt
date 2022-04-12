@@ -2,12 +2,11 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -16,11 +15,6 @@ import kotlin.test.assertIs
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class TabsTest : UsesResources() {
-    @BeforeTest
-    fun setupConfig() {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
-    }
-
     @Test
     fun testParseTabsEmpty() = runTest {
         val tabs = Tabs(Manifest(), getTestXmlParser("tabs_empty.xml"))
@@ -50,7 +44,8 @@ class TabsTest : UsesResources() {
 
     @Test
     fun testParseTabsIgnoredContent() = runTest {
-        val tab = Tabs(Manifest(), getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
+        val manifest = Manifest(ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)))
+        val tab = Tabs(manifest, getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
         assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])
     }
