@@ -7,7 +7,7 @@ const val FEATURE_CONTENT_CARD = "content_card"
 const val FEATURE_FLOW = "flow"
 const val FEATURE_MULTISELECT = "multiselect"
 
-expect object ParserConfig {
+expect object LegacyParserConfig {
     var supportedDeviceTypes: Set<DeviceType>
     var supportedFeatures: Set<String>
 }

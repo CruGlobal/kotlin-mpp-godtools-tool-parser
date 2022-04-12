@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.FEATURE_MULTISELECT
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -31,7 +31,7 @@ class ContentTest : UsesResources() {
     // region required-features
     @Test
     fun verifyRequiredFeaturesSupported() {
-        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)
+        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)
         assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.testIsIgnored)
         assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION)) {}.testIsIgnored)
         assertFalse(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
@@ -40,7 +40,7 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyRequiredFeaturesNotSupported() {
-        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
+        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
         assertTrue(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.testIsIgnored)
         assertTrue(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
         assertTrue(object : Content(requiredFeatures = setOf("kjlasdf")) {}.testIsIgnored)
@@ -50,7 +50,7 @@ class ContentTest : UsesResources() {
     // region restrictTo
     @Test
     fun verifyRestrictToSupported() {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.ALL) {}.testIsIgnored)
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.SUPPORTED) {}.testIsIgnored)
         assertFalse(object : Content(Manifest(), restrictTo = setOf(DeviceType.ANDROID)) {}.testIsIgnored)
@@ -58,7 +58,7 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyRestrictToNotSupported() {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
         assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.UNKNOWN)) {}.testIsIgnored)
         assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.IOS)) {}.testIsIgnored)
     }

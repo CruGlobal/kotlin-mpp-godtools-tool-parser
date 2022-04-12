@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -73,10 +73,10 @@ class MultiselectTest : UsesResources() {
     fun testIsIgnored() {
         val multiselect = Multiselect()
 
-        ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
+        LegacyParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
         assertFalse(multiselect.testIsIgnored)
 
-        ParserConfig.supportedFeatures = emptySet()
+        LegacyParserConfig.supportedFeatures = emptySet()
         assertTrue(multiselect.testIsIgnored)
     }
 

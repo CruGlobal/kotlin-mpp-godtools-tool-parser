@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -18,7 +18,7 @@ import kotlin.test.assertIs
 class ParagraphTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)
     }
 
     @Test

@@ -3,7 +3,7 @@ package org.cru.godtools.tool.model
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_MULTISELECT
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -72,18 +72,18 @@ class ButtonTest : UsesResources() {
     @Test
     fun testParseButtonRestrictTo() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_restrictTo.xml"))
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
         assertFalse(button.testIsIgnored)
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
         assertTrue(button.testIsIgnored)
     }
 
     @Test
     fun testParseButtonRequiredFeatures() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))
-        ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
+        LegacyParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
         assertFalse(button.testIsIgnored)
-        ParserConfig.supportedFeatures = emptySet()
+        LegacyParserConfig.supportedFeatures = emptySet()
         assertTrue(button.testIsIgnored)
     }
 

@@ -6,7 +6,7 @@ import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.freeze
 import kotlin.native.concurrent.isFrozen
 
-actual object ParserConfig {
+actual object LegacyParserConfig {
     private val _supportedDeviceTypes = AtomicReference(DEFAULT_SUPPORTED_DEVICE_TYPES)
     actual var supportedDeviceTypes: Set<DeviceType>
         get() = _supportedDeviceTypes.value

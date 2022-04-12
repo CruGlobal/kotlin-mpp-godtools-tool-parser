@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -19,7 +19,7 @@ import kotlin.test.assertTrue
 class FallbackTest : UsesResources() {
     @BeforeTest
     fun setupConfig() {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
     }
 
     @Test

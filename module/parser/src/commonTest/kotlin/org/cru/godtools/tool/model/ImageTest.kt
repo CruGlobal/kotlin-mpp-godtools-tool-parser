@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -52,7 +52,7 @@ class ImageTest : UsesResources() {
 
     @Test
     fun testParseImageRestricted() = runTest {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
+        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
         val manifest = Manifest(resources = { listOf(Resource(it, "image.png")) })
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))
         assertTrue(image.testIsIgnored)

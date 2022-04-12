@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.expressions.Expression
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
@@ -56,7 +56,7 @@ abstract class Content : BaseModel, Visibility {
      */
     internal open val isIgnored
         get() = version > SCHEMA_VERSION ||
-            !ParserConfig.supportedFeatures.containsAll(requiredFeatures) ||
+            !LegacyParserConfig.supportedFeatures.containsAll(requiredFeatures) ||
             restrictTo.none { it in DeviceType.SUPPORTED } ||
             invisibleIf?.isValid() == false ||
             goneIf?.isValid() == false

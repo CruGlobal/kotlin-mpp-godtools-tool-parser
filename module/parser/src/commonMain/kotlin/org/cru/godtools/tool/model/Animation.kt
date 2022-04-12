@@ -1,7 +1,7 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_ANIMATION
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -61,5 +61,5 @@ class Animation : Content, Clickable {
         stopListeners = emptySet()
     }
 
-    override val isIgnored get() = FEATURE_ANIMATION !in ParserConfig.supportedFeatures || super.isIgnored
+    override val isIgnored get() = FEATURE_ANIMATION !in LegacyParserConfig.supportedFeatures || super.isIgnored
 }

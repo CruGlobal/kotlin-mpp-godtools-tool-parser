@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_ANIMATION
-import org.cru.godtools.tool.ParserConfig
+import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -39,10 +39,10 @@ class AnimationTest : UsesResources() {
     fun testIsIgnored() {
         val animation = Animation()
 
-        ParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
+        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
         assertFalse(animation.testIsIgnored)
 
-        ParserConfig.supportedFeatures = emptySet()
+        LegacyParserConfig.supportedFeatures = emptySet()
         assertTrue(animation.testIsIgnored)
     }
 }
