@@ -6,16 +6,16 @@ import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.freeze
 import kotlin.native.concurrent.isFrozen
 
-actual object LegacyParserConfig {
+actual object LegacyParserConfig : ParserConfig() {
     private val _supportedDeviceTypes = AtomicReference(DEFAULT_SUPPORTED_DEVICE_TYPES)
-    actual var supportedDeviceTypes: Set<DeviceType>
+    actual override var supportedDeviceTypes: Set<DeviceType>
         get() = _supportedDeviceTypes.value
         set(value) {
             _supportedDeviceTypes.value = if (value.isFrozen) value else value.toSet().freeze()
         }
 
     private val _supportedFeatures = AtomicReference(emptySet<String>())
-    actual var supportedFeatures: Set<String>
+    actual override var supportedFeatures: Set<String>
         get() = _supportedFeatures.value
         set(value) {
             _supportedFeatures.value = if (value.isFrozen) value else value.toSet().freeze()
