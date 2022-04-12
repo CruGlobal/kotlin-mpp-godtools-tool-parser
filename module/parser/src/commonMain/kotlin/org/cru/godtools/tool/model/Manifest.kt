@@ -75,8 +75,12 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
-        internal suspend fun parse(fileName: String, parseFile: suspend (String) -> XmlPullParser): Manifest {
-            val manifest = Manifest(parseFile(fileName))
+        internal suspend fun parse(
+            fileName: String,
+            config: ParserConfig,
+            parseFile: suspend (String) -> XmlPullParser
+        ): Manifest {
+            val manifest = Manifest(parseFile(fileName), config)
             coroutineScope {
                 // parse pages
                 launch {
@@ -168,10 +172,10 @@ class Manifest : BaseModel, Styles {
     private val pagesToParse: List<Pair<String?, String>>
     private val tipsToParse: List<Pair<String, String>>
 
-    private constructor(parser: XmlPullParser) {
+    private constructor(parser: XmlPullParser, config: ParserConfig) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
-        config = ParserConfig()
+        this.config = config
 
         code = parser.getAttributeValue(XML_TOOL)
         locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
