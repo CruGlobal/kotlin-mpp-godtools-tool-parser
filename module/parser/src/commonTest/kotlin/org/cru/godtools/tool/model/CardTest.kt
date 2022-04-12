@@ -1,8 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_CONTENT_CARD
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -13,6 +14,7 @@ import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class CardTest : UsesResources() {
     @Test
     fun testParseCard() = runTest {
@@ -35,13 +37,12 @@ class CardTest : UsesResources() {
 
     @Test
     fun testIsIgnored() {
-        val card = Card()
-
-        LegacyParserConfig.supportedFeatures = setOf(FEATURE_CONTENT_CARD)
-        assertFalse(card.isIgnored)
-
-        LegacyParserConfig.supportedFeatures = emptySet()
-        assertTrue(card.isIgnored)
+        with(Card(Manifest(config = ParserConfig(supportedFeatures = setOf(FEATURE_CONTENT_CARD))))) {
+            assertFalse(isIgnored)
+        }
+        with(Card(Manifest(config = ParserConfig(supportedFeatures = emptySet())))) {
+            assertTrue(isIgnored)
+        }
     }
 
     @Test
