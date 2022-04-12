@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.FEATURE_MULTISELECT
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -31,36 +31,40 @@ class ContentTest : UsesResources() {
     // region required-features
     @Test
     fun verifyRequiredFeaturesSupported() {
-        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)
-        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION)) {}.testIsIgnored)
-        assertFalse(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertFalse(object : Content(requiredFeatures = emptySet()) {}.testIsIgnored)
+        val manifest = Manifest(ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)))
+        assertFalse(
+            object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
+        )
+        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION)) {}.testIsIgnored)
+        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
+        assertFalse(object : Content(manifest, requiredFeatures = emptySet()) {}.testIsIgnored)
     }
 
     @Test
     fun verifyRequiredFeaturesNotSupported() {
-        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
-        assertTrue(object : Content(requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertTrue(object : Content(requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertTrue(object : Content(requiredFeatures = setOf("kjlasdf")) {}.testIsIgnored)
+        val manifest = Manifest(ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION)))
+        assertTrue(
+            object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
+        )
+        assertTrue(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
+        assertTrue(object : Content(manifest, requiredFeatures = setOf("kjlasdf")) {}.testIsIgnored)
     }
     // endregion required-features
 
     // region restrictTo
     @Test
     fun verifyRestrictToSupported() {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
-        assertFalse(object : Content(Manifest(), restrictTo = DeviceType.ALL) {}.testIsIgnored)
-        assertFalse(object : Content(Manifest(), restrictTo = LegacyParserConfig.supportedDeviceTypes) {}.testIsIgnored)
-        assertFalse(object : Content(Manifest(), restrictTo = setOf(DeviceType.ANDROID)) {}.testIsIgnored)
+        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
+        assertFalse(object : Content(Manifest(config), restrictTo = DeviceType.ALL) {}.testIsIgnored)
+        assertFalse(object : Content(Manifest(config), restrictTo = config.supportedDeviceTypes) {}.testIsIgnored)
+        assertFalse(object : Content(Manifest(config), restrictTo = setOf(DeviceType.ANDROID)) {}.testIsIgnored)
     }
 
     @Test
     fun verifyRestrictToNotSupported() {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
-        assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.UNKNOWN)) {}.testIsIgnored)
-        assertTrue(object : Content(Manifest(), restrictTo = setOf(DeviceType.IOS)) {}.testIsIgnored)
+        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
+        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.UNKNOWN)) {}.testIsIgnored)
+        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.IOS)) {}.testIsIgnored)
     }
     // endregion restrictTo
 
