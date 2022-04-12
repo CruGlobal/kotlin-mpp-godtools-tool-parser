@@ -5,7 +5,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
@@ -172,7 +171,7 @@ class Manifest : BaseModel, Styles {
     private constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
-        config = LegacyParserConfig
+        config = ParserConfig()
 
         code = parser.getAttributeValue(XML_TOOL)
         locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
@@ -244,7 +243,7 @@ class Manifest : BaseModel, Styles {
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
-        config: ParserConfig = LegacyParserConfig,
+        config: ParserConfig = ParserConfig(),
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
