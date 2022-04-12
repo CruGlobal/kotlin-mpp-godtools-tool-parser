@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model.tract
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -15,7 +15,6 @@ import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Tabs
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -26,11 +25,6 @@ import kotlin.test.assertNotNull
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class HeroTest : UsesResources("model/tract") {
-    @BeforeTest
-    fun setupConfig() {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)
-    }
-
     @Test
     fun testParseHero() = runTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero.xml")).hero)
@@ -46,10 +40,13 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHeroIgnoredContent() = runTest {
-        val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero_ignored_content.xml")).hero)
-        assertEquals(2, hero.content.size)
-        assertIs<Paragraph>(hero.content[0])
-        assertIs<Tabs>(hero.content[1])
+        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE))
+        val page = TractPage(Manifest(config = config), null, getTestXmlParser("hero_ignored_content.xml"))
+        with(assertNotNull(page.hero)) {
+            assertEquals(2, content.size)
+            assertIs<Paragraph>(content[0])
+            assertIs<Tabs>(content[1])
+        }
     }
 
     @Test
