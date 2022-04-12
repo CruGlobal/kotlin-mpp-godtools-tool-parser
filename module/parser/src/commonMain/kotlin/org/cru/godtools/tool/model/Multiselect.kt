@@ -2,7 +2,6 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.tool.FEATURE_MULTISELECT
-import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -86,7 +85,7 @@ class Multiselect : Content {
         this.options = options?.invoke(this).orEmpty()
     }
 
-    override val isIgnored get() = FEATURE_MULTISELECT !in LegacyParserConfig.supportedFeatures || super.isIgnored
+    override val isIgnored get() = FEATURE_MULTISELECT !in manifest.config.supportedFeatures || super.isIgnored
 
     class Option : Content, Parent, HasAnalyticsEvents {
         internal companion object {

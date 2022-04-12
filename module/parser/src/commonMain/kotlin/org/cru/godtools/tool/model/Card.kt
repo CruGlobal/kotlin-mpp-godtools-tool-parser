@@ -1,7 +1,6 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_CONTENT_CARD
-import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.xml.XmlPullParser
@@ -41,7 +40,7 @@ class Card : Content, Parent, Clickable {
         url = null
     }
 
-    override val isIgnored get() = FEATURE_CONTENT_CARD !in LegacyParserConfig.supportedFeatures || super.isIgnored
+    override val isIgnored get() = FEATURE_CONTENT_CARD !in manifest.config.supportedFeatures || super.isIgnored
 }
 
 val Card?.backgroundColor get() = this?._backgroundColor ?: stylesParent.cardBackgroundColor
