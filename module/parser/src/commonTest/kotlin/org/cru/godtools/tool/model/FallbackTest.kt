@@ -1,14 +1,12 @@
 package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.LegacyParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
 import org.cru.godtools.tool.xml.XmlPullParserException
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,11 +15,6 @@ import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FallbackTest : UsesResources() {
-    @BeforeTest
-    fun setupConfig() {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
-    }
-
     @Test
     fun testParseFallback() = runTest {
         val fallback = Fallback(Manifest(), getTestXmlParser("fallback.xml"))
