@@ -52,7 +52,7 @@ class ContentTest : UsesResources() {
     fun verifyRestrictToSupported() {
         LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.ANDROID)
         assertFalse(object : Content(Manifest(), restrictTo = DeviceType.ALL) {}.testIsIgnored)
-        assertFalse(object : Content(Manifest(), restrictTo = DeviceType.SUPPORTED) {}.testIsIgnored)
+        assertFalse(object : Content(Manifest(), restrictTo = LegacyParserConfig.supportedDeviceTypes) {}.testIsIgnored)
         assertFalse(object : Content(Manifest(), restrictTo = setOf(DeviceType.ANDROID)) {}.testIsIgnored)
     }
 
