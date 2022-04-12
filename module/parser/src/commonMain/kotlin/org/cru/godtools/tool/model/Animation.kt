@@ -50,7 +50,7 @@ class Animation : Content, Clickable {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor() : super(Manifest()) {
+    internal constructor(parent: Base = Manifest()) : super(parent) {
         resourceName = null
         loop = true
         autoPlay = true

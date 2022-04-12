@@ -1,8 +1,9 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.FEATURE_ANIMATION
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -12,6 +13,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class AnimationTest : UsesResources() {
     @Test
     fun testParseAnimationDefaults() = runTest {
@@ -37,12 +39,12 @@ class AnimationTest : UsesResources() {
 
     @Test
     fun testIsIgnored() {
-        val animation = Animation()
+        with(Animation(Manifest(config = ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION))))) {
+            assertFalse(testIsIgnored)
+        }
 
-        LegacyParserConfig.supportedFeatures = setOf(FEATURE_ANIMATION)
-        assertFalse(animation.testIsIgnored)
-
-        LegacyParserConfig.supportedFeatures = emptySet()
-        assertTrue(animation.testIsIgnored)
+        with(Animation(Manifest(config = ParserConfig(supportedFeatures = emptySet())))) {
+            assertTrue(testIsIgnored)
+        }
     }
 }

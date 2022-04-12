@@ -98,7 +98,7 @@ class Manifest : BaseModel, Styles {
         }
     }
 
-    internal val config: ParserConfig = LegacyParserConfig
+    internal val config: ParserConfig
 
     val code: String?
     val locale: PlatformLocale?
@@ -172,6 +172,8 @@ class Manifest : BaseModel, Styles {
     private constructor(parser: XmlPullParser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
+        config = LegacyParserConfig
+
         code = parser.getAttributeValue(XML_TOOL)
         locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
         type = Type.parseOrNull(parser.getAttributeValue(XML_TYPE)) ?: Type.DEFAULT
@@ -242,6 +244,7 @@ class Manifest : BaseModel, Styles {
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
+        config: ParserConfig = LegacyParserConfig,
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
@@ -261,6 +264,8 @@ class Manifest : BaseModel, Styles {
         tips: ((Manifest) -> List<Tip>)? = null,
         pages: ((Manifest) -> List<Page>)? = null
     ) {
+        this.config = config
+
         this.code = code
         this.locale = locale
         this.type = type
