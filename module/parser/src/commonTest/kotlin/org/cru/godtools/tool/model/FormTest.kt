@@ -2,7 +2,7 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -25,8 +25,8 @@ class FormTest : UsesResources() {
 
     @Test
     fun testParseParagraphIgnoredContent() = runTest {
-        LegacyParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
-        val form = Form(Manifest(), getTestXmlParser("form_ignored_content.xml"))
+        val manifest = Manifest(ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)))
+        val form = Form(manifest, getTestXmlParser("form_ignored_content.xml"))
         assertEquals(1, form.content.size)
         assertIs<Text>(form.content[0])
     }
