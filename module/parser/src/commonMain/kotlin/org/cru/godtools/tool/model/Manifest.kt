@@ -5,6 +5,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.cru.godtools.tool.LegacyParserConfig
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
@@ -95,6 +97,8 @@ class Manifest : BaseModel, Styles {
             return manifest
         }
     }
+
+    internal val config: ParserConfig = LegacyParserConfig
 
     val code: String?
     val locale: PlatformLocale?
