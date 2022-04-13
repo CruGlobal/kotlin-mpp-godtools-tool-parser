@@ -14,7 +14,7 @@ concurrency:
 
 env:
   ORG_GRADLE_PROJECT_releaseBuild: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
-  ORG_GRADLE_PROJECT_versionSuffix: ${{ github.event_name == 'pull_request' && github.event.pull_request.number && format('PR{0}', github.event.pull_request.number) }}
+  ORG_GRADLE_PROJECT_versionSuffix: ${{ (github.event_name == 'pull_request' && format('PR{0}', github.event.pull_request.number)) || '' }}
 
 jobs:
   static_checks:
@@ -165,7 +165,7 @@ jobs:
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/')))
     needs: [ static_checks, android_tests, ios_tests, js_tests ]
     steps:
       - name: Checkout code
