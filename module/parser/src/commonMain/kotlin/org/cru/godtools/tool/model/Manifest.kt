@@ -180,6 +180,12 @@ class Manifest : BaseModel, Styles {
     private val pagesToParse: List<Pair<String?, String>>
     private val tipsToParse: List<Pair<String, String>>
 
+    val relatedFiles get() = buildSet {
+        addAll(pagesToParse.map { it.second })
+        addAll(tipsToParse.map { it.second })
+        addAll(resources.values.mapNotNull { it.localName })
+    }
+
     private constructor(parser: XmlPullParser, config: ParserConfig) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
 
