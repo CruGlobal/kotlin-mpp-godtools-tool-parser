@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidColorInt
 import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
@@ -74,8 +75,12 @@ class Manifest : BaseModel, Styles {
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
-        internal suspend fun parse(fileName: String, parseFile: suspend (String) -> XmlPullParser): Manifest {
-            val manifest = Manifest(parseFile(fileName))
+        internal suspend fun parse(
+            fileName: String,
+            config: ParserConfig,
+            parseFile: suspend (String) -> XmlPullParser
+        ): Manifest {
+            val manifest = Manifest(parseFile(fileName), config)
             coroutineScope {
                 // parse pages
                 launch {
@@ -95,6 +100,8 @@ class Manifest : BaseModel, Styles {
             return manifest
         }
     }
+
+    internal val config: ParserConfig
 
     val code: String?
     val locale: PlatformLocale?
@@ -165,8 +172,10 @@ class Manifest : BaseModel, Styles {
     private val pagesToParse: List<Pair<String?, String>>
     private val tipsToParse: List<Pair<String, String>>
 
-    private constructor(parser: XmlPullParser) {
+    private constructor(parser: XmlPullParser, config: ParserConfig) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
+
+        this.config = config
 
         code = parser.getAttributeValue(XML_TOOL)
         locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
@@ -238,6 +247,7 @@ class Manifest : BaseModel, Styles {
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
+        config: ParserConfig = ParserConfig(),
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
@@ -257,6 +267,8 @@ class Manifest : BaseModel, Styles {
         tips: ((Manifest) -> List<Tip>)? = null,
         pages: ((Manifest) -> List<Page>)? = null
     ) {
+        this.config = config
+
         this.code = code
         this.locale = locale
         this.type = type

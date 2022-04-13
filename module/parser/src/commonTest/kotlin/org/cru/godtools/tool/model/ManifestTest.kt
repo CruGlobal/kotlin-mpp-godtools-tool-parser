@@ -3,6 +3,7 @@ package org.cru.godtools.tool.model
 import io.fluidsonic.locale.Locale
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -170,7 +171,7 @@ class ManifestTest : UsesResources() {
         }
     }
 
-    private suspend fun parseManifest(name: String) = Manifest.parse(name) { getTestXmlParser(it) }
+    private suspend fun parseManifest(name: String) = Manifest.parse(name, ParserConfig()) { getTestXmlParser(it) }
     // endregion parse Manifest
 
     @Test

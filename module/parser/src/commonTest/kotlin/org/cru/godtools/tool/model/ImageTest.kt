@@ -52,8 +52,10 @@ class ImageTest : UsesResources() {
 
     @Test
     fun testParseImageRestricted() = runTest {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
-        val manifest = Manifest(resources = { listOf(Resource(it, "image.png")) })
+        val manifest = Manifest(
+            config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)),
+            resources = { listOf(Resource(it, "image.png")) }
+        )
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))
         assertTrue(image.testIsIgnored)
     }

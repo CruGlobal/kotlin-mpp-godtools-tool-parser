@@ -1,6 +1,5 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 
 private const val XML_DEVICE_TYPE_ANDROID = "android"
@@ -13,7 +12,6 @@ enum class DeviceType {
 
     internal companion object {
         internal val ALL = values().toSet()
-        internal val SUPPORTED get() = ParserConfig.supportedDeviceTypes
 
         private fun String.toDeviceType() = when (this) {
             XML_DEVICE_TYPE_ANDROID -> ANDROID

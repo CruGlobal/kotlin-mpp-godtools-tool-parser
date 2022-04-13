@@ -1,7 +1,6 @@
 package org.cru.godtools.tool.model
 
 import org.cru.godtools.tool.FEATURE_ANIMATION
-import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -51,7 +50,7 @@ class Animation : Content, Clickable {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor() : super(Manifest()) {
+    internal constructor(parent: Base = Manifest()) : super(parent) {
         resourceName = null
         loop = true
         autoPlay = true
@@ -61,5 +60,5 @@ class Animation : Content, Clickable {
         stopListeners = emptySet()
     }
 
-    override val isIgnored get() = FEATURE_ANIMATION !in ParserConfig.supportedFeatures || super.isIgnored
+    override val isIgnored get() = FEATURE_ANIMATION !in manifest.config.supportedFeatures || super.isIgnored
 }

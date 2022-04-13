@@ -2,7 +2,6 @@ package org.cru.godtools.tool.model
 
 import org.cru.godtools.expressions.Expression
 import org.cru.godtools.tool.FEATURE_FLOW
-import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ITEM_WIDTH
@@ -52,7 +51,7 @@ class Flow : Content {
         }
     }
 
-    override val isIgnored get() = FEATURE_FLOW !in ParserConfig.supportedFeatures || super.isIgnored
+    override val isIgnored get() = FEATURE_FLOW !in manifest.config.supportedFeatures || super.isIgnored
 
     class Item : BaseModel, Parent, Visibility {
         companion object {

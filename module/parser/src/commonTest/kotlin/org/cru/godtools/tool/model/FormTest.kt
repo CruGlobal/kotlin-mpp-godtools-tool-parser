@@ -25,8 +25,8 @@ class FormTest : UsesResources() {
 
     @Test
     fun testParseParagraphIgnoredContent() = runTest {
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
-        val form = Form(Manifest(), getTestXmlParser("form_ignored_content.xml"))
+        val manifest = Manifest(ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)))
+        val form = Form(manifest, getTestXmlParser("form_ignored_content.xml"))
         assertEquals(1, form.content.size)
         assertIs<Text>(form.content[0])
     }

@@ -2,6 +2,7 @@ package org.cru.godtools.tool.service
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.TEST_XML_PULL_PARSER_FACTORY
@@ -14,7 +15,7 @@ import kotlin.test.assertIs
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class ManifestParserTest : UsesResources("service") {
-    private val parser = ManifestParser(TEST_XML_PULL_PARSER_FACTORY)
+    private val parser = ManifestParser(TEST_XML_PULL_PARSER_FACTORY, ParserConfig())
 
     @Test
     fun testParseManifest() = runTest {
@@ -54,7 +55,8 @@ class ManifestParserTest : UsesResources("service") {
     }
 
     private suspend fun parseTool(prefix: String, manifest: String) =
-        ManifestParser(PrefixXmlPullParserFactory(prefix, TEST_XML_PULL_PARSER_FACTORY)).parseManifest(manifest)
+        ManifestParser(PrefixXmlPullParserFactory(prefix, TEST_XML_PULL_PARSER_FACTORY), ParserConfig())
+            .parseManifest(manifest)
 
     internal class PrefixXmlPullParserFactory(
         private val prefix: String,

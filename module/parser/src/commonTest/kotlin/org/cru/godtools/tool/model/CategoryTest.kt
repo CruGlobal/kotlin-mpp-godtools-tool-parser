@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.test.runTest
+import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
@@ -13,7 +14,7 @@ import kotlin.test.assertNotNull
 class CategoryTest : UsesResources() {
     @Test
     fun testParseCategory() = runTest {
-        val category = Manifest.parse("categories.xml") { getTestXmlParser(it) }.categories.single()
+        val category = Manifest.parse("categories.xml", ParserConfig()) { getTestXmlParser(it) }.categories.single()
         assertEquals("testParseCategory", category.id)
         assertNotNull(category.banner).also {
             assertEquals("banner.jpg", it.name)

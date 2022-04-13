@@ -71,20 +71,27 @@ class ButtonTest : UsesResources() {
 
     @Test
     fun testParseButtonRestrictTo() = runTest {
-        val button = Button(Manifest(), getTestXmlParser("button_restrictTo.xml"))
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.WEB)
-        assertFalse(button.testIsIgnored)
-        ParserConfig.supportedDeviceTypes = setOf(DeviceType.MOBILE)
-        assertTrue(button.testIsIgnored)
+        val webConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.WEB))
+        with(Button(Manifest(config = webConfig), getTestXmlParser("button_restrictTo.xml"))) {
+            assertFalse(testIsIgnored)
+        }
+
+        val mobileConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE))
+        with(Button(Manifest(config = mobileConfig), getTestXmlParser("button_restrictTo.xml"))) {
+            assertTrue(testIsIgnored)
+        }
     }
 
     @Test
     fun testParseButtonRequiredFeatures() = runTest {
-        val button = Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))
-        ParserConfig.supportedFeatures = setOf(FEATURE_MULTISELECT)
-        assertFalse(button.testIsIgnored)
-        ParserConfig.supportedFeatures = emptySet()
-        assertTrue(button.testIsIgnored)
+        with(Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))) {
+            assertTrue(testIsIgnored)
+        }
+
+        val config = ParserConfig(supportedFeatures = setOf(FEATURE_MULTISELECT))
+        with(Button(Manifest(config = config), getTestXmlParser("button_requiredFeatures.xml"))) {
+            assertFalse(testIsIgnored)
+        }
     }
 
     @Test
