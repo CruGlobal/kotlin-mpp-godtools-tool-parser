@@ -10,7 +10,7 @@ kotlin = "1.6.21"
 kotlinCoroutines = "1.6.1-native-mt"
 ktlint = "0.42.1"
 napier = "2.5.0"
-okio = "3.0.0"
+okio = "3.1.0"
 robolectric = "4.7.3"
 
 [libraries]
