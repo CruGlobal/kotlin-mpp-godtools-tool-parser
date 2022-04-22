@@ -6,6 +6,7 @@ import org.cru.godtools.tool.xml.XmlPullParserFactory
 
 class IosManifestParser(parserFactory: XmlPullParserFactory, defaultConfig: ParserConfig) :
     ManifestParser(parserFactory, defaultConfig) {
-    fun parseManifestBlocking(fileName: String, config: ParserConfig = defaultConfig) =
+    fun parseManifestBlocking(fileName: String) = parseManifestBlocking(fileName, defaultConfig)
+    fun parseManifestBlocking(fileName: String, config: ParserConfig) =
         runBlocking { parseManifest(fileName, config) }
 }
