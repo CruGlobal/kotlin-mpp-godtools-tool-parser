@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest">
+    <pages>
+        <page filename="page1.xml" src="page1_sha.xml" />
+        <page filename="page2.xml" src="page2_sha.xml" />
+        <page filename="common.xml" src="common_sha.xml" />
+    </pages>
+
+    <tips>
+        <tip id="tip1" src="tip1_sha.xml" />
+        <tip id="tip2" src="tip2_sha.xml" />
+        <tip id="common" src="common_sha.xml" />
+    </tips>
+
+    <resources>
+        <resource filename="file1.png" src="file1_sha.png" />
+        <resource filename="file2.png" src="file2_sha.png" />
+        <resource filename="common.xml" src="common_sha.xml" />
+    </resources>
+</manifest>
