@@ -17,6 +17,7 @@ data class ParserConfig(
 
     fun withSupportedDeviceTypes(types: Set<DeviceType>) = copy(supportedDeviceTypes = types)
     fun withSupportedFeatures(features: Set<String>) = copy(supportedFeatures = features)
+    fun withParseRelated(enabled: Boolean) = copy(parsePages = enabled, parseTips = enabled)
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
     fun withParseTips(enabled: Boolean) = copy(parseTips = enabled)
 }

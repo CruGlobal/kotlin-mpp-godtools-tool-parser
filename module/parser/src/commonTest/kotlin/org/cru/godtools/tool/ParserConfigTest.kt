@@ -26,6 +26,17 @@ class ParserConfigTest {
     }
 
     @Test
+    fun testWithParseRelated() {
+        val orig = ParserConfig(parsePages = true, parseTips = true)
+        val updated = orig.withParseRelated(false)
+
+        assertTrue(orig.parsePages)
+        assertTrue(orig.parseTips)
+        assertFalse(updated.parsePages)
+        assertFalse(updated.parseTips)
+    }
+
+    @Test
     fun testWithParsePages() {
         val orig = ParserConfig(parsePages = true)
         val updated = orig.withParsePages(false)
