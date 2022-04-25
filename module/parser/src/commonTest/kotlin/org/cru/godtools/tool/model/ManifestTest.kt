@@ -171,7 +171,26 @@ class ManifestTest : UsesResources() {
         }
     }
 
-    private suspend fun parseManifest(name: String) = Manifest.parse(name, ParserConfig()) { getTestXmlParser(it) }
+    @Test
+    fun testParseManifestButNotPagesOrTips() = runTest {
+        val expectedRelatedFiles = setOf(
+            "page1_sha.xml",
+            "page2_sha.xml",
+            "tip1_sha.xml",
+            "tip2_sha.xml",
+            "file1_sha.png",
+            "file2_sha.png",
+            "common_sha.xml"
+        )
+
+        val manifest = parseManifest("manifest_related_files.xml", ParserConfig().withParseRelated(false))
+        assertTrue(manifest.pages.isEmpty())
+        assertTrue(manifest.tips.isEmpty())
+        assertEquals(expectedRelatedFiles, manifest.relatedFiles)
+    }
+
+    private suspend fun parseManifest(name: String, config: ParserConfig = ParserConfig()) =
+        Manifest.parse(name, config) { getTestXmlParser(it) }
     // endregion parse Manifest
 
     @Test

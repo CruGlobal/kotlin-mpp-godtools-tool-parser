@@ -83,18 +83,26 @@ class Manifest : BaseModel, Styles {
             val manifest = Manifest(parseFile(fileName), config)
             coroutineScope {
                 // parse pages
-                launch {
-                    manifest.pages = manifest.pagesToParse
-                        .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
-                        .awaitAll().filterNotNull()
+                if (config.parsePages) {
+                    launch {
+                        manifest.pages = manifest.pagesToParse
+                            .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
+                            .awaitAll().filterNotNull()
+                    }
+                } else {
+                    manifest.pages = emptyList()
                 }
 
                 // parse tips
-                launch {
-                    manifest.tips = manifest.tipsToParse
-                        .map { (id, src) -> async { Tip(manifest, id, parseFile(src)) } }
-                        .awaitAll()
-                        .associateBy { it.id }
+                if (config.parseTips) {
+                    launch {
+                        manifest.tips = manifest.tipsToParse
+                            .map { (id, src) -> async { Tip(manifest, id, parseFile(src)) } }
+                            .awaitAll()
+                            .associateBy { it.id }
+                    }
+                } else {
+                    manifest.tips = emptyMap()
                 }
             }
             return manifest
@@ -171,6 +179,12 @@ class Manifest : BaseModel, Styles {
 
     private val pagesToParse: List<Pair<String?, String>>
     private val tipsToParse: List<Pair<String, String>>
+
+    val relatedFiles get() = buildSet {
+        addAll(pagesToParse.map { it.second })
+        addAll(tipsToParse.map { it.second })
+        addAll(resources.values.mapNotNull { it.localName })
+    }
 
     private constructor(parser: XmlPullParser, config: ParserConfig) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_MANIFEST)
