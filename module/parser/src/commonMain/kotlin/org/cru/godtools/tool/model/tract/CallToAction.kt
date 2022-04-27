@@ -1,6 +1,8 @@
 package org.cru.godtools.tool.model.tract
 
+import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.AndroidColorInt
+import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
@@ -17,6 +19,8 @@ import org.cru.godtools.tool.model.toColorOrNull
 import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
 
+private const val TAG = "CallToAction"
+
 private const val XML_CONTROL_COLOR = "control-color"
 private const val XML_TIP = "tip"
 
@@ -28,6 +32,7 @@ class CallToAction : BaseModel {
     private val page: TractPage
 
     val label: Text?
+    @Deprecated("Since v0.6.0, call-to-action events are no longer supported")
     val events: List<EventId>
 
     @AndroidColorInt
@@ -56,19 +61,24 @@ class CallToAction : BaseModel {
         tipId = parser.getAttributeValue(XMLNS_TRAINING, XML_TIP)
 
         label = parser.parseTextChild(this, XMLNS_TRACT, XML_CALL_TO_ACTION)
+
+        if (events.isNotEmpty()) {
+            val message =
+                "tool: ${manifest.code} locale: ${manifest.locale} page: ${page.fileName} has call-to-action events"
+            Napier.e(message, DeprecationException("Deprecated call-to-action events: $message"), TAG)
+        }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         page: TractPage = TractPage(),
         label: ((CallToAction) -> Text)? = null,
-        events: List<EventId> = emptyList(),
         @AndroidColorInt controlColor: PlatformColor? = null,
         tip: String? = null
     ) : super(page) {
         this.page = page
         this.label = label?.invoke(this)
-        this.events = events
+        events = emptyList()
         _controlColor = controlColor
         tipId = tip
     }
