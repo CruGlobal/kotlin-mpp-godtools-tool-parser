@@ -24,7 +24,7 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
 
         internal fun String?.toGravityOrNull(): Gravity? {
             if (this == null) return null
-            try {
+            return try {
                 var horizontal: Horizontal? = null
                 var vertical: Vertical? = null
                 REGEX_SEQUENCE_SEPARATOR.split(this).forEach {
@@ -49,10 +49,10 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
                     }
                 }
 
-                return Gravity(horizontal ?: Horizontal.CENTER, vertical ?: Vertical.CENTER)
+                Gravity(horizontal ?: Horizontal.CENTER, vertical ?: Vertical.CENTER)
             } catch (e: IllegalArgumentException) {
                 Napier.e(tag = "Gravity", throwable = e, message = { "error parsing Gravity: $this" })
-                return null
+                null
             }
         }
     }
