@@ -82,12 +82,13 @@ class AnalyticsEvent : BaseModel {
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
+        parent: Base = Manifest(),
         action: String? = null,
         trigger: Trigger = Trigger.DEFAULT,
         delay: Int = 0,
         systems: Set<System> = emptySet(),
         attributes: Map<String, String> = emptyMap()
-    ) {
+    ) : super(parent) {
         this.action = action
         this.delay = delay
         this.systems = systems
