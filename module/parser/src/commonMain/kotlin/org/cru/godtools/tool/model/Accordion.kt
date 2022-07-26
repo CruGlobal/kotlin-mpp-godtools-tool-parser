@@ -33,8 +33,11 @@ class Accordion : Content {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base, sections: (Accordion) -> List<Section>) : super(parent) {
-        this.sections = sections(this)
+    internal constructor(
+        parent: Base = Manifest(),
+        sections: ((Accordion) -> List<Section>)? = null
+    ) : super(parent) {
+        this.sections = sections?.invoke(this).orEmpty()
     }
 
     class Section : BaseModel, Parent, HasAnalyticsEvents {
@@ -66,11 +69,15 @@ class Accordion : Content {
         }
 
         @RestrictTo(RestrictToScope.TESTS)
-        internal constructor(accordion: Accordion, content: (Section) -> List<Content>) : super(accordion) {
+        internal constructor(
+            accordion: Accordion = Accordion(),
+            analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            content: ((Section) -> List<Content>)? = null
+        ) : super(accordion) {
             this.accordion = accordion
             header = null
-            analyticsEvents = emptyList()
-            this.content = content(this)
+            this.analyticsEvents = analyticsEvents
+            this.content = content?.invoke(this).orEmpty()
         }
 
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
