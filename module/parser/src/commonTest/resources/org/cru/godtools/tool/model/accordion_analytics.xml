@@ -1,0 +1,14 @@
+<content:accordion xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics"
+    xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <content:section>
+        <content:header>
+            <content:text>Section 1</content:text>
+        </content:header>
+        <analytics:events>
+            <analytics:event action="default" system="firebase" />
+            <analytics:event action="visible" system="firebase" trigger="visible" />
+            <analytics:event action="hidden" system="firebase" trigger="hidden" />
+        </analytics:events>
+        <content:text>Text</content:text>
+    </content:section>
+</content:accordion>

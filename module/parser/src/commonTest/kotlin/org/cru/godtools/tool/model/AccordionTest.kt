@@ -33,6 +33,22 @@ class AccordionTest : UsesResources() {
     }
 
     @Test
+    fun testParseAccordionAnalytics() = runTest {
+        val accordion = Accordion(Manifest(), getTestXmlParser("accordion_analytics.xml"))
+        assertEquals(1, accordion.sections.size)
+
+        with(accordion.sections.single()) {
+            val visible = getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE)
+            assertEquals(2, visible.size)
+            assertEquals(setOf("default", "visible"), visible.map { it.action }.toSet())
+
+            val hidden = getAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN)
+            assertEquals(1, hidden.size)
+            assertEquals("hidden", hidden.single().action)
+        }
+    }
+
+    @Test
     fun testTipsProperty() {
         val manifest = Manifest(tips = { listOf(Tip(it, "tip1"), Tip(it, "tip2")) })
         val accordion = Accordion(manifest) {
