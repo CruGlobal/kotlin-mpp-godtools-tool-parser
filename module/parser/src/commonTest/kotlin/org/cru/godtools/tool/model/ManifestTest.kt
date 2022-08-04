@@ -15,6 +15,7 @@ import org.cru.godtools.tool.model.shareable.ShareableImage
 import org.cru.godtools.tool.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -52,7 +53,7 @@ class ManifestTest : UsesResources() {
         assertTrue(manifest.pages.isEmpty())
         assertTrue(manifest.resources.isEmpty())
         assertTrue(manifest.shareables.isEmpty())
-        assertTrue(manifest.tips.isEmpty())
+        assertFalse(manifest.hasTips)
     }
 
     @Test
@@ -141,7 +142,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_tips.xml")
         assertEquals(0, manifest.pages.size)
         assertEquals(0, manifest.resources.size)
-        assertEquals(1, manifest.tips.size)
+        assertTrue(manifest.hasTips)
         assertEquals("tip1", manifest.findTip("tip1")!!.id)
     }
 
@@ -150,7 +151,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_tips_invalid.xml")
         assertEquals(0, manifest.pages.size)
         assertEquals(0, manifest.resources.size)
-        assertEquals(0, manifest.tips.size)
+        assertFalse(manifest.hasTips)
     }
 
     @Test
@@ -172,7 +173,7 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
-    fun testParseManifestButNotPagesOrTips() = runTest {
+    fun testParseManifestWithoutParsingRelated() = runTest {
         val expectedRelatedFiles = setOf(
             "page1_sha.xml",
             "page2_sha.xml",
@@ -186,7 +187,16 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_related_files.xml", ParserConfig().withParseRelated(false))
         assertTrue(manifest.pages.isEmpty())
         assertTrue(manifest.tips.isEmpty())
+        assertTrue(manifest.hasTips)
         assertEquals(expectedRelatedFiles, manifest.relatedFiles)
+    }
+
+    @Test
+    fun testParseManifestEmptyWithoutParsingRelated() = runTest {
+        val manifest = parseManifest("manifest_empty.xml", ParserConfig().withParseRelated(false))
+        assertTrue(manifest.relatedFiles.isEmpty())
+        assertTrue(manifest.pages.isEmpty())
+        assertFalse(manifest.hasTips)
     }
 
     private suspend fun parseManifest(name: String, config: ParserConfig = ParserConfig()) =
