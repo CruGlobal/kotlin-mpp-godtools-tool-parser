@@ -174,6 +174,10 @@ class Manifest : BaseModel, Styles {
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
     val shareables: List<Shareable>
+    @get:Deprecated(
+        "Since v0.6.1, This property is no longer part of the public API. " +
+            "You should access tips using either hasTips or findTip(id)."
+    )
     var tips: Map<String, Tip> by setOnce()
         private set
 
@@ -324,6 +328,7 @@ class Manifest : BaseModel, Styles {
     }
 
     override val manifest get() = this
+    val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipsToParse.isNotEmpty())
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
