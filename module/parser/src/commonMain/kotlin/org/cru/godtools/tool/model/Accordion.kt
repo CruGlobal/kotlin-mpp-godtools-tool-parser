@@ -69,7 +69,7 @@ class Accordion : Content {
         }
 
         @RestrictTo(RestrictToScope.TESTS)
-        internal constructor(
+        constructor(
             accordion: Accordion = Accordion(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             content: ((Section) -> List<Content>)? = null
