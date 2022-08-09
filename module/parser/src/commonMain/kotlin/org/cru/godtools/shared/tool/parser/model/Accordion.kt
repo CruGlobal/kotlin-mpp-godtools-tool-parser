@@ -85,12 +85,12 @@ class Accordion : Content {
         @RestrictTo(RestrictToScope.TESTS)
         constructor(
             accordion: Accordion = Accordion(),
-            analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            analyticsEvents: ((Section) -> List<AnalyticsEvent>)? = null,
             content: ((Section) -> List<Content>)? = null
         ) : super(accordion) {
             this.accordion = accordion
             header = null
-            this.analyticsEvents = analyticsEvents
+            this.analyticsEvents = analyticsEvents?.invoke(this).orEmpty()
             this.content = content?.invoke(this).orEmpty()
         }
 

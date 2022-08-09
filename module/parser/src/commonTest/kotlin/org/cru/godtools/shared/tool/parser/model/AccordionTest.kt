@@ -64,12 +64,14 @@ class AccordionTest : UsesResources() {
     @Test
     fun testSectionAnalyticsEvents() {
         val section = Accordion.Section(
-            analyticsEvents = listOf(
-                AnalyticsEvent(action = "default", trigger = AnalyticsEvent.Trigger.DEFAULT),
-                AnalyticsEvent(action = "visible", trigger = AnalyticsEvent.Trigger.VISIBLE),
-                AnalyticsEvent(action = "hidden", trigger = AnalyticsEvent.Trigger.HIDDEN),
-                AnalyticsEvent(action = "unknown", trigger = AnalyticsEvent.Trigger.UNKNOWN),
-            )
+            analyticsEvents = {
+                listOf(
+                    AnalyticsEvent(action = "default", trigger = AnalyticsEvent.Trigger.DEFAULT),
+                    AnalyticsEvent(action = "visible", trigger = AnalyticsEvent.Trigger.VISIBLE),
+                    AnalyticsEvent(action = "hidden", trigger = AnalyticsEvent.Trigger.HIDDEN),
+                    AnalyticsEvent(action = "unknown", trigger = AnalyticsEvent.Trigger.UNKNOWN),
+                )
+            }
         )
 
         with(section.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE)) {
