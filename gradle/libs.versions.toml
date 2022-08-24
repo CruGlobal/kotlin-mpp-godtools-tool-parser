@@ -35,4 +35,4 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 [plugins]
 grgit = { id = "org.ajoberstar.grgit", version = "5.0.0" }
 junitJacoco = { id = "com.vanniktech.android.junit.jacoco", version = "0.16.0" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "10.3.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.0.0" }
