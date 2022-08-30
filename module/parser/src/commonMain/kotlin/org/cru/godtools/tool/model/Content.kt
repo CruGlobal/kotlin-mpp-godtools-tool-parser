@@ -98,7 +98,3 @@ abstract class Content : BaseModel, Visibility {
         }
     }
 }
-
-// HACK: This is a workaround for a Kotlin/JS IR compiler issue when running tests. This should be fixed in Kotlin 1.6
-@get:RestrictTo(RestrictToScope.TESTS)
-internal val Content.testIsIgnored get() = isIgnored

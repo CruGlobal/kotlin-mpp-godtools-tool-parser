@@ -72,10 +72,10 @@ class MultiselectTest : UsesResources() {
     @Test
     fun testIsIgnored() {
         with(Multiselect(Manifest(ParserConfig(supportedFeatures = setOf(FEATURE_MULTISELECT))))) {
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
         }
         with(Multiselect(Manifest(ParserConfig(supportedFeatures = emptySet())))) {
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
     }
 
