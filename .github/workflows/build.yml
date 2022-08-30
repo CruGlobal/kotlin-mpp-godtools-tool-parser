@@ -32,15 +32,15 @@ jobs:
       - name: Ktlint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintCheck
+          arguments: ktlintCheck --scan
       - name: Lint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: lint
+          arguments: lint --scan
       - name: Publication Metadata
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: generateMetadataFileForKotlinMultiplatformPublication
+          arguments: generateMetadataFileForKotlinMultiplatformPublication --scan
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v3
