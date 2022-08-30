@@ -1,12 +1,25 @@
 package org.cru.godtools.tool
 
 import org.cru.godtools.tool.model.DeviceType
+import org.cru.godtools.tool.model.Version.Companion.toVersion
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ParserConfigTest {
+    @Test
+    fun testWithAppVersion() {
+        val orig = ParserConfig()
+        assertEquals(DeviceType.UNKNOWN, orig.deviceType)
+        assertNull(orig.appVersion)
+
+        val updated = orig.withAppVersion(DeviceType.ANDROID, "10.3.4")
+        assertEquals(DeviceType.ANDROID, updated.deviceType)
+        assertEquals("10.3.4".toVersion(), updated.appVersion)
+    }
+
     @Test
     fun testWithSupportedDeviceTypes() {
         val orig = ParserConfig(supportedDeviceTypes = emptySet())
