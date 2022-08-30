@@ -36,7 +36,7 @@ class ButtonTest : UsesResources() {
     fun testParseButtonEvent() = runTest {
         val manifest = Manifest()
         with(Button(manifest, getTestXmlParser("button_event.xml"))) {
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
             assertFalse(isGone(state))
             assertFalse(isInvisible(state))
             assertEquals(manifest.buttonStyle, style)
@@ -57,7 +57,7 @@ class ButtonTest : UsesResources() {
     @Test
     fun testParseButtonUrl() = runTest {
         val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
-        assertFalse(button.testIsIgnored)
+        assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
         assertEquals(Button.Type.URL, button.type)
         assertEquals(TestColors.GREEN, button.backgroundColor)
@@ -73,24 +73,24 @@ class ButtonTest : UsesResources() {
     fun testParseButtonRestrictTo() = runTest {
         val webConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.WEB))
         with(Button(Manifest(config = webConfig), getTestXmlParser("button_restrictTo.xml"))) {
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
         }
 
         val mobileConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE))
         with(Button(Manifest(config = mobileConfig), getTestXmlParser("button_restrictTo.xml"))) {
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
     }
 
     @Test
     fun testParseButtonRequiredFeatures() = runTest {
         with(Button(Manifest(), getTestXmlParser("button_requiredFeatures.xml"))) {
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
 
         val config = ParserConfig(supportedFeatures = setOf(FEATURE_MULTISELECT))
         with(Button(Manifest(config = config), getTestXmlParser("button_requiredFeatures.xml"))) {
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
         }
     }
 
@@ -107,7 +107,7 @@ class ButtonTest : UsesResources() {
     @Test
     fun testParseButtonVisibility() = runTest {
         with(Button(Manifest(), getTestXmlParser("button_visibility.xml"))) {
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
 
             assertFalse(isInvisible(state))
             state["invisible"] = "true"
@@ -125,24 +125,24 @@ class ButtonTest : UsesResources() {
     fun testIsIgnoredClickable() {
         with(Button()) {
             assertFalse(isClickable)
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
 
         with(Button(events = listOf(EventId.FOLLOWUP))) {
             assertTrue(isClickable)
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
         }
 
         with(Button(url = TEST_URL)) {
             assertTrue(isClickable)
-            assertFalse(testIsIgnored)
+            assertFalse(isIgnored)
         }
     }
 
     @Test
     fun testButtonStyleUnknown() {
         val button = Button(style = Button.Style.UNKNOWN, events = listOf(EventId.FOLLOWUP))
-        assertTrue(button.testIsIgnored)
+        assertTrue(button.isIgnored)
     }
     // endregion Property - isIgnored
 

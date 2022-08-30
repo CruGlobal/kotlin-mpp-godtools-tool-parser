@@ -35,9 +35,9 @@ class ContentTest : UsesResources() {
         assertFalse(
             object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
         )
-        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION)) {}.testIsIgnored)
-        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertFalse(object : Content(manifest, requiredFeatures = emptySet()) {}.testIsIgnored)
+        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION)) {}.isIgnored)
+        assertFalse(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.isIgnored)
+        assertFalse(object : Content(manifest, requiredFeatures = emptySet()) {}.isIgnored)
     }
 
     @Test
@@ -46,8 +46,8 @@ class ContentTest : UsesResources() {
         assertTrue(
             object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
         )
-        assertTrue(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.testIsIgnored)
-        assertTrue(object : Content(manifest, requiredFeatures = setOf("kjlasdf")) {}.testIsIgnored)
+        assertTrue(object : Content(manifest, requiredFeatures = setOf(FEATURE_MULTISELECT)) {}.isIgnored)
+        assertTrue(object : Content(manifest, requiredFeatures = setOf("kjlasdf")) {}.isIgnored)
     }
     // endregion required-features
 
@@ -55,28 +55,28 @@ class ContentTest : UsesResources() {
     @Test
     fun verifyRestrictToSupported() {
         val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
-        assertFalse(object : Content(Manifest(config), restrictTo = DeviceType.ALL) {}.testIsIgnored)
-        assertFalse(object : Content(Manifest(config), restrictTo = config.supportedDeviceTypes) {}.testIsIgnored)
-        assertFalse(object : Content(Manifest(config), restrictTo = setOf(DeviceType.ANDROID)) {}.testIsIgnored)
+        assertFalse(object : Content(Manifest(config), restrictTo = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(Manifest(config), restrictTo = config.supportedDeviceTypes) {}.isIgnored)
+        assertFalse(object : Content(Manifest(config), restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
     }
 
     @Test
     fun verifyRestrictToNotSupported() {
         val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
-        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.UNKNOWN)) {}.testIsIgnored)
-        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.IOS)) {}.testIsIgnored)
+        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
+        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
     }
     // endregion restrictTo
 
     // region version
     @Test
     fun verifyVersionSupported() {
-        assertFalse(object : Content(Manifest(), version = SCHEMA_VERSION) {}.testIsIgnored)
+        assertFalse(object : Content(Manifest(), version = SCHEMA_VERSION) {}.isIgnored)
     }
 
     @Test
     fun verifyVersionNotSupported() {
-        assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.testIsIgnored)
+        assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
     // endregion version
 
@@ -84,7 +84,7 @@ class ContentTest : UsesResources() {
     @Test
     fun verifyGoneIfInvalid() {
         with(object : Content(goneIf = "invalid".toExpressionOrNull()) {}) {
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
     }
 
@@ -158,7 +158,7 @@ class ContentTest : UsesResources() {
     @Test
     fun verifyInvisibleIfInvalid() {
         with(object : Content(invisibleIf = "invalid".toExpressionOrNull()) {}) {
-            assertTrue(testIsIgnored)
+            assertTrue(isIgnored)
         }
     }
 

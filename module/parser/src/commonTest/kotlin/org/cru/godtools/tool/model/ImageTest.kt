@@ -59,7 +59,7 @@ class ImageTest : UsesResources() {
             resources = { listOf(Resource(it, "image.png")) }
         )
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))
-        assertTrue(image.testIsIgnored)
+        assertTrue(image.isIgnored)
     }
     // endregion parse Image
 
@@ -95,9 +95,9 @@ class ImageTest : UsesResources() {
     @Test
     fun testIsIgnoredMissingResource() {
         val manifest = Manifest(resources = { listOf(Resource(it, "valid.png")) })
-        assertTrue(Image(manifest, resource = null).testIsIgnored)
-        assertTrue(Image(manifest, resource = "").testIsIgnored)
-        assertFalse(Image(manifest, resource = "valid.png").testIsIgnored)
+        assertTrue(Image(manifest, resource = null).isIgnored)
+        assertTrue(Image(manifest, resource = "").isIgnored)
+        assertFalse(Image(manifest, resource = "valid.png").isIgnored)
     }
     // endregion isIgnored
 }
