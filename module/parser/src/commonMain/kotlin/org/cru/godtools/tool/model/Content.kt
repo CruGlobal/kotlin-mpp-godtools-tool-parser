@@ -55,7 +55,7 @@ abstract class Content : BaseModel, Visibility {
      */
     internal open val isIgnored
         get() = version > SCHEMA_VERSION ||
-            !manifest.config.supportedFeatures.containsAll(requiredFeatures) ||
+            requiredFeatures.any { !manifest.config.supportsFeature(it) } ||
             restrictTo.none { it in manifest.config.supportedDeviceTypes } ||
             invisibleIf?.isValid() == false ||
             goneIf?.isValid() == false

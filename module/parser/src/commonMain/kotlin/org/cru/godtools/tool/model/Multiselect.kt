@@ -85,7 +85,7 @@ class Multiselect : Content {
         this.options = options?.invoke(this).orEmpty()
     }
 
-    override val isIgnored get() = FEATURE_MULTISELECT !in manifest.config.supportedFeatures || super.isIgnored
+    override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_MULTISELECT) || super.isIgnored
 
     class Option : Content, Parent, HasAnalyticsEvents {
         internal companion object {

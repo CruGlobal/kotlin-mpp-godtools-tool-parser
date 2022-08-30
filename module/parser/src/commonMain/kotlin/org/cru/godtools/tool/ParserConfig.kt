@@ -8,7 +8,7 @@ const val FEATURE_FLOW = "flow"
 const val FEATURE_MULTISELECT = "multiselect"
 
 data class ParserConfig(
-    internal val supportedFeatures: Set<String> = emptySet(),
+    private val supportedFeatures: Set<String> = emptySet(),
     internal val supportedDeviceTypes: Set<DeviceType> = DEFAULT_SUPPORTED_DEVICE_TYPES,
     internal val parsePages: Boolean = true,
     internal val parseTips: Boolean = true
@@ -20,6 +20,8 @@ data class ParserConfig(
     fun withParseRelated(enabled: Boolean) = copy(parsePages = enabled, parseTips = enabled)
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
     fun withParseTips(enabled: Boolean) = copy(parseTips = enabled)
+
+    internal fun supportsFeature(feature: String) = feature in supportedFeatures
 }
 
 internal expect val DEFAULT_SUPPORTED_DEVICE_TYPES: Set<DeviceType>

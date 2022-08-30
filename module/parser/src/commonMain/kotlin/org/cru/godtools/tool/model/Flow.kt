@@ -51,7 +51,7 @@ class Flow : Content {
         }
     }
 
-    override val isIgnored get() = FEATURE_FLOW !in manifest.config.supportedFeatures || super.isIgnored
+    override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_FLOW) || super.isIgnored
 
     class Item : BaseModel, Parent, Visibility {
         companion object {

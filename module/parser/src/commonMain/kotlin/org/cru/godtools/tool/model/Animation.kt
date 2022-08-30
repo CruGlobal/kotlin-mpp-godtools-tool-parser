@@ -60,5 +60,5 @@ class Animation : Content, Clickable {
         stopListeners = emptySet()
     }
 
-    override val isIgnored get() = FEATURE_ANIMATION !in manifest.config.supportedFeatures || super.isIgnored
+    override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_ANIMATION) || super.isIgnored
 }
