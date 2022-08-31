@@ -15,9 +15,11 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.internal.coroutines.receive
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
+import org.cru.godtools.tool.model.Version.Companion.toVersion
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNull
@@ -79,6 +81,46 @@ class ContentTest : UsesResources() {
         assertTrue(object : Content(Manifest(), version = SCHEMA_VERSION + 1) {}.isIgnored)
     }
     // endregion version
+
+    // region required-versions
+    @Test
+    fun verifyRequiredAndroidVersion() {
+        // requiredAndroidVersion is not satisfied if the device version hasn't been configured
+        val default = Manifest(ParserConfig())
+        assertTrue(object : Content(default, requiredAndroidVersion = "2".toVersion()) {}.isIgnored)
+
+        // requireAndroidVersion is satisfied for any newer Android app version
+        val android = Manifest(config = ParserConfig().withAppVersion(DeviceType.ANDROID, "2"))
+        assertFalse(object : Content(android) {}.isIgnored)
+        assertFalse(object : Content(android, requiredAndroidVersion = "1".toVersion()) {}.isIgnored)
+        assertFalse(object : Content(android, requiredAndroidVersion = "2".toVersion()) {}.isIgnored)
+        assertTrue(object : Content(android, requiredAndroidVersion = "2.0.0.1".toVersion()) {}.isIgnored)
+        assertTrue(object : Content(android, requiredAndroidVersion = "3".toVersion()) {}.isIgnored)
+
+        // requiredAndroidVersion is satisfied for any ios app version
+        val ios = Manifest(config = ParserConfig().withAppVersion(DeviceType.IOS, "2"))
+        assertFalse(object : Content(ios, requiredAndroidVersion = Version.MAX) {}.isIgnored)
+    }
+
+    @Test
+    fun verifyRequiredIosVersion() {
+        // requiredIosVersion is not satisfied if the device version hasn't been configured
+        val default = Manifest(ParserConfig())
+        assertTrue(object : Content(default, requiredIosVersion = "2".toVersion()) {}.isIgnored)
+
+        // requiredIosVersion is satisfied for any newer ios app version
+        val ios = Manifest(config = ParserConfig().withAppVersion(DeviceType.IOS, "2"))
+        assertFalse(object : Content(ios) {}.isIgnored)
+        assertFalse(object : Content(ios, requiredIosVersion = "1".toVersion()) {}.isIgnored)
+        assertFalse(object : Content(ios, requiredIosVersion = "2".toVersion()) {}.isIgnored)
+        assertTrue(object : Content(ios, requiredIosVersion = "2.0.0.1".toVersion()) {}.isIgnored)
+        assertTrue(object : Content(ios, requiredIosVersion = "3".toVersion()) {}.isIgnored)
+
+        // requiredIosVersion is satisfied for any android app version
+        val android = Manifest(config = ParserConfig().withAppVersion(DeviceType.ANDROID, "2"))
+        assertFalse(object : Content(android, requiredIosVersion = Version.MAX) {}.isIgnored)
+    }
+    // endregion required-versions
 
     // region Visibility Attributes
     @Test
@@ -229,6 +271,22 @@ class ContentTest : UsesResources() {
         }
     }
     // endregion Visibility Attributes
+
+    // region Parsing
+    @Test
+    fun parseRequiredVersions() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_required_versions.xml"))
+        assertEquals("1.2".toVersion(), content.requiredAndroidVersion)
+        assertEquals("2.3".toVersion(), content.requiredIosVersion)
+    }
+
+    @Test
+    fun parseRequiredVersionsInvalid() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_required_versions_invalid.xml"))
+        assertEquals(Version.MAX, content.requiredAndroidVersion)
+        assertEquals(Version.MAX, content.requiredIosVersion)
+    }
+    // endregion Parsing
 
     // region parseContentElement()
     @Test

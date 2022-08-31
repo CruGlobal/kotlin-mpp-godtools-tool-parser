@@ -40,7 +40,7 @@ class Card : Content, Parent, Clickable {
         url = null
     }
 
-    override val isIgnored get() = FEATURE_CONTENT_CARD !in manifest.config.supportedFeatures || super.isIgnored
+    override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_CONTENT_CARD) || super.isIgnored
 }
 
 val Card?.backgroundColor get() = this?._backgroundColor ?: stylesParent.cardBackgroundColor
