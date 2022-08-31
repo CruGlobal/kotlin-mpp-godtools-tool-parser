@@ -52,10 +52,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
-      - name: Ktlint
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: ktlintCheck --scan
       - name: Lint
         uses: gradle/gradle-build-action@v2
         with:
@@ -64,6 +60,23 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: generateMetadataFileForKotlinMultiplatformPublication --scan
+
+  ktlint:
+    name: Ktlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Konan
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Ktlint
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ktlintCheck --scan
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v3
@@ -189,7 +202,7 @@ jobs:
     name: Publish Library
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/')))
-    needs: [ build, static_checks, android_tests, ios_tests, js_tests ]
+    needs: [ build, ktlint, static_checks, android_tests, ios_tests, js_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -205,7 +218,7 @@ jobs:
     name: Publish iOS Podspec
     runs-on: macos-11
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
-    needs: [ build, static_checks, ios_tests ]
+    needs: [ build, ktlint, static_checks, ios_tests ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
