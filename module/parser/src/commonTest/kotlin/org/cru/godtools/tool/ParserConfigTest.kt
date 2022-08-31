@@ -66,4 +66,11 @@ class ParserConfigTest {
         assertTrue(orig.parseTips)
         assertFalse(updated.parseTips)
     }
+
+    @Test
+    fun testSupportsFeatureRequiredVersions() {
+        val config = ParserConfig()
+        assertFalse(config.supportsFeature(FEATURE_REQUIRED_VERSIONS))
+        assertTrue(config.withAppVersion(DeviceType.values().random(), "1").supportsFeature(FEATURE_REQUIRED_VERSIONS))
+    }
 }

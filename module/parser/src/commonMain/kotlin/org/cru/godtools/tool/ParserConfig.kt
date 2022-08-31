@@ -9,6 +9,7 @@ const val FEATURE_ANIMATION = "animation"
 const val FEATURE_CONTENT_CARD = "content_card"
 const val FEATURE_FLOW = "flow"
 const val FEATURE_MULTISELECT = "multiselect"
+internal const val FEATURE_REQUIRED_VERSIONS = "required-versions"
 
 data class ParserConfig @VisibleForTesting internal constructor(
     internal val deviceType: DeviceType = DeviceType.UNKNOWN,
@@ -28,7 +29,10 @@ data class ParserConfig @VisibleForTesting internal constructor(
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
     fun withParseTips(enabled: Boolean) = copy(parseTips = enabled)
 
-    internal fun supportsFeature(feature: String) = feature in supportedFeatures
+    internal fun supportsFeature(feature: String) = when (feature) {
+        FEATURE_REQUIRED_VERSIONS -> appVersion != null
+        else -> feature in supportedFeatures
+    }
 }
 
 internal expect val DEFAULT_SUPPORTED_DEVICE_TYPES: Set<DeviceType>
