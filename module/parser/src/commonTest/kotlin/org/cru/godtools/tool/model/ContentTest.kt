@@ -18,6 +18,7 @@ import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.Version.Companion.toVersion
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.state.State
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -55,18 +56,30 @@ class ContentTest : UsesResources() {
 
     // region restrictTo
     @Test
-    fun verifyRestrictToSupported() {
-        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
-        assertFalse(object : Content(Manifest(config), restrictTo = DeviceType.ALL) {}.isIgnored)
-        assertFalse(object : Content(Manifest(config), restrictTo = config.supportedDeviceTypes) {}.isIgnored)
-        assertFalse(object : Content(Manifest(config), restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
-    }
+    fun verifyRestrictTo() {
+        val android = Manifest(ParserConfig().withDeviceType(DeviceType.ANDROID))
+        assertFalse(object : Content(android, restrictTo = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(android, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertFalse(object : Content(android, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
 
-    @Test
-    fun verifyRestrictToNotSupported() {
-        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID))
-        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
-        assertTrue(object : Content(Manifest(config), restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
+        val ios = Manifest(ParserConfig().withDeviceType(DeviceType.IOS))
+        assertFalse(object : Content(ios, restrictTo = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(ios, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertFalse(object : Content(ios, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
+
+        val web = Manifest(ParserConfig().withDeviceType(DeviceType.WEB))
+        assertFalse(object : Content(web, restrictTo = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(web, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
     }
     // endregion restrictTo
 

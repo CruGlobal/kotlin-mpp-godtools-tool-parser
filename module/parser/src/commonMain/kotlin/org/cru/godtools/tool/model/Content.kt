@@ -75,7 +75,7 @@ abstract class Content : BaseModel, Visibility {
         get() = version > SCHEMA_VERSION ||
             !areContentRestrictionsSatisfied ||
             requiredFeatures.any { !manifest.config.supportsFeature(it) } ||
-            restrictTo.none { it in manifest.config.supportedDeviceTypes } ||
+            restrictTo.none { manifest.config.supportsDeviceType(it) } ||
             invisibleIf?.isValid() == false ||
             goneIf?.isValid() == false
 

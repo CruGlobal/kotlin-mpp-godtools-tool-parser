@@ -7,6 +7,7 @@ import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -44,7 +45,7 @@ class TabsTest : UsesResources() {
 
     @Test
     fun testParseTabsIgnoredContent() = runTest {
-        val manifest = Manifest(ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)))
+        val manifest = Manifest(ParserConfig().withDeviceType(DeviceType.IOS))
         val tab = Tabs(manifest, getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
         assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])

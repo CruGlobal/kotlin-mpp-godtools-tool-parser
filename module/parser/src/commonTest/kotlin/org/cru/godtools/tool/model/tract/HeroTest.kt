@@ -15,6 +15,7 @@ import org.cru.godtools.tool.model.Paragraph
 import org.cru.godtools.tool.model.Tabs
 import org.cru.godtools.tool.model.TestColors
 import org.cru.godtools.tool.model.Text
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -40,7 +41,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHeroIgnoredContent() = runTest {
-        val config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE))
+        val config = ParserConfig().withDeviceType(DeviceType.ANDROID)
         val page = TractPage(Manifest(config = config), null, getTestXmlParser("hero_ignored_content.xml"))
         with(assertNotNull(page.hero)) {
             assertEquals(2, content.size)
