@@ -6,6 +6,7 @@ import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
+import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.tool.model.Version.Companion.toVersionOrNull
 import org.cru.godtools.tool.model.tips.InlineTip
@@ -23,8 +24,10 @@ abstract class Content : BaseModel, Visibility {
     private val version: Int
     private val restrictTo: Set<DeviceType>
     private val requiredFeatures: Set<String>
-    private val requiredAndroidVersion: Version?
-    private val requiredIosVersion: Version?
+    @VisibleForTesting
+    internal val requiredAndroidVersion: Version?
+    @VisibleForTesting
+    internal val requiredIosVersion: Version?
 
     final override val invisibleIf: Expression?
     final override val goneIf: Expression?

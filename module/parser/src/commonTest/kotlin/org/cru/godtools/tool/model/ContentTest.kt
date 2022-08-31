@@ -19,6 +19,7 @@ import org.cru.godtools.tool.model.Version.Companion.toVersion
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.state.State
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNull
@@ -270,6 +271,22 @@ class ContentTest : UsesResources() {
         }
     }
     // endregion Visibility Attributes
+
+    // region Parsing
+    @Test
+    fun parseRequiredVersions() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_required_versions.xml"))
+        assertEquals("1.2".toVersion(), content.requiredAndroidVersion)
+        assertEquals("2.3".toVersion(), content.requiredIosVersion)
+    }
+
+    @Test
+    fun parseRequiredVersionsInvalid() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_required_versions_invalid.xml"))
+        assertEquals(Version.MAX, content.requiredAndroidVersion)
+        assertEquals(Version.MAX, content.requiredIosVersion)
+    }
+    // endregion Parsing
 
     // region parseContentElement()
     @Test
