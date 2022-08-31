@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 class ParserConfigTest {
     @Test
     fun testWithAppVersion() {
-        val orig = ParserConfig()
+        val orig = ParserConfig(deviceType = DeviceType.UNKNOWN)
         assertEquals(DeviceType.UNKNOWN, orig.deviceType)
         assertNull(orig.appVersion)
 

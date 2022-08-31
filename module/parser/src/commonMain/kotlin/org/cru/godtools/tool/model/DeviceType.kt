@@ -25,3 +25,5 @@ enum class DeviceType {
             REGEX_SEQUENCE_SEPARATOR.split(this).mapTo(mutableSetOf()) { it.toDeviceType() }
     }
 }
+
+internal expect val DeviceType.Companion.DEFAULT: DeviceType

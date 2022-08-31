@@ -1,6 +1,7 @@
 package org.cru.godtools.tool
 
 import org.cru.godtools.tool.internal.VisibleForTesting
+import org.cru.godtools.tool.model.DEFAULT
 import org.cru.godtools.tool.model.DeviceType
 import org.cru.godtools.tool.model.Version
 import org.cru.godtools.tool.model.Version.Companion.toVersion
@@ -12,7 +13,7 @@ const val FEATURE_MULTISELECT = "multiselect"
 internal const val FEATURE_REQUIRED_VERSIONS = "required-versions"
 
 data class ParserConfig @VisibleForTesting internal constructor(
-    internal val deviceType: DeviceType = DeviceType.UNKNOWN,
+    internal val deviceType: DeviceType = DeviceType.DEFAULT,
     internal val appVersion: Version? = null,
     private val supportedFeatures: Set<String> = emptySet(),
     internal val supportedDeviceTypes: Set<DeviceType> = DEFAULT_SUPPORTED_DEVICE_TYPES,
