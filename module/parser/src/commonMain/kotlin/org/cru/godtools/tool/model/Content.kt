@@ -15,6 +15,7 @@ import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_REQUIRED_FEATURES = "required-features"
+private const val XML_REQUIRED_DEVICE_TYPE = "required-device-type"
 private const val XML_REQUIRED_ANDROID_VERSION = "required-android-version"
 private const val XML_REQUIRED_IOS_VERSION = "required-ios-version"
 private const val XML_RESTRICT_TO = "restrictTo"
@@ -23,7 +24,8 @@ private const val XML_VERSION = "version"
 abstract class Content : BaseModel, Visibility {
     private val version: Int
     private val requiredFeatures: Set<String>
-    private val requiredDeviceType: Set<DeviceType>
+    @VisibleForTesting
+    internal val requiredDeviceType: Set<DeviceType>
     @VisibleForTesting
     internal val requiredAndroidVersion: Version?
     @VisibleForTesting
@@ -34,9 +36,11 @@ abstract class Content : BaseModel, Visibility {
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
-        requiredDeviceType = parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes() ?: DeviceType.ALL
         requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
             ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
+        requiredDeviceType = parser.getAttributeValue(XML_REQUIRED_DEVICE_TYPE)?.toDeviceTypes()
+            ?: parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes()
+            ?: DeviceType.ALL
         requiredAndroidVersion = parser.getAttributeValue(XML_REQUIRED_ANDROID_VERSION)
             ?.let { it.toVersionOrNull() ?: Version.MAX }
         requiredIosVersion = parser.getAttributeValue(XML_REQUIRED_IOS_VERSION)

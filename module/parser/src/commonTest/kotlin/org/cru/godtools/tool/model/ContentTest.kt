@@ -287,6 +287,19 @@ class ContentTest : UsesResources() {
 
     // region Parsing
     @Test
+    fun parseRestrictTo() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_restrict_to.xml"))
+        assertEquals(setOf(DeviceType.IOS, DeviceType.WEB), content.requiredDeviceType)
+    }
+
+    @Test
+    fun parseRequiredDeviceType() = runTest {
+        val content = Text(Manifest(), getTestXmlParser("content_required_device_type.xml"))
+        assertEquals(setOf(DeviceType.ANDROID, DeviceType.WEB), content.requiredDeviceType)
+        assertFalse(DeviceType.IOS in content.requiredDeviceType)
+    }
+
+    @Test
     fun parseRequiredVersions() = runTest {
         val content = Text(Manifest(), getTestXmlParser("content_required_versions.xml"))
         assertEquals("1.2".toVersion(), content.requiredAndroidVersion)

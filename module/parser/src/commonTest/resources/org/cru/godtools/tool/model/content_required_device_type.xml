@@ -1,0 +1,4 @@
+<content:text xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    required-device-type="android web" restrictTo="ios">
+    required-device-type
+</content:text>
