@@ -22,11 +22,6 @@ data class ParserConfig private constructor(
 
     fun withAppVersion(deviceType: DeviceType = DeviceType.DEFAULT, version: String?) =
         copy(deviceType = deviceType, appVersion = version?.toVersion())
-    @Deprecated("Since v0.7.0, use withAppVersion(deviceType, version) instead.")
-    fun withSupportedDeviceTypes(types: Set<DeviceType>) = withAppVersion(
-        deviceType = types.firstOrNull { it == DeviceType.ANDROID || it == DeviceType.IOS } ?: DeviceType.DEFAULT,
-        version = null
-    )
     fun withSupportedFeatures(features: Set<String>) = copy(supportedFeatures = features)
     fun withParseRelated(enabled: Boolean) = copy(parsePages = enabled, parseTips = enabled)
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
