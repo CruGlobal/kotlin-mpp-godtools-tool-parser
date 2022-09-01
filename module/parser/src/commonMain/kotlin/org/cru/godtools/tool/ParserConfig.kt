@@ -20,7 +20,7 @@ data class ParserConfig private constructor(
 ) {
     constructor() : this(supportedFeatures = emptySet())
 
-    fun withAppVersion(deviceType: DeviceType, version: String?) =
+    fun withAppVersion(deviceType: DeviceType = DeviceType.DEFAULT, version: String?) =
         copy(deviceType = deviceType, appVersion = version?.toVersion())
     @Deprecated("Since v0.7.0, use withAppVersion(deviceType, version) instead.")
     fun withSupportedDeviceTypes(types: Set<DeviceType>) = withAppVersion(
