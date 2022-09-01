@@ -54,34 +54,34 @@ class ContentTest : UsesResources() {
     }
     // endregion required-features
 
-    // region restrictTo
+    // region required-device-type
     @Test
-    fun verifyRestrictTo() {
+    fun verifyRequiredDeviceType() {
         val android = Manifest(ParserConfig().withDeviceType(DeviceType.ANDROID))
-        assertFalse(object : Content(android, restrictTo = DeviceType.ALL) {}.isIgnored)
-        assertFalse(object : Content(android, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
-        assertFalse(object : Content(android, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
-        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
-        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
-        assertTrue(object : Content(android, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
+        assertFalse(object : Content(android, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(android, requiredDeviceType = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertFalse(object : Content(android, requiredDeviceType = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(android, requiredDeviceType = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertTrue(object : Content(android, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(android, requiredDeviceType = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
 
         val ios = Manifest(ParserConfig().withDeviceType(DeviceType.IOS))
-        assertFalse(object : Content(ios, restrictTo = DeviceType.ALL) {}.isIgnored)
-        assertFalse(object : Content(ios, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
-        assertFalse(object : Content(ios, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
-        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
-        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
-        assertTrue(object : Content(ios, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
+        assertFalse(object : Content(ios, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(ios, requiredDeviceType = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertFalse(object : Content(ios, requiredDeviceType = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(ios, requiredDeviceType = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertTrue(object : Content(ios, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(ios, requiredDeviceType = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
 
         val web = Manifest(ParserConfig().withDeviceType(DeviceType.WEB))
-        assertFalse(object : Content(web, restrictTo = DeviceType.ALL) {}.isIgnored)
-        assertFalse(object : Content(web, restrictTo = setOf(DeviceType.WEB)) {}.isIgnored)
-        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.ANDROID)) {}.isIgnored)
-        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.IOS)) {}.isIgnored)
-        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.MOBILE)) {}.isIgnored)
-        assertTrue(object : Content(web, restrictTo = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
+        assertFalse(object : Content(web, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
+        assertFalse(object : Content(web, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
+        assertTrue(object : Content(web, requiredDeviceType = setOf(DeviceType.ANDROID)) {}.isIgnored)
+        assertTrue(object : Content(web, requiredDeviceType = setOf(DeviceType.IOS)) {}.isIgnored)
+        assertTrue(object : Content(web, requiredDeviceType = setOf(DeviceType.MOBILE)) {}.isIgnored)
+        assertTrue(object : Content(web, requiredDeviceType = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
     }
-    // endregion restrictTo
+    // endregion required-device-type
 
     // region version
     @Test
