@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 class ParserConfigTest {
     @Test
     fun testWithAppVersion() {
-        val orig = ParserConfig(deviceType = DeviceType.UNKNOWN)
+        val orig = ParserConfig().withDeviceType(DeviceType.UNKNOWN)
         assertEquals(DeviceType.UNKNOWN, orig.deviceType)
         assertNull(orig.appVersion)
 
@@ -22,7 +22,7 @@ class ParserConfigTest {
 
     @Test
     fun testWithSupportedFeatures() {
-        val orig = ParserConfig(supportedFeatures = emptySet())
+        val orig = ParserConfig().withSupportedFeatures(emptySet())
         val updated = orig.withSupportedFeatures(setOf("test"))
 
         assertFalse(orig.supportsFeature("test"))
@@ -31,7 +31,7 @@ class ParserConfigTest {
 
     @Test
     fun testWithParseRelated() {
-        val orig = ParserConfig(parsePages = true, parseTips = true)
+        val orig = ParserConfig().withParsePages(true).withParseTips(true)
         val updated = orig.withParseRelated(false)
 
         assertTrue(orig.parsePages)
@@ -42,7 +42,7 @@ class ParserConfigTest {
 
     @Test
     fun testWithParsePages() {
-        val orig = ParserConfig(parsePages = true)
+        val orig = ParserConfig().withParsePages(true)
         val updated = orig.withParsePages(false)
 
         assertTrue(orig.parsePages)
@@ -51,7 +51,7 @@ class ParserConfigTest {
 
     @Test
     fun testWithParseTips() {
-        val orig = ParserConfig(parseTips = true)
+        val orig = ParserConfig().withParseTips(true)
         val updated = orig.withParseTips(false)
 
         assertTrue(orig.parseTips)

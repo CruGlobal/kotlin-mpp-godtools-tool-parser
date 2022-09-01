@@ -37,10 +37,10 @@ class CardTest : UsesResources() {
 
     @Test
     fun testIsIgnored() {
-        with(Card(Manifest(config = ParserConfig(supportedFeatures = setOf(FEATURE_CONTENT_CARD))))) {
+        with(Card(Manifest(config = ParserConfig().withSupportedFeatures(setOf(FEATURE_CONTENT_CARD))))) {
             assertFalse(isIgnored)
         }
-        with(Card(Manifest(config = ParserConfig(supportedFeatures = emptySet())))) {
+        with(Card(Manifest(config = ParserConfig().withSupportedFeatures(emptySet())))) {
             assertTrue(isIgnored)
         }
     }

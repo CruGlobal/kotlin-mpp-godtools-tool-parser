@@ -39,11 +39,11 @@ class AnimationTest : UsesResources() {
 
     @Test
     fun testIsIgnored() {
-        with(Animation(Manifest(config = ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION))))) {
+        with(Animation(Manifest(ParserConfig().withSupportedFeatures(setOf(FEATURE_ANIMATION))))) {
             assertFalse(isIgnored)
         }
 
-        with(Animation(Manifest(config = ParserConfig(supportedFeatures = emptySet())))) {
+        with(Animation(Manifest(ParserConfig().withSupportedFeatures(emptySet())))) {
             assertTrue(isIgnored)
         }
     }

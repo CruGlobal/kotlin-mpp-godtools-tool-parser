@@ -34,7 +34,7 @@ class ContentTest : UsesResources() {
     // region required-features
     @Test
     fun verifyRequiredFeaturesSupported() {
-        val manifest = Manifest(ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)))
+        val manifest = Manifest(ParserConfig().withSupportedFeatures(setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)))
         assertFalse(
             object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
         )
@@ -45,7 +45,7 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyRequiredFeaturesNotSupported() {
-        val manifest = Manifest(ParserConfig(supportedFeatures = setOf(FEATURE_ANIMATION)))
+        val manifest = Manifest(ParserConfig().withSupportedFeatures(setOf(FEATURE_ANIMATION)))
         assertTrue(
             object : Content(manifest, requiredFeatures = setOf(FEATURE_ANIMATION, FEATURE_MULTISELECT)) {}.isIgnored
         )
