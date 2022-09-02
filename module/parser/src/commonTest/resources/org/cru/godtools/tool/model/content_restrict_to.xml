@@ -1,0 +1,4 @@
+<content:text xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    restrictTo="ios web">
+    restrictTo
+</content:text>

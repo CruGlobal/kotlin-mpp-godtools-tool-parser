@@ -6,6 +6,7 @@ import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -55,7 +56,7 @@ class ImageTest : UsesResources() {
     @Test
     fun testParseImageRestricted() = runTest {
         val manifest = Manifest(
-            config = ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE)),
+            config = ParserConfig().withDeviceType(DeviceType.IOS),
             resources = { listOf(Resource(it, "image.png")) }
         )
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))

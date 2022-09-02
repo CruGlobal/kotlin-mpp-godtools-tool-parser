@@ -11,6 +11,7 @@ import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.tool.model.Button.Type.Companion.toButtonTypeOrNull
 import org.cru.godtools.tool.state.State
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -71,13 +72,18 @@ class ButtonTest : UsesResources() {
 
     @Test
     fun testParseButtonRestrictTo() = runTest {
-        val webConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.WEB))
+        val webConfig = ParserConfig().withDeviceType(DeviceType.WEB)
         with(Button(Manifest(config = webConfig), getTestXmlParser("button_restrictTo.xml"))) {
             assertFalse(isIgnored)
         }
 
-        val mobileConfig = ParserConfig(supportedDeviceTypes = setOf(DeviceType.MOBILE))
-        with(Button(Manifest(config = mobileConfig), getTestXmlParser("button_restrictTo.xml"))) {
+        val androidConfig = ParserConfig().withDeviceType(DeviceType.ANDROID)
+        with(Button(Manifest(config = androidConfig), getTestXmlParser("button_restrictTo.xml"))) {
+            assertTrue(isIgnored)
+        }
+
+        val iosConfig = ParserConfig().withDeviceType(DeviceType.IOS)
+        with(Button(Manifest(config = iosConfig), getTestXmlParser("button_restrictTo.xml"))) {
             assertTrue(isIgnored)
         }
     }
@@ -88,7 +94,7 @@ class ButtonTest : UsesResources() {
             assertTrue(isIgnored)
         }
 
-        val config = ParserConfig(supportedFeatures = setOf(FEATURE_MULTISELECT))
+        val config = ParserConfig().withSupportedFeatures(setOf(FEATURE_MULTISELECT))
         with(Button(Manifest(config = config), getTestXmlParser("button_requiredFeatures.xml"))) {
             assertFalse(isIgnored)
         }

@@ -15,6 +15,7 @@ import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.xml.XmlPullParser
 
 private const val XML_REQUIRED_FEATURES = "required-features"
+private const val XML_REQUIRED_DEVICE_TYPE = "required-device-type"
 private const val XML_REQUIRED_ANDROID_VERSION = "required-android-version"
 private const val XML_REQUIRED_IOS_VERSION = "required-ios-version"
 private const val XML_RESTRICT_TO = "restrictTo"
@@ -22,8 +23,9 @@ private const val XML_VERSION = "version"
 
 abstract class Content : BaseModel, Visibility {
     private val version: Int
-    private val restrictTo: Set<DeviceType>
     private val requiredFeatures: Set<String>
+    @VisibleForTesting
+    internal val requiredDeviceType: Set<DeviceType>
     @VisibleForTesting
     internal val requiredAndroidVersion: Version?
     @VisibleForTesting
@@ -34,9 +36,11 @@ abstract class Content : BaseModel, Visibility {
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
-        restrictTo = parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes() ?: DeviceType.ALL
         requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
             ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
+        requiredDeviceType = parser.getAttributeValue(XML_REQUIRED_DEVICE_TYPE)?.toDeviceTypes()
+            ?: parser.getAttributeValue(XML_RESTRICT_TO)?.toDeviceTypes()
+            ?: DeviceType.ALL
         requiredAndroidVersion = parser.getAttributeValue(XML_REQUIRED_ANDROID_VERSION)
             ?.let { it.toVersionOrNull() ?: Version.MAX }
         requiredIosVersion = parser.getAttributeValue(XML_REQUIRED_IOS_VERSION)
@@ -52,14 +56,14 @@ abstract class Content : BaseModel, Visibility {
     internal constructor(
         parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,
-        restrictTo: Set<DeviceType> = DeviceType.ALL,
         requiredFeatures: Set<String> = emptySet(),
+        requiredDeviceType: Set<DeviceType> = DeviceType.ALL,
         requiredAndroidVersion: Version? = null,
         requiredIosVersion: Version? = null,
         invisibleIf: Expression? = null,
         goneIf: Expression? = null
     ) : super(parent) {
-        this.restrictTo = restrictTo
+        this.requiredDeviceType = requiredDeviceType
         this.version = version
         this.requiredFeatures = requiredFeatures
         this.requiredAndroidVersion = requiredAndroidVersion
@@ -75,12 +79,12 @@ abstract class Content : BaseModel, Visibility {
         get() = version > SCHEMA_VERSION ||
             !areContentRestrictionsSatisfied ||
             requiredFeatures.any { !manifest.config.supportsFeature(it) } ||
-            restrictTo.none { it in manifest.config.supportedDeviceTypes } ||
             invisibleIf?.isValid() == false ||
             goneIf?.isValid() == false
 
     private val areContentRestrictionsSatisfied
-        get() = manifest.config.isRequiredVersionSatisfied(DeviceType.ANDROID, requiredAndroidVersion) &&
+        get() = requiredDeviceType.any { manifest.config.supportsDeviceType(it) } &&
+            manifest.config.isRequiredVersionSatisfied(DeviceType.ANDROID, requiredAndroidVersion) &&
             manifest.config.isRequiredVersionSatisfied(DeviceType.IOS, requiredIosVersion)
 
     open val tips get() = emptyList<Tip>()

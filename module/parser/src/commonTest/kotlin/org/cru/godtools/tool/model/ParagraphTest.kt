@@ -8,6 +8,7 @@ import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.tips.InlineTip
 import org.cru.godtools.tool.model.tips.Tip
+import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -25,7 +26,7 @@ class ParagraphTest : UsesResources() {
 
     @Test
     fun testParseParagraphIgnoredContent() = runTest {
-        val manifest = Manifest(ParserConfig(supportedDeviceTypes = setOf(DeviceType.ANDROID, DeviceType.MOBILE)))
+        val manifest = Manifest(ParserConfig().withDeviceType(DeviceType.ANDROID))
         val paragraph = Paragraph(manifest, getTestXmlParser("paragraph_ignored_content.xml"))
         assertEquals(3, paragraph.content.size)
         assertEquals("Test", assertIs<Text>(paragraph.content[0]).text)
