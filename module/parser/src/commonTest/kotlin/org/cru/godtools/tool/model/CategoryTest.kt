@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
@@ -11,6 +12,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class CategoryTest : UsesResources() {
     @Test
     fun testParseCategory() = runTest {
