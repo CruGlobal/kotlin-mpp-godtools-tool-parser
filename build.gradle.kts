@@ -156,6 +156,10 @@ koverMerged {
 
         classes {
             excludes += listOf(
+                // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+                // TODO: remove this if we ever support coverage reports for iOS or js
+                "**.SaxXmlPullParser*",
+                // exclude the generated ANTLR StateExpression grammar parser
                 "org.cru.godtools.expressions.grammar.generated.*",
                 // test classes/sourceSets are not automatically filtered currently
                 "org.cru.godtools.**.*Test",
