@@ -118,7 +118,7 @@ jobs:
       - name: Run Android Unit Tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test jacocoTestReport --scan --no-build-cache
+          arguments: test koverMergedReport --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
@@ -131,12 +131,12 @@ jobs:
         with:
           name: android-unit-test-results
           path: "**/build/reports/tests/"
-      - name: Archive jacoco results
+      - name: Archive kover results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: jacoco-results
-          path: "**/build/reports/jacoco/"
+          name: kover-results
+          path: "**/build/reports/kover/"
 
   ios_tests:
     name: iOS Unit Tests

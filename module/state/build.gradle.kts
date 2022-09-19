@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     kotlin("plugin.parcelize")
+    alias(libs.plugins.kotlin.kover)
 }
 
 configureAndroidLibrary()

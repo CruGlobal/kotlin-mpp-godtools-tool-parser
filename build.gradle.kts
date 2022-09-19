@@ -4,7 +4,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     alias(libs.plugins.grgit)
-    alias(libs.plugins.junitJacoco)
+    alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.ktlint)
 }
 
@@ -145,30 +145,31 @@ tasks.create("cleanPodspec", Delete::class) {
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
 
-// region Jacoco
-junitJacoco {
-    jacocoVersion = libs.versions.jacoco.get()
-    includeNoLocationClasses = true
-    excludes = listOf(
-        // we exclude SaxXmlPullParser from reports because it is only used by iOS and JS
-        "**/SaxXmlPullParser*",
+// region Kotlin Kover
+koverMerged {
+    enable()
 
-        // exclude the generated ANTLR StateExpression grammar parser
-        "**/grammar/generated/StateExpression*"
-    )
-}
-subprojects {
-    apply(plugin = "org.gradle.jacoco")
-    tasks.withType(Test::class.java) {
-        extensions.configure(JacocoTaskExtension::class.java) {
-            excludes = excludes.orEmpty() + "jdk.internal.*"
+    filters {
+        projects {
+            excludes += listOf("module", "test-fixtures")
+        }
+
+        classes {
+            excludes += listOf(
+                // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+                // TODO: remove this if we ever support coverage reports for iOS or js
+                "**.SaxXmlPullParser*",
+                // exclude the generated ANTLR StateExpression grammar parser
+                "org.cru.godtools.expressions.grammar.generated.*",
+                // test classes/sourceSets are not automatically filtered currently
+                "org.cru.godtools.**.*Test",
+                "org.cru.godtools.**.*Test$*",
+                "org.cru.godtools.**.*TestKt",
+            )
         }
     }
-    tasks.create("jacocoTestReport") {
-        dependsOn(tasks.withType(JacocoReport::class.java))
-    }
 }
-// endregion Jacoco
+// endregion Kotlin Kover
 
 // region KtLint
 allprojects {
