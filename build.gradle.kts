@@ -153,6 +153,16 @@ koverMerged {
         projects {
             excludes += listOf("module", "test-fixtures")
         }
+
+        classes {
+            excludes += listOf(
+                "org.cru.godtools.expressions.grammar.generated.*",
+                // test classes/sourceSets are not automatically filtered currently
+                "org.cru.godtools.**.*Test",
+                "org.cru.godtools.**.*Test$*",
+                "org.cru.godtools.**.*TestKt",
+            )
+        }
     }
 }
 // endregion Kotlin Kover
