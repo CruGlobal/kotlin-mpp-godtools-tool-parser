@@ -31,6 +31,9 @@ okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
+# HACK: dependencies used to trigger renovate upgrades
+ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
+
 [plugins]
 grgit = { id = "org.ajoberstar.grgit", version = "5.0.0" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.6.0" }
