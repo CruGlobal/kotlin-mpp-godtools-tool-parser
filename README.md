@@ -1,6 +1,6 @@
 [![codecov](https://codecov.io/gh/CruGlobal/kotlin-mpp-godtools-tool-parser/branch/main/graph/badge.svg)](https://codecov.io/gh/CruGlobal/kotlin-mpp-godtools-tool-parser)
 
-# Releases
+# Publishing
 
 ## SNAPSHOT builds
 This project automatically publishes SNAPSHOTs to both a Maven and Cocoapods repo on any push to the `main` branch. 
