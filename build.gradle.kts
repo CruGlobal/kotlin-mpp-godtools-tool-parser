@@ -151,7 +151,7 @@ koverMerged {
 
     filters {
         projects {
-            excludes += listOf("module", "test-fixtures")
+            excludes += listOf("test-fixtures")
         }
 
         classes {
