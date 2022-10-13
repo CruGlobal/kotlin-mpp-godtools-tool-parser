@@ -13,7 +13,7 @@ okio = "3.2.0"
 robolectric = "4.9"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:7.3.0"
+android-gradle = "com.android.tools.build:gradle:7.3.1"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 antlr-kotlin-gradle = { module = "com.strumenta.antlr-kotlin:antlr-kotlin-gradle-plugin", version.ref = "antlr-kotlin" }
