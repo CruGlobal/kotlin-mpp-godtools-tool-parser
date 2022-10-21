@@ -18,7 +18,7 @@ internal value class Version private constructor(val version: List<UInt>) : Comp
         internal fun String.toVersionOrNull() = try {
             toVersion()
         } catch (e: IllegalArgumentException) {
-            Napier.d("Invalid Version: $this", e)
+            Napier.e("Invalid Version: $this", e, "Version")
             null
         }
     }
