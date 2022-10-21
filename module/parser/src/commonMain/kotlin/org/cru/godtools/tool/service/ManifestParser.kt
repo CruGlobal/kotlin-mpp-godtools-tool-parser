@@ -18,7 +18,7 @@ open class ManifestParser(private val parserFactory: XmlPullParserFactory, val d
     } catch (e: XmlPullParserException) {
         ParserResult.Error.Corrupted(e)
     } catch (e: Exception) {
-        Napier.d("Unexpected Parsing Exception", e, "ManifestParser")
+        Napier.e("Unexpected Parsing Exception", e, "ManifestParser")
         ParserResult.Error(e)
     }
 }
