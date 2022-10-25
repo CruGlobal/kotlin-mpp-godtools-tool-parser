@@ -1,12 +1,8 @@
 package org.cru.godtools.tool.state
 
+import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
-import org.cru.godtools.tool.internal.coroutines.receive
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -40,52 +36,32 @@ class StateTest {
     @Test
     fun testChangeFlow() = runTest {
         var i = 0
-        val channel = Channel<Int>()
-        val flow = state.changeFlow(KEY, KEY2) { i++ }
-            .onEach { channel.send(it) }
-            .launchIn(this)
+        state.changeFlow(KEY, KEY2) { i++ }.test {
+            // initial value
+            assertEquals(0, awaitItem())
 
-        // initial value
-        assertEquals(0, channel.receive(500))
+            // update state for monitored key
+            state[KEY] = "a"
+            assertEquals(1, awaitItem())
 
-        // update state for monitored key
-        state[KEY] = "a"
-        assertEquals(1, channel.receive(500))
+            // update state for other monitored key
+            state[KEY2] = "a"
+            assertEquals(2, awaitItem())
 
-        // update state for other monitored key
-        state[KEY2] = "a"
-        assertEquals(2, channel.receive(500))
-
-        // update state for a different key
-        state["other$KEY"] = "a"
-        delay(100)
-        assertTrue(channel.isEmpty)
-
-        // shut down flow
-        flow.cancel()
+            // update state for a different key
+            state["other$KEY"] = "a"
+            expectNoEvents()
+        }
         assertEquals(3, i)
     }
 
     @Test
     fun testChangeFlowNoKeys() = runTest {
         var count = 0
-        val channel = Channel<Int>()
-        val flow = state.changeFlow { count++ }
-            .onEach { channel.send(it) }
-            .launchIn(this)
-
-        // initial value
-        assertEquals(0, channel.receive(500))
-
-        // update state for multiple keys, should never emit a new value
-        for (i in 1..10) {
-            state["$KEY$i"] = "a"
-            delay(100)
-            assertTrue(channel.isEmpty)
+        state.changeFlow { count++ }.test {
+            assertEquals(0, awaitItem())
+            awaitComplete()
         }
-
-        // shut down flow
-        flow.cancel()
         assertEquals(1, count)
     }
 
