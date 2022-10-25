@@ -1,10 +1,7 @@
 package org.cru.godtools.tool.model
 
+import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.expressions.toExpressionOrNull
 import org.cru.godtools.tool.FEATURE_ANIMATION
@@ -13,7 +10,6 @@ import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
-import org.cru.godtools.tool.internal.coroutines.receive
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.Version.Companion.toVersion
 import org.cru.godtools.tool.model.tips.InlineTip
@@ -154,59 +150,39 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyIsGoneFlow() = runTest {
-        with(object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
-            val output = Channel<Boolean>(1)
-            val flow = isGoneFlow(state)
-                .onEach { output.send(it) }
-                .launchIn(this@runTest)
-            assertFalse("Initially not hidden") { output.receive(500) }
+        object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}.isGoneFlow(state).test {
+            assertFalse(awaitItem(), "Initially not hidden")
 
             state["c"] = "test"
-            delay(100)
-            assertTrue(output.isEmpty, "'c' should have no effect on isHidden result")
+            expectNoEvents() // 'c' should have no effect on isHidden result
 
             state["a"] = "test"
-            assertTrue(output.receive(500), "'a' is now set")
+            assertTrue(awaitItem(), "'a' is now set")
 
             state["a"] = emptyList()
-            assertFalse(output.receive(500), "'a' is no longer set")
+            assertFalse(awaitItem(), "'a' is no longer set")
 
             state["b"] = "test"
-            assertTrue(output.receive(500), "'b' is now set")
+            assertTrue(awaitItem(), "'b' is now set")
 
             state["a"] = "test"
-            delay(100)
-            assertTrue(output.isEmpty, "'a' is now set, but shouldn't change isHidden result")
+            expectNoEvents() // 'a' is now set, but shouldn't change isHidden result
 
             state["b"] = emptyList()
-            delay(100)
-            assertTrue(output.isEmpty, "'a' is still set, so isHidden result shouldn't change")
+            expectNoEvents() // 'a' is still set, so isHidden result shouldn't change
 
             state["a"] = emptyList()
-            assertFalse(output.receive(500), "'a' is no longer set")
-
-            flow.cancel()
+            assertFalse(awaitItem(), "'a' is no longer set")
         }
     }
 
     @Test
     fun verifyIsGoneDefault() = runTest {
-        with(object : Content() {}) {
-            val output = Channel<Boolean>(1)
-            val flow = isGoneFlow(state)
-                .onEach { output.send(it) }
-                .launchIn(this@runTest)
-            assertFalse("Initially not hidden") { output.receive(500) }
-            assertFalse(isGone(state))
-
-            for (i in 1..10) {
-                state["a$i"] = "test"
-                assertFalse(isGone(state))
-                delay(100)
-                assertTrue(output.isEmpty)
-            }
-
-            flow.cancel()
+        val content = object : Content() {}
+        assertFalse(content.isGone(state))
+        content.isGoneFlow(state).test {
+            assertFalse(awaitItem(), "Initially not hidden")
+            awaitComplete() // there is no isGone expression, so there will be no more events emitted
         }
     }
 
@@ -228,59 +204,40 @@ class ContentTest : UsesResources() {
 
     @Test
     fun verifyIsInvisibleFlow() = runTest {
-        with(object : Content(invisibleIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}) {
-            val output = Channel<Boolean>(1)
-            val flow = isInvisibleFlow(state)
-                .onEach { output.send(it) }
-                .launchIn(this@runTest)
-            assertFalse("Initially not invisible") { output.receive(500) }
+        val content = object : Content(invisibleIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}
+        content.isInvisibleFlow(state).test {
+            assertFalse(awaitItem(), "Initially not invisible")
 
             state["c"] = "test"
-            delay(100)
-            assertTrue(output.isEmpty, "'c' should have no effect on isInvisible result")
+            expectNoEvents() // 'c' should have no effect on isInvisible result
 
             state["a"] = "test"
-            assertTrue(output.receive(500), "'a' is now set")
+            assertTrue(awaitItem(), "'a' is now set")
 
             state["a"] = emptyList()
-            assertFalse(output.receive(500), "'a' is no longer set")
+            assertFalse(awaitItem(), "'a' is no longer set")
 
             state["b"] = "test"
-            assertTrue(output.receive(500), "'b' is now set")
+            assertTrue(awaitItem(), "'b' is now set")
 
             state["a"] = "test"
-            delay(100)
-            assertTrue(output.isEmpty, "'a' is now set, but shouldn't change isInvisible result")
+            expectNoEvents() // 'a' is now set, but shouldn't change isInvisible result
 
             state["b"] = emptyList()
-            delay(100)
-            assertTrue(output.isEmpty, "'a' is still set, so isInvisible result shouldn't change")
+            expectNoEvents() // 'a' is still set, so isInvisible result shouldn't change
 
             state["a"] = emptyList()
-            assertFalse(output.receive(500), "'a' is no longer set")
-
-            flow.cancel()
+            assertFalse(awaitItem(), "'a' is no longer set")
         }
     }
 
     @Test
     fun verifyIsInvisibleDefault() = runTest {
-        with(object : Content() {}) {
-            val output = Channel<Boolean>(1)
-            val flow = isInvisibleFlow(state)
-                .onEach { output.send(it) }
-                .launchIn(this@runTest)
-            assertFalse("Initially not invisible") { output.receive(500) }
-            assertFalse(isInvisible(state))
-
-            for (i in 1..10) {
-                state["a$i"] = "test"
-                assertFalse(isInvisible(state))
-                delay(100)
-                assertTrue(output.isEmpty)
-            }
-
-            flow.cancel()
+        val content = object : Content() {}
+        assertFalse(content.isInvisible(state))
+        content.isInvisibleFlow(state).test {
+            assertFalse(awaitItem(), "Initially not invisible")
+            awaitComplete() // there is no isInvisible expression, so there will be no more events emitted
         }
     }
     // endregion Visibility Attributes

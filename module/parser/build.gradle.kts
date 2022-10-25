@@ -35,6 +35,11 @@ kotlin {
                 implementation(npm("sax", "1.2.4"))
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.turbine)
+            }
+        }
         val jsTest by getting {
             dependencies {
                 implementation(libs.okio.js)
