@@ -1,6 +1,6 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.tool.FEATURE_REQUIRED_VERSIONS
 import org.cru.godtools.tool.ParserConfig
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR

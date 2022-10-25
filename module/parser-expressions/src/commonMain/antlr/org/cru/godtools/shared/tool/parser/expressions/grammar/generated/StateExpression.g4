@@ -1,6 +1,6 @@
 grammar StateExpression;
 @header {
-package org.cru.godtools.expressions.grammar.generated;
+package org.cru.godtools.shared.tool.parser.expressions.grammar.generated;
 }
 
 booleanExpr

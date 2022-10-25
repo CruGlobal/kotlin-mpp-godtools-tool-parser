@@ -1,4 +1,4 @@
-package org.cru.godtools.expressions
+package org.cru.godtools.shared.tool.parser.expressions
 
 import org.cru.godtools.tool.state.State
 import kotlin.test.Ignore
