@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 
 include("module:parser")
 include("module:state")
-include("module:expressions")
+include("module:parser-expressions")
 
 include("test-fixtures")
 
