@@ -1,5 +1,22 @@
 rootProject.name = "GodtoolsToolParser"
 
+dependencyResolutionManagement {
+    repositories {
+        maven("https://jitpack.io") {
+            content {
+                includeGroup("com.strumenta.antlr-kotlin")
+            }
+        }
+        maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
+            content {
+                includeGroup("org.cru.mobile.fork.antlr-kotlin")
+            }
+        }
+        google()
+        mavenCentral()
+    }
+}
+
 include("module:parser")
 include("module:state")
 include("module:expressions")
