@@ -30,6 +30,7 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio-js = { module = "com.squareup.okio:okio-js", version.ref = "okio" }
 okio-nodefilesystem = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+turbine = "app.cash.turbine:turbine:0.8.0"
 
 # HACK: dependencies used to trigger renovate upgrades
 ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
