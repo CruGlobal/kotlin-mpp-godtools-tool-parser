@@ -44,8 +44,6 @@ subprojects {
             sourceSets {
                 val commonTest by getting {
                     dependencies {
-                        implementation(project(":test-fixtures"))
-
                         implementation(kotlin("test"))
                         implementation(libs.kotlin.coroutines.test)
                     }
@@ -150,10 +148,6 @@ koverMerged {
     enable()
 
     filters {
-        projects {
-            excludes += listOf("test-fixtures")
-        }
-
         classes {
             excludes += listOf(
                 // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
