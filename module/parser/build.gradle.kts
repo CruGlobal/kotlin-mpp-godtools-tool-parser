@@ -14,7 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":module:state"))
-                implementation(project(":module:expressions"))
+                implementation(project(":module:parser-expressions"))
 
                 implementation(kotlin("stdlib"))
                 implementation(libs.kotlin.coroutines.core)
