@@ -1,4 +1,4 @@
-package org.cru.godtools.expressions
+package org.cru.godtools.shared.tool.parser.expressions
 
 import org.antlr.v4.kotlinruntime.BailErrorStrategy
 import org.antlr.v4.kotlinruntime.CharStreams
@@ -7,9 +7,9 @@ import org.antlr.v4.kotlinruntime.ParserRuleContext
 import org.antlr.v4.kotlinruntime.Token
 import org.antlr.v4.kotlinruntime.misc.ParseCancellationException
 import org.antlr.v4.kotlinruntime.tree.TerminalNode
-import org.cru.godtools.expressions.grammar.StateExpressionEvaluator
-import org.cru.godtools.expressions.grammar.generated.StateExpressionLexer
-import org.cru.godtools.expressions.grammar.generated.StateExpressionParser
+import org.cru.godtools.shared.tool.parser.expressions.grammar.StateExpressionEvaluator
+import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionLexer
+import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.tool.state.State
 
 class Expression internal constructor(private val expr: StateExpressionParser.BooleanExprContext?) {

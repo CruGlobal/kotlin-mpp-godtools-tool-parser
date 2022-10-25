@@ -1,8 +1,8 @@
-package org.cru.godtools.expressions.grammar
+package org.cru.godtools.shared.tool.parser.expressions.grammar
 
-import org.cru.godtools.expressions.grammar.generated.StateExpressionBaseVisitor
-import org.cru.godtools.expressions.grammar.generated.StateExpressionParser
-import org.cru.godtools.expressions.grammar.generated.StateExpressionParser.Tokens
+import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionBaseVisitor
+import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
+import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser.Tokens
 import org.cru.godtools.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) {

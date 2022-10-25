@@ -1,6 +1,6 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.tool.FEATURE_FLOW
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.Dimension.Companion.toDimensionOrNull
