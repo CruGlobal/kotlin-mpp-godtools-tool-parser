@@ -18,21 +18,6 @@ allprojects {
             ?.let { version = "$version-$it" }
         version = "$version-SNAPSHOT"
     }
-
-    repositories {
-        maven("https://jitpack.io") {
-            content {
-                includeGroup("com.strumenta.antlr-kotlin")
-            }
-        }
-        maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
-            content {
-                includeGroup("org.cru.mobile.fork.antlr-kotlin")
-            }
-        }
-        google()
-        mavenCentral()
-    }
 }
 
 subprojects {
