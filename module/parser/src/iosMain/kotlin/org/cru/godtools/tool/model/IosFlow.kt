@@ -3,7 +3,7 @@ package org.cru.godtools.tool.model
 import kotlinx.coroutines.flow.combine
 import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.util.FlowWatcher
-import org.cru.godtools.tool.util.watch
+import org.cru.godtools.tool.util.FlowWatcher.Companion.watch
 
 fun Flow.watchItems(state: State, block: (List<Flow.Item>) -> Unit): FlowWatcher {
     val vars = items.flatMapTo(mutableSetOf()) { it.invisibleIf?.vars().orEmpty() + it.goneIf?.vars().orEmpty() }
