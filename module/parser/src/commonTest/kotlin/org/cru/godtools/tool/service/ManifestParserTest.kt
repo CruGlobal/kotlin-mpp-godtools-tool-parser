@@ -11,6 +11,7 @@ import org.cru.godtools.tool.xml.XmlPullParserFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertSame
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -36,6 +37,20 @@ class ManifestParserTest : UsesResources("service") {
     @Test
     fun testParseManifestMissingPage() = runTest {
         assertIs<ParserResult.Error.NotFound>(parser.parseManifest("manifest_missing_page.xml"))
+    }
+
+    @Test
+    fun testParseManifestUnrecognizedException() = runTest {
+        val exception = Exception()
+        val parser = ManifestParser(
+            object : XmlPullParserFactory() {
+                override suspend fun getXmlParser(fileName: String) = throw exception
+            },
+            ParserConfig()
+        )
+        val response = assertIs<ParserResult.Error>(parser.parseManifest(""))
+        assertEquals(ParserResult.Error::class, response::class)
+        assertSame(exception, response.error)
     }
 
     @Test
