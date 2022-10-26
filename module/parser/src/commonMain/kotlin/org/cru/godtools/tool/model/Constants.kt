@@ -21,7 +21,6 @@ internal const val XML_BACKGROUND_IMAGE_SCALE_TYPE = "background-image-scale-typ
 internal const val XML_DISMISS_LISTENERS = "dismiss-listeners"
 internal const val XML_TEXT_COLOR = "text-color"
 internal const val XML_TEXT_SCALE = "text-scale"
-internal const val XML_EVENTS = "events"
 internal const val XML_LISTENERS = "listeners"
 
 // common colors
