@@ -2,13 +2,13 @@ package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.cru.godtools.shared.tool.state.State
 import org.cru.godtools.tool.internal.AndroidJUnit4
 import org.cru.godtools.tool.internal.RunOnAndroidWith
 import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.tool.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.tool.model.tips.InlineTip
-import org.cru.godtools.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

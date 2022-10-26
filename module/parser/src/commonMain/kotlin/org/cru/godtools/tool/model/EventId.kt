@@ -1,8 +1,8 @@
 package org.cru.godtools.tool.model
 
+import org.cru.godtools.shared.tool.state.State
 import org.cru.godtools.tool.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.tool.internal.VisibleForTesting
-import org.cru.godtools.tool.state.State
 
 private const val EVENT_NAMESPACE_FOLLOWUP = "followup"
 @VisibleForTesting

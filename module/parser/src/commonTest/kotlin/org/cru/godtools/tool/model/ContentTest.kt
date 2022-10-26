@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
+import org.cru.godtools.shared.tool.state.State
 import org.cru.godtools.tool.FEATURE_ANIMATION
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.ParserConfig
@@ -14,7 +15,6 @@ import org.cru.godtools.tool.internal.UsesResources
 import org.cru.godtools.tool.model.Content.Companion.parseContentElement
 import org.cru.godtools.tool.model.Version.Companion.toVersion
 import org.cru.godtools.tool.model.tips.InlineTip
-import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.withDeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals

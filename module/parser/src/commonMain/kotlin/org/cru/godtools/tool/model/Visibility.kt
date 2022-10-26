@@ -3,7 +3,7 @@ package org.cru.godtools.tool.model
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
-import org.cru.godtools.tool.state.State
+import org.cru.godtools.shared.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind

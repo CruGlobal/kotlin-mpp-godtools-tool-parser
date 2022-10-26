@@ -1,6 +1,6 @@
 package org.cru.godtools.tool.model
 
-import org.cru.godtools.tool.state.State
+import org.cru.godtools.shared.tool.state.State
 import kotlin.native.concurrent.SharedImmutable
 import kotlin.test.Test
 import kotlin.test.assertEquals

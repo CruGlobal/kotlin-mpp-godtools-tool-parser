@@ -1,6 +1,7 @@
 package org.cru.godtools.tool.model
 
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.cru.godtools.shared.tool.state.State
 import org.cru.godtools.tool.FEATURE_MULTISELECT
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
@@ -8,7 +9,6 @@ import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.tool.model.AnalyticsEvent.Trigger
 import org.cru.godtools.tool.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
-import org.cru.godtools.tool.state.State
 import org.cru.godtools.tool.xml.XmlPullParser
 import org.cru.godtools.tool.xml.parseChildren
 
