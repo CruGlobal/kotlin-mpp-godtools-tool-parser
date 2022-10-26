@@ -6,18 +6,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.plus
 
-class FlowWatcher internal constructor(private val job: Job) {
+class FlowWatcher private constructor(private val job: Job) {
     internal companion object {
         internal fun <T> Flow<T>.watch(block: (T) -> Unit) = watchIn(CoroutineScope(Dispatchers.Main), block)
-        private fun <T> Flow<T>.watchIn(scope: CoroutineScope, block: (T) -> Unit): FlowWatcher {
-            val job = Job()
-
-            onEach { block(it) }.launchIn(scope + job)
-
-            return FlowWatcher(job)
-        }
+        private fun <T> Flow<T>.watchIn(scope: CoroutineScope, block: (T) -> Unit) =
+            FlowWatcher(onEach { block(it) }.launchIn(scope))
     }
 
     fun close() = job.cancel()
