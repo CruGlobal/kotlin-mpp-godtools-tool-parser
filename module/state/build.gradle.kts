@@ -5,7 +5,10 @@ plugins {
     alias(libs.plugins.kotlin.kover)
 }
 
-configureAndroidLibrary()
+android {
+    namespace = "org.cru.godtools.shared.tool.state"
+    baseConfiguration()
+}
 enablePublishing()
 
 kotlin {
