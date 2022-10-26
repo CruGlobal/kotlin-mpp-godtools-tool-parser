@@ -7,6 +7,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+private const val XML_EVENTS = "events"
 private const val XML_URL = "url"
 
 interface Clickable : Base {
