@@ -1,25 +1,18 @@
 package org.cru.godtools.tool.model.tract
 
-import io.github.aakira.napier.Napier
 import org.cru.godtools.tool.internal.AndroidColorInt
-import org.cru.godtools.tool.internal.DeprecationException
 import org.cru.godtools.tool.internal.RestrictTo
 import org.cru.godtools.tool.internal.RestrictToScope
 import org.cru.godtools.tool.internal.VisibleForTesting
 import org.cru.godtools.tool.model.BaseModel
-import org.cru.godtools.tool.model.EventId
 import org.cru.godtools.tool.model.PlatformColor
 import org.cru.godtools.tool.model.Text
-import org.cru.godtools.tool.model.XML_EVENTS
 import org.cru.godtools.tool.model.parseTextChild
 import org.cru.godtools.tool.model.primaryColor
 import org.cru.godtools.tool.model.stylesParent
 import org.cru.godtools.tool.model.tips.XMLNS_TRAINING
 import org.cru.godtools.tool.model.toColorOrNull
-import org.cru.godtools.tool.model.toEventIds
 import org.cru.godtools.tool.xml.XmlPullParser
-
-private const val TAG = "CallToAction"
 
 private const val XML_CONTROL_COLOR = "control-color"
 private const val XML_TIP = "tip"
@@ -32,8 +25,6 @@ class CallToAction : BaseModel {
     private val page: TractPage
 
     val label: Text?
-    @Deprecated("Since v0.6.0, call-to-action events are no longer supported")
-    val events: List<EventId>
 
     @AndroidColorInt
     private val _controlColor: PlatformColor?
@@ -47,7 +38,6 @@ class CallToAction : BaseModel {
     internal constructor(parent: TractPage) : super(parent) {
         page = parent
         label = null
-        events = emptyList()
         _controlColor = null
         tipId = null
     }
@@ -56,17 +46,10 @@ class CallToAction : BaseModel {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CALL_TO_ACTION)
 
         this.page = page
-        events = parser.getAttributeValue(XML_EVENTS).toEventIds()
         _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
         tipId = parser.getAttributeValue(XMLNS_TRAINING, XML_TIP)
 
         label = parser.parseTextChild(this, XMLNS_TRACT, XML_CALL_TO_ACTION)
-
-        if (events.isNotEmpty()) {
-            val message =
-                "tool: ${manifest.code} locale: ${manifest.locale} page: ${page.fileName} has call-to-action events"
-            Napier.e(message, DeprecationException("Deprecated call-to-action events: $message"), TAG)
-        }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
@@ -78,7 +61,6 @@ class CallToAction : BaseModel {
     ) : super(page) {
         this.page = page
         this.label = label?.invoke(this)
-        events = emptyList()
         _controlColor = controlColor
         tipId = tip
     }
