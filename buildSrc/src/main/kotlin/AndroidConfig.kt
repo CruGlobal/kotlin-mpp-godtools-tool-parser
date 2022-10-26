@@ -1,12 +1,9 @@
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
-import org.gradle.api.Project
 
-fun Project.configureAndroidLibrary() {
-    with(extensions.getByType(LibraryExtension::class.java)) {
-        configureSdk()
-        configureSourceSets()
-    }
+fun LibraryExtension.baseConfiguration() {
+    configureSdk()
+    configureSourceSets()
 }
 
 private fun BaseExtension.configureSdk() {
