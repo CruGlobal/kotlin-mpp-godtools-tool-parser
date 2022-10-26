@@ -1,5 +1,6 @@
 package org.cru.godtools.tool.model
 
+import app.cash.turbine.Event
 import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -182,7 +183,14 @@ class ContentTest : UsesResources() {
         assertFalse(content.isGone(state))
         content.isGoneFlow(state).test {
             assertFalse(awaitItem(), "Initially not hidden")
-            awaitComplete() // there is no isGone expression, so there will be no more events emitted
+
+            for (i in 1..10) {
+                state["a$i"] = "test"
+                assertFalse(content.isGone(state))
+            }
+
+            // there should have been no more items emitted. the flow may complete, but doesn't have to
+            assertTrue(cancelAndConsumeRemainingEvents().filterNot { it is Event.Complete }.isEmpty())
         }
     }
 
@@ -237,7 +245,14 @@ class ContentTest : UsesResources() {
         assertFalse(content.isInvisible(state))
         content.isInvisibleFlow(state).test {
             assertFalse(awaitItem(), "Initially not invisible")
-            awaitComplete() // there is no isInvisible expression, so there will be no more events emitted
+
+            for (i in 1..10) {
+                state["a$i"] = "test"
+                assertFalse(content.isGone(state))
+            }
+
+            // there should have been no more items emitted. the flow may complete, but doesn't have to
+            assertTrue(cancelAndConsumeRemainingEvents().filterNot { it is Event.Complete }.isEmpty())
         }
     }
     // endregion Visibility Attributes
