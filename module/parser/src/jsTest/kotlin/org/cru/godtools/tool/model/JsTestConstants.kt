@@ -1,3 +1,3 @@
 package org.cru.godtools.tool.model
 
-actual val TEST_URL = "https://www.example.com"
+actual const val TEST_URL = "https://www.example.com"
