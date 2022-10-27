@@ -1,0 +1,6 @@
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest">
+    <pages>
+        <page filename="page0.xml" src="model/tract/page.xml" />
+        <page src="model/tract/page_cards.xml" />
+    </pages>
+</manifest>

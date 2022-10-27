@@ -10,7 +10,7 @@ import org.antlr.v4.kotlinruntime.tree.TerminalNode
 import org.cru.godtools.shared.tool.parser.expressions.grammar.StateExpressionEvaluator
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionLexer
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
-import org.cru.godtools.tool.state.State
+import org.cru.godtools.shared.tool.state.State
 
 class Expression internal constructor(private val expr: StateExpressionParser.BooleanExprContext?) {
     fun isValid() = expr != null

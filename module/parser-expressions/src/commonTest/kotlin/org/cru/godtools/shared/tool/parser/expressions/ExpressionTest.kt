@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.expressions
 
-import org.cru.godtools.tool.state.State
+import org.cru.godtools.shared.tool.state.State
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals

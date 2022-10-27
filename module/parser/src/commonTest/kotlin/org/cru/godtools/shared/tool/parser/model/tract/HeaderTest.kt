@@ -1,0 +1,57 @@
+package org.cru.godtools.shared.tool.parser.model.tract
+
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
+import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
+import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.model.Manifest
+import org.cru.godtools.shared.tool.parser.model.TestColors
+import org.cru.godtools.shared.tool.parser.model.primaryColor
+import org.cru.godtools.shared.tool.parser.model.stylesParent
+import org.cru.godtools.shared.tool.parser.model.tips.Tip
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+
+@RunOnAndroidWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
+class HeaderTest : UsesResources("model/tract") {
+    @Test
+    fun testParseHeader() = runTest {
+        val header = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("header.xml")).header)
+        assertEquals("5", header.number!!.text)
+        assertEquals("title", header.title!!.text)
+        assertEquals(TestColors.RED, header.backgroundColor)
+        assertEquals("header-tip", header.tipId)
+    }
+
+    @Test
+    fun testParseHeaderDefaults() = runTest {
+        val page = TractPage(Manifest(), null, getTestXmlParser("header_defaults.xml"))
+        val header = assertNotNull(page.header)
+
+        assertEquals(page.primaryColor, header.backgroundColor)
+        assertEquals(page.primaryTextColor, header.textColor)
+        assertNull(header.number)
+        assertNull(header.title)
+        assertNull(header.tipId)
+    }
+
+    @Test
+    fun testBackgroundColorBehavior() {
+        val header = Header(backgroundColor = TestColors.GREEN)
+
+        with(null as Header?) { assertEquals(stylesParent.primaryColor, backgroundColor) }
+        with(header as Header?) { assertEquals(TestColors.GREEN, backgroundColor) }
+        with(header) { assertEquals(TestColors.GREEN, backgroundColor) }
+    }
+
+    @Test
+    fun testTipProperty() {
+        val manifest = Manifest(tips = { listOf(Tip(it, "tip1")) })
+        val header = Header(TractPage(manifest), tip = "tip1")
+        assertEquals(manifest.findTip("tip1")!!, header.tip)
+    }
+}
