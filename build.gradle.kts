@@ -52,6 +52,7 @@ kotlin {
             dependencies {
                 api(project(":module:parser"))
                 api(project(":module:state"))
+                api(project(":module:user-activity"))
             }
         }
     }
@@ -66,6 +67,7 @@ kotlin {
 
             export(project(":module:parser"))
             export(project(":module:state"))
+            export(project(":module:user-activity"))
         }
 
         ios.deploymentTarget = "11.0"
