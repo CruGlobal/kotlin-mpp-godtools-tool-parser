@@ -1,6 +1,8 @@
 package org.cru.godtools.shared.user.activity
 
 import io.fluidsonic.locale.Locale
+import org.ccci.gto.support.fluidsonic.locale.PlatformLocale
+import org.ccci.gto.support.fluidsonic.locale.toCommon
 
 @Suppress("FunctionName")
 object UserCounterNames {
@@ -16,7 +18,7 @@ object UserCounterNames {
     fun LESSON_OPEN(tool: String) = "$LESSON_OPENS_PREFIX$tool".lowercase()
     fun TOOL_OPEN(tool: String) = "$TOOL_OPENS_PREFIX$tool".lowercase()
     fun SCREEN_SHARE(tool: String) = "$SCREEN_SHARES_PREFIX$tool".lowercase()
-    // TODO: expose a version that takes a platform Locale
+    fun LANGUAGE_USED(locale: PlatformLocale) = LANGUAGE_USED(locale.toCommon())
     fun LANGUAGE_USED(locale: String) = LANGUAGE_USED(Locale.forLanguageTag(locale))
     private fun LANGUAGE_USED(locale: Locale) = "$LANGUAGE_USED_PREFIX$locale".lowercase()
 }

@@ -18,6 +18,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.fluidLocale)
+                implementation(libs.gtoSupport.fluidsonic.locale)
             }
         }
     }
