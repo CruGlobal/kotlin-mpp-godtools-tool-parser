@@ -24,6 +24,7 @@ kotlin {
 
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
+                implementation(libs.gtoSupport.fluidsonic.locale)
                 implementation(libs.napier)
             }
         }

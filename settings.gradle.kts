@@ -9,6 +9,7 @@ dependencyResolutionManagement {
         }
         maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
             content {
+                includeGroup("org.ccci.gto.android")
                 includeGroup("org.cru.mobile.fork.antlr-kotlin")
             }
         }
