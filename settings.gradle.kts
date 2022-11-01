@@ -9,6 +9,7 @@ dependencyResolutionManagement {
         }
         maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
             content {
+                includeGroup("org.ccci.gto.android")
                 includeGroup("org.cru.mobile.fork.antlr-kotlin")
             }
         }
@@ -18,8 +19,9 @@ dependencyResolutionManagement {
 }
 
 include("module:parser")
-include("module:state")
 include("module:parser-expressions")
+include("module:state")
+include("module:user-activity")
 
 // automatically accept the scans.gradle.com TOS when running in GHA
 if (System.getenv("GITHUB_ACTIONS")?.toBoolean() == true) {

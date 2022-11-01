@@ -5,13 +5,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.ccci.gto.support.fluidsonic.locale.PlatformLocale
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.internal.RestrictTo
 import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
 import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
-import org.cru.godtools.shared.tool.parser.internal.fluidlocale.PlatformLocale
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull

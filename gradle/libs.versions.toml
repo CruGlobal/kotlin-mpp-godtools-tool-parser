@@ -5,6 +5,7 @@ antlr-kotlin = "bbd4c72186"
 antlr-kotlin-fork = "0.0.7_265"
 colormath = "3.2.1"
 fluidLocale = "0.12.0"
+gtoSupport = "3.14.0-SNAPSHOT"
 kotlin = "1.7.20"
 kotlinCoroutines = "1.6.4"
 ktlint = "0.42.1"
@@ -23,6 +24,7 @@ antlr-kotlin-target = { module = "com.strumenta.antlr-kotlin:antlr-kotlin-target
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 colormath-android-colorint = { module = "com.github.ajalt.colormath.extensions:colormath-ext-android-colorint", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
+gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
