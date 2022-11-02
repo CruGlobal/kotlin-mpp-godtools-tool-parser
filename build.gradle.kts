@@ -50,6 +50,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":module:analytics"))
                 api(project(":module:parser"))
                 api(project(":module:state"))
                 api(project(":module:user-activity"))
@@ -65,6 +66,7 @@ kotlin {
         framework {
             baseName = "GodToolsToolParser"
 
+            export(project(":module:analytics"))
             export(project(":module:parser"))
             export(project(":module:state"))
             export(project(":module:user-activity"))

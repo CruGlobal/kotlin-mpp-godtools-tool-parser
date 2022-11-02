@@ -18,6 +18,7 @@ dependencyResolutionManagement {
     }
 }
 
+include("module:analytics")
 include("module:common")
 include("module:parser")
 include("module:parser-expressions")
