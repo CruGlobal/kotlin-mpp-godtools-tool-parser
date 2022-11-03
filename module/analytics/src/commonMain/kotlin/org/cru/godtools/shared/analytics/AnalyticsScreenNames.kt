@@ -19,9 +19,6 @@ object AnalyticsScreenNames {
     // region Miscellaneous Platform Menu Screens
     const val PLATFORM_ABOUT = "About"
     const val PLATFORM_HELP = "Help"
-    const val PLATFORM_CONTACT_US = "Contact Us"
-    const val PLATFORM_SHARE_GODTOOLS = "Share App"
-    const val PLATFORM_SHARE_STORY = "Share Story"
     const val PLATFORM_TERMS_OF_USE = "Terms of Use"
     const val PLATFORM_PRIVACY_POLICY = "Privacy Policy"
     const val PLATFORM_COPYRIGHT = "Copyright Info"
