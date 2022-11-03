@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
-import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles

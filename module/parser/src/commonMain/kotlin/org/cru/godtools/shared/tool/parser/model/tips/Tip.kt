@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Styles

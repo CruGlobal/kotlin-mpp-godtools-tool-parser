@@ -1,10 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
-import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull

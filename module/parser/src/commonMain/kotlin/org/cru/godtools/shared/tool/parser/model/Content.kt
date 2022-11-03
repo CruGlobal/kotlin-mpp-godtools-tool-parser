@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_REQUIRED_VERSIONS
 import org.cru.godtools.shared.tool.parser.expressions.Expression
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
-import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersionOrNull
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip

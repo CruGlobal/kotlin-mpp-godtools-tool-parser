@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_FLOW
 import org.cru.godtools.shared.tool.parser.expressions.Expression
-import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY

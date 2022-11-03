@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger

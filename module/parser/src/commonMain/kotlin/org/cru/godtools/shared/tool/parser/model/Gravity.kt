@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
-import org.cru.godtools.shared.tool.parser.internal.VisibleForTesting
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 
 private const val XML_START = "start"
