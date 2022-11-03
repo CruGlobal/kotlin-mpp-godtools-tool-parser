@@ -113,4 +113,9 @@ class UserActivityTest {
         counters[LANGUAGE_USED("fr")] = 3
         assertEquals(3, UserActivity(counters).sessions)
     }
+
+    @Test
+    fun testEquals() {
+        assertEquals(UserActivity(emptyMap()), UserActivity(emptyMap()))
+    }
 }
