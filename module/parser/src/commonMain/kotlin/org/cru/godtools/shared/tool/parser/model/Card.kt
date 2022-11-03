@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTENT_CARD
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 class Card : Content, Parent, Clickable {

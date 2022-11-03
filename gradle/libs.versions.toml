@@ -24,6 +24,7 @@ antlr-kotlin-target = { module = "com.strumenta.antlr-kotlin:antlr-kotlin-target
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 colormath-android-colorint = { module = "com.github.ajalt.colormath.extensions:colormath-ext-android-colorint", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
+gtoSupport-androidx-annotation = { module = "org.ccci.gto.android:gto-support-androidx-annotation", version.ref = "gtoSupport" }
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }

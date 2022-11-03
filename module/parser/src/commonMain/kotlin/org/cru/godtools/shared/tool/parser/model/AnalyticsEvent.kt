@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
-import org.cru.godtools.shared.tool.parser.internal.RestrictTo
-import org.cru.godtools.shared.tool.parser.internal.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companion.toTrigger
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
