@@ -1,7 +1,7 @@
 [versions]
 androidx-annotation = "1.5.0"
 androidx-test-junit = "1.1.4"
-antlr-kotlin = "bbd4c72186"
+antlr-kotlin = "0.0.4"
 antlr-kotlin-fork = "0.0.7_265"
 colormath = "3.2.1"
 fluidLocale = "0.12.0"
