@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.user.activity.model
 
+import io.fluidsonic.locale.Locale
+import org.ccci.gto.support.fluidsonic.locale.toPlatform
 import org.cru.godtools.shared.user.activity.UserCounterNames.LANGUAGE_USED
 import org.cru.godtools.shared.user.activity.UserCounterNames.LESSON_COMPLETIONS_PREFIX
 import org.cru.godtools.shared.user.activity.UserCounterNames.LESSON_OPEN
@@ -89,13 +91,13 @@ class UserActivityTest {
         val counters = mutableMapOf<String, Int>()
         assertEquals(0, UserActivity(counters).languagesUsed)
 
-        counters[LANGUAGE_USED("en")] = 5
+        counters[LANGUAGE_USED(Locale.forLanguageTag("en").toPlatform())] = 5
         assertEquals(1, UserActivity(counters).languagesUsed)
 
-        counters[LANGUAGE_USED("fr")] = 3
+        counters[LANGUAGE_USED(Locale.forLanguageTag("fr").toPlatform())] = 3
         assertEquals(2, UserActivity(counters).languagesUsed)
 
-        counters[LANGUAGE_USED("es")] = 0
+        counters[LANGUAGE_USED(Locale.forLanguageTag("es").toPlatform())] = 0
         assertEquals(2, UserActivity(counters).languagesUsed)
 
         counters[TOOL_OPEN("lessonhs")] = 11
@@ -110,7 +112,7 @@ class UserActivityTest {
         counters[SESSION] = 3
         assertEquals(3, UserActivity(counters).sessions)
 
-        counters[LANGUAGE_USED("fr")] = 3
+        counters[LANGUAGE_USED(Locale.forLanguageTag("fr").toPlatform())] = 3
         assertEquals(3, UserActivity(counters).sessions)
     }
 
