@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.user.activity.model
 
+import org.cru.godtools.shared.user.activity.UserCounterNames.ARTICLE_OPENS_PREFIX
 import org.cru.godtools.shared.user.activity.UserCounterNames.IMAGE_SHARED
 import org.cru.godtools.shared.user.activity.UserCounterNames.LANGUAGE_USED_PREFIX
 import org.cru.godtools.shared.user.activity.UserCounterNames.LESSON_COMPLETIONS_PREFIX
@@ -37,6 +38,7 @@ data class UserActivity private constructor(
         private fun generateBadges(counters: Counters) =
             BadgeType.TOOLS_OPENED.createBadges(counters.count(TOOL_OPENS_PREFIX)) +
                 BadgeType.LESSONS_COMPLETED.createBadges(counters.count(LESSON_COMPLETIONS_PREFIX)) +
+                BadgeType.ARTICLES_OPENED.createBadges(counters.count(ARTICLE_OPENS_PREFIX)) +
                 BadgeType.IMAGES_SHARED.createBadges(counters[IMAGE_SHARED] ?: 0) +
                 BadgeType.TIPS_COMPLETED.createBadges(counters[TIPS_COMPLETED] ?: 0)
     }

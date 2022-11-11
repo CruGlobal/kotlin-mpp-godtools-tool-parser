@@ -17,9 +17,17 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":module:common"))
+
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.gtoSupport.fluidsonic.locale)
+                implementation(libs.okio)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.gtoSupport.androidx.test.junit)
             }
         }
     }
