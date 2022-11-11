@@ -42,6 +42,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
             }
         }

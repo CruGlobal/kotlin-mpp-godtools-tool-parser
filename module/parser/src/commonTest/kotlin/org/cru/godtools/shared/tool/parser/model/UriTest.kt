@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
+import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
+import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

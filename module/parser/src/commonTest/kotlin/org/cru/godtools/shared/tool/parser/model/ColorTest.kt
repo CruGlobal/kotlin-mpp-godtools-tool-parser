@@ -1,12 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@RunOnAndroidWith(AndroidJUnit4::class)
 class ColorTest {
     @Test
     fun testParseColor() {

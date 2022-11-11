@@ -3,10 +3,10 @@ package org.cru.godtools.shared.tool.parser.model
 import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
+import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.state.State

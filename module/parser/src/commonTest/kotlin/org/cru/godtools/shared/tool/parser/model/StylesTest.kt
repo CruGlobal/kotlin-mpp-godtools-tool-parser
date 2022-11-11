@@ -1,13 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@RunOnAndroidWith(AndroidJUnit4::class)
 class StylesTest {
     private val parent by lazy {
         object : Styles {

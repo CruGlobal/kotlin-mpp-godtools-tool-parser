@@ -4,12 +4,12 @@ import app.cash.turbine.Event
 import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
+import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_ANIMATION
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion

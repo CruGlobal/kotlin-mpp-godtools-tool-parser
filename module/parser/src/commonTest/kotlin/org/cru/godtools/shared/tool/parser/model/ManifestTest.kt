@@ -3,10 +3,10 @@ package org.cru.godtools.shared.tool.parser.model
 import io.fluidsonic.locale.Locale
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
+import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.ccci.gto.support.fluidsonic.locale.toCommon
 import org.cru.godtools.shared.tool.parser.ParserConfig
-import org.cru.godtools.shared.tool.parser.internal.AndroidJUnit4
-import org.cru.godtools.shared.tool.parser.internal.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
