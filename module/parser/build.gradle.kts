@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     alias(libs.plugins.kotlin.kover)
+    alias(libs.plugins.goncalossilvaResources)
 }
 
 android {
@@ -48,8 +49,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation(libs.okio.js)
-                implementation(libs.okio.nodefilesystem)
+                implementation(libs.goncalossilvaResources)
             }
         }
     }
