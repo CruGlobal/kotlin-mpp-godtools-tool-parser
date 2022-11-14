@@ -36,7 +36,7 @@ fun KotlinMultiplatformExtension.configureIosTargets() {
 
 fun KotlinMultiplatformExtension.configureJsTargets() {
     js {
-        nodejs { copyTestResources() }
+        nodejs()
     }
 }
 
@@ -58,22 +58,3 @@ private fun KotlinNativeTarget.copyTestResources() {
         }
 }
 // endregion iOS Test Resources
-
-// region Js Test Resources
-private fun KotlinJsSubTargetDsl.copyTestResources() {
-    testTask {
-        // TODO: copy resources out of processedResources instead.
-        val source = project.file("src/commonTest/resources").takeIf { it.exists() && it.isDirectory }
-            ?: return@testTask
-
-        val compileTask = compilation.compileKotlinTaskProvider.get()
-        val target = compileTask.outputFileProperty.get().resolve("../../resources").normalize()
-        compileTask.doLast { source.copyRecursively(target = target, overwrite = true) }
-
-        // add target resources directory to appropriate task inputs/outputs
-        compileTask.inputs.dir(source)
-        compileTask.outputs.dir(target)
-        inputs.dir(target)
-    }
-}
-// endregion Js Test Resources
