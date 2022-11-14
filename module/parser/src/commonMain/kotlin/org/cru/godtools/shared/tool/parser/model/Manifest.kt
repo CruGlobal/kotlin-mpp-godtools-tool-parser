@@ -9,6 +9,8 @@ import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.ccci.gto.support.fluidsonic.locale.PlatformLocale
+import org.cru.godtools.shared.common.model.Uri
+import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
@@ -28,6 +30,7 @@ import org.cru.godtools.shared.tool.parser.model.shareable.Shareable
 import org.cru.godtools.shared.tool.parser.model.shareable.Shareable.Companion.parseShareableItems
 import org.cru.godtools.shared.tool.parser.model.shareable.XMLNS_SHAREABLE
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
+import org.cru.godtools.shared.tool.parser.util.isHttpUrl
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren

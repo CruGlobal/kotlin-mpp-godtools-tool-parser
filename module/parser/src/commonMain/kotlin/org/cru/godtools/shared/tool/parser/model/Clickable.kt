@@ -1,7 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
+import org.cru.godtools.shared.common.model.Uri
+import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
+import org.cru.godtools.shared.tool.parser.util.hasUriScheme
+import org.cru.godtools.shared.tool.parser.util.toAbsoluteUriOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind

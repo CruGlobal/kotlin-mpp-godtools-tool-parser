@@ -1,4 +1,4 @@
-package org.cru.godtools.shared.tool.parser.model
+package org.cru.godtools.shared.tool.parser.util
 
 import kotlin.test.Test
 import kotlin.test.assertNull
