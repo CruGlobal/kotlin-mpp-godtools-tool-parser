@@ -18,6 +18,7 @@ import org.cru.godtools.shared.user.activity.UserCounterNames.TIPS_COMPLETED
 import org.cru.godtools.shared.user.activity.UserCounterNames.TOOL_OPEN
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class UserActivityTest {
@@ -195,6 +196,17 @@ class UserActivityTest {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.TIPS_COMPLETED }.forEach {
             assertEquals(5.coerceAtMost(it.target), it.progress)
         }
+    }
+
+    @Test
+    fun testUserActivityBadgesSorting() {
+        counters[TOOL_OPEN("kgp")] = 5
+        counters[ARTICLE_OPEN("https://example.com/a".toUriOrNull()!!)] = 5
+        counters[TIPS_COMPLETED] = 5
+
+        val badges = UserActivity(counters).badges
+        assertTrue(badges.take(3).all { it.isEarned })
+        assertTrue(badges.drop(3).none { it.isEarned })
     }
 
     @Test
