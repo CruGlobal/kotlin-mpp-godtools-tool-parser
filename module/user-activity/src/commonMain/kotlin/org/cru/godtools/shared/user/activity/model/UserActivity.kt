@@ -31,7 +31,7 @@ data class UserActivity private constructor(
         linksShared = counters[LINK_SHARED] ?: 0,
         languagesUsed = counters.count(LANGUAGE_USED_PREFIX),
         sessions = counters[SESSION] ?: 0,
-        badges = generateBadges(counters),
+        badges = generateBadges(counters).sortedByDescending { it.isEarned },
     )
 
     private companion object {
