@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.tool.analytics
 
 import org.cru.godtools.shared.tool.parser.model.Manifest
+import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
@@ -8,6 +9,17 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ToolAnalyticsScreenNamesTest {
+    @Test
+    fun testForLessonPage() {
+        val manifest = Manifest(
+            code = "lessonhs",
+            pages = { listOf(LessonPage(it), LessonPage(it)) }
+        )
+
+        assertEquals("lessonhs-0", ToolAnalyticsScreenNames.forLessonPage(manifest.pages[0] as LessonPage))
+        assertEquals("lessonhs-1", ToolAnalyticsScreenNames.forLessonPage(manifest.pages[1] as LessonPage))
+    }
+
     @Test
     fun testForTractPage() {
         val manifest = Manifest(

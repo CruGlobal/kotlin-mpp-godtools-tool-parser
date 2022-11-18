@@ -1,9 +1,12 @@
 package org.cru.godtools.shared.tool.analytics
 
+import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 object ToolAnalyticsScreenNames {
+    fun forLessonPage(page: LessonPage) = "${page.manifest.code}-${page.position}"
+
     fun forTractPage(page: TractPage, card: TractPage.Card? = null) = buildString {
         append(page.manifest.code).append('-').append(page.position)
         when (val pos = card?.position) {
