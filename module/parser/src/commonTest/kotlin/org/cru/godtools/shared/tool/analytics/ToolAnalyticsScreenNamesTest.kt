@@ -2,6 +2,8 @@ package org.cru.godtools.shared.tool.analytics
 
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
+import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+import org.cru.godtools.shared.tool.parser.model.page.ContentPage
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
@@ -9,6 +11,29 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ToolAnalyticsScreenNamesTest {
+    @Test
+    fun testForCyoaPage() {
+        val page = ContentPage(
+            manifest = Manifest(code = "cyoa"),
+            id = "page"
+        )
+
+        assertEquals("cyoa:page", ToolAnalyticsScreenNames.forCyoaPage(page))
+    }
+
+    @Test
+    fun testForCyoaCardCollectionCard() {
+        val card = CardCollectionPage.Card(
+            page = CardCollectionPage(
+                manifest = Manifest(code = "cyoa"),
+                id = "page"
+            ),
+            id = "card"
+        )
+
+        assertEquals("cyoa:page:card", ToolAnalyticsScreenNames.forCyoaCardCollectionCard(card))
+    }
+
     @Test
     fun testForLessonPage() {
         val manifest = Manifest(

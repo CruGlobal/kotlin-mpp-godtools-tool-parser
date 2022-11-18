@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -59,6 +61,16 @@ class CardCollectionPage : Page {
         }
     }
 
+    @RestrictTo(RestrictToScope.TESTS)
+    internal constructor(
+        manifest: Manifest,
+        id: String?,
+        parentPage: String? = null,
+    ) : super(manifest, id = id, parentPage = parentPage) {
+        analyticsEvents = emptyList()
+        cards = emptyList()
+    }
+
     override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA
 
     class Card : BaseModel, Parent, HasAnalyticsEvents {
@@ -103,6 +115,20 @@ class CardCollectionPage : Page {
                     }
                 }
             }
+        }
+
+        @RestrictTo(RestrictToScope.TESTS)
+        internal constructor(
+            page: CardCollectionPage,
+            id: String?,
+        ) : super(page) {
+            this.page = page
+
+            _id = id
+            _backgroundColor = null
+
+            analyticsEvents = emptyList()
+            content = emptyList()
         }
 
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
