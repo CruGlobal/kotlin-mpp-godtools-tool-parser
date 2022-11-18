@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
+import org.ccci.gto.support.androidx.annotation.RestrictTo
+import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Parent
@@ -11,7 +13,7 @@ class TipPage : BaseModel, Parent {
         internal const val XML_PAGE = "page"
     }
 
-    private val tip: Tip
+    internal val tip: Tip
     val position: Int
 
     override val content: List<Content>
@@ -21,6 +23,16 @@ class TipPage : BaseModel, Parent {
         this.tip = tip
         this.position = position
         content = parseContent(parser)
+    }
+
+    @RestrictTo(RestrictToScope.TESTS)
+    internal constructor(
+        tip: Tip,
+        position: Int,
+    ) : super(tip) {
+        this.tip = tip
+        this.position = position
+        content = emptyList()
     }
 
     val isLastPage get() = position == tip.pages.size - 1

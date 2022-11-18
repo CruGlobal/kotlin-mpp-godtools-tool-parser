@@ -1,6 +1,8 @@
 package org.cru.godtools.shared.tool.analytics
 
 import org.cru.godtools.shared.tool.parser.model.Manifest
+import org.cru.godtools.shared.tool.parser.model.tips.Tip
+import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,5 +22,14 @@ class ToolAnalyticsScreenNamesTest {
         assertEquals("tool-0z", ToolAnalyticsScreenNames.forTractPage(page, TractPage.Card(position = 25)))
         assertEquals("tool-0-26", ToolAnalyticsScreenNames.forTractPage(page, TractPage.Card(position = 26)))
         assertEquals("tool-0-100", ToolAnalyticsScreenNames.forTractPage(page, TractPage.Card(position = 100)))
+    }
+
+    @Test
+    fun testForTipPage() {
+        val tip = Tip(Manifest(code = "tool"), id = "tipId")
+
+        assertEquals("tool-tip-tipId-0", ToolAnalyticsScreenNames.forTipPage(TipPage(tip, position = 0)))
+        assertEquals("tool-tip-tipId-0", ToolAnalyticsScreenNames.forTipPage("tool", "tipId", 0))
+        assertEquals("tool-tip-tipId-1", ToolAnalyticsScreenNames.forTipPage(TipPage(tip, position = 1)))
     }
 }

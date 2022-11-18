@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.analytics
 
+import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 object ToolAnalyticsScreenNames {
@@ -12,4 +13,7 @@ object ToolAnalyticsScreenNames {
             else -> append('-').append(pos)
         }
     }
+
+    fun forTipPage(page: TipPage) = forTipPage(page.manifest.code.orEmpty(), page.tip.id, page.position)
+    fun forTipPage(tool: String, tipId: String, page: Int) = "$tool-tip-$tipId-$page"
 }
