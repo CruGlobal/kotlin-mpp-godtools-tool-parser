@@ -33,12 +33,6 @@ subprojects {
                         implementation(libs.kotlin.coroutines.test)
                     }
                 }
-                val androidTest by getting {
-                    dependencies {
-                        implementation(libs.androidx.test.junit)
-                        implementation(libs.robolectric)
-                    }
-                }
             }
         }
     }

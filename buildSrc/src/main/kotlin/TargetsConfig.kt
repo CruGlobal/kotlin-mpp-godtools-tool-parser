@@ -14,6 +14,12 @@ fun KotlinMultiplatformExtension.configureAndroidTargets() {
     android {
         publishLibraryVariants("debug", "release")
     }
+
+    sourceSets.named("androidTest") {
+        dependencies {
+            implementation(project.libs.findBundle("android-test-framework").get())
+        }
+    }
 }
 
 fun KotlinMultiplatformExtension.configureIosTargets() {
