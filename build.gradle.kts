@@ -35,7 +35,8 @@ kotlin {
     }
 
     cocoapods {
-        summary = "GodTools tool parser"
+        name = "GodToolsShared"
+        summary = "GodTools shared logic"
         license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
 
@@ -59,8 +60,7 @@ tasks.podspec.configure {
     doLast {
         // we can't use the grgit extension val because it won't be present if the .git directory is missing
         val grgit = project.extensions.findByName("grgit") as? Grgit
-        val podspec = file("${project.name.replace("-", "_")}.podspec")
-        val newPodspecContent = podspec.readLines().map {
+        val newPodspecContent = outputFile.readLines().map {
             when {
                 grgit != null && it.contains("spec.source") -> {
                     val ref = when {
@@ -100,11 +100,11 @@ tasks.podspec.configure {
                 else -> it
             }
         }
-        podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
+        outputFile.writeText(newPodspecContent.joinToString(separator = "\n"))
     }
 }
 tasks.create("cleanPodspec", Delete::class) {
-    delete("${project.name.replace('-', '_')}.podspec")
+    delete(tasks.podspec.map { it.outputFile })
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
 

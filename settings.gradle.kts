@@ -1,5 +1,3 @@
-rootProject.name = "GodtoolsToolParser"
-
 dependencyResolutionManagement {
     repositories {
         maven("https://jitpack.io") {
