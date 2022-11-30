@@ -49,7 +49,7 @@ kotlin {
             export(project(":module:user-activity"))
         }
 
-        ios.deploymentTarget = "11.0"
+        ios.deploymentTarget = "14.0"
     }
 }
 
