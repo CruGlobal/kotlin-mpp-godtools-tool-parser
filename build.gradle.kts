@@ -20,24 +20,6 @@ allprojects {
     }
 }
 
-subprojects {
-    afterEvaluate {
-        // don't evaluate if kotlin isn't enabled for this project
-        if (extensions.findByName("kotlin") == null) return@afterEvaluate
-
-        kotlin {
-            sourceSets {
-                val commonTest by getting {
-                    dependencies {
-                        implementation(kotlin("test"))
-                        implementation(libs.kotlin.coroutines.test)
-                    }
-                }
-            }
-        }
-    }
-}
-
 kotlin {
     configureIosTargets()
 

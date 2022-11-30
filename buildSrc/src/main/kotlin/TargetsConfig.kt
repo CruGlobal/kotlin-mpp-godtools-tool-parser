@@ -7,6 +7,16 @@ fun KotlinMultiplatformExtension.configureTargets() {
     configureAndroidTargets()
     configureIosTargets()
     configureJsTargets()
+    configureCommonSourceSets()
+}
+
+fun KotlinMultiplatformExtension.configureCommonSourceSets() {
+    sourceSets.named("commonTest") {
+        dependencies {
+            implementation(kotlin("test"))
+            implementation(project.libs.findBundle("common-test-framework").get())
+        }
+    }
 }
 
 fun KotlinMultiplatformExtension.configureAndroidTargets() {
