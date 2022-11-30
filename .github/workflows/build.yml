@@ -210,7 +210,7 @@ jobs:
         with:
           arguments: podspec
       - name: Lint podspec
-        run: pod spec lint *.podspec --allow-warnings
+        run: bundle exec pod spec lint *.podspec --allow-warnings --verbose
 
   deploy:
     name: Publish Library
@@ -259,6 +259,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Add CruGlobal CocoaPods Repo
-        run: pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
+        run: bundle exec pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Push podspec
-        run: pod repo push CruGlobal *.podspec --allow-warnings
+        run: bundle exec pod repo push CruGlobal *.podspec --allow-warnings
