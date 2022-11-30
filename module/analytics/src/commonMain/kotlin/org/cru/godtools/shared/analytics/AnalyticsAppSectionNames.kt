@@ -1,12 +1,18 @@
 package org.cru.godtools.shared.analytics
 
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+
 object AnalyticsAppSectionNames {
     private const val MENU = "menu"
+    @VisibleForTesting
+    internal const val ACCOUNT = "account"
     const val TOOLS = "tools"
     private const val SUB_SECTION_LANGUAGE_SETTINGS = "language settings"
 
     fun forScreen(name: String) = when (name) {
         AnalyticsScreenNames.DASHBOARD_ALL_TOOLS -> TOOLS
+        AnalyticsScreenNames.ACCOUNT_ACTIVITY,
+        AnalyticsScreenNames.ACCOUNT_GLOBAL_ACTIVITY -> ACCOUNT
         AnalyticsScreenNames.SETTINGS_LANGUAGES,
         AnalyticsScreenNames.SETTINGS_LANGUAGE_SELECTION,
         AnalyticsScreenNames.PLATFORM_ABOUT,

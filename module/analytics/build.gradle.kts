@@ -13,4 +13,12 @@ enablePublishing()
 kotlin {
     configureAndroidTargets()
     configureIosTargets()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.gtoSupport.androidx.annotation)
+            }
+        }
+    }
 }

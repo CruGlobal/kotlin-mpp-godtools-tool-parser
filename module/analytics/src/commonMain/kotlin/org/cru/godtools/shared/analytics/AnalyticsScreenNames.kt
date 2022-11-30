@@ -8,8 +8,8 @@ object AnalyticsScreenNames {
     // endregion Dashboard Screens
 
     // region Account
-    const val ACCOUNT_ACTIVITY = "Personal Dashboard"
-    const val ACCOUNT_GLOBAL_ACTIVITY = "Global Dashboard"
+    const val ACCOUNT_ACTIVITY = "Account Activity"
+    const val ACCOUNT_GLOBAL_ACTIVITY = "Global Activity"
     // endregion Account
 
     // region Settings
