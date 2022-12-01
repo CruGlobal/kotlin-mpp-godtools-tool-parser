@@ -3,7 +3,8 @@ package org.cru.godtools.shared.analytics
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 
 object AnalyticsAppSectionNames {
-    private const val MENU = "menu"
+    @VisibleForTesting
+    internal const val MENU = "menu"
     @VisibleForTesting
     internal const val ACCOUNT = "account"
     const val TOOLS = "tools"
