@@ -217,6 +217,7 @@ class TractPage : Page {
         @RestrictTo(RestrictToScope.TESTS)
         internal constructor(
             page: TractPage = TractPage(),
+            position: Int = 0,
             backgroundColor: PlatformColor? = null,
             backgroundImage: String? = null,
             backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
@@ -227,7 +228,7 @@ class TractPage : Page {
             content: ((Card) -> List<Content>?)? = null
         ) : super(page) {
             this.page = page
-            position = 0
+            this.position = position
 
             this.isHidden = isHidden
             listeners = emptySet()
