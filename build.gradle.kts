@@ -40,6 +40,10 @@ kotlin {
         summary = "GodTools shared logic"
         license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+        extraSpecAttributes += mapOf(
+            "prepare_command" to """"./gradlew generateDummyFramework"""",
+            "preserve_paths" to """"**/*.*"""",
+        )
 
         // configure the custom xcode configurations in the godtools-swift project
         xcodeConfigurationToNativeBuildType += mapOf(
@@ -83,14 +87,6 @@ tasks.podspec.configure {
                         |                                    }
                     """.trimMargin()
                 }
-                it.contains("vendored_frameworks") -> """
-                    |$it
-                    |    spec.prepare_command          = "./gradlew generateDummyFramework"
-                """.trimMargin()
-                it == "end" -> """
-                    |    spec.preserve_paths           = "**/*.*"
-                    |$it
-                """.trimMargin()
 
                 else -> it
             }
