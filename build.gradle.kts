@@ -1,4 +1,5 @@
 import org.ajoberstar.grgit.Grgit
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     kotlin("multiplatform")
@@ -39,6 +40,13 @@ kotlin {
         summary = "GodTools shared logic"
         license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+
+        // configure the custom xcode configurations in the godtools-swift project
+        xcodeConfigurationToNativeBuildType += mapOf(
+            "AnalyticsLogging" to NativeBuildType.DEBUG,
+            "Staging" to NativeBuildType.DEBUG,
+            "Production" to NativeBuildType.DEBUG,
+        )
 
         framework {
             baseName = "GodToolsToolParser"
@@ -83,19 +91,6 @@ tasks.podspec.configure {
                     |    spec.preserve_paths           = "**/*.*"
                     |$it
                 """.trimMargin()
-
-                // HACK: force CONFIGURATION to be debug or release only.
-                //       other values are not currently supported by the kotlin cocoapods plugin
-                it.contains("syncFramework") -> """
-                    |if [[ ${'$'}(echo ${'$'}CONFIGURATION | tr '[:upper:]' '[:lower:]') = 'debug' ]]
-                    |then
-                    |    SANITIZED_CONFIGURATION=Debug
-                    |else
-                    |    SANITIZED_CONFIGURATION=Release
-                    |fi
-                    |$it
-                """.trimMargin()
-                it.contains("\$CONFIGURATION") -> it.replace("CONFIGURATION", "SANITIZED_CONFIGURATION")
 
                 else -> it
             }
