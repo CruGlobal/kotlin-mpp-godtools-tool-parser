@@ -1,3 +1,3 @@
 source "https://rubygems.org"
 
-gem "cocoapods-generate", "~> 2.0"
+gem 'cocoapods', '~> 1.11'

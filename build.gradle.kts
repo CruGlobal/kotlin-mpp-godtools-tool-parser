@@ -1,4 +1,5 @@
 import org.ajoberstar.grgit.Grgit
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     kotlin("multiplatform")
@@ -20,30 +21,6 @@ allprojects {
     }
 }
 
-subprojects {
-    afterEvaluate {
-        // don't evaluate if kotlin isn't enabled for this project
-        if (extensions.findByName("kotlin") == null) return@afterEvaluate
-
-        kotlin {
-            sourceSets {
-                val commonTest by getting {
-                    dependencies {
-                        implementation(kotlin("test"))
-                        implementation(libs.kotlin.coroutines.test)
-                    }
-                }
-                val androidTest by getting {
-                    dependencies {
-                        implementation(libs.androidx.test.junit)
-                        implementation(libs.robolectric)
-                    }
-                }
-            }
-        }
-    }
-}
-
 kotlin {
     configureIosTargets()
 
@@ -59,12 +36,25 @@ kotlin {
     }
 
     cocoapods {
-        summary = "GodTools tool parser"
+        name = "GodToolsShared"
+        summary = "GodTools shared logic"
         license = "MIT"
         homepage = "https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser"
+        extraSpecAttributes += mapOf(
+            "prepare_command" to """"./gradlew generateDummyFramework"""",
+            "preserve_paths" to """"**/*.*"""",
+        )
+
+        // configure the custom xcode configurations in the godtools-swift project
+        xcodeConfigurationToNativeBuildType += mapOf(
+            "AnalyticsLogging" to NativeBuildType.DEBUG,
+            "Staging" to NativeBuildType.DEBUG,
+            "Production" to NativeBuildType.DEBUG,
+        )
 
         framework {
             baseName = "GodToolsToolParser"
+            isStatic = true
 
             export(project(":module:analytics"))
             export(project(":module:parser"))
@@ -72,7 +62,7 @@ kotlin {
             export(project(":module:user-activity"))
         }
 
-        ios.deploymentTarget = "11.0"
+        ios.deploymentTarget = "14.0"
     }
 }
 
@@ -83,8 +73,7 @@ tasks.podspec.configure {
     doLast {
         // we can't use the grgit extension val because it won't be present if the .git directory is missing
         val grgit = project.extensions.findByName("grgit") as? Grgit
-        val podspec = file("${project.name.replace("-", "_")}.podspec")
-        val newPodspecContent = podspec.readLines().map {
+        val newPodspecContent = outputFile.readLines().map {
             when {
                 grgit != null && it.contains("spec.source") -> {
                     val ref = when {
@@ -99,36 +88,15 @@ tasks.podspec.configure {
                         |                                    }
                     """.trimMargin()
                 }
-                it.contains("vendored_frameworks") -> """
-                    |$it
-                    |    spec.prepare_command          = "./gradlew generateDummyFramework"
-                """.trimMargin()
-                it == "end" -> """
-                    |    spec.preserve_paths           = "**/*.*"
-                    |$it
-                """.trimMargin()
-
-                // HACK: force CONFIGURATION to be debug or release only.
-                //       other values are not currently supported by the kotlin cocoapods plugin
-                it.contains("syncFramework") -> """
-                    |if [[ ${'$'}(echo ${'$'}CONFIGURATION | tr '[:upper:]' '[:lower:]') = 'debug' ]]
-                    |then
-                    |    SANITIZED_CONFIGURATION=Debug
-                    |else
-                    |    SANITIZED_CONFIGURATION=Release
-                    |fi
-                    |$it
-                """.trimMargin()
-                it.contains("\$CONFIGURATION") -> it.replace("CONFIGURATION", "SANITIZED_CONFIGURATION")
 
                 else -> it
             }
         }
-        podspec.writeText(newPodspecContent.joinToString(separator = "\n"))
+        outputFile.writeText(newPodspecContent.joinToString(separator = "\n"))
     }
 }
 tasks.create("cleanPodspec", Delete::class) {
-    delete("${project.name.replace('-', '_')}.podspec")
+    delete(tasks.podspec.map { it.outputFile })
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
 

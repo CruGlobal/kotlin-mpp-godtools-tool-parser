@@ -39,6 +39,10 @@ turbine = "app.cash.turbine:turbine:0.12.1"
 # HACK: dependencies used to trigger renovate upgrades
 ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
 
+[bundles]
+android-test-framework = ["androidx-test-junit", "robolectric"]
+common-test-framework = ["kotlin-coroutines-test"]
+
 [plugins]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.0.0" }

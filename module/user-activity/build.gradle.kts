@@ -13,6 +13,7 @@ enablePublishing()
 kotlin {
     configureAndroidTargets()
     configureIosTargets()
+    configureCommonSourceSets()
 
     sourceSets {
         val commonMain by getting {

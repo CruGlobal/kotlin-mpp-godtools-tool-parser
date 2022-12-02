@@ -2,17 +2,32 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 
 fun KotlinMultiplatformExtension.configureTargets() {
     configureAndroidTargets()
     configureIosTargets()
     configureJsTargets()
+    configureCommonSourceSets()
+}
+
+fun KotlinMultiplatformExtension.configureCommonSourceSets() {
+    sourceSets.named("commonTest") {
+        dependencies {
+            implementation(kotlin("test"))
+            implementation(project.libs.findBundle("common-test-framework").get())
+        }
+    }
 }
 
 fun KotlinMultiplatformExtension.configureAndroidTargets() {
     android {
         publishLibraryVariants("debug", "release")
+    }
+
+    sourceSets.named("androidTest") {
+        dependencies {
+            implementation(project.libs.findBundle("android-test-framework").get())
+        }
     }
 }
 
