@@ -1,9 +1,7 @@
 name: Trigger Release
 
 on:
-  push:
-    branches: [publishWorkflow]
-#  workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   publish_release:
@@ -17,7 +15,7 @@ jobs:
         run: grep version gradle.properties >> $GITHUB_OUTPUT
       - name: Create Tag
         env:
-          TAG_NAME: tmp-v${{ steps.current_version.outputs.version }}
+          TAG_NAME: v${{ steps.current_version.outputs.version }}
         run: |
           git tag $TAG_NAME
           git push origin $TAG_NAME
