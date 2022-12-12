@@ -13,11 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Find Current Version
-        id: version
+        id: vars
         run: |
-          export RELEASE_VERSION=`grep version gradle.properties | sed 's/version=//'`
-          echo $RELEASE_VERSION
+          grep version gradle.properties >> $GITHUB_OUTPUT
+#          RELEASE_VERSION=`grep version gradle.properties | sed 's/version=//'`
+#          echo "::set-env name=RELEASE_VERSION::$RELEASE_VERSION
       - name: Create Tag
         run: |
-          git tag v$RELEASE_VERSION
+          git tag v${{ steps.vars.outputs.version }}
           git tag
