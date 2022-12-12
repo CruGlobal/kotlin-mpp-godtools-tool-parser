@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+#      - name: Configure Git
       - name: Find Current Version
         id: current_version
         run: grep version gradle.properties >> $GITHUB_OUTPUT
@@ -20,8 +21,7 @@ jobs:
           TAG_NAME: tmp-v${{ steps.current_version.outputs.version }}
         run: |
           git tag $TAG_NAME
-          git tag
-#          git push origin tmp-v${{ steps.current_version.outputs.version }}
+          git push origin tmp-v${{ steps.current_version.outputs.version }}
       - name: Bump Version
         id: bump_version
         uses: actions-ecosystem/action-bump-semver@v1
