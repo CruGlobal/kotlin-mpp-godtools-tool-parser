@@ -1,0 +1,23 @@
+name: Trigger Release
+
+on:
+  push:
+    branches: [publishWorkflow]
+#  workflow_dispatch:
+
+jobs:
+  publish_release:
+    name: Trigger Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Find Current Version
+        id: version
+        run: |
+          export RELEASE_VERSION=`grep version gradle.properties | sed 's/version=//'`
+          echo $RELEASE_VERSION
+      - name: Create Tag
+        run: |
+          git tag v$RELEASE_VERSION
+          git tag
