@@ -16,7 +16,12 @@ jobs:
         id: current_version
         run: grep version gradle.properties >> $GITHUB_OUTPUT
       - name: Create Tag
-        run: git tag tmp-v${{ steps.current_version.outputs.version }}
+        env:
+          TAG_NAME: tmp-v${{ steps.current_version.outputs.version }}
+        run: |
+          git tag $TAG_NAME
+          git tag
+#          git push origin tmp-v${{ steps.current_version.outputs.version }}
       - name: Bump Version
         id: bump_version
         uses: actions-ecosystem/action-bump-semver@v1
