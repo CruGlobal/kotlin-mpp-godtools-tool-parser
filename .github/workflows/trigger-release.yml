@@ -13,12 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Find Current Version
-        id: vars
-        run: |
-          grep version gradle.properties >> $GITHUB_OUTPUT
-#          RELEASE_VERSION=`grep version gradle.properties | sed 's/version=//'`
-#          echo "::set-env name=RELEASE_VERSION::$RELEASE_VERSION
+        id: current_version
+        run: grep version gradle.properties >> $GITHUB_OUTPUT
       - name: Create Tag
-        run: |
-          git tag v${{ steps.vars.outputs.version }}
-          git tag
+        run: git tag tmp-v${{ steps.current_version.outputs.version }}
+      - name: Bump Version
+        id: bump_version
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ steps.current_version.outputs.version }}
+          level: patch
+      - name: Update version for new development
+        run: sed -i "s/version=${{ steps.current_version.outputs.version }}/version=${{ steps.bump_version.outputs.new_version }}/" gradle.properties
+      - run: git diff
