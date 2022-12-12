@@ -1,7 +1,8 @@
 name: Trigger Release
 
 on:
-  workflow_dispatch:
+# Disabled for now due to certain functions not working.
+#  workflow_dispatch:
 
 jobs:
   publish_release:
@@ -16,6 +17,7 @@ jobs:
       - name: Create Tag
         env:
           TAG_NAME: v${{ steps.current_version.outputs.version }}
+        # TODO: pushing this tag doesn't trigger the deploy workflow
         run: |
           git tag $TAG_NAME
           git push origin $TAG_NAME
@@ -30,6 +32,7 @@ jobs:
           sed -i "s/version=${{ steps.current_version.outputs.version }}/version=${{ steps.bump_version.outputs.new_version }}/" gradle.properties
           git add gradle.properties
       - name: Commit Version Bump
+        # TODO: we can't push this commit due to current branch protections
         run: |
           git diff --cached
           git config user.name 'GitHub Actions'
