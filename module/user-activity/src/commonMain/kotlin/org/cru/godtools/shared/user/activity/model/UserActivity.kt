@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.user.activity.model
 
+import com.github.ajalt.colormath.model.RGB
 import org.cru.godtools.shared.user.activity.UserCounterNames.ARTICLE_OPENS_PREFIX
 import org.cru.godtools.shared.user.activity.UserCounterNames.IMAGE_SHARED
 import org.cru.godtools.shared.user.activity.UserCounterNames.LANGUAGE_USED_PREFIX
@@ -41,5 +42,14 @@ data class UserActivity private constructor(
                 BadgeType.ARTICLES_OPENED.createBadges(counters.count(ARTICLE_OPENS_PREFIX)) +
                 BadgeType.IMAGES_SHARED.createBadges(counters[IMAGE_SHARED] ?: 0) +
                 BadgeType.TIPS_COMPLETED.createBadges(counters[TIPS_COMPLETED] ?: 0)
+    }
+
+    object Colors {
+        val toolOpens = IconColors(base = RGB("#05699B"))
+        val lessonCompletions = IconColors(base = RGB("#A4D7C8"))
+        val screenShares = IconColors(base = RGB("#E55B36"))
+        val linksShared = IconColors(base = RGB("#2F3676"))
+        val languagesUsed = IconColors(base = RGB("#CEFFC1"))
+        val sessions = IconColors(base = RGB("#E0CE26"))
     }
 }

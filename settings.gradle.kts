@@ -9,6 +9,7 @@ dependencyResolutionManagement {
             content {
                 includeGroup("org.ccci.gto.android")
                 includeGroup("org.cru.mobile.fork.antlr-kotlin")
+                includeGroup("org.cru.mobile.fork.material-color-utilities")
             }
         }
         google()
