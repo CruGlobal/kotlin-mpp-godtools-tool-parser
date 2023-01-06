@@ -20,5 +20,10 @@ kotlin {
                 implementation(libs.napier)
             }
         }
+        val androidMain by getting {
+            dependencies {
+                api(libs.colormath.jetpack.compose)
+            }
+        }
     }
 }
