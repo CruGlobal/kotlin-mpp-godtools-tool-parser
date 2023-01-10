@@ -34,10 +34,10 @@ fun String?.toExpressionOrNull() = when {
     )
 }
 
-private fun ParserRuleContext.vars(): Collection<String>? = children?.flatMap {
+private fun ParserRuleContext.vars(): List<String> = children.orEmpty().flatMap {
     when (it) {
         is TerminalNode -> listOfNotNull(it.symbol?.takeIf { it.type == StateExpressionParser.Tokens.VAR.id }?.text)
         is ParserRuleContext -> it.vars()
-        else -> null
+        else -> emptyList()
     }
 }
