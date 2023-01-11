@@ -1,14 +1,19 @@
 package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.Color
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.ThemeType
 import org.cru.godtools.shared.common.model.toPlatformColor
 
 data class IconColors internal constructor(
-    private val light: Color,
-    private val dark: Color,
-    private val containerLight: Color,
-    private val containerDark: Color
+    @VisibleForTesting
+    internal val light: Color,
+    @VisibleForTesting
+    internal val dark: Color,
+    @VisibleForTesting
+    internal val containerLight: Color,
+    @VisibleForTesting
+    internal val containerDark: Color,
 ) {
     fun color(mode: ThemeType) = when (mode) {
         ThemeType.LIGHT -> light
@@ -19,6 +24,13 @@ data class IconColors internal constructor(
         ThemeType.LIGHT -> containerLight
         ThemeType.DARK -> containerDark
     }.toPlatformColor()
+
+    internal fun alpha(alpha: Float) = IconColors(
+        light = light.toSRGB().copy(alpha = alpha),
+        dark = dark.toSRGB().copy(alpha = alpha),
+        containerLight = containerLight.toSRGB().copy(alpha = alpha),
+        containerDark = containerDark.toSRGB().copy(alpha = alpha),
+    )
 
     override fun toString() = "IconColors(" +
         "light=${light.toSRGB().toHex()}, " +

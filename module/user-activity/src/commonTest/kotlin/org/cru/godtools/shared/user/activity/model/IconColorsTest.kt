@@ -43,4 +43,16 @@ class IconColorsTest {
         assertEquals(RED.toPlatformColor(), colors.containerColor(ThemeType.LIGHT))
         assertEquals(GREEN.toPlatformColor(), colors.containerColor(ThemeType.DARK))
     }
+
+    @Test
+    fun testAlpha() {
+        val alpha = 0.5f
+        val colors = IconColors(light = RED, dark = GREEN, containerLight = BLUE, containerDark = BLACK)
+        val alphaColors = colors.alpha(alpha)
+
+        assertEquals(alpha, alphaColors.light.alpha)
+        assertEquals(alpha, alphaColors.dark.alpha)
+        assertEquals(alpha, alphaColors.containerLight.alpha)
+        assertEquals(alpha, alphaColors.containerDark.alpha)
+    }
 }
