@@ -23,6 +23,7 @@ antlr-kotlin-gradle = { module = "com.strumenta.antlr-kotlin:antlr-kotlin-gradle
 antlr-kotlin-runtime = { module = "org.cru.mobile.fork.antlr-kotlin:antlr-kotlin-runtime", version.ref = "antlr-kotlin-fork" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 colormath-android-colorint = { module = "com.github.ajalt.colormath.extensions:colormath-ext-android-colorint", version.ref = "colormath" }
+colormath-jetpack-compose = { module = "com.github.ajalt.colormath.extensions:colormath-ext-jetpack-compose", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref = "goncalossilvaResources" }
 gtoSupport-androidx-annotation = { module = "org.ccci.gto.android:gto-support-androidx-annotation", version.ref = "gtoSupport" }
@@ -31,6 +32,7 @@ gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-flui
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }

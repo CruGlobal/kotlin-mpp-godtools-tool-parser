@@ -16,10 +16,16 @@ kotlin {
     configureCommonSourceSets()
 
     sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.materialColorUtilities)
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(project(":module:common"))
 
+                implementation(libs.colormath)
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.gtoSupport.fluidsonic.locale)

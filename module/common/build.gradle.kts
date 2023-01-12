@@ -16,7 +16,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.colormath)
                 implementation(libs.napier)
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                api(libs.colormath.jetpack.compose)
             }
         }
     }
