@@ -123,7 +123,7 @@ class UserActivityTest {
     @Test
     fun testUserActivityBadgesToolsOpened() {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.TOOLS_OPENED }.forEach {
-            assertEquals(0.coerceAtMost(it.target), it.progress)
+            assertEquals(0.coerceAtMost(it.progressTarget), it.progress)
         }
 
         counters[TOOL_OPEN("kgp")] = 5
@@ -131,7 +131,7 @@ class UserActivityTest {
         counters[TOOL_OPEN("satisfied")] = 0
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.TOOLS_OPENED }.forEach {
             assertEquals(
-                2.coerceAtMost(it.target),
+                2.coerceAtMost(it.progressTarget),
                 it.progress,
                 "should be 2 tool opens because 0 opens should be excluded"
             )
@@ -141,7 +141,7 @@ class UserActivityTest {
     @Test
     fun testUserActivityBadgesLessonsCompleted() {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.LESSONS_COMPLETED }.forEach {
-            assertEquals(0.coerceAtMost(it.target), it.progress)
+            assertEquals(0.coerceAtMost(it.progressTarget), it.progress)
         }
 
         counters[LESSON_COMPLETIONS_PREFIX + "a"] = 5
@@ -149,7 +149,7 @@ class UserActivityTest {
         counters[LESSON_COMPLETIONS_PREFIX + "c"] = 0
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.LESSONS_COMPLETED }.forEach {
             assertEquals(
-                2.coerceAtMost(it.target),
+                2.coerceAtMost(it.progressTarget),
                 it.progress,
                 "should be 2 lesson completions because 0 completions should be excluded"
             )
@@ -159,7 +159,7 @@ class UserActivityTest {
     @Test
     fun testUserActivityBadgesArticlesOpened() {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.ARTICLES_OPENED }.forEach {
-            assertEquals(0.coerceAtMost(it.target), it.progress)
+            assertEquals(0.coerceAtMost(it.progressTarget), it.progress)
         }
 
         counters[ARTICLE_OPEN("https://example.com/a".toUriOrNull()!!)] = 5
@@ -167,7 +167,7 @@ class UserActivityTest {
         counters[ARTICLE_OPEN("https://example.com/c".toUriOrNull()!!)] = 0
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.ARTICLES_OPENED }.forEach {
             assertEquals(
-                2.coerceAtMost(it.target),
+                2.coerceAtMost(it.progressTarget),
                 it.progress,
                 "should be 2 lesson completions because 0 completions should be excluded"
             )
@@ -177,24 +177,24 @@ class UserActivityTest {
     @Test
     fun testUserActivityBadgesImagesShared() {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.IMAGES_SHARED }.forEach {
-            assertEquals(0.coerceAtMost(it.target), it.progress)
+            assertEquals(0.coerceAtMost(it.progressTarget), it.progress)
         }
 
         counters[IMAGE_SHARED] = 5
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.IMAGES_SHARED }.forEach {
-            assertEquals(5.coerceAtMost(it.target), it.progress)
+            assertEquals(5.coerceAtMost(it.progressTarget), it.progress)
         }
     }
 
     @Test
     fun testUserActivityBadgesTipsCompleted() {
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.TIPS_COMPLETED }.forEach {
-            assertEquals(0.coerceAtMost(it.target), it.progress)
+            assertEquals(0.coerceAtMost(it.progressTarget), it.progress)
         }
 
         counters[TIPS_COMPLETED] = 5
         UserActivity(counters).badges.filter { it.type == Badge.BadgeType.TIPS_COMPLETED }.forEach {
-            assertEquals(5.coerceAtMost(it.target), it.progress)
+            assertEquals(5.coerceAtMost(it.progressTarget), it.progress)
         }
     }
 
