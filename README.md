@@ -7,8 +7,6 @@ This project automatically publishes SNAPSHOTs to both a Maven and Cocoapods rep
 
 ## Release builds
 Steps to publish a release build
-- Create a git tag that points at main.
-  - The name of this tag should be `v{release_version}`, with `release_version` matching the version specified in the `gradle.properties` file
-  - This will trigger a GitHub Actions workflow that will publish artifacts in the correct locations
-- Increment the version found in `gradle.properties` on the `main` branch
-  - This will prepare the repo for the next development iteration, and prevents SNAPSHOTS being published for the previous release version.
+- Manually trigger a GHA build on the main branch with "Release Build" checked
+- Once the release build finishes there will be a "Bump version after release" PR created that should be merged
+  - This PR will need to be merged to prepare for the next development iteration
