@@ -23,7 +23,7 @@ kotlin {
         }
         val commonMain by getting {
             dependencies {
-                implementation(project(":module:common"))
+                api(project(":module:common"))
 
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
