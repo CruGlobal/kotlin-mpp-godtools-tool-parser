@@ -7,6 +7,6 @@ This project automatically publishes SNAPSHOTs to both a Maven and Cocoapods rep
 
 ## Release builds
 Steps to publish a release build
-- Manually trigger a GHA build on the main branch with "Release Build" checked
+- Manually [trigger a build](https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser/actions/workflows/build.yml) on the main branch with "Release Build" checked
 - Once the release build finishes there will be a "Bump version after release" PR created that should be merged
   - This PR will need to be merged to prepare for the next development iteration
