@@ -52,7 +52,7 @@ fun KotlinMultiplatformExtension.configureIosTargets() {
 fun KotlinMultiplatformExtension.configureJsTargets() {
     js {
         binaries.library()
-        nodejs()
+        browser()
     }
 }
 
