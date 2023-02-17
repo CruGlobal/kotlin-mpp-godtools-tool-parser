@@ -1,8 +1,12 @@
+import org.ajoberstar.grgit.Grgit
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.goncalossilvaResources)
+    alias(libs.plugins.grgit)
+    alias(libs.plugins.npm.publish)
 }
 
 android {
@@ -53,5 +57,20 @@ kotlin {
                 implementation(libs.goncalossilvaResources)
             }
         }
+    }
+}
+
+npmPublish {
+    organization.set("cruglobal")
+
+    val grgit = project.extensions.findByName("grgit") as? Grgit
+    if (grgit != null && project.isSnapshotVersion) version.set("${project.version}.${grgit.log().size}")
+    packages {
+        named("js") {
+            packageName.set("godtools-shared-parser")
+        }
+    }
+    registries {
+        npmjs {}
     }
 }
