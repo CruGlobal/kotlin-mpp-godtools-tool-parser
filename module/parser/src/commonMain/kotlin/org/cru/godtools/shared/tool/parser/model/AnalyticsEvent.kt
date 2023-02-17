@@ -73,10 +73,14 @@ class AnalyticsEvent : BaseModel {
             }
         }
 
-        // Log a non-fatal warning if this is an adobe analytics event
+        // Log a non-fatal warning if this is a deprecated analytics event
         if (systems.contains(System.ADOBE)) {
             val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
             Napier.e(message, DeprecationException("XML Adobe Analytics Event $message"), TAG)
+        }
+        if (systems.contains(System.SNOWPLOW)) {
+            val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
+            Napier.e(message, DeprecationException("XML Snowplow Analytics Event $message"), TAG)
         }
     }
 
@@ -102,7 +106,10 @@ class AnalyticsEvent : BaseModel {
     enum class System {
         @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
         ADOBE,
-        APPSFLYER, FACEBOOK, FIREBASE, SNOWPLOW, USER;
+        APPSFLYER, FACEBOOK, FIREBASE,
+        @Deprecated("Since 1/1/23, we no longer use Snowplow.")
+        SNOWPLOW,
+        USER;
 
         internal companion object {
             fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
