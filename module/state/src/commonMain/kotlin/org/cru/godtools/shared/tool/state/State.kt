@@ -10,9 +10,12 @@ import org.cru.godtools.shared.tool.state.internal.Parcelable
 import org.cru.godtools.shared.tool.state.internal.Parcelize
 
 @Parcelize
-class State internal constructor(private val state: MutableMap<String, List<String>?>) : Parcelable {
-    constructor() : this(mutableMapOf<String, List<String>?>())
+class State internal constructor(
+    private val vars: MutableMap<String, List<String>?>
+) : Parcelable {
+    constructor() : this(vars = mutableMapOf<String, List<String>?>())
 
+    // region State vars
     private val changeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
     fun <T> changeFlow(vararg key: String, block: (State) -> T) = changeFlow(listOf(*key), block)
     fun <T> changeFlow(keys: Collection<String>?, block: (State) -> T) = when {
@@ -20,12 +23,12 @@ class State internal constructor(private val state: MutableMap<String, List<Stri
         else -> changeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
     }.map { block(this) }
 
-    operator fun get(key: String) = state[key]?.firstOrNull()
-    fun getAll(key: String) = state[key].orEmpty()
+    operator fun get(key: String) = vars[key]?.firstOrNull()
+    fun getAll(key: String) = vars[key].orEmpty()
 
     operator fun set(key: String, value: String?) = set(key, listOfNotNull(value))
     operator fun set(key: String, values: List<String>?) {
-        state[key] = values?.toList()
+        vars[key] = values?.toList()
         changeFlow.tryEmit(key)
     }
 
@@ -37,4 +40,5 @@ class State internal constructor(private val state: MutableMap<String, List<Stri
         val values = getAll(key)
         if (values.contains(value)) set(key, values.filterNot { it == value })
     }
+    // endregion State vars
 }
