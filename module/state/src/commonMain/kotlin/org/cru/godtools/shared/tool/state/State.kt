@@ -32,7 +32,9 @@ class State internal constructor(
         else -> varsChangeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
     }.map { block(this) }
 
-    fun getAll(key: String) = vars[key].orEmpty()
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun getVar(key: String) = vars[key].orEmpty()
 
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
@@ -44,13 +46,13 @@ class State internal constructor(
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun addVarValue(key: String, value: String) {
-        val values = getAll(key)
+        val values = getVar(key)
         if (!values.contains(value)) setVar(key, (values + value))
     }
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun removeVarValue(key: String, value: String) {
-        val values = getAll(key)
+        val values = getVar(key)
         if (values.contains(value)) setVar(key, values.filterNot { it == value })
     }
     // endregion State vars

@@ -16,11 +16,11 @@ class StateTest {
 
     @Test
     fun testGetAll() {
-        assertTrue(state.getAll("missing").isEmpty())
+        assertTrue(state.getVar("missing").isEmpty())
         state.setVar("single", listOf("value"))
-        assertEquals(listOf("value"), state.getAll("single"))
+        assertEquals(listOf("value"), state.getVar("single"))
         state.setVar("multiple", listOf("a", "b", "c"))
-        assertEquals(listOf("a", "b", "c"), state.getAll("multiple"))
+        assertEquals(listOf("a", "b", "c"), state.getVar("multiple"))
     }
 
     @Test
@@ -57,14 +57,14 @@ class StateTest {
 
     @Test
     fun testAddValue() {
-        assertTrue(state.getAll(KEY).isEmpty())
+        assertTrue(state.getVar(KEY).isEmpty())
 
         state.addVarValue(KEY, "1")
         state.addVarValue(KEY, "2")
-        assertEquals(listOf("1", "2"), state.getAll(KEY))
+        assertEquals(listOf("1", "2"), state.getVar(KEY))
 
         state.addVarValue(KEY, "1")
-        assertEquals(listOf("1", "2"), state.getAll(KEY))
+        assertEquals(listOf("1", "2"), state.getVar(KEY))
     }
 
     @Test
@@ -73,6 +73,6 @@ class StateTest {
 
         state.removeVarValue(KEY, "2")
         state.removeVarValue(KEY, "4")
-        assertEquals(listOf("1", "3"), state.getAll(KEY))
+        assertEquals(listOf("1", "3"), state.getVar(KEY))
     }
 }

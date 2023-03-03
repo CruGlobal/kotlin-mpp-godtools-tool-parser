@@ -25,8 +25,8 @@ class StateParcelizeTest {
             readParcelable<State>(this::class.java.classLoader)!!
         }
 
-        assertEquals(1, created.getAll("key1").size)
-        assertEquals(listOf("value1"), created.getAll("key1"))
-        assertEquals(orig.getAll("key2"), created.getAll("key2"))
+        assertEquals(1, created.getVar("key1").size)
+        assertEquals(listOf("value1"), created.getVar("key1"))
+        assertEquals(orig.getVar("key2"), created.getVar("key2"))
     }
 }
