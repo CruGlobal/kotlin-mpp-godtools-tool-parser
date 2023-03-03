@@ -11,8 +11,8 @@ class StateParcelizeTest {
     @Test
     fun testParcelize() {
         val orig = State()
-        orig["key1"] = "value1"
-        orig["key2"] = listOf("a", "b")
+        orig.setVar("key1", listOf("value1"))
+        orig.setVar("key2", listOf("a", "b"))
 
         val parceledBytes = with(Parcel.obtain()) {
             writeParcelable(orig, 0)

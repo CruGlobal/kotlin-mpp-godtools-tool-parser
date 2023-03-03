@@ -65,10 +65,10 @@ class ExpressionTest {
     fun testEvaluateEquals() {
         assertExpression("a==\"test\"", false)
 
-        state["a"] = "test"
+        state.setVar("a", listOf("test"))
         assertExpression("a==\"test\"", true)
 
-        state["a"] = listOf("other", "test", "something")
+        state.setVar("a", listOf("other", "test", "something"))
         assertExpression("a==\"test\"", true)
 
         state.removeVarValue("a", "test")
@@ -79,10 +79,10 @@ class ExpressionTest {
     fun testEvaluateNotEquals() {
         assertExpression("a!=\"test\"", true)
 
-        state["a"] = "test"
+        state.setVar("a", listOf("test"))
         assertExpression("a!=\"test\"", false)
 
-        state["a"] = listOf("other", "test", "something")
+        state.setVar("a", listOf("other", "test", "something"))
         assertExpression("a!=\"test\"", false)
 
         state.removeVarValue("a", "test")
@@ -143,16 +143,16 @@ class ExpressionTest {
 
     @Test
     fun testEvaluateFunctionIsSet() {
-        state["a"] = "test"
+        state.setVar("a", listOf("test"))
         assertExpression("isSet(a)", true)
         assertExpression("isSet(b)", false)
     }
 
     @Test
     fun testEvaluateFunctionValues() {
-        state["a"] = "test"
+        state.setVar("a", listOf("test"))
         assertExpression("values(a) == 1", true)
-        state["a"] = listOf("test", "test2")
+        state.setVar("a", listOf("test", "test2"))
         assertExpression("values(a) == 2", true)
     }
 

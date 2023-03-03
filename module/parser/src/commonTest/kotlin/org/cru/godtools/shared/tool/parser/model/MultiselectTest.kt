@@ -115,7 +115,7 @@ class MultiselectTest : UsesResources() {
             multiselect.options[1].toggleSelected(state)
             expectNoEvents() // Toggled other option to false
 
-            state["other"] = "test"
+            state.setVar("other", listOf("test"))
             expectNoEvents() // Set unrelated state value
         }
     }

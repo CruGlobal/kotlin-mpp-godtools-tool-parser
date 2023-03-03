@@ -169,7 +169,7 @@ class Multiselect : Content {
             when {
                 value in current -> state.removeVarValue(multiselect.stateName, value)
                 current.size < multiselect.selectionLimit -> state.addVarValue(multiselect.stateName, value)
-                multiselect.selectionLimit == 1 -> state[multiselect.stateName] = value
+                multiselect.selectionLimit == 1 -> state.setVar(multiselect.stateName, listOf(value))
                 else -> return false
             }
             return true

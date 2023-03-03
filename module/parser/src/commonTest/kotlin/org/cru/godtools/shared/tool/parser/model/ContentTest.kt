@@ -144,7 +144,7 @@ class ContentTest : UsesResources() {
     fun verifyIsGone() {
         with(object : Content(goneIf = "isSet(a)".toExpressionOrNull()) {}) {
             assertFalse(isGone(state))
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             assertTrue(isGone(state))
         }
     }
@@ -154,25 +154,25 @@ class ContentTest : UsesResources() {
         object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}.isGoneFlow(state).test {
             assertFalse(awaitItem(), "Initially not hidden")
 
-            state["c"] = "test"
+            state.setVar("c", listOf("test"))
             expectNoEvents() // 'c' should have no effect on isHidden result
 
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             assertTrue(awaitItem(), "'a' is now set")
 
-            state["a"] = emptyList()
+            state.setVar("a", emptyList())
             assertFalse(awaitItem(), "'a' is no longer set")
 
-            state["b"] = "test"
+            state.setVar("b", listOf("test"))
             assertTrue(awaitItem(), "'b' is now set")
 
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             expectNoEvents() // 'a' is now set, but shouldn't change isHidden result
 
-            state["b"] = emptyList()
+            state.setVar("b", emptyList())
             expectNoEvents() // 'a' is still set, so isHidden result shouldn't change
 
-            state["a"] = emptyList()
+            state.setVar("a", emptyList())
             assertFalse(awaitItem(), "'a' is no longer set")
         }
     }
@@ -185,7 +185,7 @@ class ContentTest : UsesResources() {
             assertFalse(awaitItem(), "Initially not hidden")
 
             for (i in 1..10) {
-                state["a$i"] = "test"
+                state.setVar("a$i", listOf("test"))
                 assertFalse(content.isGone(state))
             }
 
@@ -205,7 +205,7 @@ class ContentTest : UsesResources() {
     fun verifyIsInvisible() {
         with(object : Content(invisibleIf = "isSet(a)".toExpressionOrNull()) {}) {
             assertFalse(isInvisible(state))
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             assertTrue(isInvisible(state))
         }
     }
@@ -216,25 +216,25 @@ class ContentTest : UsesResources() {
         content.isInvisibleFlow(state).test {
             assertFalse(awaitItem(), "Initially not invisible")
 
-            state["c"] = "test"
+            state.setVar("c", listOf("test"))
             expectNoEvents() // 'c' should have no effect on isInvisible result
 
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             assertTrue(awaitItem(), "'a' is now set")
 
-            state["a"] = emptyList()
+            state.setVar("a", emptyList())
             assertFalse(awaitItem(), "'a' is no longer set")
 
-            state["b"] = "test"
+            state.setVar("b", listOf("test"))
             assertTrue(awaitItem(), "'b' is now set")
 
-            state["a"] = "test"
+            state.setVar("a", listOf("test"))
             expectNoEvents() // 'a' is now set, but shouldn't change isInvisible result
 
-            state["b"] = emptyList()
+            state.setVar("b", emptyList())
             expectNoEvents() // 'a' is still set, so isInvisible result shouldn't change
 
-            state["a"] = emptyList()
+            state.setVar("a", emptyList())
             assertFalse(awaitItem(), "'a' is no longer set")
         }
     }
@@ -247,7 +247,7 @@ class ContentTest : UsesResources() {
             assertFalse(awaitItem(), "Initially not invisible")
 
             for (i in 1..10) {
-                state["a$i"] = "test"
+                state.setVar("a$i", listOf("test"))
                 assertFalse(content.isGone(state))
             }
 

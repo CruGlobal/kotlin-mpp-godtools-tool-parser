@@ -34,8 +34,9 @@ class State internal constructor(
 
     fun getAll(key: String) = vars[key].orEmpty()
 
-    operator fun set(key: String, value: String?) = set(key, listOfNotNull(value))
-    operator fun set(key: String, values: List<String>?) {
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun setVar(key: String, values: List<String>?) {
         vars[key] = values?.toList()
         varsChangeFlow.tryEmit(key)
     }
@@ -44,13 +45,13 @@ class State internal constructor(
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun addVarValue(key: String, value: String) {
         val values = getAll(key)
-        if (!values.contains(value)) set(key, (values + value))
+        if (!values.contains(value)) setVar(key, (values + value))
     }
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun removeVarValue(key: String, value: String) {
         val values = getAll(key)
-        if (values.contains(value)) set(key, values.filterNot { it == value })
+        if (values.contains(value)) setVar(key, values.filterNot { it == value })
     }
     // endregion State vars
 }

@@ -5,7 +5,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 private const val KEY = "key"
@@ -18,9 +17,9 @@ class StateTest {
     @Test
     fun testGetAll() {
         assertTrue(state.getAll("missing").isEmpty())
-        state["single"] = "value"
+        state.setVar("single", listOf("value"))
         assertEquals(listOf("value"), state.getAll("single"))
-        state["multiple"] = listOf("a", "b", "c")
+        state.setVar("multiple", listOf("a", "b", "c"))
         assertEquals(listOf("a", "b", "c"), state.getAll("multiple"))
     }
 
@@ -32,15 +31,15 @@ class StateTest {
             assertEquals(0, awaitItem())
 
             // update state for monitored key
-            state[KEY] = "a"
+            state.setVar(KEY, listOf("a"))
             assertEquals(1, awaitItem())
 
             // update state for other monitored key
-            state[KEY2] = "a"
+            state.setVar(KEY2, listOf("a"))
             assertEquals(2, awaitItem())
 
             // update state for a different key
-            state["other$KEY"] = "a"
+            state.setVar("other$KEY", listOf("a"))
             expectNoEvents()
         }
         assertEquals(3, i)
@@ -70,7 +69,7 @@ class StateTest {
 
     @Test
     fun testRemoveValue() {
-        state[KEY] = listOf("1", "2", "3")
+        state.setVar(KEY, listOf("1", "2", "3"))
 
         state.removeVarValue(KEY, "2")
         state.removeVarValue(KEY, "4")
