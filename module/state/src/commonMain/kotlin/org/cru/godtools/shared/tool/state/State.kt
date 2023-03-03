@@ -16,9 +16,9 @@ import kotlin.native.HiddenFromObjC
 @Parcelize
 @OptIn(ExperimentalObjCRefinement::class)
 class State internal constructor(
-    private val vars: MutableMap<String, List<String>?>
+    private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
 ) : Parcelable {
-    constructor() : this(vars = mutableMapOf<String, List<String>?>())
+    constructor() : this(vars = mutableMapOf())
 
     // region State vars
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
