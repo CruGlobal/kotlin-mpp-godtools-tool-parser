@@ -26,7 +26,7 @@ class StateParcelizeTest {
         }
 
         assertEquals(1, created.getAll("key1").size)
-        assertEquals("value1", created["key1"])
+        assertEquals(listOf("value1"), created.getAll("key1"))
         assertEquals(orig.getAll("key2"), created.getAll("key2"))
     }
 }

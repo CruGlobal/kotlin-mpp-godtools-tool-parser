@@ -32,7 +32,6 @@ class State internal constructor(
         else -> varsChangeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
     }.map { block(this) }
 
-    operator fun get(key: String) = vars[key]?.firstOrNull()
     fun getAll(key: String) = vars[key].orEmpty()
 
     operator fun set(key: String, value: String?) = set(key, listOfNotNull(value))
