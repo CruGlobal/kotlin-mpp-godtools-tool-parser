@@ -18,9 +18,11 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class AnalyticsEventTest : UsesResources() {
+    // region Parsing
     @Test
     fun testParseAnalyticsEventDefaults() = runTest {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event_defaults.xml"))
+        assertNull(event.id)
         assertNull(event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.APPSFLYER))
         AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.APPSFLYER }.forEach {
@@ -29,11 +31,13 @@ class AnalyticsEventTest : UsesResources() {
         assertTrue(event.isTriggerType(AnalyticsEvent.Trigger.DEFAULT))
         assertEquals(0, event.delay)
         assertEquals(0, event.attributes.size)
+        assertNull(event.limit)
     }
 
     @Test
     fun testParseAnalyticsEvent() = runTest {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event.xml"))
+        assertEquals("id", event.id)
         assertEquals("test", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.FIREBASE))
         AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.FIREBASE }.forEach {
@@ -41,6 +45,7 @@ class AnalyticsEventTest : UsesResources() {
         }
         assertTrue(event.isTriggerType(AnalyticsEvent.Trigger.VISIBLE))
         assertEquals(50, event.delay)
+        assertEquals(10, event.limit)
         assertEquals(1, event.attributes.size)
         assertContains(event.attributes, "attr")
         assertEquals("value", event.attributes["attr"])
@@ -50,7 +55,9 @@ class AnalyticsEventTest : UsesResources() {
     fun testParseAnalyticsEvents() = runTest {
         val events = getTestXmlParser("analytics_events.xml").parseAnalyticsEvents(Manifest())
         assertEquals(2, events.size)
+        assertEquals("event1", events[0].id)
         assertEquals("event1", events[0].action)
+        assertEquals("event2-id", events[1].id)
         assertEquals("event2", events[1].action)
     }
 
@@ -72,4 +79,13 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals(AnalyticsEvent.Trigger.HIDDEN, "hidden".toTrigger())
         assertEquals(AnalyticsEvent.Trigger.UNKNOWN, "jkalsdf".toTrigger())
     }
+    // endregion Parsing
+
+    // region Property: id
+    @Test
+    fun testIdFallback() {
+        assertEquals("action", AnalyticsEvent(id = null, action = "action").id)
+        assertEquals("id", AnalyticsEvent(id = "id", action = "action").id)
+    }
+    // endregion Property: id
 }

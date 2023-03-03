@@ -13,6 +13,7 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 private const val TAG = "XmlAnalyticsEvent"
 
 private const val XML_EVENT = "event"
+private const val XML_ID = "id"
 private const val XML_ACTION = "action"
 private const val XML_DELAY = "delay"
 private const val XML_SYSTEM = "system"
@@ -27,6 +28,7 @@ private const val XML_TRIGGER_CLICKED = "clicked"
 private const val XML_TRIGGER_SELECTED = "selected"
 private const val XML_TRIGGER_VISIBLE = "visible"
 private const val XML_TRIGGER_HIDDEN = "hidden"
+private const val XML_LIMIT = "limit"
 private const val XML_ATTRIBUTE = "attribute"
 private const val XML_ATTRIBUTE_KEY = "key"
 private const val XML_ATTRIBUTE_VALUE = "value"
@@ -47,19 +49,24 @@ class AnalyticsEvent : BaseModel {
         }
     }
 
+    private val _id: String?
+    internal val id get() = _id ?: action
     val action: String?
     val delay: Int
     val systems: Set<System>
     val trigger: Trigger
+    internal val limit: Int?
     val attributes: Map<String, String>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         parser.require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, XML_EVENT)
 
+        _id = parser.getAttributeValue(XML_ID)
         action = parser.getAttributeValue(XML_ACTION)
         delay = parser.getAttributeValue(XML_DELAY)?.toIntOrNull() ?: 0
         systems = parser.getAttributeValue(XML_SYSTEM)?.toAnalyticsSystems().orEmpty()
         trigger = parser.getAttributeValue(XML_TRIGGER)?.toTrigger() ?: Trigger.DEFAULT
+        limit = parser.getAttributeValue(XML_LIMIT)?.toIntOrNull()
         attributes = buildMap {
             parser.parseChildren {
                 when (parser.namespace) {
@@ -87,16 +94,20 @@ class AnalyticsEvent : BaseModel {
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         parent: Base = Manifest(),
+        id: String? = null,
         action: String? = null,
         trigger: Trigger = Trigger.DEFAULT,
         delay: Int = 0,
         systems: Set<System> = emptySet(),
+        limit: Int? = null,
         attributes: Map<String, String> = emptyMap()
     ) : super(parent) {
+        _id = id
         this.action = action
         this.delay = delay
         this.systems = systems
         this.trigger = trigger
+        this.limit = limit
         this.attributes = attributes
     }
 
