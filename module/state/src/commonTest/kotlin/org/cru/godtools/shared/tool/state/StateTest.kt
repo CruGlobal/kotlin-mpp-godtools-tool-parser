@@ -36,7 +36,7 @@ class StateTest {
     @Test
     fun testChangeFlow() = runTest {
         var i = 0
-        state.changeFlow(KEY, KEY2) { i++ }.test {
+        state.varsChangeFlow(KEY, KEY2) { i++ }.test {
             // initial value
             assertEquals(0, awaitItem())
 
@@ -58,7 +58,7 @@ class StateTest {
     @Test
     fun testChangeFlowNoKeys() = runTest {
         var count = 0
-        state.changeFlow { count++ }.test {
+        state.varsChangeFlow { count++ }.test {
             assertEquals(0, awaitItem())
             awaitComplete()
         }

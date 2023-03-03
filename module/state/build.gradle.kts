@@ -17,6 +17,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.kotlin.coroutines.core)
             }
         }

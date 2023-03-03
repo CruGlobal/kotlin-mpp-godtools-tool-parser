@@ -17,9 +17,10 @@ interface Visibility {
     val goneIf: Expression?
 
     fun isInvisible(state: State) = invisibleIf?.evaluate(state) ?: false
-    fun isInvisibleFlow(state: State) = state.changeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
+    fun isInvisibleFlow(state: State) =
+        state.varsChangeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
     fun isGone(state: State) = goneIf?.evaluate(state) ?: false
-    fun isGoneFlow(state: State) = state.changeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
+    fun isGoneFlow(state: State) = state.varsChangeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
 }
 
 @OptIn(ExperimentalContracts::class)
