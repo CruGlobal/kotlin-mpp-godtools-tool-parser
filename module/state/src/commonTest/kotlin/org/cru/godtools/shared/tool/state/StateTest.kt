@@ -69,11 +69,11 @@ class StateTest {
     fun testAddValue() {
         assertTrue(state.getAll(KEY).isEmpty())
 
-        state.addValue(KEY, "1")
-        state.addValue(KEY, "2")
+        state.addVarValue(KEY, "1")
+        state.addVarValue(KEY, "2")
         assertEquals(listOf("1", "2"), state.getAll(KEY))
 
-        state.addValue(KEY, "1")
+        state.addVarValue(KEY, "1")
         assertEquals(listOf("1", "2"), state.getAll(KEY))
     }
 
@@ -81,8 +81,8 @@ class StateTest {
     fun testRemoveValue() {
         state[KEY] = listOf("1", "2", "3")
 
-        state.removeValue(KEY, "2")
-        state.removeValue(KEY, "4")
+        state.removeVarValue(KEY, "2")
+        state.removeVarValue(KEY, "4")
         assertEquals(listOf("1", "3"), state.getAll(KEY))
     }
 }

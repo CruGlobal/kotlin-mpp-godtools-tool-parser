@@ -41,11 +41,15 @@ class State internal constructor(
         varsChangeFlow.tryEmit(key)
     }
 
-    fun addValue(key: String, value: String) {
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun addVarValue(key: String, value: String) {
         val values = getAll(key)
         if (!values.contains(value)) set(key, (values + value))
     }
-    fun removeValue(key: String, value: String) {
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun removeVarValue(key: String, value: String) {
         val values = getAll(key)
         if (values.contains(value)) set(key, values.filterNot { it == value })
     }

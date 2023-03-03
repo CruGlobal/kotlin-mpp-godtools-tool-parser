@@ -71,7 +71,7 @@ class ExpressionTest {
         state["a"] = listOf("other", "test", "something")
         assertExpression("a==\"test\"", true)
 
-        state.removeValue("a", "test")
+        state.removeVarValue("a", "test")
         assertExpression("a==\"test\"", false)
     }
 
@@ -85,7 +85,7 @@ class ExpressionTest {
         state["a"] = listOf("other", "test", "something")
         assertExpression("a!=\"test\"", false)
 
-        state.removeValue("a", "test")
+        state.removeVarValue("a", "test")
         assertExpression("a!=\"test\"", true)
     }
 

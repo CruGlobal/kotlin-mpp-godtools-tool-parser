@@ -167,8 +167,8 @@ class Multiselect : Content {
         fun toggleSelected(state: State): Boolean {
             val current = state.getAll(multiselect.stateName)
             when {
-                value in current -> state.removeValue(multiselect.stateName, value)
-                current.size < multiselect.selectionLimit -> state.addValue(multiselect.stateName, value)
+                value in current -> state.removeVarValue(multiselect.stateName, value)
+                current.size < multiselect.selectionLimit -> state.addVarValue(multiselect.stateName, value)
                 multiselect.selectionLimit == 1 -> state[multiselect.stateName] = value
                 else -> return false
             }
