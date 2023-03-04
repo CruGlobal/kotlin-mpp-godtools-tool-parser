@@ -14,8 +14,9 @@ private const val KEY2 = "key2"
 class StateTest {
     private val state = State()
 
+    // region State Vars
     @Test
-    fun testGetAll() {
+    fun testGetVars() {
         assertTrue(state.getVar("missing").isEmpty())
         state.setVar("single", listOf("value"))
         assertEquals(listOf("value"), state.getVar("single"))
@@ -24,7 +25,7 @@ class StateTest {
     }
 
     @Test
-    fun testChangeFlow() = runTest {
+    fun testVarsChangeFlow() = runTest {
         var i = 0
         state.varsChangeFlow(KEY, KEY2) { i++ }.test {
             // initial value
@@ -46,7 +47,7 @@ class StateTest {
     }
 
     @Test
-    fun testChangeFlowNoKeys() = runTest {
+    fun testVarsChangeFlowNoKeys() = runTest {
         var count = 0
         state.varsChangeFlow { count++ }.test {
             assertEquals(0, awaitItem())
@@ -56,7 +57,7 @@ class StateTest {
     }
 
     @Test
-    fun testAddValue() {
+    fun testAddVarValue() {
         assertTrue(state.getVar(KEY).isEmpty())
 
         state.addVarValue(KEY, "1")
@@ -68,11 +69,12 @@ class StateTest {
     }
 
     @Test
-    fun testRemoveValue() {
+    fun testRemoveVarValue() {
         state.setVar(KEY, listOf("1", "2", "3"))
 
         state.removeVarValue(KEY, "2")
         state.removeVarValue(KEY, "4")
         assertEquals(listOf("1", "3"), state.getVar(KEY))
     }
+    // endregion State Vars
 }
