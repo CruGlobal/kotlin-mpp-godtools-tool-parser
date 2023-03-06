@@ -14,6 +14,24 @@ private const val KEY2 = "key2"
 class StateTest {
     private val state = State()
 
+    // region Analytics Events Tracking
+    @Test
+    fun testAnalyticsEventsTracking() {
+        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY))
+        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
+
+        state.recordTriggeredAnalyticsEvent(KEY)
+        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY))
+
+        state.recordTriggeredAnalyticsEvent(KEY)
+        assertEquals(2, state.getTriggeredAnalyticsEventsCount(KEY))
+        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
+
+        state.recordTriggeredAnalyticsEvent(KEY2)
+        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY2))
+    }
+    // endregion Analytics Events Tracking
+
     // region State Vars
     @Test
     fun testGetVars() {

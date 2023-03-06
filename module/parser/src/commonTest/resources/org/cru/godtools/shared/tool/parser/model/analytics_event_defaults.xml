@@ -1,1 +1,2 @@
-<analytics:event xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" system="appsflyer" />
+<analytics:event xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" action=""
+    system="appsflyer" />

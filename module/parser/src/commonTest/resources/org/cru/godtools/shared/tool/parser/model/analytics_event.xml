@@ -1,5 +1,5 @@
-<analytics:event xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" action="test" delay="50"
-    system="firebase" trigger="visible">
+<analytics:event xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" id="id" action="test" delay="50"
+    system="firebase" trigger="visible" limit="10">
     <analytics:attribute key="attr" value="value" />
     <analytics:unrecognized />
     <unrecognized />

@@ -16,9 +16,21 @@ import kotlin.native.HiddenFromObjC
 @Parcelize
 @OptIn(ExperimentalObjCRefinement::class)
 class State internal constructor(
+    private val triggeredAnalyticsEvents: MutableMap<String, Int> = mutableMapOf(),
     private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
 ) : Parcelable {
     constructor() : this(vars = mutableMapOf())
+
+    // region Analytics Events Tracking
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun getTriggeredAnalyticsEventsCount(id: String) = triggeredAnalyticsEvents[id] ?: 0
+    @HiddenFromObjC
+    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
+    fun recordTriggeredAnalyticsEvent(id: String) {
+        triggeredAnalyticsEvents[id] = (triggeredAnalyticsEvents[id] ?: 0) + 1
+    }
+    // endregion Analytics Events Tracking
 
     // region State vars
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)

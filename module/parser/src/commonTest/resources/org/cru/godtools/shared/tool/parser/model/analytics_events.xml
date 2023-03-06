@@ -2,7 +2,7 @@
     <analytics:event action="event1" delay="1" system="firebase">
         <analytics:attribute key="attr1" value="value" />
     </analytics:event>
-    <analytics:event action="event2" delay="2" system="firebase appsflyer">
+    <analytics:event id="event2-id" action="event2" delay="2" system="firebase appsflyer" limit="1">
         <analytics:attribute key="attr2" value="value" />
     </analytics:event>
     <analytics:unrecognized />
