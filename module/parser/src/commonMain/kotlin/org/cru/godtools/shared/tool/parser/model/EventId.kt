@@ -25,7 +25,7 @@ class EventId internal constructor(val namespace: String? = null, val name: Stri
     }
 
     fun resolve(state: State) = when (namespace) {
-        EVENT_NAMESPACE_STATE -> state.getAll(name).map { EventId(name = it) }
+        EVENT_NAMESPACE_STATE -> state.getVar(name).map { EventId(name = it) }
         else -> listOf(this)
     }
 

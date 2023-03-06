@@ -11,8 +11,8 @@ class StateParcelizeTest {
     @Test
     fun testParcelize() {
         val orig = State()
-        orig["key1"] = "value1"
-        orig["key2"] = listOf("a", "b")
+        orig.setVar("key1", listOf("value1"))
+        orig.setVar("key2", listOf("a", "b"))
 
         val parceledBytes = with(Parcel.obtain()) {
             writeParcelable(orig, 0)
@@ -25,8 +25,8 @@ class StateParcelizeTest {
             readParcelable<State>(this::class.java.classLoader)!!
         }
 
-        assertEquals(1, created.getAll("key1").size)
-        assertEquals("value1", created["key1"])
-        assertEquals(orig.getAll("key2"), created.getAll("key2"))
+        assertEquals(1, created.getVar("key1").size)
+        assertEquals(listOf("value1"), created.getVar("key1"))
+        assertEquals(orig.getVar("key2"), created.getVar("key2"))
     }
 }

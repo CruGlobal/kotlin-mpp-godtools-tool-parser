@@ -54,11 +54,11 @@ class FlowTest : UsesResources() {
         assertEquals(1, flow.items.size)
         with(flow.items[0]) {
             assertFalse(isInvisible(state))
-            state["invisible"] = "true"
+            state.setVar("invisible", listOf("true"))
             assertTrue(isInvisible(state))
 
             assertFalse(isGone(state))
-            state["hidden"] = "true"
+            state.setVar("hidden", listOf("true"))
             assertTrue(isGone(state))
         }
     }

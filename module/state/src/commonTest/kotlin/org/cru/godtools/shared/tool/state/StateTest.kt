@@ -5,7 +5,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 private const val KEY = "key"
@@ -15,50 +14,42 @@ private const val KEY2 = "key2"
 class StateTest {
     private val state = State()
 
+    // region State Vars
     @Test
-    fun testGet() {
-        assertNull(state["missing"])
-        state["single"] = "value"
-        assertEquals("value", state["single"])
-        state["multiple"] = listOf("a", "b", "c")
-        assertEquals("a", state["multiple"])
+    fun testGetVars() {
+        assertTrue(state.getVar("missing").isEmpty())
+        state.setVar("single", listOf("value"))
+        assertEquals(listOf("value"), state.getVar("single"))
+        state.setVar("multiple", listOf("a", "b", "c"))
+        assertEquals(listOf("a", "b", "c"), state.getVar("multiple"))
     }
 
     @Test
-    fun testGetAll() {
-        assertTrue(state.getAll("missing").isEmpty())
-        state["single"] = "value"
-        assertEquals(listOf("value"), state.getAll("single"))
-        state["multiple"] = listOf("a", "b", "c")
-        assertEquals(listOf("a", "b", "c"), state.getAll("multiple"))
-    }
-
-    @Test
-    fun testChangeFlow() = runTest {
+    fun testVarsChangeFlow() = runTest {
         var i = 0
-        state.changeFlow(KEY, KEY2) { i++ }.test {
+        state.varsChangeFlow(KEY, KEY2) { i++ }.test {
             // initial value
             assertEquals(0, awaitItem())
 
             // update state for monitored key
-            state[KEY] = "a"
+            state.setVar(KEY, listOf("a"))
             assertEquals(1, awaitItem())
 
             // update state for other monitored key
-            state[KEY2] = "a"
+            state.setVar(KEY2, listOf("a"))
             assertEquals(2, awaitItem())
 
             // update state for a different key
-            state["other$KEY"] = "a"
+            state.setVar("other$KEY", listOf("a"))
             expectNoEvents()
         }
         assertEquals(3, i)
     }
 
     @Test
-    fun testChangeFlowNoKeys() = runTest {
+    fun testVarsChangeFlowNoKeys() = runTest {
         var count = 0
-        state.changeFlow { count++ }.test {
+        state.varsChangeFlow { count++ }.test {
             assertEquals(0, awaitItem())
             awaitComplete()
         }
@@ -66,23 +57,24 @@ class StateTest {
     }
 
     @Test
-    fun testAddValue() {
-        assertTrue(state.getAll(KEY).isEmpty())
+    fun testAddVarValue() {
+        assertTrue(state.getVar(KEY).isEmpty())
 
-        state.addValue(KEY, "1")
-        state.addValue(KEY, "2")
-        assertEquals(listOf("1", "2"), state.getAll(KEY))
+        state.addVarValue(KEY, "1")
+        state.addVarValue(KEY, "2")
+        assertEquals(listOf("1", "2"), state.getVar(KEY))
 
-        state.addValue(KEY, "1")
-        assertEquals(listOf("1", "2"), state.getAll(KEY))
+        state.addVarValue(KEY, "1")
+        assertEquals(listOf("1", "2"), state.getVar(KEY))
     }
 
     @Test
-    fun testRemoveValue() {
-        state[KEY] = listOf("1", "2", "3")
+    fun testRemoveVarValue() {
+        state.setVar(KEY, listOf("1", "2", "3"))
 
-        state.removeValue(KEY, "2")
-        state.removeValue(KEY, "4")
-        assertEquals(listOf("1", "3"), state.getAll(KEY))
+        state.removeVarValue(KEY, "2")
+        state.removeVarValue(KEY, "4")
+        assertEquals(listOf("1", "3"), state.getVar(KEY))
     }
+    // endregion State Vars
 }

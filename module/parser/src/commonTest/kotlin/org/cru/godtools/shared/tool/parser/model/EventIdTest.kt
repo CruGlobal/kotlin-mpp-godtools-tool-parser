@@ -43,7 +43,7 @@ class EventTest {
     @Test
     fun testResolve() {
         val state = State()
-        state["selectorState"] = listOf("a", "b")
+        state.setVar("selectorState", listOf("a", "b"))
         val events = EventId(EVENT_NAMESPACE_STATE, "selectorState").resolve(state)
         assertEquals(2, events.size)
         assertEquals(EventId(name = "a"), events[0])
@@ -59,7 +59,7 @@ class EventTest {
     fun testResolveDifferentNamespace() {
         val state = State()
         val event = EventId(name = "event")
-        state["event"] = listOf("a", "b")
+        state.setVar("event", listOf("a", "b"))
         assertEquals(event, event.resolve(state).single())
     }
     // endregion resolve(State)

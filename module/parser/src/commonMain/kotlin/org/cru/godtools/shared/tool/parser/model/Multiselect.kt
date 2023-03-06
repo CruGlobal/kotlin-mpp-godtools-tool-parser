@@ -161,15 +161,15 @@ class Multiselect : Content {
             else -> error("The $type trigger type is currently unsupported on Multiselect Options")
         }
 
-        fun isSelected(state: State) = value in state.getAll(multiselect.stateName)
+        fun isSelected(state: State) = value in state.getVar(multiselect.stateName)
         fun isSelectedFlow(state: State) =
-            state.changeFlow(multiselect.stateName) { isSelected(it) }.distinctUntilChanged()
+            state.varsChangeFlow(multiselect.stateName) { isSelected(it) }.distinctUntilChanged()
         fun toggleSelected(state: State): Boolean {
-            val current = state.getAll(multiselect.stateName)
+            val current = state.getVar(multiselect.stateName)
             when {
-                value in current -> state.removeValue(multiselect.stateName, value)
-                current.size < multiselect.selectionLimit -> state.addValue(multiselect.stateName, value)
-                multiselect.selectionLimit == 1 -> state[multiselect.stateName] = value
+                value in current -> state.removeVarValue(multiselect.stateName, value)
+                current.size < multiselect.selectionLimit -> state.addVarValue(multiselect.stateName, value)
+                multiselect.selectionLimit == 1 -> state.setVar(multiselect.stateName, listOf(value))
                 else -> return false
             }
             return true

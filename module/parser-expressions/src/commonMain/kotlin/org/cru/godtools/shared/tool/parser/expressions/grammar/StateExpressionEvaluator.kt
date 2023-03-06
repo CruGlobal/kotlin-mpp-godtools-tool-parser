@@ -25,8 +25,8 @@ internal class StateExpressionEvaluator(private val state: State) {
             val varName = ctx.varName!!.text!!
             val value = ctx.value!!.text!!.run { substring(1, length - 1) }
             return when (ctx.op!!.type) {
-                Tokens.EQ.id -> state.getAll(varName).contains(value)
-                Tokens.NEQ.id -> !state.getAll(varName).contains(value)
+                Tokens.EQ.id -> state.getVar(varName).contains(value)
+                Tokens.NEQ.id -> !state.getVar(varName).contains(value)
                 else -> throw IllegalStateException()
             }
         }
@@ -46,13 +46,13 @@ internal class StateExpressionEvaluator(private val state: State) {
         }
 
         override fun visitIsSetFunc(ctx: StateExpressionParser.IsSetFuncContext) =
-            state.getAll(ctx.varName!!.text!!).isNotEmpty()
+            state.getVar(ctx.varName!!.text!!).isNotEmpty()
     }
 
     val intExpr = object : StateExpressionBaseVisitor<Int>() {
         override fun visitIntAtom(ctx: StateExpressionParser.IntAtomContext) = ctx.value!!.text!!.toInt()
 
         override fun visitValuesFunc(ctx: StateExpressionParser.ValuesFuncContext) =
-            state.getAll(ctx.varName!!.text!!).size
+            state.getVar(ctx.varName!!.text!!).size
     }
 }

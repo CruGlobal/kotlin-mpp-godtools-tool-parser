@@ -116,11 +116,11 @@ class ButtonTest : UsesResources() {
             assertFalse(isIgnored)
 
             assertFalse(isInvisible(state))
-            state["invisible"] = "true"
+            state.setVar("invisible", listOf("true"))
             assertTrue(isInvisible(state))
 
             assertFalse(isGone(state))
-            state["hidden"] = "true"
+            state.setVar("hidden", listOf("true"))
             assertTrue(isGone(state))
         }
     }
