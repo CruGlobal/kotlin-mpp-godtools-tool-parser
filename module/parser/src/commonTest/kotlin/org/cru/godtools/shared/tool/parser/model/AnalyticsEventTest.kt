@@ -23,8 +23,8 @@ class AnalyticsEventTest : UsesResources() {
     @Test
     fun testParseAnalyticsEventDefaults() = runTest {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event_defaults.xml"))
-        assertNull(event.id)
-        assertNull(event.action)
+        assertEquals("", event.id)
+        assertEquals("", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.APPSFLYER))
         AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.APPSFLYER }.forEach {
             assertFalse(event.isForSystem(it))
@@ -111,15 +111,6 @@ class AnalyticsEventTest : UsesResources() {
     @Test
     fun testShouldTriggerNoLimit() {
         val event = AnalyticsEvent(id = "id")
-        assertTrue(event.shouldTrigger(state))
-
-        repeat(50) { event.recordTriggered(state) }
-        assertTrue(event.shouldTrigger(state))
-    }
-
-    @Test
-    fun testShouldTriggerNoId() {
-        val event = AnalyticsEvent(limit = 1)
         assertTrue(event.shouldTrigger(state))
 
         repeat(50) { event.recordTriggered(state) }

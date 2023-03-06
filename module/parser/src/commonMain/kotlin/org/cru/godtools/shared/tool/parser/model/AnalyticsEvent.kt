@@ -52,7 +52,7 @@ class AnalyticsEvent : BaseModel {
 
     private val _id: String?
     internal val id get() = _id ?: action
-    val action: String?
+    val action: String
     val delay: Int
     val systems: Set<System>
     val trigger: Trigger
@@ -63,7 +63,7 @@ class AnalyticsEvent : BaseModel {
         parser.require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, XML_EVENT)
 
         _id = parser.getAttributeValue(XML_ID)
-        action = parser.getAttributeValue(XML_ACTION)
+        action = parser.getAttributeValue(XML_ACTION).orEmpty()
         delay = parser.getAttributeValue(XML_DELAY)?.toIntOrNull() ?: 0
         systems = parser.getAttributeValue(XML_SYSTEM)?.toAnalyticsSystems().orEmpty()
         trigger = parser.getAttributeValue(XML_TRIGGER)?.toTrigger() ?: Trigger.DEFAULT
@@ -96,7 +96,7 @@ class AnalyticsEvent : BaseModel {
     constructor(
         parent: Base = Manifest(),
         id: String? = null,
-        action: String? = null,
+        action: String = "",
         trigger: Trigger = Trigger.DEFAULT,
         delay: Int = 0,
         systems: Set<System> = emptySet(),
@@ -115,10 +115,8 @@ class AnalyticsEvent : BaseModel {
     fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
     fun isForSystem(system: System) = systems.contains(system)
 
-    fun shouldTrigger(state: State) = limit == null || id?.let { state.getTriggeredAnalyticsEventsCount(it) < limit } ?: true
-    fun recordTriggered(state: State) {
-        id?.let { state.recordTriggeredAnalyticsEvent(it) }
-    }
+    fun shouldTrigger(state: State) = limit == null || state.getTriggeredAnalyticsEventsCount(id) < limit
+    fun recordTriggered(state: State) = state.recordTriggeredAnalyticsEvent(id)
 
     enum class System {
         @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
