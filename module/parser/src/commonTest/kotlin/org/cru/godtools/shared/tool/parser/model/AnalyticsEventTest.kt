@@ -8,6 +8,7 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companion.toTrigger
+import org.cru.godtools.shared.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -88,4 +89,41 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals("id", AnalyticsEvent(id = "id", action = "action").id)
     }
     // endregion Property: id
+
+    // region Record Triggered Events
+    private val state = State()
+
+    @Test
+    fun testShouldTrigger() {
+        val event = AnalyticsEvent(
+            id = "id",
+            limit = 2
+        )
+        assertTrue(event.shouldTrigger(state))
+
+        event.recordTriggered(state)
+        assertTrue(event.shouldTrigger(state))
+
+        event.recordTriggered(state)
+        assertFalse(event.shouldTrigger(state))
+    }
+
+    @Test
+    fun testShouldTriggerNoLimit() {
+        val event = AnalyticsEvent(id = "id")
+        assertTrue(event.shouldTrigger(state))
+
+        repeat(50) { event.recordTriggered(state) }
+        assertTrue(event.shouldTrigger(state))
+    }
+
+    @Test
+    fun testShouldTriggerNoId() {
+        val event = AnalyticsEvent(limit = 1)
+        assertTrue(event.shouldTrigger(state))
+
+        repeat(50) { event.recordTriggered(state) }
+        assertTrue(event.shouldTrigger(state))
+    }
+    // endregion Record Triggered Events
 }

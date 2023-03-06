@@ -9,6 +9,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companio
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import org.cru.godtools.shared.tool.state.State
 
 private const val TAG = "XmlAnalyticsEvent"
 
@@ -113,6 +114,11 @@ class AnalyticsEvent : BaseModel {
 
     fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
     fun isForSystem(system: System) = systems.contains(system)
+
+    fun shouldTrigger(state: State) = limit == null || id?.let { state.getTriggeredAnalyticsEventsCount(it) < limit } ?: true
+    fun recordTriggered(state: State) {
+        id?.let { state.recordTriggeredAnalyticsEvent(it) }
+    }
 
     enum class System {
         @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
