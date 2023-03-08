@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.tool.parser
 
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CancellationException
 import org.cru.godtools.shared.tool.parser.internal.FileNotFoundException
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
@@ -12,6 +13,8 @@ open class ManifestParser(private val parserFactory: XmlPullParserFactory, val d
             parserFactory.getXmlParser(it)?.apply { nextTag() } ?: throw FileNotFoundException(fileName)
         }
         ParserResult.Data(manifest)
+    } catch (e: CancellationException) {
+        throw e
     } catch (e: FileNotFoundException) {
         ParserResult.Error.NotFound(e)
     } catch (e: XmlPullParserException) {
