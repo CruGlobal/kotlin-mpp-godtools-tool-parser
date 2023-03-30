@@ -36,7 +36,7 @@ materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-turbine = "app.cash.turbine:turbine:0.12.1"
+turbine = "app.cash.turbine:turbine:0.12.3"
 
 # HACK: dependencies used to trigger renovate upgrades
 ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
