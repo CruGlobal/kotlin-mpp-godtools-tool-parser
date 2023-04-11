@@ -24,7 +24,7 @@ fun KotlinMultiplatformExtension.configureAndroidTargets() {
         publishLibraryVariants("debug", "release")
     }
 
-    sourceSets.named("androidTest") {
+    sourceSets.named("androidUnitTest") {
         dependencies {
             implementation(project.libs.findBundle("android-test-framework").get())
         }
