@@ -9,12 +9,11 @@ fun enableDebugLogging() {
     Napier.base(DebugAntilog())
 }
 
-fun enableCustomLogging(
-    onLog: (priority: LogLevel, tag: String?, throwable: Throwable?, message: String?) -> Unit
-) {
-    Napier.base(object : Antilog() {
+fun enableCustomLogging(onLog: (priority: LogLevel, tag: String?, throwable: Throwable?, message: String?) -> Unit) {
+    val antilog = object : Antilog() {
         override fun performLog(priority: LogLevel, tag: String?, throwable: Throwable?, message: String?) {
             onLog(priority, tag, throwable, message)
         }
-    })
+    }
+    Napier.base(antilog)
 }
