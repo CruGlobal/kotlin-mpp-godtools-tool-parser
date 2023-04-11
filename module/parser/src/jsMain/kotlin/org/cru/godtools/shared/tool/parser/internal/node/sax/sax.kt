@@ -1,5 +1,6 @@
 @file:JsModule("sax")
 @file:JsNonModule
+
 package org.cru.godtools.shared.tool.parser.internal.node.sax
 
 open external class SAXParser(strict: Boolean, opt: SAXOptions) {
