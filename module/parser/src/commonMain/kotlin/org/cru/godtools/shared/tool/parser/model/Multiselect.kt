@@ -163,7 +163,7 @@ class Multiselect : Content {
 
         fun isSelected(state: State) = value in state.getVar(multiselect.stateName)
         fun isSelectedFlow(state: State) =
-            state.varsChangeFlow(multiselect.stateName) { isSelected(it) }.distinctUntilChanged()
+            state.varsChangeFlow(setOf(multiselect.stateName)) { isSelected(it) }.distinctUntilChanged()
         fun toggleSelected(state: State): Boolean {
             val current = state.getVar(multiselect.stateName)
             when {

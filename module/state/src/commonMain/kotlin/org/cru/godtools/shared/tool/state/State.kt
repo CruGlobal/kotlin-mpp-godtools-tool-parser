@@ -36,10 +36,7 @@ class State internal constructor(
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
-    fun <T> varsChangeFlow(vararg key: String, block: (State) -> T) = varsChangeFlow(listOf(*key), block)
-    @HiddenFromObjC
-    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
-    fun <T> varsChangeFlow(keys: Collection<String>?, block: (State) -> T) = when {
+    fun <T> varsChangeFlow(keys: Collection<String>? = emptyList(), block: (State) -> T) = when {
         keys.isNullOrEmpty() -> flowOf(Unit)
         else -> varsChangeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
     }.map { block(this) }
