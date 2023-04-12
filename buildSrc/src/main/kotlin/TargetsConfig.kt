@@ -55,6 +55,7 @@ fun KotlinMultiplatformExtension.configureJsTargets() {
         browser {
             testTask { useMocha() }
         }
+        generateTypeScriptDefinitions()
     }
 }
 
