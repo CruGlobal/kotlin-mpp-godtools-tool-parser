@@ -333,6 +333,6 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishJsPackageToNpmjsRegistry --scan
+          arguments: kotlinNodeJsSetup publishJsPackageToNpmjsRegistry --scan
         env:
           ORG_GRADLE_PROJECT_npmPublishRegistryNpmjsAuthToken: ${{ secrets.NPM_PUBLISH_TOKEN }}
