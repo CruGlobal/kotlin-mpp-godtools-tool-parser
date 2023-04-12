@@ -65,6 +65,24 @@ class StateTest {
     }
 
     @Test
+    fun testVarsChangeFlowChangeDuringStartup() = runTest {
+        state.setVar(KEY, listOf("a"))
+        state.varsChangeFlow(setOf(KEY)) {
+            val value = state.getVar(KEY).single()
+            // when emitting the initial value, update the key to check that changes during startup are handled
+            if (value == "a") state.setVar(KEY, listOf("b"))
+            value
+        }.test {
+            // initial value
+            assertEquals("a", awaitItem())
+
+            // final value
+            assertEquals("b", awaitItem())
+        }
+        assertEquals("b", state.getVar(KEY).single())
+    }
+
+    @Test
     fun testVarsChangeFlowNoKeys() = runTest {
         var count = 0
         state.varsChangeFlow { count++ }.test {
