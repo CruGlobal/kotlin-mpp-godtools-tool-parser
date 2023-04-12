@@ -105,6 +105,9 @@ koverMerged {
     enable()
 
     filters {
+        projects {
+            excludes += ":publishing:npm"
+        }
         classes {
             excludes += listOf(
                 // exclude SaxXmlPullParser from reports because it is only used by iOS and JS

@@ -24,6 +24,8 @@ include("module:parser-expressions")
 include("module:state")
 include("module:user-activity")
 
+include("publishing:npm")
+
 // automatically accept the scans.gradle.com TOS when running in GHA
 if (System.getenv("GITHUB_ACTIONS")?.toBoolean() == true) {
     extensions.findByName("gradleEnterprise")?.withGroovyBuilder {
