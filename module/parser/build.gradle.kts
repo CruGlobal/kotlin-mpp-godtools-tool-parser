@@ -43,7 +43,7 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation(npm("sax", "1.2.4"))
+                implementation(npmLibs.sax)
             }
         }
         val commonTest by getting {
