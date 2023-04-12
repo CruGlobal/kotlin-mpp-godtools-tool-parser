@@ -11,14 +11,19 @@ import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.state.internal.Parcelable
 import org.cru.godtools.shared.tool.state.internal.Parcelize
 import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 
+@JsExport
 @Parcelize
-@OptIn(ExperimentalObjCRefinement::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class State internal constructor(
     private val triggeredAnalyticsEvents: MutableMap<String, Int> = mutableMapOf(),
     private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
 ) : Parcelable {
+    @JsName("createState")
     constructor() : this(vars = mutableMapOf())
 
     // region Analytics Events Tracking
