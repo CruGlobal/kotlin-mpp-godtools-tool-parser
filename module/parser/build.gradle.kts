@@ -71,6 +71,8 @@ npmPublish {
         }
     }
     registries {
-        npmjs {}
+        npmjs {
+            authToken.set(findProperty("npmPublishRegistryNpmjsAuthToken")?.toString())
+        }
     }
 }

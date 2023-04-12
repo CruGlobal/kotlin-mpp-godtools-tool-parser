@@ -317,3 +317,22 @@ jobs:
         run: bundle exec pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Push podspec
         run: bundle exec pod repo push CruGlobal *.podspec --allow-warnings
+
+  deploy_npm:
+    name: Publish npm package
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish NPM SNAPSHOT')) || 
+        (github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main')
+    needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishJsPackageToNpmjsRegistry --scan
+        env:
+          ORG_GRADLE_PROJECT_npmPublishRegistryNpmjsAuthToken: ${{ secrets.NPM_PUBLISH_TOKEN }}
