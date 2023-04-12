@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onSubscription
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.state.internal.Parcelable
@@ -38,7 +38,7 @@ class State internal constructor(
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun <T> varsChangeFlow(keys: Collection<String>? = emptyList(), block: (State) -> T) = when {
         keys.isNullOrEmpty() -> flowOf(Unit)
-        else -> varsChangeFlow.filter { it in keys }.map {}.onStart { emit(Unit) }.conflate()
+        else -> varsChangeFlow.onSubscription { emit(keys.first()) }.filter { it in keys }.map {}.conflate()
     }.map { block(this) }
 
     @HiddenFromObjC
