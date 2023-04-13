@@ -5,6 +5,11 @@ dependencyResolutionManagement {
                 includeGroup("com.strumenta.antlr-kotlin")
             }
         }
+        maven("https://raw.githubusercontent.com/Deezer/KustomExport/mvn-repo") {
+            content {
+                includeGroup("deezer.kustomexport")
+            }
+        }
         maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
             content {
                 includeGroup("org.ccci.gto.android")

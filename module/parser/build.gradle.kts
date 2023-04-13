@@ -3,6 +3,7 @@ plugins {
     id("com.android.library")
     alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.goncalossilvaResources)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -28,6 +29,8 @@ kotlin {
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.gtoSupport.fluidsonic.locale)
+                implementation(libs.kustomExport)
+                implementation(libs.kustomExport.coroutines)
                 implementation(libs.napier)
             }
         }
@@ -55,3 +58,8 @@ kotlin {
         }
     }
 }
+
+// region KustomExport
+dependencies.add("kspJs", libs.kustomExport.compiler)
+ksp.arg("erasePackage", "true")
+// endregion KustomExport
