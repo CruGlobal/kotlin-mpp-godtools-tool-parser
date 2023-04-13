@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser
 
+import deezer.kustomexport.KustomExport
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CancellationException
 import org.cru.godtools.shared.tool.parser.internal.FileNotFoundException
@@ -10,6 +11,7 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 
+@KustomExport
 open class ManifestParser(private val parserFactory: XmlPullParserFactory, val defaultConfig: ParserConfig) {
     suspend fun parseManifest(fileName: String, config: ParserConfig = defaultConfig): ParserResult = try {
         val manifest = Manifest.parse(fileName, config) {
