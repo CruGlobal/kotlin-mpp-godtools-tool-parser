@@ -17,16 +17,16 @@ fun Project.configureAntlr() {
         val antlrDirectoryDelegate = AntlrSourceVirtualDirectoryImpl(name, objects)
         antlrDirectoryDelegate.antlr.srcDir("src/$name/antlr")
 
-        // 3) Set up the Antlr output directory (adding to javac inputs!)
-
+        // 2) Create task to generate the ANTLR grammar parsers
         val generateTask = tasks.register("generate${name.capitalize()}GrammarSource", AntlrKotlinTask::class.java) {
             antlrClasspath = antlrConfiguration
             maxHeapSize = "64m"
             arguments = listOf("-visitor")
             source = antlrDirectoryDelegate.antlr
-            outputDirectory = File(buildDir, "generated-src/antlr/${this@all.name}")
+            outputDirectory = File(buildDir, "generated/antlr/src/${this@all.name}/kotlin")
         }
 
+        // 3) Set up the Antlr output directory (adding to javac inputs!)
         kotlin.srcDir(generateTask.map { it.outputDirectory })
     }
 }
