@@ -4,14 +4,20 @@ import org.cru.godtools.shared.tool.parser.model.DEFAULT
 import org.cru.godtools.shared.tool.parser.model.DeviceType
 import org.cru.godtools.shared.tool.parser.model.Version
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 data class ParserConfig private constructor(
     internal val deviceType: DeviceType = DeviceType.DEFAULT,
     internal val appVersion: Version? = null,
     private val supportedFeatures: Set<String> = emptySet(),
     internal val parsePages: Boolean = true,
-    internal val parseTips: Boolean = true
+    internal val parseTips: Boolean = true,
 ) {
+    @JsName("createParserConfig")
     constructor() : this(supportedFeatures = emptySet())
 
     companion object {
