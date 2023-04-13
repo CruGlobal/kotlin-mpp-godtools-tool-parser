@@ -51,7 +51,11 @@ fun KotlinMultiplatformExtension.configureIosTargets() {
 
 fun KotlinMultiplatformExtension.configureJsTargets() {
     js {
-        nodejs()
+        binaries.library()
+        browser {
+            testTask { useMocha() }
+        }
+        generateTypeScriptDefinitions()
     }
 }
 

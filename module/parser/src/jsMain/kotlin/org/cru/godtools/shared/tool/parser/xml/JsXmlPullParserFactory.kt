@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.xml
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 abstract class JsXmlPullParserFactory : XmlPullParserFactory() {
     abstract fun readFile(fileName: String): String?
 
