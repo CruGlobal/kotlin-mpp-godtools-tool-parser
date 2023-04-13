@@ -36,8 +36,11 @@ npmPublish {
         }
     }
     registries {
-        npmjs {
-            authToken.set(findProperty("npmPublishRegistryNpmjsAuthToken")?.toString())
+        val token = findProperty("npmPublishRegistryNpmjsAuthToken")
+        if (token != null) {
+            npmjs {
+                authToken.set(token.toString())
+            }
         }
     }
 }
