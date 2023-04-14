@@ -8,6 +8,7 @@ fluidLocale = "0.12.0"
 gtoSupport = "4.0.0"
 kotlin = "1.8.20"
 kotlinCoroutines = "1.6.4"
+kustomExport = "0.8.1"
 goncalossilvaResources = "0.3.2"
 ktlint = "0.48.2"
 napier = "2.6.1"
@@ -33,6 +34,9 @@ gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-flui
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport" }
+kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
+kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
@@ -50,5 +54,6 @@ common-test-framework = ["kotlin-coroutines-test"]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.0.0" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.6.1" }
+ksp = { id = "com.google.devtools.ksp", version = "1.8.20-1.0.10" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.3.1" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }

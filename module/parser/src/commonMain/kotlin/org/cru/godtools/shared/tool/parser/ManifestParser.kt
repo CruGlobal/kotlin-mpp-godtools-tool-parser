@@ -1,12 +1,17 @@
 package org.cru.godtools.shared.tool.parser
 
+import deezer.kustomexport.KustomExport
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CancellationException
 import org.cru.godtools.shared.tool.parser.internal.FileNotFoundException
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserFactory
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
+@KustomExport
 open class ManifestParser(private val parserFactory: XmlPullParserFactory, val defaultConfig: ParserConfig) {
     suspend fun parseManifest(fileName: String) = parseManifest(fileName, defaultConfig)
     suspend fun parseManifest(fileName: String, config: ParserConfig): ParserResult = try {
@@ -26,10 +31,13 @@ open class ManifestParser(private val parserFactory: XmlPullParserFactory, val d
     }
 }
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 sealed class ParserResult {
     class Data(val manifest: Manifest) : ParserResult()
 
-    open class Error internal constructor(val error: Exception? = null) : ParserResult() {
+    @JsName("ParserError")
+    open class Error internal constructor(val error: Throwable? = null) : ParserResult() {
         class Corrupted internal constructor(e: Exception? = null) : Error(e)
         class NotFound internal constructor(e: Exception? = null) : Error(e)
     }
