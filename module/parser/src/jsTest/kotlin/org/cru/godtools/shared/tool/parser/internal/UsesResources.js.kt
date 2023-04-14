@@ -12,8 +12,8 @@ internal actual val UsesResources.TEST_XML_PULL_PARSER_FACTORY: XmlPullParserFac
     get() = object : JsXmlPullParserFactory() {
         override fun readFile(fileName: String) = try {
             val path = resourcesDir?.let { "$RESOURCES_ROOT/$it" } ?: RESOURCES_ROOT
-            Promise.resolve(Resource("$path/$fileName").readText())
+            Promise.resolve(Resource("$path/$fileName").takeIf { it.exists() }?.readText())
         } catch (e: RuntimeException) {
-            Promise.resolve(null)
+            Promise.reject(e)
         }
     }
