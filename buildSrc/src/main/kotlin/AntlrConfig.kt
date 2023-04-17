@@ -1,10 +1,16 @@
 import com.strumenta.antlrkotlin.gradleplugin.AntlrKotlinTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.antlr.AntlrPlugin.ANTLR_CONFIGURATION_NAME
-import org.gradle.api.plugins.antlr.internal.AntlrSourceVirtualDirectoryImpl
+import org.gradle.api.plugins.antlr.AntlrSourceDirectorySet
+import org.gradle.api.plugins.antlr.internal.DefaultAntlrSourceDirectorySet
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import java.io.File
 
+/**
+ * Logic based off of AntlrPlugin.apply()
+ *
+ * see: [org.gradle.api.plugins.antlr.AntlrPlugin]
+ */
 fun Project.configureAntlr() {
     // create antlr configuration
     val antlrConfiguration = configurations.create(ANTLR_CONFIGURATION_NAME)
@@ -13,16 +19,21 @@ fun Project.configureAntlr() {
 
     // for each source set
     extensions.getByType(KotlinMultiplatformExtension::class.java).sourceSets.all {
-        // 1) Add a new 'antlr' virtual directory mapping
-        val antlrDirectoryDelegate = AntlrSourceVirtualDirectoryImpl(name, objects)
-        antlrDirectoryDelegate.antlr.srcDir("src/$name/antlr")
+        // 1) Create Antlr source set
+        val antlrSourceSet = objects.newInstance(
+            DefaultAntlrSourceDirectorySet::class.java,
+            objects.sourceDirectorySet("$name.antlr", "$displayName Antlr source"),
+        )
+        antlrSourceSet.filter.include("**/*.g")
+        antlrSourceSet.filter.include("**/*.g4")
+        antlrSourceSet.srcDir("src/$name/antlr")
 
-        // 2) Create task to generate the ANTLR grammar parsers
+        // 2) Create Antlr generate parser task
         val generateTask = tasks.register("generate${name.capitalize()}GrammarSource", AntlrKotlinTask::class.java) {
             antlrClasspath = antlrConfiguration
             maxHeapSize = "64m"
             arguments = listOf("-visitor")
-            source = antlrDirectoryDelegate.antlr
+            source = antlrSourceSet
             outputDirectory = File(buildDir, "generated/antlr/src/${this@all.name}/kotlin")
         }
 
