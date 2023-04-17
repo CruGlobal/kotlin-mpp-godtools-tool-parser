@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.cru.godtools.shared.tool.parser.model.DEFAULT
 import org.cru.godtools.shared.tool.parser.model.DeviceType
 import org.cru.godtools.shared.tool.parser.model.Version
@@ -16,6 +18,7 @@ data class ParserConfig private constructor(
     private val supportedFeatures: Set<String> = emptySet(),
     internal val parsePages: Boolean = true,
     internal val parseTips: Boolean = true,
+    internal val parserDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
     @JsName("createParserConfig")
     constructor() : this(supportedFeatures = emptySet())
