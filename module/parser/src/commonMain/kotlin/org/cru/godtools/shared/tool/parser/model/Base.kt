@@ -7,3 +7,5 @@ interface Base {
 
 val Base?.manifest get() = this?.manifest
 val Base?.stylesParent get() = this?.stylesParent
+
+internal fun Base.getResource(name: String?) = manifest.getResource(name)

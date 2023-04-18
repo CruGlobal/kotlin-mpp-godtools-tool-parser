@@ -435,5 +435,3 @@ val Manifest?.backgroundImageScaleType
 
 @get:AndroidColorInt
 val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
-
-internal fun Base.getResource(name: String?) = manifest.getResource(name)
