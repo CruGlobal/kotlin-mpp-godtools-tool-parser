@@ -28,9 +28,11 @@ class State internal constructor(
 
     // region Analytics Events Tracking
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun getTriggeredAnalyticsEventsCount(id: String) = triggeredAnalyticsEvents[id] ?: 0
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun recordTriggeredAnalyticsEvent(id: String) {
         triggeredAnalyticsEvents[id] = (triggeredAnalyticsEvents[id] ?: 0) + 1
@@ -40,6 +42,7 @@ class State internal constructor(
     // region State vars
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun <T> varsChangeFlow(keys: Collection<String>? = emptyList(), block: (State) -> T) = when {
         keys.isNullOrEmpty() -> flowOf(Unit)
@@ -47,10 +50,12 @@ class State internal constructor(
     }.map { block(this) }
 
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun getVar(key: String) = vars[key].orEmpty()
 
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun setVar(key: String, values: List<String>?) {
         vars[key] = values?.toList()
@@ -58,12 +63,14 @@ class State internal constructor(
     }
 
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun addVarValue(key: String, value: String) {
         val values = getVar(key)
         if (!values.contains(value)) setVar(key, (values + value))
     }
     @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
     fun removeVarValue(key: String, value: String) {
         val values = getVar(key)
