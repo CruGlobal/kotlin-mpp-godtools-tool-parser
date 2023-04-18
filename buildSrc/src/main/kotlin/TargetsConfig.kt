@@ -3,14 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
-fun KotlinMultiplatformExtension.configureTargets() {
-    configureAndroidTargets()
-    configureIosTargets()
-    configureJsTargets()
-    configureCommonSourceSets()
-}
-
-fun KotlinMultiplatformExtension.configureCommonSourceSets() {
+internal fun KotlinMultiplatformExtension.configureCommonSourceSets() {
     sourceSets.named("commonTest") {
         dependencies {
             implementation(kotlin("test"))
@@ -19,7 +12,7 @@ fun KotlinMultiplatformExtension.configureCommonSourceSets() {
     }
 }
 
-fun KotlinMultiplatformExtension.configureAndroidTargets() {
+internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
     android {
         publishLibraryVariants("debug", "release")
     }

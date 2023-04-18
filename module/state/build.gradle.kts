@@ -1,18 +1,15 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    id("godtools-shared.module-conventions")
     kotlin("plugin.parcelize")
     alias(libs.plugins.kotlin.kover)
 }
 
 android {
     namespace = "org.cru.godtools.shared.tool.state"
-    baseConfiguration()
 }
-enablePublishing()
 
 kotlin {
-    configureTargets()
+    configureJsTargets()
 
     sourceSets {
         val commonMain by getting {

@@ -1,18 +1,15 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    id("godtools-shared.module-conventions")
     alias(libs.plugins.kotlin.kover)
 }
 
 android {
     namespace = "org.cru.godtools.shared.tool.parser.expressions"
-    baseConfiguration()
 }
 configureAntlr()
-enablePublishing()
 
 kotlin {
-    configureTargets()
+    configureJsTargets()
 
     sourceSets {
         val commonMain by getting {

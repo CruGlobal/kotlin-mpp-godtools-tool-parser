@@ -1,20 +1,13 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    id("godtools-shared.module-conventions")
     alias(libs.plugins.kotlin.kover)
 }
 
 android {
     namespace = "org.cru.godtools.shared.user.activity"
-    baseConfiguration()
 }
-enablePublishing()
 
 kotlin {
-    configureAndroidTargets()
-    configureIosTargets()
-    configureCommonSourceSets()
-
     sourceSets {
         val androidMain by getting {
             dependencies {

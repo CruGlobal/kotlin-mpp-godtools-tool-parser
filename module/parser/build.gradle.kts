@@ -1,6 +1,5 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    id("godtools-shared.module-conventions")
     alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.goncalossilvaResources)
     alias(libs.plugins.ksp)
@@ -8,12 +7,10 @@ plugins {
 
 android {
     namespace = "org.cru.godtools.shared.tool.parser"
-    baseConfiguration()
 }
-enablePublishing()
 
 kotlin {
-    configureTargets()
+    configureJsTargets()
 
     sourceSets {
         val commonMain by getting {
