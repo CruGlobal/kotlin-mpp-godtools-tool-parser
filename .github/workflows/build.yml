@@ -286,7 +286,10 @@ jobs:
   deploy_ios_podspec:
     name: Publish iOS Podspec
     runs-on: macos-11
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: CocoaPods')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, ios_tests, check_version ]
     steps:
       - name: Checkout code
