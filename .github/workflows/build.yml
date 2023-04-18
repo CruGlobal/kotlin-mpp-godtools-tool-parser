@@ -322,7 +322,7 @@ jobs:
     name: Publish npm package
     runs-on: ubuntu-latest
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish NPM SNAPSHOT')) || 
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish: npm PR SNAPSHOT')) || 
         (github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
     steps:
