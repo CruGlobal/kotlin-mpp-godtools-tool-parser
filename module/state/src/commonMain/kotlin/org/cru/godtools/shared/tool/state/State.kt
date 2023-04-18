@@ -38,13 +38,7 @@ class State internal constructor(
     // endregion Analytics Events Tracking
 
     // region State vars
-    private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
-    @HiddenFromObjC
-    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
-    fun <T> varsChangeFlow(keys: Collection<String>? = emptyList(), block: (State) -> T) = when {
-        keys.isNullOrEmpty() -> flowOf(Unit)
-        else -> varsChangeFlow.onSubscription { emit(keys.first()) }.filter { it in keys }.map {}.conflate()
-    }.map { block(this) }
+    internal val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
 
     @HiddenFromObjC
     @RestrictTo(RestrictToScope.LIBRARY_GROUP)
@@ -71,3 +65,11 @@ class State internal constructor(
     }
     // endregion State vars
 }
+
+@HiddenFromObjC
+@RestrictTo(RestrictToScope.LIBRARY_GROUP)
+@OptIn(ExperimentalObjCRefinement::class)
+fun <T> State.varsChangeFlow(keys: Collection<String>? = emptyList(), block: (State) -> T) = when {
+    keys.isNullOrEmpty() -> flowOf(Unit)
+    else -> varsChangeFlow.onSubscription { emit(keys.first()) }.filter { it in keys }.map {}.conflate()
+}.map { block(this) }

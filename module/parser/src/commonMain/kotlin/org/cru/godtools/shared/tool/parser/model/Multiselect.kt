@@ -11,6 +11,7 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Compan
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
+import org.cru.godtools.shared.tool.state.varsChangeFlow
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"
