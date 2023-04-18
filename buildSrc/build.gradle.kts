@@ -23,3 +23,7 @@ dependencies {
     implementation(libs.kotlin.gradle)
     implementation(libs.antlr.kotlin.gradle)
 }
+
+kotlin.jvmToolchain {
+    languageVersion.set(libs.versions.jvm.map { JavaLanguageVersion.of(it) })
+}
