@@ -270,7 +270,10 @@ jobs:
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: Maven')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
