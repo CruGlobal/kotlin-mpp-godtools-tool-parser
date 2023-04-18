@@ -13,6 +13,3 @@ val Manifest.lessonPages get() = pages.filterIsInstance<LessonPage>()
     ReplaceWith("pages.filterIsInstance<TractPage>()", "org.cru.godtools.shared.tool.parser.model.tract.TractPage")
 )
 val Manifest.tractPages get() = pages.filterIsInstance<TractPage>()
-
-@Deprecated("This is provided to aid in iOS migration")
-val Manifest?.resources get() = this?.resources.orEmpty()
