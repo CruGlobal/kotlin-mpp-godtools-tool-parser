@@ -4,11 +4,15 @@ plugins {
 }
 
 android {
-    baseConfiguration()
+    baseConfiguration(project)
 }
 enablePublishing()
 
 kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.findVersion("jvm").get().requiredVersion))
+    }
+
     configureAndroidTargets()
     configureIosTargets()
 
