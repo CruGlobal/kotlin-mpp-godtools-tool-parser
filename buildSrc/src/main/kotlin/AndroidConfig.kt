@@ -2,7 +2,7 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 
-fun LibraryExtension.baseConfiguration() {
+internal fun LibraryExtension.baseConfiguration() {
     configureSdk()
     configureCompilerOptions()
     configureSourceSets()
