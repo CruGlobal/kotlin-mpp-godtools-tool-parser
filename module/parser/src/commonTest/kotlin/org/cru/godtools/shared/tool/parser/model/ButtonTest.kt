@@ -94,7 +94,7 @@ class ButtonTest : UsesResources() {
             assertTrue(isIgnored)
         }
 
-        val config = ParserConfig().withSupportedFeatures(setOf(FEATURE_MULTISELECT))
+        val config = ParserConfig().withSupportedFeatures(FEATURE_MULTISELECT)
         with(Button(Manifest(config = config), getTestXmlParser("button_requiredFeatures.xml"))) {
             assertFalse(isIgnored)
         }

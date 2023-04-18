@@ -23,8 +23,8 @@ class ParserConfigTest {
 
     @Test
     fun testWithSupportedFeatures() {
-        val orig = ParserConfig().withSupportedFeatures(emptySet())
-        val updated = orig.withSupportedFeatures(setOf("test"))
+        val orig = ParserConfig().withSupportedFeatures()
+        val updated = orig.withSupportedFeatures("test")
 
         assertFalse(orig.supportsFeature("test"))
         assertTrue(updated.supportsFeature("test"))

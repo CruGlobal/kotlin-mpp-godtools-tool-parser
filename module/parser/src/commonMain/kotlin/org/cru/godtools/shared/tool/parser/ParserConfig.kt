@@ -6,12 +6,14 @@ import org.cru.godtools.shared.tool.parser.model.DEFAULT
 import org.cru.godtools.shared.tool.parser.model.DeviceType
 import org.cru.godtools.shared.tool.parser.model.Version
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 data class ParserConfig private constructor(
     internal val deviceType: DeviceType = DeviceType.DEFAULT,
     internal val appVersion: Version? = null,
@@ -34,6 +36,9 @@ data class ParserConfig private constructor(
     @JsExport.Ignore
     fun withAppVersion(deviceType: DeviceType = DeviceType.DEFAULT, version: String?) =
         copy(deviceType = deviceType, appVersion = version?.toVersion())
+    @HiddenFromObjC
+    fun withSupportedFeatures(vararg feature: String) = copy(supportedFeatures = feature.toSet())
+    @JsExport.Ignore
     fun withSupportedFeatures(features: Set<String>) = copy(supportedFeatures = features)
     fun withParseRelated(enabled: Boolean) = copy(parsePages = enabled, parseTips = enabled)
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
