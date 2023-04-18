@@ -270,7 +270,10 @@ jobs:
   deploy:
     name: Publish Library
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: Maven')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
@@ -286,7 +289,10 @@ jobs:
   deploy_ios_podspec:
     name: Publish iOS Podspec
     runs-on: macos-11
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: CocoaPods')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, ios_tests, check_version ]
     steps:
       - name: Checkout code
@@ -321,9 +327,10 @@ jobs:
   deploy_npm:
     name: Publish npm package
     runs-on: ubuntu-latest
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish NPM SNAPSHOT')) || 
-        (github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: npm')) ||
+      (github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main')
     needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
     steps:
       - name: Checkout code
