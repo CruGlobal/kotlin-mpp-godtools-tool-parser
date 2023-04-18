@@ -177,11 +177,8 @@ class Manifest : BaseModel, Styles {
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
     val shareables: List<Shareable>
-    @get:Deprecated(
-        "Since v0.6.1, This property is no longer part of the public API. " +
-            "You should access tips using either hasTips or findTip(id)."
-    )
-    var tips: Map<String, Tip> by setOnce()
+    @VisibleForTesting
+    internal var tips: Map<String, Tip> by setOnce()
         private set
 
     private val pagesToParse: List<Pair<String?, String>>
