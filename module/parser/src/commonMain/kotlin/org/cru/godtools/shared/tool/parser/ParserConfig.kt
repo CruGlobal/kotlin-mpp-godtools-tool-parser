@@ -31,6 +31,7 @@ data class ParserConfig private constructor(
         internal const val FEATURE_REQUIRED_VERSIONS = "required-versions"
     }
 
+    @JsExport.Ignore
     fun withAppVersion(deviceType: DeviceType = DeviceType.DEFAULT, version: String?) =
         copy(deviceType = deviceType, appVersion = version?.toVersion())
     fun withSupportedFeatures(features: Set<String>) = copy(supportedFeatures = features)
