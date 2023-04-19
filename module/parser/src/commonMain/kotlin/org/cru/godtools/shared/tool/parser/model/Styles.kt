@@ -3,8 +3,13 @@ package org.cru.godtools.shared.tool.parser.model
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_ALIGN
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 interface Styles : Base {
+    @JsExport.Ignore
     companion object {
         internal val DEFAULT_TEXT_ALIGN = Text.Align.START
         internal const val DEFAULT_TEXT_SCALE = 1.0
