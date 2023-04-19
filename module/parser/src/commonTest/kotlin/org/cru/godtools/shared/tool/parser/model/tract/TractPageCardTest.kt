@@ -83,7 +83,7 @@ class TractPageCardTest : UsesResources("model/tract") {
             backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
         )
-        val resource = manifest.resources["background.png"]
+        val resource = manifest.getResource("background.png")
 
         with(null as Card?) {
             assertEquals(manifest.backgroundColor, backgroundColor)
