@@ -34,6 +34,11 @@ import org.cru.godtools.shared.tool.parser.util.isHttpUrl
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_MANIFEST = "manifest"
 private const val XML_TOOL = "tool"
@@ -60,6 +65,8 @@ private const val XML_TIPS_TIP = "tip"
 private const val XML_TIPS_TIP_ID = "id"
 private const val XML_TIPS_TIP_SRC = "src"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Manifest : BaseModel, Styles {
     internal companion object {
         @AndroidColorInt
@@ -172,6 +179,7 @@ class Manifest : BaseModel, Styles {
 
     val aemImports: List<Uri>
     val categories: List<Category>
+    @JsName("_pages")
     var pages: List<Page> by setOnce()
         private set
     @VisibleForTesting
@@ -263,6 +271,7 @@ class Manifest : BaseModel, Styles {
         _title = title
     }
 
+    @JsName("createTestManifest")
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         config: ParserConfig = ParserConfig(),
@@ -331,9 +340,12 @@ class Manifest : BaseModel, Styles {
     val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipsToParse.isNotEmpty())
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
+    @JsExport.Ignore
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
     fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
+    @JsExport.Ignore
     fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
+    @JsExport.Ignore
     fun findTip(id: String?) = tips[id]
 
     private fun XmlPullParser.parseCategories() = buildList {
@@ -398,6 +410,12 @@ class Manifest : BaseModel, Styles {
             }
         }
     }
+
+    // region Kotlin/JS interop
+    @JsName("pages")
+    @HiddenFromObjC
+    val jsPages get() = pages.toTypedArray()
+    // endregion Kotlin/JS interop
 
     enum class Type {
         ARTICLE, CYOA, LESSON, TRACT, UNKNOWN;
