@@ -1,0 +1,42 @@
+name: Typescript Headers Diff
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typescript-headers-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Generate current TypeScript headers
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :publish:npm:jsBrowserProductionLibraryPrepare --scan
+      - name: Copy current TypeScript headers
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/diff/head
+          cp publishing/npm/build/productionLibrary/*.d.ts diff/head
+          cp publishing/npm/build/productionLibrary/*.json diff/head
+      - name: Checkout base
+        run: git checkout $GITHUB_BASE_REF
+      - name: Generate base TypeScript headers
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean :publish:npm:jsBrowserProductionLibraryPrepare --scan
+      - name: Copy base TypeScript headers
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/diff/base
+          cp publishing/npm/build/productionLibrary/*.d.ts diff/base
+          cp publishing/npm/build/productionLibrary/*.json diff/base
+      - uses: int128/diff-action@v1
+        with:
+          base: "${{ github.workspace }}/diff/base"
+          head: "${{ github.workspace }}/diff/head"
