@@ -3,15 +3,23 @@ package org.cru.godtools.shared.tool.parser.model
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.state.State
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.native.HiddenFromObjC
 
 private const val EVENT_NAMESPACE_FOLLOWUP = "followup"
 @VisibleForTesting
 internal const val EVENT_NAMESPACE_STATE = "state"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class EventId internal constructor(val namespace: String? = null, val name: String) {
     companion object {
         val FOLLOWUP = EventId(EVENT_NAMESPACE_FOLLOWUP, "send")
 
+        @HiddenFromObjC
+        @JsExport.Ignore
         fun parse(raw: String?) = raw
             ?.split(REGEX_SEQUENCE_SEPARATOR)
             ?.mapNotNull {
