@@ -125,6 +125,7 @@ class Manifest : BaseModel, Styles {
     val locale: PlatformLocale?
     val type: Type
 
+    @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
     @AndroidColorInt
@@ -412,8 +413,12 @@ class Manifest : BaseModel, Styles {
     }
 
     // region Kotlin/JS interop
-    @JsName("pages")
     @HiddenFromObjC
+    @JsName("dismissListeners")
+    val jsDismissListeners get() = dismissListeners.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("pages")
     val jsPages get() = pages.toTypedArray()
     // endregion Kotlin/JS interop
 
