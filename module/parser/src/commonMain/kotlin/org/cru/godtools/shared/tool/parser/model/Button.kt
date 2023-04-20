@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import io.github.aakira.napier.Napier
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
@@ -81,8 +82,6 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
     val text: Text
 
-    val analyticsEvents: List<AnalyticsEvent>
-
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_BUTTON)
 
@@ -151,11 +150,16 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 
     override val isIgnored get() = super.isIgnored || !isClickable || style == Style.UNKNOWN
 
+    // region HasAnalyticsEvents
+    @VisibleForTesting
+    internal val analyticsEvents: List<AnalyticsEvent>
+
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
         Trigger.CLICKED ->
             analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.SELECTED, Trigger.DEFAULT) }
         else -> error("The $type trigger type is currently unsupported on Buttons")
     }
+    // endregion HasAnalyticsEvents
 
     enum class Type {
         EVENT, URL, UNKNOWN;
