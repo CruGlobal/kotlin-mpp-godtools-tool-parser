@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -12,7 +13,6 @@ class Link : Content, HasAnalyticsEvents, Clickable {
         internal const val XML_LINK = "link"
     }
 
-    val analyticsEvents: List<AnalyticsEvent>
     override val events: List<EventId>
     override val url: Uri?
 
@@ -52,8 +52,13 @@ class Link : Content, HasAnalyticsEvents, Clickable {
         this.text = text?.invoke(defaultTextStyles) ?: Text(defaultTextStyles)
     }
 
+    // region HasAnalyticsEvents
+    @VisibleForTesting
+    internal val analyticsEvents: List<AnalyticsEvent>
+
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
         Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
         else -> error("The $type trigger type is currently unsupported on Links")
     }
+    // endregion HasAnalyticsEvents
 }
