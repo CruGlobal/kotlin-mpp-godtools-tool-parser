@@ -55,7 +55,7 @@ class AnalyticsEvent : BaseModel {
     val action: String
     val delay: Int
     val systems: Set<System>
-    val trigger: Trigger
+    internal val trigger: Trigger
     internal val limit: Int?
     val attributes: Map<String, String>
 
@@ -112,7 +112,7 @@ class AnalyticsEvent : BaseModel {
         this.attributes = attributes
     }
 
-    fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
+    internal fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
     fun isForSystem(system: System) = systems.contains(system)
 
     fun shouldTrigger(state: State) = limit == null || state.getTriggeredAnalyticsEventsCount(id) < limit
