@@ -17,9 +17,14 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_HEADING = "heading"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Hero : BaseModel, Parent, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_HERO = "hero"
@@ -49,6 +54,7 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
         this.heading = heading
     }
 
+    @JsName("createTestHero")
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         page: TractPage = TractPage(),
