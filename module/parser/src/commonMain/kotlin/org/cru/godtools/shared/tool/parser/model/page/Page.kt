@@ -52,8 +52,11 @@ import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
@@ -61,7 +64,7 @@ private const val XML_PARENT = "parent"
 private const val XML_HIDDEN = "hidden"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_PAGE = "page"
@@ -117,7 +120,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     val isHidden: Boolean
 
+    @JsName("_listeners")
     val listeners: Set<EventId>
+    @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
     @AndroidColorInt
@@ -255,6 +260,16 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         else -> error("Analytics trigger type $type is not currently supported on Pages")
     }
     // endregion HasAnalyticsEvents
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("dismissListeners")
+    val jsDismissListeners get() = dismissListeners.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("listeners")
+    val jsListeners get() = listeners.toTypedArray()
+    // endregion Kotlin/JS interop
 }
 
 @get:AndroidColorInt
