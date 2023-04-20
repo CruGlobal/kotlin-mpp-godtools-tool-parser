@@ -16,11 +16,15 @@ import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_NUMBER = "number"
 private const val XML_TITLE = "title"
 private const val XML_TIP = "tip"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Header : BaseModel, Styles {
     internal companion object {
         internal const val XML_HEADER = "header"
