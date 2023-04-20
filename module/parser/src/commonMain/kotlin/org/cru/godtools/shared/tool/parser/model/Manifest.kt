@@ -122,7 +122,7 @@ class Manifest : BaseModel, Styles {
     internal val config: ParserConfig
 
     val code: String?
-    val locale: PlatformLocale?
+    internal val locale: PlatformLocale?
     val type: Type
 
     val dismissListeners: Set<EventId>
@@ -277,7 +277,6 @@ class Manifest : BaseModel, Styles {
         config: ParserConfig = ParserConfig(),
         type: Type = Type.DEFAULT,
         code: String? = null,
-        locale: PlatformLocale? = null,
         primaryColor: PlatformColor = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: PlatformColor = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: PlatformColor? = null,
@@ -297,7 +296,7 @@ class Manifest : BaseModel, Styles {
         this.config = config
 
         this.code = code
-        this.locale = locale
+        this.locale = null
         this.type = type
 
         dismissListeners = emptySet()
