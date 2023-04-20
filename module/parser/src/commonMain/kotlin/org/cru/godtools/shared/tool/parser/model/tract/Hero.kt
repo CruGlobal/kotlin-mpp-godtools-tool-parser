@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -30,7 +31,6 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
         internal const val XML_HERO = "hero"
     }
 
-    val analyticsEvents: List<AnalyticsEvent>
     private val headingParent by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
     val heading: Text?
     override val content: List<Content>
@@ -66,9 +66,14 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
         content = emptyList()
     }
 
+    // region HasAnalyticsEvents
+    @VisibleForTesting
+    internal val analyticsEvents: List<AnalyticsEvent>
+
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
         Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
         Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
         else -> error("Analytics trigger type $type is not currently supported on Heroes")
     }
+    // endregion HasAnalyticsEvents
 }
