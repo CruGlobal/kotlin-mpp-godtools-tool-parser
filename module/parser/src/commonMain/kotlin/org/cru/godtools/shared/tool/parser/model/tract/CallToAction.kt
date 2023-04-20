@@ -13,10 +13,15 @@ import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_CONTROL_COLOR = "control-color"
 private const val XML_TIP = "tip"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class CallToAction : BaseModel {
     internal companion object {
         internal const val XML_CALL_TO_ACTION = "call-to-action"
@@ -52,6 +57,7 @@ class CallToAction : BaseModel {
         label = parser.parseTextChild(this, XMLNS_TRACT, XML_CALL_TO_ACTION)
     }
 
+    @JsName("createTestCallToAction")
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         page: TractPage = TractPage(),
