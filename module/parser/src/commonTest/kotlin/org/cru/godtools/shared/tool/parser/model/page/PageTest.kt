@@ -88,6 +88,26 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Property: multiselectOptionBackgroundColor
 
+    // region Property: multiselectOptionSelectedColor
+    @Test
+    fun testPropertyMultiselectOptionSelectedColor() {
+        val page = TestPage(
+            manifest = Manifest(multiselectOptionSelectedColor = TestColors.RED),
+            multiselectOptionSelectedColor = TestColors.GREEN,
+        )
+        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
+    }
+
+    @Test
+    fun testPropertyMultiselectOptionSelectedColorFallback() {
+        val page = TestPage(
+            manifest = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
+            multiselectOptionSelectedColor = null,
+        )
+        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
+    }
+    // endregion Property: multiselectOptionSelectedColor
+
     // region Property: parentPage
     @Test
     fun testParentPage() {
@@ -104,8 +124,13 @@ class PageTest : UsesResources("model/page") {
     private class TestPage(
         manifest: Manifest = Manifest(),
         multiselectOptionBackgroundColor: PlatformColor? = null,
+        multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
-    ) : Page(manifest = manifest, multiselectOptionBackgroundColor = multiselectOptionBackgroundColor) {
+    ) : Page(
+        manifest = manifest,
+        multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
+        multiselectOptionSelectedColor = multiselectOptionSelectedColor,
+    ) {
         override fun supports(type: Manifest.Type) = true
     }
 }
