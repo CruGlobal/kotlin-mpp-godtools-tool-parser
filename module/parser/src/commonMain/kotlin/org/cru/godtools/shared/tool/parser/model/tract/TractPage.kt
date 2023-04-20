@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -163,7 +164,6 @@ class TractPage : Page {
         val isHidden: Boolean
         val listeners: Set<EventId>
         val dismissListeners: Set<EventId>
-        val analyticsEvents: List<AnalyticsEvent>
 
         @AndroidColorInt
         private val _backgroundColor: PlatformColor?
@@ -252,11 +252,16 @@ class TractPage : Page {
             this.content = content?.invoke(this).orEmpty()
         }
 
+        // region HasAnalyticsEvents
+        @VisibleForTesting
+        internal val analyticsEvents: List<AnalyticsEvent>
+
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
             Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
             Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
             else -> error("Analytics trigger type $type is not currently supported on Cards")
         }
+        // endregion HasAnalyticsEvents
     }
 
     private fun XmlPullParser.parseCardsXml() = buildList {
