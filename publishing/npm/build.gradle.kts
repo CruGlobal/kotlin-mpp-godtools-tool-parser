@@ -20,6 +20,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 // HACK: we currently need to directly include all transitive npm dependencies
+                implementation(npmLibs.intlLocale)
                 implementation(npmLibs.sax)
             }
         }

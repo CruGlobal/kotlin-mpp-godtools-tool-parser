@@ -4,6 +4,13 @@ import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmDependency
 
 open class NpmDependencies internal constructor(project: Project) {
+    val intlLocale by lazy {
+        NpmDependency(
+            project = project,
+            name = "@formatjs/intl-locale",
+            version = "3.2.1",
+        )
+    }
     val sax by lazy {
         NpmDependency(
             project = project,
