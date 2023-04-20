@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -41,7 +42,6 @@ class Tabs : Content {
         private val tabs: Tabs
         val position get() = tabs.tabs.indexOf(this)
 
-        val analyticsEvents: List<AnalyticsEvent>
         val listeners: Set<EventId>
         val label: Text?
 
@@ -80,9 +80,14 @@ class Tabs : Content {
             content = emptyList()
         }
 
+        // region HasAnalyticsEvents
+        @VisibleForTesting
+        internal val analyticsEvents: List<AnalyticsEvent>
+
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
             Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
             else -> error("The $type trigger type is currently unsupported on Tabs")
         }
+        // endregion HasAnalyticsEvents
     }
 }
