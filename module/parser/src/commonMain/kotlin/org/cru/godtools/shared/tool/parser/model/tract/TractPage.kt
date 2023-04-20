@@ -42,11 +42,16 @@ import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_CARD_TEXT_COLOR = "card-text-color"
 private const val XML_CARDS = "cards"
 private const val XML_MODALS = "modals"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class TractPage : Page {
     val isLastPage get() = manifest.pages.lastOrNull() == this
 
@@ -88,6 +93,7 @@ class TractPage : Page {
         this.callToAction = callToAction ?: CallToAction(this)
     }
 
+    @JsName("createTestTractPage")
     @RestrictTo(RestrictToScope.TESTS)
     constructor(
         manifest: Manifest = Manifest(),

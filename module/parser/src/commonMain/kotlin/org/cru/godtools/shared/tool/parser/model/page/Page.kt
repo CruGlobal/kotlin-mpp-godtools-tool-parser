@@ -52,12 +52,16 @@ import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"
 private const val XML_PARENT = "parent"
 private const val XML_HIDDEN = "hidden"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_PAGE = "page"
