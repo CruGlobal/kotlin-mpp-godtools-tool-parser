@@ -32,5 +32,5 @@ class ContentPageTest : UsesResources("model/page") {
             ContentPage(Manifest(), null, getTestXmlParser("page_invalid_type.xml"))
         }
     }
-    // endregion Page.parse()
+    // endregion Parse XML
 }
