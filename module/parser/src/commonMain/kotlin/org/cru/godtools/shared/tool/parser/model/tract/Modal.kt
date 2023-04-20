@@ -16,9 +16,13 @@ import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_TITLE = "title"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Modal : BaseModel, Parent, Styles {
     internal companion object {
         internal const val XML_MODAL = "modal"
