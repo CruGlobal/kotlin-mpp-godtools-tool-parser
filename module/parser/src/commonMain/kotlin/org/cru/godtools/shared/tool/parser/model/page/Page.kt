@@ -217,6 +217,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
         cardBackgroundColor: PlatformColor? = null,
+        multiselectOptionBackgroundColor: PlatformColor? = null,
         textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(manifest) {
@@ -241,7 +242,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _cardBackgroundColor = cardBackgroundColor
 
-        _multiselectOptionBackgroundColor = null
+        _multiselectOptionBackgroundColor = multiselectOptionBackgroundColor
         _multiselectOptionSelectedColor = null
 
         _textColor = textColor

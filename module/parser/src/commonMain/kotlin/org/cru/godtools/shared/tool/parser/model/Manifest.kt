@@ -286,6 +286,7 @@ class Manifest : BaseModel, Styles {
         cardBackgroundColor: PlatformColor? = null,
         categoryLabelColor: PlatformColor? = null,
         pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
+        multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         textColor: PlatformColor = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
@@ -317,7 +318,7 @@ class Manifest : BaseModel, Styles {
         _categoryLabelColor = categoryLabelColor
         this.pageControlColor = pageControlColor
 
-        _multiselectOptionBackgroundColor = null
+        _multiselectOptionBackgroundColor = multiselectOptionBackgroundColor
         this.multiselectOptionSelectedColor = multiselectOptionSelectedColor
 
         this.textColor = textColor

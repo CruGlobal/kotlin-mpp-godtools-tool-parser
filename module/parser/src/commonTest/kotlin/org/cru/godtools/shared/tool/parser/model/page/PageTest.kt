@@ -5,10 +5,14 @@ import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Manifest
+import org.cru.godtools.shared.tool.parser.model.PlatformColor
+import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -64,7 +68,27 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Page.parse()
 
-    // region Page.parent
+    // region Property: multiselectOptionBackgroundColor
+    @Test
+    fun testPropertyMultiselectOptionBackgroundColor() {
+        val page = TestPage(
+            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
+            multiselectOptionBackgroundColor = TestColors.GREEN,
+        )
+        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
+    }
+
+    @Test
+    fun testPropertyMultiselectOptionBackgroundColorFallback() {
+        val page = TestPage(
+            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
+            multiselectOptionBackgroundColor = null,
+        )
+        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
+    }
+    // endregion Property: multiselectOptionBackgroundColor
+
+    // region Property: parentPage
     @Test
     fun testParentPage() {
         val manifest = Manifest(
@@ -75,5 +99,13 @@ class PageTest : UsesResources("model/page") {
         val page2 = manifest.findPage("page2")!!
         assertSame(page1, page2.parentPage)
     }
-    // endregion Page.parent
+    // endregion Property: parentPage
+
+    private class TestPage(
+        manifest: Manifest = Manifest(),
+        multiselectOptionBackgroundColor: PlatformColor? = null,
+        override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
+    ) : Page(manifest = manifest, multiselectOptionBackgroundColor = multiselectOptionBackgroundColor) {
+        override fun supports(type: Manifest.Type) = true
+    }
 }
