@@ -10,6 +10,9 @@ import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val TAG = "XmlAnalyticsEvent"
 
@@ -34,6 +37,8 @@ private const val XML_ATTRIBUTE = "attribute"
 private const val XML_ATTRIBUTE_KEY = "key"
 private const val XML_ATTRIBUTE_VALUE = "value"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class AnalyticsEvent : BaseModel {
     internal companion object {
         internal const val XML_EVENTS = "events"
@@ -93,6 +98,7 @@ class AnalyticsEvent : BaseModel {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
+    @JsName("createTestAnalyticsEvent")
     constructor(
         parent: Base = Manifest(),
         id: String? = null,
