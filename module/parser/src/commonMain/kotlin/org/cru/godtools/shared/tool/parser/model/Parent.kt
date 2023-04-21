@@ -3,9 +3,23 @@ package org.cru.godtools.shared.tool.parser.model
 import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 interface Parent : Base {
+    @JsName("_content")
     val content: List<Content>
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("content")
+    val jsContent get() = content.toTypedArray()
+    // endregion Kotlin/JS interop
 }
 
 internal inline val Parent.contentTips get() = content.flatMap { it.tips }
