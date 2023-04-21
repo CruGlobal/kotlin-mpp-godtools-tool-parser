@@ -12,6 +12,9 @@ import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyl
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"
@@ -27,6 +30,8 @@ private const val XML_TEXT_STYLE_BOLD = "bold"
 private const val XML_TEXT_STYLE_ITALIC = "italic"
 private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Text : Content {
     internal companion object {
         internal const val XML_TEXT = "text"
@@ -83,8 +88,9 @@ class Text : Content {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
+    @JsName("createTestText")
     constructor(
-        parent: Base,
+        parent: Base = Manifest(),
         text: String? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         @AndroidColorInt textColor: PlatformColor? = null,
