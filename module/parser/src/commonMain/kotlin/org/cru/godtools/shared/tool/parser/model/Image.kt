@@ -37,7 +37,7 @@ class Image : Content, Clickable {
 
     @VisibleForTesting
     internal val resourceName: String?
-    val resource get() = getResource(resourceName)
+    val resource get() = manifest.getResource(resourceName)
 
     val gravity: Gravity.Horizontal
     val width: Dimension
