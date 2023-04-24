@@ -21,6 +21,21 @@ class AndroidTextTest {
     }
 
     @Test
+    fun testPropertyTextColor() {
+        with(null as Text?) {
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR, textColor)
+        }
+
+        with(Text(Manifest(textColor = TestColors.GREEN)) as Text?) {
+            assertEquals(TestColors.GREEN, textColor)
+        }
+
+        with(Text(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN) as Text?) {
+            assertEquals(TestColors.GREEN, textColor)
+        }
+    }
+
+    @Test
     fun testPropertyTextScale() {
         with(null as Text?) {
             assertEquals(Styles.DEFAULT_TEXT_SCALE, textScale, 0.0001)

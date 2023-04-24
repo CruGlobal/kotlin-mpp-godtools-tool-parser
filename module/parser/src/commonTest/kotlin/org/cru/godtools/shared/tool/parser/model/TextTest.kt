@@ -84,6 +84,15 @@ class TextTest : UsesResources() {
     }
 
     @Test
+    fun testPropertyTextColor() {
+        assertEquals(TestColors.GREEN, Text(Manifest(textColor = TestColors.GREEN)).textColor)
+        assertEquals(
+            TestColors.GREEN,
+            Text(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN).textColor,
+        )
+    }
+
+    @Test
     fun testPropertyTextScale() {
         with(Manifest().stylesOverride(textScale = DEFAULT_TEXT_SCALE)) {
             assertEquals(DEFAULT_TEXT_SCALE, Text(this).textScale, 0.001)
