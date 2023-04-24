@@ -182,8 +182,9 @@ class Manifest : BaseModel, Styles {
     @JsName("_pages")
     var pages: List<Page> by setOnce()
         private set
-    @VisibleForTesting
-    internal val resources: Map<String?, Resource>
+
+//    @VisibleForTesting
+    val resources: Map<String?, Resource>
     val shareables: List<Shareable>
     @VisibleForTesting
     internal var tips: Map<String, Tip> by setOnce()
