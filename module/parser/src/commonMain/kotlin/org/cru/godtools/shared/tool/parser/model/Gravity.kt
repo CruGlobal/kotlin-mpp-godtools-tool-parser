@@ -3,6 +3,8 @@ package org.cru.godtools.shared.tool.parser.model
 import io.github.aakira.napier.Napier
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_START = "start"
 private const val XML_END = "end"
@@ -10,6 +12,8 @@ private const val XML_TOP = "top"
 private const val XML_BOTTOM = "bottom"
 private const val XML_CENTER = "center"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val vertical: Vertical) {
     val isStart get() = horizontal == Horizontal.START
     val isEnd get() = horizontal == Horizontal.END
