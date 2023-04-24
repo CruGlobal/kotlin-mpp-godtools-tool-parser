@@ -13,6 +13,8 @@ import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_REQUIRED_FEATURES = "required-features"
 private const val XML_REQUIRED_DEVICE_TYPE = "required-device-type"
@@ -21,6 +23,8 @@ private const val XML_REQUIRED_IOS_VERSION = "required-ios-version"
 private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 abstract class Content : BaseModel, Visibility {
     private val version: Int
     private val requiredFeatures: Set<String>
