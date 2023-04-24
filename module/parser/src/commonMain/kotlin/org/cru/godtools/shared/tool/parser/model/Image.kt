@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("ImageKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
@@ -9,11 +12,18 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 
 private const val XML_RESOURCE = "resource"
 private const val XML_GRAVITY = "gravity"
 private const val XML_WIDTH = "width"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Image : Content, Clickable {
     internal companion object {
         internal const val XML_IMAGE = "image"
@@ -29,8 +39,8 @@ class Image : Content, Clickable {
     internal val resourceName: String?
     val resource get() = getResource(resourceName)
 
-    internal val gravity: Gravity.Horizontal
-    internal val width: Dimension
+    val gravity: Gravity.Horizontal
+    val width: Dimension
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_IMAGE)
@@ -50,11 +60,12 @@ class Image : Content, Clickable {
     override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
 
     @RestrictTo(RestrictToScope.TESTS)
+    @JsName("createTestImage")
     constructor(
         parent: Base = Manifest(),
         resource: String? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
-        width: Dimension = DEFAULT_WIDTH
+        width: Dimension = DEFAULT_WIDTH,
     ) : super(parent) {
         resourceName = resource
         this.gravity = gravity
@@ -63,6 +74,3 @@ class Image : Content, Clickable {
         url = null
     }
 }
-
-val Image?.gravity get() = this?.gravity ?: Image.DEFAULT_GRAVITY
-val Image?.width get() = this?.width ?: Image.DEFAULT_WIDTH

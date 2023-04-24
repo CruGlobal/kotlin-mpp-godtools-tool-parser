@@ -77,17 +77,12 @@ class ImageTest : UsesResources() {
 
     @Test
     fun testWidthAndGravity() {
-        with(null as Image?) {
+        with(Image()) {
             assertEquals(Image.DEFAULT_WIDTH, width)
             assertEquals(Image.DEFAULT_GRAVITY, gravity)
         }
 
-        with(Image() as Image?) {
-            assertEquals(Image.DEFAULT_WIDTH, width)
-            assertEquals(Image.DEFAULT_GRAVITY, gravity)
-        }
-
-        with(Image(width = Dimension.Pixels(20), gravity = Gravity.Horizontal.END) as Image?) {
+        with(Image(width = Dimension.Pixels(20), gravity = Gravity.Horizontal.END)) {
             assertEquals(Dimension.Pixels(20), width)
             assertEquals(Gravity.Horizontal.END, gravity)
         }
