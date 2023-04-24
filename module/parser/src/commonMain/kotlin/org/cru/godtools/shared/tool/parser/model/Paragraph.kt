@@ -3,7 +3,12 @@ package org.cru.godtools.shared.tool.parser.model
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Paragraph : Content, Parent {
     internal companion object {
         internal const val XML_PARAGRAPH = "paragraph"
@@ -19,7 +24,11 @@ class Paragraph : Content, Parent {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    constructor(parent: Base, content: (Paragraph) -> List<Content>) : super(parent) {
+    @JsName("createTestParagraph")
+    constructor(
+        parent: Base = Manifest(),
+        content: (Paragraph) -> List<Content> = { emptyList() }
+    ) : super(parent) {
         this.content = content(this)
     }
 }
