@@ -65,15 +65,34 @@ class ImageTest : UsesResources() {
     }
     // endregion parse Image
 
+    // region Property: resource
+    private val resourceName = "image.png"
+
     @Test
-    fun testResource() {
-        val name = "image.png"
-        val manifest = Manifest(resources = { listOf(Resource(it, name = name)) })
-        val resource = manifest.getResource(name)!!
-        assertSame(resource, Image(manifest, resource = "image.png").resource)
+    fun testPropertyResource() {
+        val manifest = Manifest(resources = { listOf(Resource(it, name = resourceName)) })
+        assertSame(
+            assertNotNull(manifest.getResource(resourceName)),
+            assertNotNull(Image(manifest, resource = resourceName).resource),
+        )
         assertNull(Image(manifest, resource = "invalid.jpg").resource)
         assertNull(Image(manifest, resource = null).resource)
     }
+
+    @Test
+    fun testPropertyResourceLegacyWebImages() {
+        val config = ParserConfig().withLegacyWebImageResources(true)
+        val manifest = Manifest(config = config, resources = { listOf(Resource(it, name = resourceName)) })
+        assertSame(
+            assertNotNull(manifest.getResource(resourceName)),
+            assertNotNull(Image(manifest, resource = resourceName).resource),
+        )
+        assertNotNull(Image(manifest, resource = "invalid.jpg").resource) {
+            assertEquals("invalid.jpg", it.name)
+        }
+        assertNull(Image(manifest, resource = null).resource)
+    }
+    // endregion Property: resource
 
     @Test
     fun testWidthAndGravity() {

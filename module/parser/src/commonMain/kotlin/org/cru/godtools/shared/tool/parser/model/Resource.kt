@@ -1,7 +1,5 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
 import kotlin.js.ExperimentalJsExport
@@ -26,7 +24,6 @@ class Resource : BaseModel {
         parser.skipTag()
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
     internal constructor(manifest: Manifest = Manifest(), name: String? = null) : super(manifest) {
         this.name = name
         localName = null

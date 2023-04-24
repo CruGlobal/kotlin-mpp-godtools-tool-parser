@@ -3,15 +3,18 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import io.github.aakira.napier.Napier
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
+import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -23,7 +26,7 @@ private const val XML_GRAVITY = "gravity"
 private const val XML_WIDTH = "width"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Image : Content, Clickable {
     internal companion object {
         internal const val XML_IMAGE = "image"
@@ -37,7 +40,16 @@ class Image : Content, Clickable {
 
     @VisibleForTesting
     internal val resourceName: String?
-    val resource get() = getResource(resourceName)
+    val resource
+        get() = getResource(resourceName) ?: when {
+            resourceName == null -> null
+            manifest.config.legacyWebImageResources -> {
+                val message = "tool: ${manifest.code} locale: ${manifest.locale} resource: $resourceName"
+                Napier.e(message, DeprecationException("Legacy Manifest missing Image Resource $message"), "Image")
+                Resource(manifest, resourceName)
+            }
+            else -> null
+        }
 
     val gravity: Gravity.Horizontal
     val width: Dimension
