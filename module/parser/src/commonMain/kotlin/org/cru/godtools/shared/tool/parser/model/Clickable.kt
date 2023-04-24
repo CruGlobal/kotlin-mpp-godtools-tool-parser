@@ -10,10 +10,14 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_EVENTS = "events"
 private const val XML_URL = "url"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 interface Clickable : Base {
     val isClickable get() = url != null || events.isNotEmpty()
 
