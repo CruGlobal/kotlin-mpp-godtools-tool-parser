@@ -416,6 +416,8 @@ class Manifest : BaseModel, Styles {
     @JsName("pages")
     @HiddenFromObjC
     val jsPages get() = pages.toTypedArray()
+
+    val jsResources get() = resources.values.toTypedArray()
     // endregion Kotlin/JS interop
 
     enum class Type {
