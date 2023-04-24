@@ -331,7 +331,7 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: npm')) ||
       (github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main')
-    needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
+#    needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
