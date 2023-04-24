@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 interface Base {
     val manifest: Manifest
     val stylesParent: Styles?
