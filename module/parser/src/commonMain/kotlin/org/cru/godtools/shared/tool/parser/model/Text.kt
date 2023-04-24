@@ -57,7 +57,7 @@ class Text : Content {
     @get:AndroidColorInt
     internal val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
-    internal val textScale get() = _textScale * stylesParent.textScale
+    val textScale get() = _textScale * stylesParent.textScale
     val textStyles: Set<Style>
 
     val minimumLines: Int
@@ -150,7 +150,6 @@ class Text : Content {
 
 @get:AndroidColorInt
 val Text?.textColor get() = this?.textColor ?: stylesParent.textColor
-val Text?.textScale get() = this?.textScale ?: stylesParent.textScale
 
 internal fun XmlPullParser.parseTextChild(
     parent: Base,

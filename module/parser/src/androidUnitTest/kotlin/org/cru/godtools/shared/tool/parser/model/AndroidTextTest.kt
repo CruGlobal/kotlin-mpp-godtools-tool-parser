@@ -19,4 +19,20 @@ class AndroidTextTest {
             assertEquals(Text.Align.END, textAlign)
         }
     }
+
+    @Test
+    fun testPropertyTextScale() {
+        with(null as Text?) {
+            assertEquals(Styles.DEFAULT_TEXT_SCALE, textScale, 0.0001)
+        }
+
+        val parent = Manifest().stylesOverride(textScale = 2.0)
+        with(Text(parent = parent) as Text?) {
+            assertEquals(2.0, textScale, 0.0001)
+        }
+
+        with(Text(parent = parent, textScale = 3.0) as Text?) {
+            assertEquals(6.0, textScale, 0.0001)
+        }
+    }
 }

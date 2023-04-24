@@ -84,7 +84,7 @@ class TextTest : UsesResources() {
     }
 
     @Test
-    fun testTextScale() {
+    fun testPropertyTextScale() {
         with(Manifest().stylesOverride(textScale = DEFAULT_TEXT_SCALE)) {
             assertEquals(DEFAULT_TEXT_SCALE, Text(this).textScale, 0.001)
             assertEquals(2.0, Text(this, textScale = 2.0).textScale, 0.001)

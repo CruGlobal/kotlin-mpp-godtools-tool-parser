@@ -12,3 +12,4 @@ val Text.Align.gravity get() = when (this) {
 }
 
 val Text?.textAlign get() = this?.textAlign ?: stylesParent.textAlign
+val Text?.textScale get() = this?.textScale ?: stylesParent.textScale
