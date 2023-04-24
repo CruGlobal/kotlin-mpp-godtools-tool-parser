@@ -80,16 +80,12 @@ class TextTest : UsesResources() {
 
     @Test
     fun testPropertyTextAlign() {
-        with(null as Text?) {
-            assertEquals(Styles.DEFAULT_TEXT_ALIGN, textAlign)
-        }
-
         val parent = Manifest().stylesOverride(textAlign = { Text.Align.CENTER })
-        with(Text(parent = parent) as Text?) {
+        with(Text(parent = parent)) {
             assertEquals(Text.Align.CENTER, textAlign)
         }
 
-        with(Text(parent = parent, textAlign = Text.Align.END) as Text?) {
+        with(Text(parent = parent, textAlign = Text.Align.END)) {
             assertEquals(Text.Align.END, textAlign)
         }
     }

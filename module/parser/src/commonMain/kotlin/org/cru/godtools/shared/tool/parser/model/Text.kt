@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("TextKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
@@ -15,6 +18,8 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 
 private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"
@@ -46,7 +51,7 @@ class Text : Content {
     val text: String?
 
     private val _textAlign: Align?
-    internal val textAlign get() = _textAlign ?: stylesParent.textAlign
+    val textAlign get() = _textAlign ?: stylesParent.textAlign
     @AndroidColorInt
     private val _textColor: PlatformColor?
     @get:AndroidColorInt
@@ -143,7 +148,6 @@ class Text : Content {
     }
 }
 
-val Text?.textAlign get() = this?.textAlign ?: stylesParent.textAlign
 @get:AndroidColorInt
 val Text?.textColor get() = this?.textColor ?: stylesParent.textColor
 val Text?.textScale get() = this?.textScale ?: stylesParent.textScale

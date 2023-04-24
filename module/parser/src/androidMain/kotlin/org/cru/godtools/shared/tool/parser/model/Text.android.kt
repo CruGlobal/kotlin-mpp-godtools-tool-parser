@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("TextKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import android.view.Gravity
@@ -7,3 +10,5 @@ val Text.Align.gravity get() = when (this) {
     Text.Align.CENTER -> Gravity.CENTER_HORIZONTAL
     Text.Align.END -> Gravity.END
 }
+
+val Text?.textAlign get() = this?.textAlign ?: stylesParent.textAlign
