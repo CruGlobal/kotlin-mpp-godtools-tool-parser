@@ -1,10 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_ALIGN
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 
 interface Styles : Base {
     companion object {
+        internal val DEFAULT_TEXT_ALIGN = Text.Align.START
         internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
@@ -58,5 +60,5 @@ internal val Styles?.multiselectOptionBackgroundColor
 @get:AndroidColorInt
 val Styles?.textColor get() = this?.textColor ?: Manifest.DEFAULT_TEXT_COLOR
 val Styles?.textScale get() = this?.textScale ?: DEFAULT_TEXT_SCALE
-val Styles?.textAlign get() = this?.textAlign ?: Manifest.DEFAULT_TEXT_ALIGN
+val Styles?.textAlign get() = this?.textAlign ?: DEFAULT_TEXT_ALIGN
 // endregion Text styles

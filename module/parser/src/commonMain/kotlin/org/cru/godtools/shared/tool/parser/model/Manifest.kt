@@ -83,7 +83,6 @@ class Manifest : BaseModel, Styles {
 
         @AndroidColorInt
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
-        internal val DEFAULT_TEXT_ALIGN = Text.Align.START
 
         internal suspend fun parse(
             fileName: String,

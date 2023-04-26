@@ -18,13 +18,6 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class TextTest : UsesResources() {
-    private val parent = object : Styles {
-        override val stylesParent = null
-        override val manifest get() = TODO()
-
-        override var textScale = DEFAULT_TEXT_SCALE
-    }
-
     // region Parsing
     @Test
     fun testTextParsingDefaults() = runTest {
@@ -44,7 +37,7 @@ class TextTest : UsesResources() {
     @Test
     fun testTextParsingAttributes() = runTest {
         val manifest = Manifest()
-        val text = Text(parent, getTestXmlParser("text_attributes.xml"))
+        val text = Text(manifest, getTestXmlParser("text_attributes.xml"))
 
         assertEquals("Attributes", text.text)
         assertEquals(1.23, text.textScale, 0.001)
@@ -79,13 +72,37 @@ class TextTest : UsesResources() {
     }
 
     @Test
-    fun testTextScale() {
-        assertEquals(DEFAULT_TEXT_SCALE, Text(parent).textScale, 0.001)
-        assertEquals(2.0, Text(parent, textScale = 2.0).textScale, 0.001)
+    fun testPropertyTextAlign() {
+        val parent = Manifest().stylesOverride(textAlign = { Text.Align.CENTER })
+        with(Text(parent = parent)) {
+            assertEquals(Text.Align.CENTER, textAlign)
+        }
 
-        parent.textScale = 3.0
-        assertEquals(3.0, Text(parent).textScale, 0.001)
-        assertEquals(6.0, Text(parent, textScale = 2.0).textScale, 0.001)
+        with(Text(parent = parent, textAlign = Text.Align.END)) {
+            assertEquals(Text.Align.END, textAlign)
+        }
+    }
+
+    @Test
+    fun testPropertyTextColor() {
+        assertEquals(TestColors.GREEN, Text(Manifest(textColor = TestColors.GREEN)).textColor)
+        assertEquals(
+            TestColors.GREEN,
+            Text(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN).textColor,
+        )
+    }
+
+    @Test
+    fun testPropertyTextScale() {
+        with(Manifest().stylesOverride(textScale = DEFAULT_TEXT_SCALE)) {
+            assertEquals(DEFAULT_TEXT_SCALE, Text(this).textScale, 0.001)
+            assertEquals(2.0, Text(this, textScale = 2.0).textScale, 0.001)
+        }
+
+        with(Manifest().stylesOverride(textScale = 3.0)) {
+            assertEquals(3.0, Text(this).textScale, 0.001)
+            assertEquals(6.0, Text(this, textScale = 2.0).textScale, 0.001)
+        }
     }
 
     @Test

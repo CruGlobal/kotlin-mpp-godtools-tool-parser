@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("TextKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import org.ccci.gto.support.androidx.annotation.RestrictTo
@@ -12,9 +15,13 @@ import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyl
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"
@@ -31,7 +38,7 @@ private const val XML_TEXT_STYLE_ITALIC = "italic"
 private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Text : Content {
     internal companion object {
         internal const val XML_TEXT = "text"
@@ -46,13 +53,14 @@ class Text : Content {
     val text: String?
 
     private val _textAlign: Align?
-    internal val textAlign get() = _textAlign ?: stylesParent.textAlign
+    val textAlign get() = _textAlign ?: stylesParent.textAlign
     @AndroidColorInt
     private val _textColor: PlatformColor?
     @get:AndroidColorInt
-    internal val textColor get() = _textColor ?: stylesParent.textColor
+    val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
-    internal val textScale get() = _textScale * stylesParent.textScale
+    val textScale get() = _textScale * stylesParent.textScale
+    @JsName("_textStyles")
     val textStyles: Set<Style>
 
     val minimumLines: Int
@@ -113,6 +121,12 @@ class Text : Content {
         endImageSize = DEFAULT_IMAGE_SIZE
     }
 
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("textStyles")
+    val jsTextStyles get() = textStyles.toTypedArray()
+    // endregion Kotlin/JS interop
+
     enum class Align {
         START, CENTER, END;
 
@@ -142,11 +156,6 @@ class Text : Content {
         }
     }
 }
-
-val Text?.textAlign get() = this?.textAlign ?: stylesParent.textAlign
-@get:AndroidColorInt
-val Text?.textColor get() = this?.textColor ?: stylesParent.textColor
-val Text?.textScale get() = this?.textScale ?: stylesParent.textScale
 
 internal fun XmlPullParser.parseTextChild(
     parent: Base,

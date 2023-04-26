@@ -1,6 +1,5 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -89,8 +88,8 @@ class StylesTest {
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
         assertEquals(Manifest.DEFAULT_BUTTON_STYLE, styles.buttonStyle)
         assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, styles.multiselectOptionBackgroundColor)
-        assertEquals(Manifest.DEFAULT_TEXT_ALIGN, styles.textAlign)
+        assertEquals(Styles.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
-        assertEquals(DEFAULT_TEXT_SCALE, styles.textScale)
+        assertEquals(Styles.DEFAULT_TEXT_SCALE, styles.textScale)
     }
 }
