@@ -9,6 +9,8 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
+import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,6 +24,7 @@ import kotlin.test.assertTrue
 class MultiselectTest : UsesResources() {
     private val state by lazy { State() }
 
+    // region parse Multiselect
     @Test
     fun testParseMultiselect() = runTest {
         val multiselect = Multiselect(Manifest(), getTestXmlParser("multiselect.xml"))
@@ -64,6 +67,7 @@ class MultiselectTest : UsesResources() {
             assertTrue(content.isEmpty())
         }
     }
+    // endregion parse Multiselect
 
     @Test
     fun testIsIgnored() {
@@ -73,6 +77,25 @@ class MultiselectTest : UsesResources() {
         with(Multiselect(Manifest(ParserConfig().withSupportedFeatures()))) {
             assertTrue(isIgnored)
         }
+    }
+
+    @Test
+    fun testPropertyTips() {
+        val manifest = Manifest(tips = { listOf(Tip(it, "tip1"), Tip(it, "tip2"), Tip(it, "tip3"), Tip(it, "tip4")) })
+        val multiselect = Multiselect(
+            manifest,
+            options = {
+                listOf(
+                    Multiselect.Option(it) { listOf(InlineTip(it, "tip1")) },
+                    Multiselect.Option(it) { listOf(InlineTip(it, "tip2"), InlineTip(it, "tip3")) },
+                )
+            },
+        )
+
+        assertEquals(
+            listOf(manifest.findTip("tip1"), manifest.findTip("tip2"), manifest.findTip("tip3")),
+            multiselect.tips,
+        )
     }
 
     @Test
