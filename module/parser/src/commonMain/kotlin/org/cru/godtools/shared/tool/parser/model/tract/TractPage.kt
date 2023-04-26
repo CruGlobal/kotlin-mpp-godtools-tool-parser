@@ -43,16 +43,18 @@ import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_CARD_TEXT_COLOR = "card-text-color"
 private const val XML_CARDS = "cards"
 private const val XML_MODALS = "modals"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class TractPage : Page {
     val isLastPage get() = manifest.pages.lastOrNull() == this
 
@@ -162,7 +164,9 @@ class TractPage : Page {
         val isLastVisibleCard get() = this == page.visibleCards.lastOrNull()
 
         val isHidden: Boolean
+        @JsName("_listeners")
         val listeners: Set<EventId>
+        @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
         @AndroidColorInt
@@ -262,6 +266,16 @@ class TractPage : Page {
             else -> error("Analytics trigger type $type is not currently supported on Cards")
         }
         // endregion HasAnalyticsEvents
+
+        // region Kotlin/JS interop
+        @HiddenFromObjC
+        @JsName("dismissListeners")
+        val jsDismissListeners get() = dismissListeners.toTypedArray()
+
+        @HiddenFromObjC
+        @JsName("listeners")
+        val jsListeners get() = listeners.toTypedArray()
+        // endregion Kotlin/JS interop
     }
 
     private fun XmlPullParser.parseCardsXml() = buildList {
