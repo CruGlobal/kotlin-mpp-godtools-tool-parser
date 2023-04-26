@@ -62,6 +62,7 @@ class TractPage : Page {
 
     val header: Header?
     val hero: Hero?
+    @JsName("_modals")
     val modals: List<Modal>
     val callToAction: CallToAction
 
@@ -295,6 +296,10 @@ class TractPage : Page {
     @HiddenFromObjC
     @JsName("cards")
     val jsCards get() = cards.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("modals")
+    val jsModals get() = modals.toTypedArray()
     // endregion Kotlin/JS interop
 
     private fun XmlPullParser.parseModalsXml() = buildList {
