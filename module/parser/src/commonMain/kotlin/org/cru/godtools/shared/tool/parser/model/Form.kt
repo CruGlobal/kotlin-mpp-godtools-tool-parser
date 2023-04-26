@@ -3,7 +3,11 @@ package org.cru.godtools.shared.tool.parser.model
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Form : Content, Parent {
     internal companion object {
         internal const val XML_FORM = "form"
