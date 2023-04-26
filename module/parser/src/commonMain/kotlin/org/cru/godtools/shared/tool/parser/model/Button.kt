@@ -15,6 +15,8 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimension
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_COLOR = "color"
 private const val XML_TYPE = "type"
@@ -31,6 +33,8 @@ private const val XML_ICON_SIZE = "icon-size"
 
 private const val TAG = "Button"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Button : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
