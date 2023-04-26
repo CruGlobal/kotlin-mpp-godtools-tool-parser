@@ -7,6 +7,8 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_ANIMATION
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_RESOURCE = "resource"
 private const val XML_LOOP = "loop"
@@ -14,6 +16,8 @@ private const val XML_AUTOPLAY = "autoplay"
 private const val XML_PLAY_LISTENERS = "play-listeners"
 private const val XML_STOP_LISTENERS = "stop-listeners"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Animation : Content, Clickable {
     internal companion object {
         internal const val XML_ANIMATION = "animation"
