@@ -42,6 +42,7 @@ class Multiselect : Content {
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
     val options: List<Option>
+    override val tips get() = options.flatMap { it.contentTips }
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_MULTISELECT)
@@ -145,7 +146,8 @@ class Multiselect : Content {
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             backgroundColor: PlatformColor? = null,
             selectedColor: PlatformColor? = null,
-            value: String = ""
+            value: String = "",
+            content: (Option) -> List<Content> = { emptyList() },
         ) : super(multiselect) {
             this.multiselect = multiselect
             _style = style
@@ -153,7 +155,7 @@ class Multiselect : Content {
             _selectedColor = selectedColor
             this.value = value
             this.analyticsEvents = analyticsEvents
-            content = emptyList()
+            this.content = content(this)
         }
 
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
