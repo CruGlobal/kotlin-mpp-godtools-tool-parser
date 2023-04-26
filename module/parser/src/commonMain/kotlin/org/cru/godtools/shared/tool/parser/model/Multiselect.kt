@@ -87,7 +87,7 @@ class Multiselect : Content {
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_MULTISELECT) || super.isIgnored
 
-    class Option : Content, Parent, HasAnalyticsEvents {
+    class Option : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
             private const val XML_SELECTED_COLOR = "selected-color"
 
@@ -117,7 +117,7 @@ class Multiselect : Content {
         internal val analyticsEvents: List<AnalyticsEvent>
         override val content: List<Content>
 
-        internal constructor(multiselect: Multiselect, parser: XmlPullParser) : super(multiselect, parser) {
+        internal constructor(multiselect: Multiselect, parser: XmlPullParser) : super(multiselect) {
             this.multiselect = multiselect
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_OPTION)
 
