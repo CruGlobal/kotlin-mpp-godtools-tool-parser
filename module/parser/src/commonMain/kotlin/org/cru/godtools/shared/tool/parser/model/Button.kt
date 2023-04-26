@@ -156,7 +156,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
     // endregion HasAnalyticsEvents
 
-    enum class Type {
+    internal enum class Type {
         EVENT, URL, UNKNOWN;
 
         internal companion object {
