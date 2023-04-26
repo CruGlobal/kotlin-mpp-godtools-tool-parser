@@ -42,11 +42,6 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         internal const val DEFAULT_ICON_SIZE = 18
     }
 
-    @Deprecated("Since v0.4.0, Button Type no longer controls any functionality.")
-    val type get() = when {
-        url != null -> Type.URL
-        else -> Type.EVENT
-    }
     override val events: List<EventId>
     override val url: Uri?
 
