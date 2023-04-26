@@ -6,9 +6,14 @@ import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_ID = "id"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class InlineTip : Content {
     internal companion object {
         internal const val XML_TIP = "tip"
@@ -28,6 +33,7 @@ class InlineTip : Content {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
+    @JsName("createTestInlineTip")
     constructor(parent: Base, id: String? = null) : super(parent) {
         this.id = id
     }
