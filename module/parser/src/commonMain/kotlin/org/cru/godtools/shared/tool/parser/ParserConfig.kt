@@ -20,6 +20,7 @@ data class ParserConfig private constructor(
     private val supportedFeatures: Set<String> = emptySet(),
     internal val parsePages: Boolean = true,
     internal val parseTips: Boolean = true,
+    internal val legacyWebImageResources: Boolean = false,
     internal val parserDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
     @JsName("createParserConfig")
@@ -43,6 +44,9 @@ data class ParserConfig private constructor(
     fun withParseRelated(enabled: Boolean) = copy(parsePages = enabled, parseTips = enabled)
     fun withParsePages(enabled: Boolean) = copy(parsePages = enabled)
     fun withParseTips(enabled: Boolean) = copy(parseTips = enabled)
+    @HiddenFromObjC
+    @Deprecated("Since v0.9.0, This setting is meant to workaround a knowgod.com image resource issue")
+    fun withLegacyWebImageResources(enabled: Boolean) = copy(legacyWebImageResources = enabled)
 
     internal fun supportsDeviceType(type: DeviceType) = when (type) {
         deviceType -> true
