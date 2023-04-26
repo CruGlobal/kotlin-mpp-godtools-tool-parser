@@ -15,6 +15,7 @@ private const val XML_ITEM = "item"
 
 class Flow : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "flow"
         internal const val XML_FLOW = "flow"
         private const val XML_ITEM_WIDTH = "item-width"
 
@@ -29,7 +30,7 @@ class Flow : Content {
 
     val items: List<Item>
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
         itemWidth = parser.getAttributeValue(XML_ITEM_WIDTH).toDimensionOrNull() ?: DEFAULT_ITEM_WIDTH

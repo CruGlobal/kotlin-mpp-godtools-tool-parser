@@ -7,6 +7,7 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 
 class Fallback : Content, Parent {
     internal companion object {
+        private const val CONTENT_TYPE = "fallback"
         internal const val XML_FALLBACK = "fallback"
     }
 
@@ -14,7 +15,7 @@ class Fallback : Content, Parent {
     override val content get() = _content.take(1)
     override val tips get() = contentTips
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         when (parser.name) {
             Paragraph.XML_PARAGRAPH -> {
                 parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, Paragraph.XML_PARAGRAPH)
@@ -29,7 +30,10 @@ class Fallback : Content, Parent {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base = Manifest(), content: ((Fallback) -> List<Content>)? = null) : super(parent) {
+    internal constructor(
+        parent: Base = Manifest(),
+        content: ((Fallback) -> List<Content>)? = null
+    ) : super(parent, CONTENT_TYPE) {
         _content = content?.invoke(this).orEmpty()
     }
 }

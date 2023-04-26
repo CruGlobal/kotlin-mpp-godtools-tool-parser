@@ -20,6 +20,7 @@ private const val XML_OPTION_STYLE = "option-style"
 
 class Multiselect : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "multiselect"
         internal const val XML_MULTISELECT = "multiselect"
 
         internal const val XML_MULTISELECT_OPTION_BACKGROUND_COLOR = "multiselect-option-background-color"
@@ -44,7 +45,7 @@ class Multiselect : Content {
     val options: List<Option>
     override val tips get() = options.flatMap { it.contentTips }
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_MULTISELECT)
 
         stateName = parser.getAttributeValue(XML_STATE).orEmpty()
@@ -76,7 +77,7 @@ class Multiselect : Content {
         optionBackgroundColor: PlatformColor? = null,
         optionSelectedColor: PlatformColor? = null,
         options: ((Multiselect) -> List<Option>)? = null
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.stateName = stateName
         columns = 1
         this.selectionLimit = selectionLimit

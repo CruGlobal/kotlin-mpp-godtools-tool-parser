@@ -28,6 +28,7 @@ private const val XML_WIDTH = "width"
 @OptIn(ExperimentalJsExport::class)
 class Image : Content, Clickable {
     internal companion object {
+        private const val CONTENT_TYPE = "image"
         internal const val XML_IMAGE = "image"
 
         internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
@@ -53,7 +54,7 @@ class Image : Content, Clickable {
     val gravity: Gravity.Horizontal
     val width: Dimension
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_IMAGE)
 
         resourceName = parser.getAttributeValue(XML_RESOURCE)
@@ -77,7 +78,7 @@ class Image : Content, Clickable {
         resource: String? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         resourceName = resource
         this.gravity = gravity
         this.width = width

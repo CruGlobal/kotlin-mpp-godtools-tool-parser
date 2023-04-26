@@ -23,6 +23,7 @@ private val REGEX_VALIDATE_EMAIL = Regex(".+@.+")
 @OptIn(ExperimentalJsExport::class)
 class Input : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "input"
         internal const val XML_INPUT = "input"
     }
 
@@ -33,7 +34,7 @@ class Input : Content {
     val label: Text?
     val placeholder: Text?
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_INPUT)
 
         type = parser.getAttributeValue(XML_TYPE)?.toTypeOrNull() ?: Type.DEFAULT

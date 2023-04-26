@@ -20,6 +20,7 @@ private const val XML_WIDTH = "width"
 @OptIn(ExperimentalJsExport::class)
 class Video : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "video"
         internal const val XML_VIDEO = "video"
 
         internal val DEFAULT_ASPECT_RATIO = AspectRatio(16, 9)
@@ -49,7 +50,7 @@ class Video : Content {
 
     override val isIgnored get() = super.isIgnored || provider == Provider.UNKNOWN || videoId == null
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_VIDEO)
 
         provider = Provider.parseOrNull(parser.getAttributeValue(XML_PROVIDER)) ?: Provider.DEFAULT

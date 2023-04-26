@@ -10,19 +10,20 @@ import kotlin.js.JsExport
 @OptIn(ExperimentalJsExport::class)
 class Form : Content, Parent {
     internal companion object {
+        private const val CONTENT_TYPE = "form"
         internal const val XML_FORM = "form"
     }
 
     override val content: List<Content>
     override val tips get() = contentTips
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FORM)
         content = parseContent(parser)
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base, content: (Form) -> List<Content>) : super(parent) {
+    internal constructor(parent: Base, content: (Form) -> List<Content>) : super(parent, CONTENT_TYPE) {
         this.content = content(this)
     }
 }

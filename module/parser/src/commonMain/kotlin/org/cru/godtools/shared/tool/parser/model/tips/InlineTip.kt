@@ -16,6 +16,7 @@ private const val XML_ID = "id"
 @OptIn(ExperimentalJsExport::class)
 class InlineTip : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "tip"
         internal const val XML_TIP = "tip"
     }
 
@@ -24,7 +25,7 @@ class InlineTip : Content {
 
     override val tips get() = listOfNotNull(tip)
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_TIP)
 
         id = parser.getAttributeValue(null, XML_ID)
@@ -34,7 +35,7 @@ class InlineTip : Content {
 
     @RestrictTo(RestrictToScope.TESTS)
     @JsName("createTestInlineTip")
-    constructor(parent: Base, id: String? = null) : super(parent) {
+    constructor(parent: Base, id: String? = null) : super(parent, CONTENT_TYPE) {
         this.id = id
     }
 }

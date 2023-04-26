@@ -33,6 +33,7 @@ private const val TAG = "Button"
 
 class Button : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
+        private const val CONTENT_TYPE = "button"
         internal const val XML_BUTTON = "button"
 
         internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
@@ -77,7 +78,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
     val text: Text
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_BUTTON)
 
         val type = parser.getAttributeValue(XML_TYPE).toButtonTypeOrNull()
@@ -125,7 +126,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         events: List<EventId> = emptyList(),
         url: Uri? = null,
         text: ((Base) -> Text?)? = null
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.events = events
         this.url = url
 

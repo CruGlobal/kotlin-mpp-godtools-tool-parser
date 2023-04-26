@@ -12,13 +12,14 @@ private const val XML_SECTION_HEADER = "header"
 
 class Accordion : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "accordion"
         internal const val XML_ACCORDION = "accordion"
     }
 
     val sections: List<Section>
     override val tips get() = sections.flatMap { it.contentTips }
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ACCORDION)
 
         sections = buildList {
@@ -36,7 +37,7 @@ class Accordion : Content {
     internal constructor(
         parent: Base = Manifest(),
         sections: ((Accordion) -> List<Section>)? = null
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.sections = sections?.invoke(this).orEmpty()
     }
 

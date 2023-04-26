@@ -8,6 +8,7 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 class Card : Content, Parent, Clickable {
     internal companion object {
+        private const val CONTENT_TYPE = "card"
         internal const val XML_CARD = "card"
 
         internal const val XML_CARD_BACKGROUND_COLOR = "card-background-color"
@@ -20,7 +21,7 @@ class Card : Content, Parent, Clickable {
     override val events: List<EventId>
     override val url: Uri?
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_CARD)
 
         _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR).toColorOrNull()
@@ -34,7 +35,10 @@ class Card : Content, Parent, Clickable {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base = Manifest(), backgroundColor: PlatformColor? = null) : super(parent) {
+    internal constructor(
+        parent: Base = Manifest(),
+        backgroundColor: PlatformColor? = null
+    ) : super(parent, CONTENT_TYPE) {
         _backgroundColor = backgroundColor
         content = emptyList()
         events = emptyList()

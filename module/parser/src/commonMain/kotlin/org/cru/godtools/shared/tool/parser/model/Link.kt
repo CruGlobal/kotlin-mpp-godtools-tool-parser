@@ -10,6 +10,7 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 class Link : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
+        private const val CONTENT_TYPE = "link"
         internal const val XML_LINK = "link"
     }
 
@@ -19,7 +20,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
     private val defaultTextStyles by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
     val text: Text
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_LINK)
         parseClickableAttrs(parser) { events, url ->
             this.events = events
@@ -45,7 +46,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
         events: List<EventId> = emptyList(),
         url: Uri? = null,
         text: ((Base) -> Text?)? = null
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.analyticsEvents = analyticsEvents
         this.events = events
         this.url = url

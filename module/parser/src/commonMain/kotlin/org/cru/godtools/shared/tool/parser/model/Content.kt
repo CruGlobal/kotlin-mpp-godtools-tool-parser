@@ -13,8 +13,10 @@ import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.native.HiddenFromObjC
 
 private const val XML_REQUIRED_FEATURES = "required-features"
 private const val XML_REQUIRED_DEVICE_TYPE = "required-device-type"
@@ -24,8 +26,10 @@ private const val XML_RESTRICT_TO = "restrictTo"
 private const val XML_VERSION = "version"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 abstract class Content : BaseModel, Visibility {
+    @HiddenFromObjC
+    val contentType: String
     private val version: Int
     private val requiredFeatures: Set<String>
     @VisibleForTesting
@@ -38,7 +42,8 @@ abstract class Content : BaseModel, Visibility {
     final override val invisibleIf: Expression?
     final override val goneIf: Expression?
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
+    internal constructor(parent: Base, type: String, parser: XmlPullParser) : super(parent) {
+        contentType = type
         version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
         requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
             ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
@@ -59,6 +64,7 @@ abstract class Content : BaseModel, Visibility {
     @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
+        contentType: String = "",
         version: Int = SCHEMA_VERSION,
         requiredFeatures: Set<String> = emptySet(),
         requiredDeviceType: Set<DeviceType> = DeviceType.ALL,
@@ -67,6 +73,7 @@ abstract class Content : BaseModel, Visibility {
         invisibleIf: Expression? = null,
         goneIf: Expression? = null
     ) : super(parent) {
+        this.contentType = contentType
         this.requiredDeviceType = requiredDeviceType
         this.version = version
         this.requiredFeatures = requiredFeatures

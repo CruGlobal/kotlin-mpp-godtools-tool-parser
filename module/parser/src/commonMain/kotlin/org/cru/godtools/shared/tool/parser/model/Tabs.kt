@@ -13,13 +13,14 @@ private const val XML_LABEL = "label"
 
 class Tabs : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "tabs"
         internal const val XML_TABS = "tabs"
     }
 
     val tabs: List<Tab>
     override val tips get() = tabs.flatMap { it.contentTips }
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TABS)
 
         tabs = buildList {
@@ -34,7 +35,7 @@ class Tabs : Content {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base = Manifest()) : super(parent) {
+    internal constructor(parent: Base = Manifest()) : super(parent, CONTENT_TYPE) {
         tabs = emptyList()
     }
 

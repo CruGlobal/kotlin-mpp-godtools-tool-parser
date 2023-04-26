@@ -11,6 +11,7 @@ import kotlin.js.JsName
 @OptIn(ExperimentalJsExport::class)
 class Paragraph : Content, Parent {
     internal companion object {
+        private const val CONTENT_TYPE = "paragraph"
         internal const val XML_PARAGRAPH = "paragraph"
         internal const val XML_FALLBACK = "fallback"
     }
@@ -18,7 +19,7 @@ class Paragraph : Content, Parent {
     override val content: List<Content>
     override val tips get() = contentTips
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_PARAGRAPH)
         content = parseContent(parser)
     }
@@ -28,7 +29,7 @@ class Paragraph : Content, Parent {
     constructor(
         parent: Base = Manifest(),
         content: (Paragraph) -> List<Content> = { emptyList() }
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.content = content(this)
     }
 }

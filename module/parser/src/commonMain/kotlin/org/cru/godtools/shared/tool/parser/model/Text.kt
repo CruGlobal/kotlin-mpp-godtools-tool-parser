@@ -41,6 +41,7 @@ private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Text : Content {
     internal companion object {
+        private const val CONTENT_TYPE = "text"
         internal const val XML_TEXT = "text"
 
         @VisibleForTesting
@@ -76,7 +77,7 @@ class Text : Content {
     @AndroidDimension(unit = DP)
     val endImageSize: Int
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
 
         _textAlign = parser.getAttributeValue(XML_TEXT_ALIGN)?.toTextAlignOrNull()
@@ -106,7 +107,7 @@ class Text : Content {
         textStyles: Set<Style> = emptySet(),
         startImage: String? = null,
         endImage: String? = null,
-    ) : super(parent) {
+    ) : super(parent, CONTENT_TYPE) {
         this.text = text
         _textAlign = textAlign
         _textColor = textColor

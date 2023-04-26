@@ -23,6 +23,7 @@ private const val XML_STOP_LISTENERS = "stop-listeners"
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Animation : Content, Clickable {
     internal companion object {
+        private const val CONTENT_TYPE = "animation"
         internal const val XML_ANIMATION = "animation"
     }
 
@@ -41,7 +42,7 @@ class Animation : Content, Clickable {
     override val events: List<EventId>
     override val url: Uri?
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
+    internal constructor(parent: Base, parser: XmlPullParser) : super(parent, CONTENT_TYPE, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ANIMATION)
 
         resourceName = parser.getAttributeValue(null, XML_RESOURCE)
@@ -60,7 +61,7 @@ class Animation : Content, Clickable {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    internal constructor(parent: Base = Manifest()) : super(parent) {
+    internal constructor(parent: Base = Manifest()) : super(parent, CONTENT_TYPE) {
         resourceName = null
         loop = true
         autoPlay = true
