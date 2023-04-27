@@ -52,6 +52,5 @@ class CardTest : UsesResources() {
         }
         assertEquals(parent.cardBackgroundColor, Card(parent).backgroundColor)
         assertEquals(TestColors.GREEN, Card(parent, backgroundColor = TestColors.GREEN).backgroundColor)
-        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, (null as Card?).backgroundColor)
     }
 }
