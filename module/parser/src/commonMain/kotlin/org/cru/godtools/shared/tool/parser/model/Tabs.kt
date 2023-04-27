@@ -7,15 +7,23 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseA
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_TAB = "tab"
 private const val XML_LABEL = "label"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Tabs : Content {
     internal companion object {
         internal const val XML_TABS = "tabs"
     }
 
+    @JsName("_tabs")
     val tabs: List<Tab>
     override val tips get() = tabs.flatMap { it.contentTips }
 
@@ -37,6 +45,12 @@ class Tabs : Content {
     internal constructor(parent: Base = Manifest()) : super(parent) {
         tabs = emptyList()
     }
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("tabs")
+    val jsTabs get() = tabs.toTypedArray()
+    // endregion Kotlin/JS interop
 
     class Tab : BaseModel, Parent, HasAnalyticsEvents {
         private val tabs: Tabs
