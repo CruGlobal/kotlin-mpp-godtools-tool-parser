@@ -62,6 +62,7 @@ class TractPage : Page {
 
     val header: Header?
     val hero: Hero?
+    @JsName("_modals")
     val modals: List<Modal>
     val callToAction: CallToAction
 
@@ -138,6 +139,7 @@ class TractPage : Page {
     fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
 
     // region Cards
+    @JsName("_cards")
     val cards: List<Card>
     val visibleCards get() = cards.filter { !it.isHidden }
 
@@ -289,6 +291,16 @@ class TractPage : Page {
         }
     }
     // endregion Cards
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("cards")
+    val jsCards get() = cards.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("modals")
+    val jsModals get() = modals.toTypedArray()
+    // endregion Kotlin/JS interop
 
     private fun XmlPullParser.parseModalsXml() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_MODALS)
