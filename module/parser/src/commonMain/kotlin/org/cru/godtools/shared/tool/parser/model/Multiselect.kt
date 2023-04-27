@@ -14,8 +14,13 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Compan
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"
@@ -23,6 +28,8 @@ private const val XML_SELECTION_LIMIT = "selection-limit"
 private const val XML_OPTION = "option"
 private const val XML_OPTION_STYLE = "option-style"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Multiselect : Content {
     internal companion object {
         internal const val XML_MULTISELECT = "multiselect"
@@ -46,6 +53,7 @@ class Multiselect : Content {
     private val _optionSelectedColor: PlatformColor?
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
+    @JsName("_options")
     val options: List<Option>
     override val tips get() = options.flatMap { it.contentTips }
 
@@ -92,6 +100,12 @@ class Multiselect : Content {
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_MULTISELECT) || super.isIgnored
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("options")
+    val jsOptions get() = options.toTypedArray()
+    // endregion Kotlin/JS interop
 
     class Option : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
