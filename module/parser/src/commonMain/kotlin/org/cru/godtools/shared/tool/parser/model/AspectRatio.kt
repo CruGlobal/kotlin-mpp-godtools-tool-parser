@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 data class AspectRatio(val width: Int, val height: Int) {
     val ratio: Double get() = width.toDouble() / height
 
