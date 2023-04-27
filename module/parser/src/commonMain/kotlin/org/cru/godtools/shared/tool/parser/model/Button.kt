@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("ButtonKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
@@ -15,6 +18,10 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimension
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 
 private const val XML_COLOR = "color"
 private const val XML_TYPE = "type"
@@ -31,6 +38,8 @@ private const val XML_ICON_SIZE = "icon-size"
 
 private const val TAG = "Button"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Button : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
@@ -48,8 +57,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     private val _style: Style?
     val style: Style get() = _style ?: stylesParent.buttonStyle
 
-    internal val gravity: Gravity.Horizontal
-    internal val width: Dimension
+    val gravity: Gravity.Horizontal
+    val width: Dimension
 
     @AndroidColorInt
     private val _buttonColor: PlatformColor?
@@ -61,8 +70,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 
     private val iconName: String?
     val icon get() = getResource(iconName)
-    internal val iconSize: Int
-    internal val iconGravity: Gravity.Horizontal
+    val iconGravity: Gravity.Horizontal
+    val iconSize: Int
 
     private val defaultTextStyles by lazy {
         stylesOverride(
@@ -121,6 +130,10 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         parent: Base = Manifest(),
         style: Style? = null,
         @AndroidColorInt color: PlatformColor? = null,
+        gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
+        width: Dimension = DEFAULT_WIDTH,
+        iconGravity: Gravity.Horizontal = DEFAULT_ICON_GRAVITY,
+        iconSize: Int = DEFAULT_ICON_SIZE,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
@@ -130,14 +143,14 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         this.url = url
 
         _style = style
-        gravity = DEFAULT_GRAVITY
-        width = DEFAULT_WIDTH
+        this.gravity = gravity
+        this.width = width
         _buttonColor = color
         backgroundColor = DEFAULT_BACKGROUND_COLOR
 
         iconName = null
-        iconGravity = DEFAULT_ICON_GRAVITY
-        iconSize = DEFAULT_ICON_SIZE
+        this.iconGravity = iconGravity
+        this.iconSize = iconSize
 
         this.analyticsEvents = analyticsEvents
         this.text = text?.invoke(defaultTextStyles) ?: Text(defaultTextStyles)
@@ -183,9 +196,4 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 }
 
-val Button?.gravity get() = this?.gravity ?: Button.DEFAULT_GRAVITY
-val Button?.width get() = this?.width ?: Button.DEFAULT_WIDTH
-
 val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
-val Button?.iconSize get() = this?.iconSize ?: Button.DEFAULT_ICON_SIZE
-val Button?.iconGravity get() = this?.iconGravity ?: Button.DEFAULT_ICON_GRAVITY
