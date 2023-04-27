@@ -5,12 +5,17 @@ import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.Spacer.Mode.Companion.toModeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 
 private const val XML_HEIGHT = "height"
 private const val XML_MODE = "mode"
 private const val XML_MODE_AUTO = "auto"
 private const val XML_MODE_FIXED = "fixed"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Spacer : Content {
     internal companion object {
         internal const val XML_SPACER = "spacer"
@@ -29,7 +34,8 @@ class Spacer : Content {
     }
 
     @RestrictTo(RestrictToScope.TESTS)
-    constructor(parent: Base, mode: Mode = Mode.AUTO, height: Int = 0) : super(parent) {
+    @JsName("createTestSpacer")
+    constructor(parent: Base = Manifest(), mode: Mode = Mode.AUTO, height: Int = 0) : super(parent) {
         this.mode = mode
         this.height = height
     }
