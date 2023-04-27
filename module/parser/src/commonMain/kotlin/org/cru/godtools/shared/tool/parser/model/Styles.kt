@@ -57,8 +57,8 @@ internal val Styles?.multiselectOptionBackgroundColor
 // endregion Multiselect styles
 
 // region Text styles
+val Styles?.textAlign get() = this?.textAlign ?: DEFAULT_TEXT_ALIGN
 @get:AndroidColorInt
 val Styles?.textColor get() = this?.textColor ?: Manifest.DEFAULT_TEXT_COLOR
 val Styles?.textScale get() = this?.textScale ?: DEFAULT_TEXT_SCALE
-val Styles?.textAlign get() = this?.textAlign ?: DEFAULT_TEXT_ALIGN
 // endregion Text styles
