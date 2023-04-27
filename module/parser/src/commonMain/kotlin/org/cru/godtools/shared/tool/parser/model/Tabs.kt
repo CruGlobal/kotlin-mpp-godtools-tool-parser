@@ -56,6 +56,7 @@ class Tabs : Content {
         private val tabs: Tabs
         val position get() = tabs.tabs.indexOf(this)
 
+        @JsName("_listeners")
         val listeners: Set<EventId>
         val label: Text?
 
@@ -103,5 +104,11 @@ class Tabs : Content {
             else -> error("The $type trigger type is currently unsupported on Tabs")
         }
         // endregion HasAnalyticsEvents
+
+        // region Kotlin/JS interop
+        @HiddenFromObjC
+        @JsName("listeners")
+        val jsListeners get() = listeners.toTypedArray()
+        // endregion Kotlin/JS interop
     }
 }
