@@ -7,6 +7,11 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_ANIMATION
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_RESOURCE = "resource"
 private const val XML_LOOP = "loop"
@@ -14,6 +19,8 @@ private const val XML_AUTOPLAY = "autoplay"
 private const val XML_PLAY_LISTENERS = "play-listeners"
 private const val XML_STOP_LISTENERS = "stop-listeners"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Animation : Content, Clickable {
     internal companion object {
         internal const val XML_ANIMATION = "animation"
@@ -26,7 +33,9 @@ class Animation : Content, Clickable {
     val loop: Boolean
     val autoPlay: Boolean
 
+    @JsName("_playListeners")
     val playListeners: Set<EventId>
+    @JsName("_stopListeners")
     val stopListeners: Set<EventId>
 
     override val events: List<EventId>
@@ -62,4 +71,13 @@ class Animation : Content, Clickable {
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_ANIMATION) || super.isIgnored
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("playListeners")
+    val jsPlayListeners get() = playListeners.toTypedArray()
+    @HiddenFromObjC
+    @JsName("stopListeners")
+    val jsStopListeners get() = stopListeners.toTypedArray()
+    // endregion Kotlin/JS interop
 }
