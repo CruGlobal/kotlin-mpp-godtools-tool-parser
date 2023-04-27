@@ -6,15 +6,23 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseA
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_SECTION = "section"
 private const val XML_SECTION_HEADER = "header"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Accordion : Content {
     internal companion object {
         internal const val XML_ACCORDION = "accordion"
     }
 
+    @JsName("_sections")
     val sections: List<Section>
     override val tips get() = sections.flatMap { it.contentTips }
 
@@ -39,6 +47,12 @@ class Accordion : Content {
     ) : super(parent) {
         this.sections = sections?.invoke(this).orEmpty()
     }
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("sections")
+    val jsSections get() = sections.toTypedArray()
+    // endregion Kotlin/JS interop
 
     class Section : BaseModel, Parent, HasAnalyticsEvents {
         private val accordion: Accordion
