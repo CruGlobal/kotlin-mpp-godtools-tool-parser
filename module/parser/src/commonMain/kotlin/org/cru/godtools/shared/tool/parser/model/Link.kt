@@ -7,7 +7,11 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Link : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_LINK = "link"
