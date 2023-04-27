@@ -3,7 +3,8 @@ package org.cru.godtools.shared.tool.parser.model
 import org.cru.godtools.shared.tool.parser.model.Input.Type.Companion.toTypeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.native.concurrent.SharedImmutable
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_TYPE = "type"
 private const val XML_TYPE_TEXT = "text"
@@ -16,9 +17,10 @@ private const val XML_VALUE = "value"
 private const val XML_LABEL = "label"
 private const val XML_PLACEHOLDER = "placeholder"
 
-@SharedImmutable
 private val REGEX_VALIDATE_EMAIL = Regex(".+@.+")
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class Input : Content {
     internal companion object {
         internal const val XML_INPUT = "input"
