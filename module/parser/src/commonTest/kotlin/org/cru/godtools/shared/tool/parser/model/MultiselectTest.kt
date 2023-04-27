@@ -213,9 +213,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionBackgroundColorFallback() {
-        val parent = object : BaseModel(), Styles {
-            override val multiselectOptionBackgroundColor = TestColors.RANDOM
-        }
+        val parent = Manifest(multiselectOptionBackgroundColor = TestColors.RANDOM)
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(parent.multiselectOptionBackgroundColor, backgroundColor)
         }
@@ -229,15 +227,6 @@ class MultiselectTest : UsesResources() {
         val optionBackgroundColor = TestColors.RANDOM
         with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor)) {
             assertEquals(optionBackgroundColor, backgroundColor)
-        }
-
-        // test with nullable receiver
-        with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor) as Multiselect.Option?) {
-            assertEquals(optionBackgroundColor, backgroundColor)
-        }
-
-        with(null as Multiselect.Option?) {
-            assertEquals(stylesParent.multiselectOptionBackgroundColor, backgroundColor)
         }
     }
 
@@ -273,15 +262,6 @@ class MultiselectTest : UsesResources() {
         val optionSelectedColor = TestColors.RANDOM
         with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor)) {
             assertEquals(optionSelectedColor, selectedColor)
-        }
-
-        // test with nullable receiver
-        with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor) as Multiselect.Option?) {
-            assertEquals(optionSelectedColor, selectedColor)
-        }
-
-        with(null as Multiselect.Option?) {
-            assertEquals(stylesParent.defaultSelectedColor, selectedColor)
         }
     }
 

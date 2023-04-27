@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("MultiselectKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -11,6 +14,8 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Compan
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"
@@ -106,10 +111,9 @@ class Multiselect : Content {
         val style get() = _style ?: multiselect.optionStyle
 
         private val _backgroundColor: PlatformColor?
-        internal val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
+        val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
         private val _selectedColor: PlatformColor?
-        internal val selectedColor
-            get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
+        val selectedColor get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
 
         @VisibleForTesting
         internal val value: String
@@ -191,9 +195,5 @@ class Multiselect : Content {
     }
 }
 
-val Multiselect.Option?.backgroundColor get() = this?.backgroundColor ?: stylesParent.multiselectOptionBackgroundColor
-val Multiselect.Option?.selectedColor get() = this?.selectedColor ?: stylesParent.defaultSelectedColor
-
-@VisibleForTesting
 internal val Styles?.defaultSelectedColor
     get() = primaryColor.toHSL().run { copy(alpha = 1f, l = (l + 0.4f).coerceAtMost(1f)) }.toPlatformColor()
