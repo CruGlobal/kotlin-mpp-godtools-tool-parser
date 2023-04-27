@@ -70,8 +70,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 
     private val iconName: String?
     val icon get() = getResource(iconName)
-    internal val iconSize: Int
-    internal val iconGravity: Gravity.Horizontal
+    val iconGravity: Gravity.Horizontal
+    val iconSize: Int
 
     private val defaultTextStyles by lazy {
         stylesOverride(
@@ -132,6 +132,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         @AndroidColorInt color: PlatformColor? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
+        iconGravity: Gravity.Horizontal = DEFAULT_ICON_GRAVITY,
+        iconSize: Int = DEFAULT_ICON_SIZE,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
@@ -147,8 +149,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         backgroundColor = DEFAULT_BACKGROUND_COLOR
 
         iconName = null
-        iconGravity = DEFAULT_ICON_GRAVITY
-        iconSize = DEFAULT_ICON_SIZE
+        this.iconGravity = iconGravity
+        this.iconSize = iconSize
 
         this.analyticsEvents = analyticsEvents
         this.text = text?.invoke(defaultTextStyles) ?: Text(defaultTextStyles)
@@ -195,5 +197,3 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 }
 
 val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
-val Button?.iconSize get() = this?.iconSize ?: Button.DEFAULT_ICON_SIZE
-val Button?.iconGravity get() = this?.iconGravity ?: Button.DEFAULT_ICON_GRAVITY
