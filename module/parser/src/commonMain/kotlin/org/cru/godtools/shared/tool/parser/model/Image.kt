@@ -14,7 +14,6 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
-import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -26,7 +25,7 @@ private const val XML_GRAVITY = "gravity"
 private const val XML_WIDTH = "width"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
+@OptIn(ExperimentalJsExport::class)
 class Image : Content, Clickable {
     internal companion object {
         internal const val XML_IMAGE = "image"
