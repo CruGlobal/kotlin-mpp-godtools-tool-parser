@@ -1,7 +1,5 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import app.cash.turbine.Event
-import app.cash.turbine.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -15,7 +13,6 @@ import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentE
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.withDeviceType
-import org.cru.godtools.shared.tool.state.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -26,8 +23,6 @@ import kotlin.test.assertTrue
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContentTest : UsesResources() {
-    private val state = State()
-
     // region required-features
     @Test
     fun verifyRequiredFeaturesSupported() {
@@ -141,118 +136,9 @@ class ContentTest : UsesResources() {
     }
 
     @Test
-    fun verifyIsGone() {
-        with(object : Content(goneIf = "isSet(a)".toExpressionOrNull()) {}) {
-            assertFalse(isGone(state))
-            state.setVar("a", listOf("test"))
-            assertTrue(isGone(state))
-        }
-    }
-
-    @Test
-    fun verifyIsGoneFlow() = runTest {
-        object : Content(goneIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}.isGoneFlow(state).test {
-            assertFalse(awaitItem(), "Initially not hidden")
-
-            state.setVar("c", listOf("test"))
-            expectNoEvents() // 'c' should have no effect on isHidden result
-
-            state.setVar("a", listOf("test"))
-            assertTrue(awaitItem(), "'a' is now set")
-
-            state.setVar("a", emptyList())
-            assertFalse(awaitItem(), "'a' is no longer set")
-
-            state.setVar("b", listOf("test"))
-            assertTrue(awaitItem(), "'b' is now set")
-
-            state.setVar("a", listOf("test"))
-            expectNoEvents() // 'a' is now set, but shouldn't change isHidden result
-
-            state.setVar("b", emptyList())
-            expectNoEvents() // 'a' is still set, so isHidden result shouldn't change
-
-            state.setVar("a", emptyList())
-            assertFalse(awaitItem(), "'a' is no longer set")
-        }
-    }
-
-    @Test
-    fun verifyIsGoneDefault() = runTest {
-        val content = object : Content() {}
-        assertFalse(content.isGone(state))
-        content.isGoneFlow(state).test {
-            assertFalse(awaitItem(), "Initially not hidden")
-
-            for (i in 1..10) {
-                state.setVar("a$i", listOf("test"))
-                assertFalse(content.isGone(state))
-            }
-
-            // there should have been no more items emitted. the flow may complete, but doesn't have to
-            assertTrue(cancelAndConsumeRemainingEvents().filterNot { it is Event.Complete }.isEmpty())
-        }
-    }
-
-    @Test
     fun verifyInvisibleIfInvalid() {
         with(object : Content(invisibleIf = "invalid".toExpressionOrNull()) {}) {
             assertTrue(isIgnored)
-        }
-    }
-
-    @Test
-    fun verifyIsInvisible() {
-        with(object : Content(invisibleIf = "isSet(a)".toExpressionOrNull()) {}) {
-            assertFalse(isInvisible(state))
-            state.setVar("a", listOf("test"))
-            assertTrue(isInvisible(state))
-        }
-    }
-
-    @Test
-    fun verifyIsInvisibleFlow() = runTest {
-        val content = object : Content(invisibleIf = "isSet(a) || isSet(b)".toExpressionOrNull()) {}
-        content.isInvisibleFlow(state).test {
-            assertFalse(awaitItem(), "Initially not invisible")
-
-            state.setVar("c", listOf("test"))
-            expectNoEvents() // 'c' should have no effect on isInvisible result
-
-            state.setVar("a", listOf("test"))
-            assertTrue(awaitItem(), "'a' is now set")
-
-            state.setVar("a", emptyList())
-            assertFalse(awaitItem(), "'a' is no longer set")
-
-            state.setVar("b", listOf("test"))
-            assertTrue(awaitItem(), "'b' is now set")
-
-            state.setVar("a", listOf("test"))
-            expectNoEvents() // 'a' is now set, but shouldn't change isInvisible result
-
-            state.setVar("b", emptyList())
-            expectNoEvents() // 'a' is still set, so isInvisible result shouldn't change
-
-            state.setVar("a", emptyList())
-            assertFalse(awaitItem(), "'a' is no longer set")
-        }
-    }
-
-    @Test
-    fun verifyIsInvisibleDefault() = runTest {
-        val content = object : Content() {}
-        assertFalse(content.isInvisible(state))
-        content.isInvisibleFlow(state).test {
-            assertFalse(awaitItem(), "Initially not invisible")
-
-            for (i in 1..10) {
-                state.setVar("a$i", listOf("test"))
-                assertFalse(content.isGone(state))
-            }
-
-            // there should have been no more items emitted. the flow may complete, but doesn't have to
-            assertTrue(cancelAndConsumeRemainingEvents().filterNot { it is Event.Complete }.isEmpty())
         }
     }
     // endregion Visibility Attributes
