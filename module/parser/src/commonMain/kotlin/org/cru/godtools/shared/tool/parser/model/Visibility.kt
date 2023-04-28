@@ -10,10 +10,14 @@ import org.cru.godtools.shared.tool.state.State
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
 private const val XML_INVISIBLE_IF = "invisible-if"
 private const val XML_GONE_IF = "gone-if"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 interface Visibility {
     val invisibleIf: Expression?
     val goneIf: Expression?
