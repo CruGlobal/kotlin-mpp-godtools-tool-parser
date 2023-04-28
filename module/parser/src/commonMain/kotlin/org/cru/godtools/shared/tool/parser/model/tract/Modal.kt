@@ -16,13 +16,16 @@ import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_TITLE = "title"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Modal : BaseModel, Parent, Styles {
     internal companion object {
         internal const val XML_MODAL = "modal"
@@ -35,7 +38,9 @@ class Modal : BaseModel, Parent, Styles {
     val title: Text?
     override val content: List<Content>
 
+    @JsName("_listeners")
     val listeners: Set<EventId>
+    @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
     @get:AndroidColorInt
@@ -70,4 +75,14 @@ class Modal : BaseModel, Parent, Styles {
         }
         this.title = title
     }
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("dismissListeners")
+    val jsDismissListeners get() = dismissListeners.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("listeners")
+    val jsListeners get() = listeners.toTypedArray()
+    // endregion Kotlin/JS interop
 }
