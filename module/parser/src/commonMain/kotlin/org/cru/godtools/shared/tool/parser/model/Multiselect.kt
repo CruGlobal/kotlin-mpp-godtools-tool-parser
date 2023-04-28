@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("MultiselectKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -8,9 +11,17 @@ import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTIS
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
+import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"
@@ -18,6 +29,8 @@ private const val XML_SELECTION_LIMIT = "selection-limit"
 private const val XML_OPTION = "option"
 private const val XML_OPTION_STYLE = "option-style"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Multiselect : Content {
     internal companion object {
         internal const val XML_MULTISELECT = "multiselect"
@@ -41,6 +54,7 @@ class Multiselect : Content {
     private val _optionSelectedColor: PlatformColor?
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
+    @JsName("_options")
     val options: List<Option>
     override val tips get() = options.flatMap { it.contentTips }
 
@@ -88,6 +102,12 @@ class Multiselect : Content {
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_MULTISELECT) || super.isIgnored
 
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("options")
+    val jsOptions get() = options.toTypedArray()
+    // endregion Kotlin/JS interop
+
     class Option : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
             private const val XML_SELECTED_COLOR = "selected-color"
@@ -106,10 +126,9 @@ class Multiselect : Content {
         val style get() = _style ?: multiselect.optionStyle
 
         private val _backgroundColor: PlatformColor?
-        internal val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
+        val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
         private val _selectedColor: PlatformColor?
-        internal val selectedColor
-            get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
+        val selectedColor get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
 
         @VisibleForTesting
         internal val value: String
@@ -166,6 +185,7 @@ class Multiselect : Content {
         fun isSelected(state: State) = value in state.getVar(multiselect.stateName)
         fun isSelectedFlow(state: State) =
             state.varsChangeFlow(setOf(multiselect.stateName)) { isSelected(it) }.distinctUntilChanged()
+        fun watchIsSelected(state: State, block: (isSelected: Boolean) -> Unit) = isSelectedFlow(state).watch(block)
         fun toggleSelected(state: State): Boolean {
             val current = state.getVar(multiselect.stateName)
             when {
@@ -191,9 +211,5 @@ class Multiselect : Content {
     }
 }
 
-val Multiselect.Option?.backgroundColor get() = this?.backgroundColor ?: stylesParent.multiselectOptionBackgroundColor
-val Multiselect.Option?.selectedColor get() = this?.selectedColor ?: stylesParent.defaultSelectedColor
-
-@VisibleForTesting
 internal val Styles?.defaultSelectedColor
     get() = primaryColor.toHSL().run { copy(alpha = 1f, l = (l + 0.4f).coerceAtMost(1f)) }.toPlatformColor()
