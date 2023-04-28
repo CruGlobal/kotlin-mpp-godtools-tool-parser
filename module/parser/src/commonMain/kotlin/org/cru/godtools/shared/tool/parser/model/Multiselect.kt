@@ -11,6 +11,7 @@ import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTIS
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
+import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
@@ -184,6 +185,7 @@ class Multiselect : Content {
         fun isSelected(state: State) = value in state.getVar(multiselect.stateName)
         fun isSelectedFlow(state: State) =
             state.varsChangeFlow(setOf(multiselect.stateName)) { isSelected(it) }.distinctUntilChanged()
+        fun watchIsSelected(state: State, block: (isSelected: Boolean) -> Unit) = isSelectedFlow(state).watch(block)
         fun toggleSelected(state: State): Boolean {
             val current = state.getVar(multiselect.stateName)
             when {

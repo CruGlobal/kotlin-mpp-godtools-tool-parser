@@ -1,8 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import app.cash.turbine.test
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
@@ -114,6 +117,7 @@ class MultiselectTest : UsesResources() {
         assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 
+    // region *isSelected*()
     @Test
     fun testOptionIsSelected() {
         val multiselect = Multiselect { it.options(2) }
@@ -142,6 +146,34 @@ class MultiselectTest : UsesResources() {
             expectNoEvents() // Set unrelated state value
         }
     }
+
+    @Test
+    fun testOptionWatchIsSelected() = runTest {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        var selected = true
+        val multiselect = Multiselect { it.options(2) }
+        val option = multiselect.options[0]
+
+        val watcher = option.watchIsSelected(state) { selected = it }
+        assertFalse(selected, "Initially not selected")
+
+        multiselect.options[0].toggleSelected(state)
+        assertTrue(selected, "Toggled this option to true")
+
+        multiselect.options[1].toggleSelected(state)
+        assertFalse(selected, "Toggled other option to true")
+
+        multiselect.options[1].toggleSelected(state)
+        assertFalse(selected, "Toggled other option to false")
+
+        state.setVar("other", listOf("test"))
+        assertFalse(selected, "Set unrelated state value")
+
+        watcher.close()
+        multiselect.options[0].toggleSelected(state)
+        assertFalse(selected, "Watcher was already closed")
+    }
+    // endregion *isSelected*()
 
     @Test
     fun testOptionToggleSelectedSingleSelection() {
