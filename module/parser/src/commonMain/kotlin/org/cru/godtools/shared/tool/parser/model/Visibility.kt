@@ -1,8 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
+import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.state.State
 import kotlin.contracts.ExperimentalContracts
@@ -21,6 +23,12 @@ interface Visibility {
         state.varsChangeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
     fun isGone(state: State) = goneIf?.evaluate(state) ?: false
     fun isGoneFlow(state: State) = state.varsChangeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
+
+    fun watchIsGone(state: State, block: (Boolean) -> Unit) = isGoneFlow(state).watch(block)
+    fun watchIsInvisible(state: State, block: (Boolean) -> Unit) = isInvisibleFlow(state).watch(block)
+    fun watchVisibility(state: State, block: (isInvisible: Boolean, isGone: Boolean) -> Unit) =
+        isInvisibleFlow(state).combine(isGoneFlow(state)) { invisible, gone -> Pair(invisible, gone) }
+            .watch { block(it.first, it.second) }
 }
 
 @OptIn(ExperimentalContracts::class)
