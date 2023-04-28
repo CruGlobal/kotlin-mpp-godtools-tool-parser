@@ -6,7 +6,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class FlowWatcher private constructor(private val job: Job) {
     internal companion object {
         internal fun <T> Flow<T>.watch(block: (T) -> Unit) = watchIn(CoroutineScope(Dispatchers.Main), block)
