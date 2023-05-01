@@ -45,6 +45,13 @@ npmPublish {
         }
     }
 }
+tasks.withType<NpmPublishTask> {
+    val distTag = findProperty("npmPublishTag")?.toString()
+    when {
+        !distTag.isNullOrBlank() -> tag.set(distTag)
+        isSnapshotVersion -> tag.set("snapshot")
+    }
+}
 
 // HACK: workaround https://github.com/mpetuska/npm-publish/issues/110
 tasks.withType<NpmPublishTask> {

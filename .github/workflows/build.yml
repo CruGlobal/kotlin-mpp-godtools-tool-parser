@@ -343,3 +343,4 @@ jobs:
           arguments: kotlinNodeJsSetup :publishing:npm:publish --scan
         env:
           ORG_GRADLE_PROJECT_npmPublishRegistryNpmjsAuthToken: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          ORG_GRADLE_PROJECT_npmPublishTag: ${{ (github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number)) || '' }}
