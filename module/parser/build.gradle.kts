@@ -26,13 +26,12 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation(libs.kotlin.coroutines.core)
 
+                compileOnly(libs.kustomExport)
                 implementation(libs.androidx.annotation)
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.fluidsonic.locale)
                 implementation(libs.kermit)
-                implementation(libs.kustomExport)
-                implementation(libs.kustomExport.coroutines)
             }
         }
         val androidMain by getting {
@@ -43,6 +42,7 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
+                implementation(libs.kustomExport.coroutines)
                 implementation(npm("sax", "1.2.4"))
             }
         }
