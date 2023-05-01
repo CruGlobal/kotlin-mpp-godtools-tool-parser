@@ -52,8 +52,3 @@ tasks.withType<NpmPublishTask> {
         isSnapshotVersion -> tag.set("snapshot")
     }
 }
-
-// HACK: workaround https://github.com/mpetuska/npm-publish/issues/110
-tasks.withType<NpmPublishTask> {
-    dependsOn(rootProject.tasks.named("kotlinNodeJsSetup"))
-}
