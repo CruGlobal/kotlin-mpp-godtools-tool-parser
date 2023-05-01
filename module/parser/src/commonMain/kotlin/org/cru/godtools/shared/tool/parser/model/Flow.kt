@@ -9,10 +9,17 @@ import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAV
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 
 private const val XML_ROW_GRAVITY = "row-gravity"
 private const val XML_ITEM = "item"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Flow : Content {
     internal companion object {
         internal const val XML_FLOW = "flow"
@@ -27,6 +34,7 @@ class Flow : Content {
 
     internal val rowGravity: Gravity.Horizontal
 
+    @JsName("_items")
     val items: List<Item>
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
@@ -52,6 +60,12 @@ class Flow : Content {
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_FLOW) || super.isIgnored
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("items")
+    val jsItems get() = items.toTypedArray()
+    // endregion Kotlin/JS interop
 
     class Item : BaseModel, Parent, Visibility {
         companion object {
