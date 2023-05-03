@@ -127,7 +127,9 @@ class AnalyticsEvent : BaseModel {
     enum class System {
         @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
         ADOBE,
-        APPSFLYER, FACEBOOK, FIREBASE,
+        @Deprecated("Since 4/30/23, we no longer use AppsFlyer.")
+        APPSFLYER,
+        FACEBOOK, FIREBASE,
         @Deprecated("Since 1/1/23, we no longer use Snowplow.")
         SNOWPLOW,
         USER;
