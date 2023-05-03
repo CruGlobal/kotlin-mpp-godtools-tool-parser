@@ -7,7 +7,7 @@
     content:multiselect-option-background-color="rgba(255,0,0,1)"
     content:multiselect-option-selected-color="rgba(0,255,0,1)">
     <analytics:events>
-        <analytics:event system="appsflyer" />
+        <analytics:event system="firebase" />
     </analytics:events>
     <content>
         <content:text />

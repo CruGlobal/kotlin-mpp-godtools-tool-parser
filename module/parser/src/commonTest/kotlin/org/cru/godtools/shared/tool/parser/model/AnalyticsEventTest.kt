@@ -25,8 +25,8 @@ class AnalyticsEventTest : UsesResources() {
         val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event_defaults.xml"))
         assertEquals("", event.id)
         assertEquals("", event.action)
-        assertTrue(event.isForSystem(AnalyticsEvent.System.APPSFLYER))
-        AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.APPSFLYER }.forEach {
+        assertTrue(event.isForSystem(AnalyticsEvent.System.USER))
+        AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.USER }.forEach {
             assertFalse(event.isForSystem(it))
         }
         assertTrue(event.isTriggerType(AnalyticsEvent.Trigger.DEFAULT))
