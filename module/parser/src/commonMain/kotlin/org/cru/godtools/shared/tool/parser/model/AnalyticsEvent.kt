@@ -22,10 +22,8 @@ private const val XML_ACTION = "action"
 private const val XML_DELAY = "delay"
 private const val XML_SYSTEM = "system"
 private const val XML_SYSTEM_ADOBE = "adobe"
-private const val XML_SYSTEM_APPSFLYER = "appsflyer"
 private const val XML_SYSTEM_FACEBOOK = "facebook"
 private const val XML_SYSTEM_FIREBASE = "firebase"
-private const val XML_SYSTEM_SNOWPLOW = "snowplow"
 private const val XML_SYSTEM_USER = "user"
 private const val XML_TRIGGER = "trigger"
 private const val XML_TRIGGER_CLICKED = "clicked"
@@ -91,10 +89,6 @@ class AnalyticsEvent : BaseModel {
             val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
             Napier.e(message, DeprecationException("XML Adobe Analytics Event $message"), TAG)
         }
-        if (systems.contains(System.SNOWPLOW)) {
-            val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
-            Napier.e(message, DeprecationException("XML Snowplow Analytics Event $message"), TAG)
-        }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
@@ -127,10 +121,10 @@ class AnalyticsEvent : BaseModel {
     enum class System {
         @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
         ADOBE,
-        @Deprecated("Since 4/30/23, we no longer use AppsFlyer.")
+        @Deprecated("Since v0.9.1, we no longer use AppsFlyer.")
         APPSFLYER,
         FACEBOOK, FIREBASE,
-        @Deprecated("Since 1/1/23, we no longer use Snowplow.")
+        @Deprecated("Since v0.8.2, we no longer use Snowplow.")
         SNOWPLOW,
         USER;
 
@@ -138,10 +132,8 @@ class AnalyticsEvent : BaseModel {
             fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
                 when (it) {
                     XML_SYSTEM_ADOBE -> ADOBE
-                    XML_SYSTEM_APPSFLYER -> APPSFLYER
                     XML_SYSTEM_FACEBOOK -> FACEBOOK
                     XML_SYSTEM_FIREBASE -> FIREBASE
-                    XML_SYSTEM_SNOWPLOW -> SNOWPLOW
                     XML_SYSTEM_USER -> USER
                     else -> null
                 }
