@@ -1,7 +1,6 @@
 plugins {
     id("godtools-shared.module-conventions")
     kotlin("plugin.parcelize")
-    alias(libs.plugins.kotlin.kover)
 }
 
 android {

@@ -1,6 +1,5 @@
 plugins {
     id("godtools-shared.module-conventions")
-    alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.goncalossilvaResources)
     alias(libs.plugins.ksp)
 }

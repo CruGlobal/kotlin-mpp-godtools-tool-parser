@@ -36,6 +36,7 @@ gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-flui
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-kover-gradle = "org.jetbrains.kotlinx:kover-gradle-plugin:0.7.0"
 kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport" }
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
@@ -55,7 +56,6 @@ common-test-framework = ["kotlin-coroutines-test"]
 [plugins]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.2.0" }
-kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.0" }
 ksp = { id = "com.google.devtools.ksp", version = "1.8.21-1.0.11" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.3.2" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }

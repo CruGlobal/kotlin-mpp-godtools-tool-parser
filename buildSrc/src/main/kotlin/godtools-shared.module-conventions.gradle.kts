@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -17,4 +18,12 @@ kotlin {
     configureIosTargets()
 
     configureCommonSourceSets()
+}
+
+koverReport {
+    androidReports("release") {
+        xml {
+            setReportFile(layout.buildDirectory.file("reports/kover/release/report.xml"))
+        }
+    }
 }

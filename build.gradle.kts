@@ -5,7 +5,6 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     alias(libs.plugins.grgit)
-    alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.ktlint)
 }
 
@@ -99,31 +98,6 @@ tasks.create("cleanPodspec", Delete::class) {
     delete(tasks.podspec.map { it.outputFile })
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
-
-// region Kotlin Kover
-koverMerged {
-    enable()
-
-    filters {
-        projects {
-            excludes += ":publishing:npm"
-        }
-        classes {
-            excludes += listOf(
-                // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
-                // TODO: remove this if we ever support coverage reports for iOS or js
-                "**.SaxXmlPullParser*",
-                // exclude the generated ANTLR StateExpression grammar parser
-                "org.cru.godtools.expressions.grammar.generated.*",
-                // test classes/sourceSets are not automatically filtered currently
-                "org.cru.godtools.**.*Test",
-                "org.cru.godtools.**.*Test$*",
-                "org.cru.godtools.**.*TestKt",
-            )
-        }
-    }
-}
-// endregion Kotlin Kover
 
 // region KtLint
 allprojects {
