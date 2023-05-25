@@ -7,6 +7,12 @@ plugins {
 
 android {
     namespace = "org.cru.godtools.shared.tool.parser"
+
+    sourceSets {
+        getByName("test") {
+            resources.srcDir("src/commonTest/resources")
+        }
+    }
 }
 
 kotlin {
