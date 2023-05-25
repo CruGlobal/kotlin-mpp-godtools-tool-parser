@@ -21,6 +21,7 @@ dependencies {
     compileOnly(gradleKotlinDsl())
     implementation(libs.android.gradle)
     implementation(libs.kotlin.gradle)
+    implementation(libs.kotlin.kover.gradle)
     implementation(libs.antlr.kotlin.gradle)
 }
 

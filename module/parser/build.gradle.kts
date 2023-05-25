@@ -1,6 +1,5 @@
 plugins {
     id("godtools-shared.module-conventions")
-    alias(libs.plugins.kotlin.kover)
     alias(libs.plugins.goncalossilvaResources)
     alias(libs.plugins.ksp)
 }
@@ -57,6 +56,20 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation(libs.goncalossilvaResources)
+            }
+        }
+    }
+}
+
+koverReport {
+    androidReports("release") {
+        xml {
+            filters {
+                excludes {
+                    // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+                    // TODO: remove this if we ever support coverage reports for iOS or js
+                    classes("**.SaxXmlPullParser*")
+                }
             }
         }
     }
