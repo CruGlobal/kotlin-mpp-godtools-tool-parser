@@ -55,6 +55,20 @@ kotlin {
     }
 }
 
+koverReport {
+    androidReports("release") {
+        xml {
+            filters {
+                excludes {
+                    // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+                    // TODO: remove this if we ever support coverage reports for iOS or js
+                    classes("**.SaxXmlPullParser*")
+                }
+            }
+        }
+    }
+}
+
 // region KustomExport
 dependencies.add("kspJs", libs.kustomExport.compiler)
 ksp.arg("erasePackage", "true")
