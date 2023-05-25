@@ -122,7 +122,7 @@ jobs:
       - name: Run Android Unit Tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test koverMergedReport --scan --no-build-cache
+          arguments: test koverXmlReportRelease --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
