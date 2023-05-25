@@ -6,7 +6,6 @@ import org.gradle.api.Project
 internal fun LibraryExtension.baseConfiguration(project: Project) {
     configureSdk()
     configureCompilerOptions(project)
-    configureSourceSets()
 }
 
 private fun BaseExtension.configureSdk() {
@@ -23,18 +22,5 @@ private fun BaseExtension.configureCompilerOptions(project: Project) {
         //       see: https://issuetracker.google.com/issues/260059413
         sourceCompatibility = JavaVersion.toVersion(project.libs.findVersion("jvm").get().requiredVersion)
         targetCompatibility = JavaVersion.toVersion(project.libs.findVersion("jvm").get().requiredVersion)
-    }
-}
-
-private fun BaseExtension.configureSourceSets() {
-    sourceSets {
-        getByName("main") {
-            setRoot("src/androidMain")
-        }
-        getByName("test") {
-            setRoot("src/androidTest")
-            resources.srcDir("src/commonTest/resources")
-        }
-        getByName("androidTest") { setRoot("src/androidAndroidTest") }
     }
 }
