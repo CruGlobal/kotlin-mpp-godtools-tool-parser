@@ -28,17 +28,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.11.0
-        with:
-          distribution: 'adopt'
-          java-version: '11'
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
@@ -50,6 +50,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
@@ -67,6 +72,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
@@ -90,6 +100,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
@@ -107,6 +122,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
@@ -148,17 +168,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.11.0
-        with:
-          distribution: 'adopt'
-          java-version: '11'
       - name: Run iOS Unit Tests
         uses: gradle/gradle-build-action@v2
         with:
@@ -170,6 +190,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
@@ -196,17 +221,17 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
       - name: Cache Konan
         uses: actions/cache@v3
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.11.0
-        with:
-          distribution: 'adopt'
-          java-version: '11'
       - name: Install CocoaPods
         run: bundle install
       - name: Create podspec
