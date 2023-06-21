@@ -57,5 +57,5 @@ common-test-framework = ["kotlin-coroutines-test"]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.2.0" }
 ksp = { id = "com.google.devtools.ksp", version = "1.8.21-1.0.11" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.4.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.4.1" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
