@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.NpmDependency
 open class NpmDependencies internal constructor(project: Project) {
     val sax by lazy {
         NpmDependency(
-            project = project,
+            objectFactory = project.objects,
             name = "sax",
             version = "1.2.4",
         )
