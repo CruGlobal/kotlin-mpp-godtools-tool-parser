@@ -13,7 +13,7 @@ internal fun KotlinMultiplatformExtension.configureCommonSourceSets() {
 }
 
 internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
-    android {
+    androidTarget {
         publishLibraryVariants("debug", "release")
     }
 
