@@ -16,12 +16,6 @@ kotlin {
                 implementation(project(":module:state"))
             }
         }
-        val jsMain by getting {
-            dependencies {
-                // HACK: we currently need to directly include all transitive npm dependencies
-                implementation(npmLibs.sax)
-            }
-        }
     }
 }
 
