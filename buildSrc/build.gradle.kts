@@ -5,16 +5,6 @@ plugins {
 repositories {
     google()
     mavenCentral()
-    maven("https://jitpack.io") {
-        content {
-            includeGroup("com.strumenta.antlr-kotlin")
-        }
-    }
-    maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
-        content {
-            includeGroup("org.cru.mobile.fork.antlr-kotlin")
-        }
-    }
 }
 
 dependencies {
@@ -22,7 +12,6 @@ dependencies {
     implementation(libs.android.gradle)
     implementation(libs.kotlin.gradle)
     implementation(libs.kotlin.kover.gradle)
-    implementation(libs.antlr.kotlin.gradle)
 }
 
 kotlin.jvmToolchain {

@@ -1,11 +1,11 @@
 plugins {
     id("godtools-shared.module-conventions")
+    id("antlr-kotlin")
 }
 
 android {
     namespace = "org.cru.godtools.shared.tool.parser.expressions"
 }
-configureAntlr()
 
 kotlin {
     configureJsTargets()
