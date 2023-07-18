@@ -2,8 +2,9 @@ import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
+    id("build-logic")
+    kotlin("multiplatform") version libs.versions.kotlin
+    kotlin("native.cocoapods") version libs.versions.kotlin
     alias(libs.plugins.grgit)
     alias(libs.plugins.ktlint)
 }
