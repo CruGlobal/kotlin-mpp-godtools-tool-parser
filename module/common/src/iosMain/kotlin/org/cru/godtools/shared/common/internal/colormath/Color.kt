@@ -3,6 +3,7 @@ package org.cru.godtools.shared.common.internal.colormath
 import com.github.ajalt.colormath.Color
 import com.github.ajalt.colormath.model.RGB
 import kotlinx.cinterop.DoubleVar
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
@@ -18,6 +19,7 @@ fun Color.toUIColor() = toSRGB().let {
     )
 }
 
+@OptIn(ExperimentalForeignApi::class)
 fun UIColor.toColormathSRGB(): RGB = memScoped {
     val red = alloc<DoubleVar>()
     val green = alloc<DoubleVar>()
