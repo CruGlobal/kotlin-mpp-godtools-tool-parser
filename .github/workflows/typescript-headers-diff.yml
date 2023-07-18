@@ -39,8 +39,8 @@ jobs:
       - name: Copy base TypeScript headers
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/base
-          cp publishing/npm/build/productionLibrary/*.d.ts diff/base
-          cp publishing/npm/build/productionLibrary/*.json diff/base
+          cp publishing/npm/build/dist/js/productionLibrary/*.d.ts diff/base
+          cp publishing/npm/build/dist/js/productionLibrary/*.json diff/base
       - uses: int128/diff-action@v1
         with:
           base: "${{ github.workspace }}/diff/base"
