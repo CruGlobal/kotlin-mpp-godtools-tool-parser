@@ -1,3 +1,16 @@
+pluginManagement {
+    repositories {
+        google()
+        maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
+            content {
+                includeGroup("org.cru.mobile.fork.antlr-kotlin")
+            }
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.6.0"
 }
@@ -25,6 +38,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+includeBuild("build-logic")
 
 include("module:analytics")
 include("module:common")

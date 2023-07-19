@@ -1,11 +1,10 @@
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.api.publish.PublishingExtension
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.credentials
 
-fun Project.enablePublishing() {
-    apply(plugin = "maven-publish")
+internal fun Project.enablePublishing() {
+    plugins.apply("maven-publish")
     with(extensions.getByType(PublishingExtension::class.java)) {
         repositories {
             maven {
