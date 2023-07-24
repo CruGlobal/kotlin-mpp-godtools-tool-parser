@@ -13,7 +13,7 @@ kustomExport = "0.8.1"
 goncalossilvaResources = "0.3.2"
 ktlint = "0.50.0"
 napier = "2.6.1"
-npmPublish = "3.4.0"
+npmPublish = "3.4.1"
 okio = "3.4.0"
 robolectric = "4.10.3"
 
