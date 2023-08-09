@@ -24,7 +24,7 @@ jobs:
   build:
     name: Build
     # run on mac so iOS compilation is executed as well
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -164,7 +164,7 @@ jobs:
 
   ios_tests:
     name: iOS Unit Tests
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -214,7 +214,7 @@ jobs:
 
   lint_ios_podspec:
     name: Lint iOS Podspec
-    runs-on: macos-11
+    runs-on: macos-13
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
@@ -318,7 +318,7 @@ jobs:
 
   deploy_ios_podspec:
     name: Publish iOS Podspec
-    runs-on: macos-11
+    runs-on: macos-13
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: CocoaPods')) ||
