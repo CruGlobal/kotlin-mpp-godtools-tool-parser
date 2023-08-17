@@ -167,7 +167,7 @@ class Manifest : BaseModel, Styles {
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
-        get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
+        get() = _multiselectOptionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
     override val multiselectOptionSelectedColor: PlatformColor?
 
     @AndroidColorInt

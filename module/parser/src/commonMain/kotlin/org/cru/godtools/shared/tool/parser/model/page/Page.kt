@@ -37,6 +37,7 @@ import org.cru.godtools.shared.tool.parser.model.color
 import org.cru.godtools.shared.tool.parser.model.getResource
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
+import org.cru.godtools.shared.tool.parser.model.multiselectOptionBackgroundColor
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Companion.TYPE_CARD_COLLECTION
 import org.cru.godtools.shared.tool.parser.model.page.ContentPage.Companion.TYPE_CONTENT
 import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
@@ -156,10 +157,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
     override val multiselectOptionBackgroundColor
-        get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
+        get() = _multiselectOptionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
     private val _multiselectOptionSelectedColor: PlatformColor?
     override val multiselectOptionSelectedColor
-        get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
+        get() = _multiselectOptionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
     @AndroidColorInt
     private val _textColor: PlatformColor?
