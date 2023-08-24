@@ -4,6 +4,7 @@
   ],
   "labels": [ "dependencies" ],
   "dependencyDashboard": true,
+  "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
       "matchManagers": ["gradle"],
