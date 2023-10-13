@@ -3,7 +3,7 @@ androidx-annotation = "1.7.0"
 androidx-test-junit = "1.1.5"
 #antlr-kotlin = "b5135079b8"
 antlr-kotlin-fork = "0.0.7_322"
-colormath = "3.2.1"
+colormath = "3.3.3"
 fluidLocale = "0.13.0"
 gtoSupport = "4.1.1"
 jvm = "11"
@@ -26,8 +26,8 @@ androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "andro
 antlr-kotlin-gradle = { module = "org.cru.mobile.fork.antlr-kotlin:antlr-kotlin-gradle-plugin", version.ref = "antlr-kotlin-fork" }
 antlr-kotlin-runtime = { module = "org.cru.mobile.fork.antlr-kotlin:antlr-kotlin-runtime", version.ref = "antlr-kotlin-fork" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
-colormath-android-colorint = { module = "com.github.ajalt.colormath.extensions:colormath-ext-android-colorint", version.ref = "colormath" }
-colormath-jetpack-compose = { module = "com.github.ajalt.colormath.extensions:colormath-ext-jetpack-compose", version.ref = "colormath" }
+colormath-android-colorint = { module = "com.github.ajalt.colormath:colormath-ext-android-colorint", version.ref = "colormath" }
+colormath-jetpack-compose = { module = "com.github.ajalt.colormath:colormath-ext-jetpack-compose", version.ref = "colormath" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref = "goncalossilvaResources" }
 gtoSupport-androidx-annotation = { module = "org.ccci.gto.android:gto-support-androidx-annotation", version.ref = "gtoSupport" }
