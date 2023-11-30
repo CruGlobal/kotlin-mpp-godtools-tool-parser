@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -14,7 +13,6 @@ import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTEN
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class CardTest : UsesResources() {
     @Test
     fun testParseCard() = runTest {

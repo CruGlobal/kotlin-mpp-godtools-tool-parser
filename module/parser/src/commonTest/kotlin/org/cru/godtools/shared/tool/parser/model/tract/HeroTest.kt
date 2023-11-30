@@ -6,7 +6,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -24,7 +23,6 @@ import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class HeroTest : UsesResources("model/tract") {
     @Test
     fun testParseHero() = runTest {

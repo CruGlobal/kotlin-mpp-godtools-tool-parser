@@ -4,13 +4,11 @@ import app.cash.turbine.test
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 
 private const val KEY = "key"
 private const val KEY2 = "key2"
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class StateTest {
     private val state = State()
 

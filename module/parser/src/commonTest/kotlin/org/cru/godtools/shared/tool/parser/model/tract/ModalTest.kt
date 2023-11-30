@@ -3,7 +3,6 @@ package org.cru.godtools.shared.tool.parser.model.tract
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -17,7 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.WHITE
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class ModalTest : UsesResources("model/tract") {
     @Test
     fun testParseModal() = runTest {
