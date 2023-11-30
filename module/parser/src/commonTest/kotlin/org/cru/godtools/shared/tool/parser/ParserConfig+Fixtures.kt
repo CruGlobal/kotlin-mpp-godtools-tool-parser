@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package org.cru.godtools.shared.tool.parser
 
 import org.cru.godtools.shared.tool.parser.model.DeviceType

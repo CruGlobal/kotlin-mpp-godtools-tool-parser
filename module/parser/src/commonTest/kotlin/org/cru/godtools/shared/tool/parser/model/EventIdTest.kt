@@ -10,7 +10,7 @@ import org.cru.godtools.shared.tool.state.State
 @SharedImmutable
 private val ID1 = EventId("followup", "seND")
 
-class EventTest {
+class EventIdTest {
     @Test
     fun verifyHashCode() {
         assertEquals(EventId.FOLLOWUP.hashCode(), ID1.hashCode())
