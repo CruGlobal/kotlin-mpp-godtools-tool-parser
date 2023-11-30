@@ -4,7 +4,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -12,7 +11,6 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Manifest
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class InlineTipTest : UsesResources("model/tips") {
     @Test
     fun verifyParseInlineTip() = runTest {

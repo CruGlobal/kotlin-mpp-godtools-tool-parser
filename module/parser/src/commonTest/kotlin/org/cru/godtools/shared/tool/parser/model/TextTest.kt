@@ -6,7 +6,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -16,7 +15,6 @@ import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlig
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class TextTest : UsesResources() {
     // region Parsing
     @Test

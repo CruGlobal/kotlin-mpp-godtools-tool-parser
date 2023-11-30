@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -17,7 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companio
 import org.cru.godtools.shared.tool.state.State
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class AnalyticsEventTest : UsesResources() {
     // region Parsing
     @Test
