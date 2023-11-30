@@ -198,7 +198,8 @@ class Multiselect : Content {
         }
 
         enum class Style {
-            CARD, FLAT;
+            CARD,
+            FLAT;
 
             internal companion object {
                 internal fun String?.toMultiselectOptionStyleOrNull() = when (this) {

@@ -68,7 +68,10 @@ class Input : Content {
     }
 
     enum class Type {
-        TEXT, EMAIL, PHONE, HIDDEN;
+        TEXT,
+        EMAIL,
+        PHONE,
+        HIDDEN;
 
         internal companion object {
             internal val DEFAULT = TEXT

@@ -6,7 +6,10 @@ private const val XML_FILL_X = "fill-x"
 private const val XML_FILL_Y = "fill-y"
 
 enum class ImageScaleType {
-    FIT, FILL, FILL_X, FILL_Y;
+    FIT,
+    FILL,
+    FILL_X,
+    FILL_Y;
 
     internal companion object {
         fun String.toImageScaleTypeOrNull() = when (this) {
