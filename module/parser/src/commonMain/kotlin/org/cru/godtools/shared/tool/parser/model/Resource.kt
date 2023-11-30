@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import org.cru.godtools.shared.tool.parser.xml.skipTag
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import org.cru.godtools.shared.tool.parser.xml.skipTag
 
 private const val XML_FILENAME = "filename"
 private const val XML_SRC = "src"

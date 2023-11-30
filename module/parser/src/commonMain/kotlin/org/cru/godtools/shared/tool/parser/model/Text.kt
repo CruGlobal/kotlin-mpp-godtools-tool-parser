@@ -3,6 +3,13 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -15,13 +22,6 @@ import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyl
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.jvm.JvmMultifileClass
-import kotlin.jvm.JvmName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"

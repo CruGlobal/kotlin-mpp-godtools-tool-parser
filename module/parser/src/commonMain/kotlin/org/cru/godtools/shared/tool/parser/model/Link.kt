@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -7,8 +9,6 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 @JsExport
 @OptIn(ExperimentalJsExport::class)

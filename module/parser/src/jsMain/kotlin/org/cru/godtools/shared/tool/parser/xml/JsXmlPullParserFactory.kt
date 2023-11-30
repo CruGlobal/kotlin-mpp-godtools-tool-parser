@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.xml
 
-import kotlinx.coroutines.await
 import kotlin.js.Promise
+import kotlinx.coroutines.await
 
 @JsExport
 @OptIn(ExperimentalJsExport::class)

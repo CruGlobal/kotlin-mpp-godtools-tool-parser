@@ -2,6 +2,9 @@ package org.cru.godtools.shared.tool.parser
 
 import deezer.kustomexport.KustomExport
 import io.github.aakira.napier.Napier
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 import org.ccci.gto.support.androidx.annotation.RestrictTo
@@ -10,9 +13,6 @@ import org.cru.godtools.shared.tool.parser.internal.FileNotFoundException
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserFactory
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
 
 @KustomExport
 open class ManifestParser(private val parserFactory: XmlPullParserFactory, val defaultConfig: ParserConfig) {

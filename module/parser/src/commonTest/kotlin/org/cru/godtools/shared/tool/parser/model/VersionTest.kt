@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 import kotlin.random.Random
 import kotlin.random.nextUInt
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 
 class VersionTest {
     @Test

@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.state
 
 import app.cash.turbine.test
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 
 private const val KEY = "key"
 private const val KEY2 = "key2"

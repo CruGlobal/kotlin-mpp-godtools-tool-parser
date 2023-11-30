@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.model.AspectRatio.Companion.toAspectRatioOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 private const val XML_VIDEO_ID = "video-id"
 private const val XML_PROVIDER = "provider"

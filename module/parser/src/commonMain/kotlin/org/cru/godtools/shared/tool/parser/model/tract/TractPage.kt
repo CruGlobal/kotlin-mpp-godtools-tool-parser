@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -43,11 +48,6 @@ import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_CARD_TEXT_COLOR = "card-text-color"
 private const val XML_CARDS = "cards"

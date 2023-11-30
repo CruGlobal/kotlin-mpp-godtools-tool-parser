@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Button
@@ -16,11 +21,6 @@ import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_TITLE = "title"
 

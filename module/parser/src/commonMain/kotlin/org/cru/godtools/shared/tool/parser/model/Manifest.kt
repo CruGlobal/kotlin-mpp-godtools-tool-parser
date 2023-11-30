@@ -1,6 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -34,11 +39,6 @@ import org.cru.godtools.shared.tool.parser.util.isHttpUrl
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_MANIFEST = "manifest"
 private const val XML_TOOL = "tool"

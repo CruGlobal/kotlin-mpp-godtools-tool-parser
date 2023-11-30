@@ -1,5 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -18,9 +21,6 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
 
 private const val XML_HEADING = "heading"
 

@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
-import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
+import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
+import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)

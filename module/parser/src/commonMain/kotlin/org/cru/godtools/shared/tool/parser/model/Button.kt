@@ -4,6 +4,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -18,10 +22,6 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimension
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.jvm.JvmMultifileClass
-import kotlin.jvm.JvmName
 
 private const val XML_COLOR = "color"
 private const val XML_TYPE = "type"

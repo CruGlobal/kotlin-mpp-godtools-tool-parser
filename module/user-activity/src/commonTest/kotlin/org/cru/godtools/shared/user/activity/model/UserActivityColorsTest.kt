@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.model.RGB
-import org.cru.godtools.shared.user.activity.internal.test.assertEquals
 import kotlin.test.Test
+import org.cru.godtools.shared.user.activity.internal.test.assertEquals
 
 class UserActivityColorsTest {
     @Test

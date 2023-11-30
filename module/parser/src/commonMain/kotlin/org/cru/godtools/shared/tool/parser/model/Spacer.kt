@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.Spacer.Mode.Companion.toModeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
 
 private const val XML_HEIGHT = "height"
 private const val XML_MODE = "mode"

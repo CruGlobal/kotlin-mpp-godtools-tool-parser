@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -16,8 +18,6 @@ import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 private const val XML_NUMBER = "number"
 private const val XML_TITLE = "title"

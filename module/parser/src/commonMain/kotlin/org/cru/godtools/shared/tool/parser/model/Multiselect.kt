@@ -3,6 +3,13 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
@@ -15,13 +22,6 @@ import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 import org.cru.godtools.shared.tool.state.State
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.jvm.JvmMultifileClass
-import kotlin.jvm.JvmName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"

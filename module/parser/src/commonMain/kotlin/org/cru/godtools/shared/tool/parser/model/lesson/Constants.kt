@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model.lesson
 
+import kotlin.native.concurrent.SharedImmutable
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.color
-import kotlin.native.concurrent.SharedImmutable
 
 internal const val XMLNS_LESSON = "https://mobile-content-api.cru.org/xmlns/lesson"
 

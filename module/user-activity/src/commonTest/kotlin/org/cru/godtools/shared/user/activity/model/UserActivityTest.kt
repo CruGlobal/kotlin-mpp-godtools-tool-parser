@@ -1,6 +1,9 @@
 package org.cru.godtools.shared.user.activity.model
 
 import io.fluidsonic.locale.Locale
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.ccci.gto.support.fluidsonic.locale.toPlatform
@@ -16,9 +19,6 @@ import org.cru.godtools.shared.user.activity.UserCounterNames.SESSION
 import org.cru.godtools.shared.user.activity.UserCounterNames.SHARE_SCREEN_STARTED
 import org.cru.godtools.shared.user.activity.UserCounterNames.TIPS_COMPLETED
 import org.cru.godtools.shared.user.activity.UserCounterNames.TOOL_OPEN
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class UserActivityTest {

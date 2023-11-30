@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.tool.parser.internal
 
 import com.goncalossilva.resources.Resource
+import kotlin.js.Promise
 import org.cru.godtools.shared.tool.parser.xml.JsXmlPullParserFactory
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserFactory
-import kotlin.js.Promise
 
 // HACK: this is currently hardcoded, hopefully at some point there will be a better way to access resources
 private const val RESOURCES_ROOT = "kotlin/org/cru/godtools/shared/tool/parser"

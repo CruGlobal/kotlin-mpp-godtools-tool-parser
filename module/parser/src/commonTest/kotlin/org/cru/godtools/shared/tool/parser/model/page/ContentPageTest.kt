@@ -1,5 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -8,10 +12,6 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertIs
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

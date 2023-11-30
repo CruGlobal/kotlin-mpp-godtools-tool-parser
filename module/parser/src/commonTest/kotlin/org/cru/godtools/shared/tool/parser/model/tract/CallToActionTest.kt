@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -7,8 +9,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.TestColors
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

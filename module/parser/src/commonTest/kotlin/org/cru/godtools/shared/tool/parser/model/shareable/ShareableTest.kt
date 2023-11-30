@@ -1,14 +1,14 @@
 package org.cru.godtools.shared.tool.parser.model.shareable
 
+import kotlin.test.Test
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Manifest
-import kotlin.test.Test
-import kotlin.test.assertIs
-import kotlin.test.assertNull
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

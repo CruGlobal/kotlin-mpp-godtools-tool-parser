@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.util
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -7,8 +9,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FlowWatcherTest {

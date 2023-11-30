@@ -2,8 +2,8 @@ package org.cru.godtools.shared.tool.parser.model
 
 import com.github.ajalt.colormath.model.HSL
 import com.github.ajalt.colormath.model.RGB
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import kotlin.native.concurrent.SharedImmutable
+import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 
 @SharedImmutable
 private val COLOR_REGEX =

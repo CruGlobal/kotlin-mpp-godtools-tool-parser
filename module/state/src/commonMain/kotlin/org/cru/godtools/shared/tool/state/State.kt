@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.state
 
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filter
@@ -10,11 +15,6 @@ import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.state.internal.Parcelable
 import org.cru.godtools.shared.tool.state.internal.Parcelize
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.native.HiddenFromObjC
 
 @JsExport
 @Parcelize

@@ -1,5 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -9,13 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.Tip.Type.Companion.toTypeOrNull
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertIs
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -1,10 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
+import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 
 internal const val DIMENSION_TOLERANCE = 0.0001f
 

@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 
 class ImageScaleTypeTest {
     @Test

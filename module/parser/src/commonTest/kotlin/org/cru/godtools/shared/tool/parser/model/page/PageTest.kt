@@ -1,5 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -11,11 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import kotlin.test.assertNull
-import kotlin.test.assertSame
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

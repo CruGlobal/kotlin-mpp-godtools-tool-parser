@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.model.RGB
-import org.cru.godtools.shared.user.activity.internal.test.assertEquals
-import org.cru.godtools.shared.user.activity.model.Badge.BadgeType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import org.cru.godtools.shared.user.activity.internal.test.assertEquals
+import org.cru.godtools.shared.user.activity.model.Badge.BadgeType
 
 class BadgeTypeTest {
     @Test

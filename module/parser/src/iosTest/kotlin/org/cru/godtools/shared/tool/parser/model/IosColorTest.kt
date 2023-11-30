@@ -1,14 +1,14 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import com.github.ajalt.colormath.model.RGB
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.cinterop.DoubleVar
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @OptIn(ExperimentalForeignApi::class)
 class IosColorTest {

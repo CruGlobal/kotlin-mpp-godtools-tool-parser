@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -13,8 +15,6 @@ import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 private const val XML_REQUIRED_FEATURES = "required-features"
 private const val XML_REQUIRED_DEVICE_TYPE = "required-device-type"
