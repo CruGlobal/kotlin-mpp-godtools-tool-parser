@@ -24,7 +24,7 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals("", event.id)
         assertEquals("", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.USER))
-        AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.USER }.forEach {
+        AnalyticsEvent.System.entries.filterNot { it == AnalyticsEvent.System.USER }.forEach {
             assertFalse(event.isForSystem(it))
         }
         assertTrue(event.isTriggerType(AnalyticsEvent.Trigger.DEFAULT))
@@ -39,7 +39,7 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals("id", event.id)
         assertEquals("test", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.FIREBASE))
-        AnalyticsEvent.System.values().filterNot { it == AnalyticsEvent.System.FIREBASE }.forEach {
+        AnalyticsEvent.System.entries.filterNot { it == AnalyticsEvent.System.FIREBASE }.forEach {
             assertFalse(event.isForSystem(it))
         }
         assertTrue(event.isTriggerType(AnalyticsEvent.Trigger.VISIBLE))
