@@ -11,7 +11,7 @@ kotlin = "1.9.10"
 kotlinCoroutines = "1.7.3"
 kustomExport = "0.8.2"
 goncalossilvaResources = "0.4.0"
-ktlint = "0.50.0"
+ktlint = "1.0.1"
 napier = "2.6.1"
 npmPublish = "3.4.1"
 okio = "3.6.0"
@@ -47,7 +47,7 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 turbine = "app.cash.turbine:turbine:1.0.0"
 
 # HACK: dependencies used to trigger renovate upgrades
-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
+ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
 
 [bundles]
 android-test-framework = ["androidx-test-junit", "robolectric"]
