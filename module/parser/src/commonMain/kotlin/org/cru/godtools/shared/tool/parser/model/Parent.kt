@@ -28,10 +28,7 @@ internal inline val Parent.contentTips get() = content.flatMap { it.tips }
  * @param block Custom parsing logic, if the block processes the current tag,
  * it should advance the parser to the END_TAG event.
  */
-internal inline fun Parent.parseContent(
-    parser: XmlPullParser,
-    block: () -> Unit = { }
-) = buildList {
+internal inline fun Parent.parseContent(parser: XmlPullParser, block: () -> Unit = { }) = buildList {
     parser.require(XmlPullParser.START_TAG, null, null)
     parser.parseChildren {
         // execute any custom parsing logic from the call-site

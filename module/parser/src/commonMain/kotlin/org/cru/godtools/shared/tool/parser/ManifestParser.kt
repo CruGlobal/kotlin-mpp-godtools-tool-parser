@@ -17,10 +17,7 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParserFactory
 @KustomExport
 open class ManifestParser(private val parserFactory: XmlPullParserFactory, val defaultConfig: ParserConfig) {
     suspend fun parseManifest(fileName: String) = parseManifest(fileName, defaultConfig)
-    suspend fun parseManifest(
-        fileName: String,
-        config: ParserConfig,
-    ): ParserResult = withContext(config.parserDispatcher) {
+    suspend fun parseManifest(fileName: String, config: ParserConfig) = withContext(config.parserDispatcher) {
         try {
             val manifest =
                 Manifest.parse(fileName, config) {
