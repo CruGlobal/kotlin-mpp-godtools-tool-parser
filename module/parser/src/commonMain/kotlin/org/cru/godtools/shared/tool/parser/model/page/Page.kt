@@ -138,8 +138,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @AndroidColorInt
     internal val backgroundColor: PlatformColor
 
-    @VisibleForTesting
-    internal val _backgroundImage: String?
+    private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
