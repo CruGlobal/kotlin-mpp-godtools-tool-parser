@@ -170,7 +170,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     // endregion HasAnalyticsEvents
 
     internal enum class Type {
-        EVENT, URL, UNKNOWN;
+        EVENT,
+        URL,
+        UNKNOWN;
 
         internal companion object {
             val DEFAULT = UNKNOWN
@@ -184,7 +186,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 
     enum class Style {
-        CONTAINED, OUTLINED, UNKNOWN;
+        CONTAINED,
+        OUTLINED,
+        UNKNOWN;
 
         internal companion object {
             fun String.toButtonStyle() = when (this) {

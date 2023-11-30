@@ -123,7 +123,8 @@ class AnalyticsEvent : BaseModel {
         ADOBE,
         @Deprecated("Since v0.9.1, we no longer use AppsFlyer.")
         APPSFLYER,
-        FACEBOOK, FIREBASE,
+        FACEBOOK,
+        FIREBASE,
         @Deprecated("Since v0.8.2, we no longer use Snowplow.")
         SNOWPLOW,
         USER;
@@ -147,7 +148,11 @@ class AnalyticsEvent : BaseModel {
             ReplaceWith("CLICKED", "org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.CLICKED")
         )
         SELECTED,
-        VISIBLE, HIDDEN, CLICKED, DEFAULT, UNKNOWN;
+        VISIBLE,
+        HIDDEN,
+        CLICKED,
+        DEFAULT,
+        UNKNOWN;
 
         internal companion object {
             fun String.toTrigger() = when (this) {

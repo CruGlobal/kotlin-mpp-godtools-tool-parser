@@ -63,7 +63,11 @@ class Tip : BaseModel, Styles {
     }
 
     enum class Type {
-        ASK, CONSIDER, TIP, PREPARE, QUOTE;
+        ASK,
+        CONSIDER,
+        TIP,
+        PREPARE,
+        QUOTE;
 
         internal companion object {
             internal val DEFAULT = TIP

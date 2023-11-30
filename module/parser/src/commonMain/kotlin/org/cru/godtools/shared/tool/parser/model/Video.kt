@@ -28,7 +28,8 @@ class Video : Content {
     }
 
     enum class Provider {
-        YOUTUBE, UNKNOWN;
+        YOUTUBE,
+        UNKNOWN;
 
         internal companion object {
             internal val DEFAULT = UNKNOWN

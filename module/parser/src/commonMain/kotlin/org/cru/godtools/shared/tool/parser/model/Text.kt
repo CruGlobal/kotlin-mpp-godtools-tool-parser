@@ -128,7 +128,9 @@ class Text : Content {
     // endregion Kotlin/JS interop
 
     enum class Align {
-        START, CENTER, END;
+        START,
+        CENTER,
+        END;
 
         internal companion object {
             fun String.toTextAlignOrNull() = when (this) {
@@ -141,7 +143,9 @@ class Text : Content {
     }
 
     enum class Style {
-        BOLD, ITALIC, UNDERLINE;
+        BOLD,
+        ITALIC,
+        UNDERLINE;
 
         internal companion object {
             private fun String.toTextStyleOrNull() = when (this) {

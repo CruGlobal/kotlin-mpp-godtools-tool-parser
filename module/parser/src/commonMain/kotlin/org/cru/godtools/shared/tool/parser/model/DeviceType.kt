@@ -8,7 +8,11 @@ private const val XML_DEVICE_TYPE_MOBILE = "mobile"
 private const val XML_DEVICE_TYPE_WEB = "web"
 
 enum class DeviceType {
-    ANDROID, IOS, MOBILE, WEB, UNKNOWN;
+    ANDROID,
+    IOS,
+    MOBILE,
+    WEB,
+    UNKNOWN;
 
     internal companion object {
         internal val ALL = values().toSet()

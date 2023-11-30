@@ -41,7 +41,8 @@ class Spacer : Content {
     }
 
     enum class Mode {
-        AUTO, FIXED;
+        AUTO,
+        FIXED;
 
         internal companion object {
             internal val DEFAULT = AUTO

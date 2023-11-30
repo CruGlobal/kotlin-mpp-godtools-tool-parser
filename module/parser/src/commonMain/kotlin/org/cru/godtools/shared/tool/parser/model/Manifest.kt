@@ -423,7 +423,11 @@ class Manifest : BaseModel, Styles {
     // endregion Kotlin/JS interop
 
     enum class Type {
-        ARTICLE, CYOA, LESSON, TRACT, UNKNOWN;
+        ARTICLE,
+        CYOA,
+        LESSON,
+        TRACT,
+        UNKNOWN;
 
         internal companion object {
             internal val DEFAULT = TRACT
