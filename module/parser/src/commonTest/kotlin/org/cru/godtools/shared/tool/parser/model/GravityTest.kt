@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 
 class GravityTest {
     @Test

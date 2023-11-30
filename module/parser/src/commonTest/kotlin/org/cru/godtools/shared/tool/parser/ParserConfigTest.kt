@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser
 
-import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_REQUIRED_VERSIONS
-import org.cru.godtools.shared.tool.parser.model.DeviceType
-import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_REQUIRED_VERSIONS
+import org.cru.godtools.shared.tool.parser.model.DeviceType
+import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 
 class ParserConfigTest {
     @Test

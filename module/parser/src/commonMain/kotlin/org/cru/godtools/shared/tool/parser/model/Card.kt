@@ -3,15 +3,15 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTENT_CARD
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.jvm.JvmMultifileClass
-import kotlin.jvm.JvmName
 
 @JsExport
 @OptIn(ExperimentalJsExport::class)

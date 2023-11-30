@@ -1,12 +1,12 @@
 package org.cru.godtools.shared.user.activity
 
 import io.fluidsonic.locale.Locale
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.ccci.gto.support.fluidsonic.locale.toPlatform
 import org.cru.godtools.shared.common.model.toUriOrNull
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class UserCounterNamesTest {

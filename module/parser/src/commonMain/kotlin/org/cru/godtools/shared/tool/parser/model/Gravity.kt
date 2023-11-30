@@ -1,10 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.github.aakira.napier.Napier
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
-import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 
 private const val XML_START = "start"
 private const val XML_END = "end"

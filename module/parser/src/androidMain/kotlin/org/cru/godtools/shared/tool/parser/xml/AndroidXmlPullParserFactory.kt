@@ -1,8 +1,8 @@
 package org.cru.godtools.shared.tool.parser.xml
 
 import android.util.Xml
-import org.xmlpull.v1.XmlPullParser.FEATURE_PROCESS_NAMESPACES
 import java.io.InputStream
+import org.xmlpull.v1.XmlPullParser.FEATURE_PROCESS_NAMESPACES
 
 abstract class AndroidXmlPullParserFactory : XmlPullParserFactory() {
     protected abstract suspend fun openFile(fileName: String): InputStream?

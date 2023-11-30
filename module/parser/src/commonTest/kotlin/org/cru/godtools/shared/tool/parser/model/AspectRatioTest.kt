@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.parser.model.AspectRatio.Companion.toAspectRatioOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import org.cru.godtools.shared.tool.parser.model.AspectRatio.Companion.toAspectRatioOrNull
 
 class AspectRatioTest {
     @Test

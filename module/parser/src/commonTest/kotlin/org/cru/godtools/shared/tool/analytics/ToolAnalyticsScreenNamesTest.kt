@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.analytics
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
@@ -7,8 +9,6 @@ import org.cru.godtools.shared.tool.parser.model.page.ContentPage
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.tips.TipPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class ToolAnalyticsScreenNamesTest {
     @Test

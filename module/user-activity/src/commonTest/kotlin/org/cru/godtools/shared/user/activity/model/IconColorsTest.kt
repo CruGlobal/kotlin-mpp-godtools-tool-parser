@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.model.RGB
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.cru.godtools.shared.common.model.ThemeType
 import org.cru.godtools.shared.common.model.toPlatformColor
 import org.cru.godtools.shared.user.activity.internal.test.assertEquals
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class IconColorsTest {
     private companion object {

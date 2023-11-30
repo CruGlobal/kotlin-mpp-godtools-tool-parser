@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser.util
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 @JsExport
 @OptIn(ExperimentalJsExport::class)

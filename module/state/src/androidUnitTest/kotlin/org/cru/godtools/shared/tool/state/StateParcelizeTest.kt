@@ -2,9 +2,9 @@ package org.cru.godtools.shared.tool.state
 
 import android.os.Parcel
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
 class StateParcelizeTest {

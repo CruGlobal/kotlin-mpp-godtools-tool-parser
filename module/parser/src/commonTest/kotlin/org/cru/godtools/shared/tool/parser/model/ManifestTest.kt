@@ -1,6 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import io.fluidsonic.locale.Locale
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -13,13 +20,6 @@ import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_C
 import org.cru.godtools.shared.tool.parser.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.shared.tool.parser.model.shareable.ShareableImage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertSame
-import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

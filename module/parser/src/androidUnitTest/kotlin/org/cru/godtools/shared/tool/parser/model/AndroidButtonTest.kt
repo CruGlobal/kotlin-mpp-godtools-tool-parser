@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.junit.Test
 import kotlin.test.assertEquals
+import org.junit.Test
 
 class AndroidButtonTest {
     @Test

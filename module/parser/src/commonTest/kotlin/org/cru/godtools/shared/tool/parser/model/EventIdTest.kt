@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.tool.state.State
 import kotlin.native.concurrent.SharedImmutable
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
+import org.cru.godtools.shared.tool.state.State
 
 @SharedImmutable
 private val ID1 = EventId("followup", "seND")

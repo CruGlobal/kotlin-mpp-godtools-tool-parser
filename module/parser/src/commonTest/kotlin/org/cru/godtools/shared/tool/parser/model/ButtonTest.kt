@@ -1,5 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNull
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -12,14 +20,6 @@ import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButton
 import org.cru.godtools.shared.tool.parser.model.Button.Type.Companion.toButtonTypeOrNull
 import org.cru.godtools.shared.tool.parser.withDeviceType
 import org.cru.godtools.shared.tool.state.State
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
-import kotlin.test.assertSame
-import kotlin.test.assertTrue
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)

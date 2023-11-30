@@ -1,10 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.model.Input.Type.Companion.toTypeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
 
 private const val XML_TYPE = "type"
 private const val XML_TYPE_TEXT = "text"

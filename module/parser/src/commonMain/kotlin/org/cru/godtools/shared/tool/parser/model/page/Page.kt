@@ -1,6 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import io.github.aakira.napier.Napier
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -52,11 +57,6 @@ import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.js.ExperimentalJsExport
-import kotlin.js.JsExport
-import kotlin.js.JsName
-import kotlin.native.HiddenFromObjC
 
 private const val XML_TYPE = "type"
 private const val XML_ID = "id"

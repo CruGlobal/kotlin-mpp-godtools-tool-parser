@@ -2,6 +2,10 @@ package org.cru.godtools.shared.tool.parser.model
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import kotlin.test.AfterTest
+import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -11,10 +15,6 @@ import kotlinx.coroutines.test.setMain
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.state.State
-import kotlin.test.AfterTest
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class VisibilityTest {

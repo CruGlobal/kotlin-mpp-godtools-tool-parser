@@ -1,13 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.cru.godtools.shared.tool.parser.model.DeviceType.ANDROID
 import org.cru.godtools.shared.tool.parser.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.shared.tool.parser.model.DeviceType.IOS
 import org.cru.godtools.shared.tool.parser.model.DeviceType.MOBILE
 import org.cru.godtools.shared.tool.parser.model.DeviceType.UNKNOWN
 import org.cru.godtools.shared.tool.parser.model.DeviceType.WEB
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class DeviceTypeTest {
     @Test
