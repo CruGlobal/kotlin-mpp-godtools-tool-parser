@@ -21,6 +21,6 @@ internal const val DP = 0
 // endregion Android Annotations
 
 // region IOException
-internal expect open class IOException(message: String? = null) : Exception
-internal expect class FileNotFoundException(message: String? = null) : IOException
+internal expect open class IOException(message: String?) : Exception
+internal expect class FileNotFoundException(message: String?) : IOException
 // endregion IOException
