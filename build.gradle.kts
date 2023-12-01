@@ -52,8 +52,9 @@ kotlin {
             "Production" to NativeBuildType.DEBUG,
         )
 
+        val frameworkBaseName = "GodToolsToolParser"
         framework {
-            baseName = "GodToolsToolParser"
+            baseName = frameworkBaseName
             isStatic = true
 
             export(project(":module:analytics"))
@@ -61,6 +62,13 @@ kotlin {
             export(project(":module:state"))
             export(project(":module:user-activity"))
         }
+
+        // HACK: workaround a generated framework existence check added in Kotlin 1.9.20
+        //       We automatically generate the dummy framework via the spec.prepare_command
+        val framework = layout.buildDirectory
+            .dir("cocoapods/framework/$frameworkBaseName.framework").get().asFile
+            .relativeTo(projectDir)
+        extraSpecAttributes += "vendored_frameworks" to """"${framework.invariantSeparatorsPath}""""
 
         ios.deploymentTarget = "14.0"
     }
