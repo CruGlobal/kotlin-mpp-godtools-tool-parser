@@ -1,5 +1,5 @@
 [versions]
-androidx-annotation = "1.7.0"
+androidx-annotation = "1.7.1"
 androidx-test-junit = "1.1.5"
 #antlr-kotlin = "b5135079b8"
 antlr-kotlin-fork = "0.0.7_322"
