@@ -1,5 +1,6 @@
 import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     id("build-logic")
@@ -23,6 +24,16 @@ allprojects {
 
 kotlin {
     configureIosTargets()
+
+    val xcf = XCFramework()
+    val iosTargets = listOf(iosX64(), iosArm64(), iosSimulatorArm64())
+
+    iosTargets.forEach {
+        it.binaries.framework {
+            baseName = "kotlin-mpp-godtools-tool-parser"
+            xcf.add(this)
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
