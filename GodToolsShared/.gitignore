@@ -1,16 +1,3 @@
-# gradle project ignores
-.gradle/
-build/
-*.podspec
-
-# Android Studio project ignores
-.idea/
-*.iml
-captures/
-out/
-local.properties
-
-#swift package
 .DS_Store
 /.build
 /Packages
