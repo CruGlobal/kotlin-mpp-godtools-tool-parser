@@ -144,6 +144,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
     internal val controlColor get() = _controlColor ?: manifest.pageControlColor

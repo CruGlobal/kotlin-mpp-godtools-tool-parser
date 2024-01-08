@@ -133,11 +133,13 @@ class Manifest : BaseModel, Styles {
     override val primaryTextColor: PlatformColor
 
     @AndroidColorInt
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _navBarColor: PlatformColor?
     @get:AndroidColorInt
     internal val navBarColor
         get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
     @AndroidColorInt
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _navBarControlColor: PlatformColor?
     @get:AndroidColorInt
     internal val navBarControlColor
@@ -156,6 +158,7 @@ class Manifest : BaseModel, Styles {
     override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
     @AndroidColorInt
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _categoryLabelColor: PlatformColor?
     @get:AndroidColorInt
     internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
