@@ -32,6 +32,7 @@ class CallToAction : BaseModel {
     val label: Text?
 
     @AndroidColorInt
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
     internal val controlColor get() = _controlColor ?: stylesParent.primaryColor
