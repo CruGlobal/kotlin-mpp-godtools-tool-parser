@@ -1,7 +1,4 @@
 grammar StateExpression;
-@header {
-package org.cru.godtools.shared.tool.parser.expressions.grammar.generated;
-}
 
 booleanExpr
  : OPAR expr=booleanExpr CPAR                                     #parExpr

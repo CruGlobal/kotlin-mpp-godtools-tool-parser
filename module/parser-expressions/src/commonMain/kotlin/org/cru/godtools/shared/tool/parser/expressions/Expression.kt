@@ -51,7 +51,7 @@ fun String?.toExpressionOrNull(): Expression? {
 
 private fun ParserRuleContext.vars(): List<String> = children.orEmpty().flatMap {
     when (it) {
-        is TerminalNode -> listOfNotNull(it.symbol?.takeIf { it.type == StateExpressionParser.Tokens.VAR.id }?.text)
+        is TerminalNode -> listOfNotNull(it.symbol.takeIf { it.type == StateExpressionParser.Tokens.VAR }?.text)
         is ParserRuleContext -> it.vars()
         else -> emptyList()
     }

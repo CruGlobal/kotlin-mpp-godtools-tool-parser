@@ -7,17 +7,17 @@ import org.cru.godtools.shared.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) {
     val booleanExpr = object : StateExpressionBaseVisitor<Boolean>() {
-        override fun visitParExpr(ctx: StateExpressionParser.ParExprContext) = ctx.expr!!.accept(this)
-        override fun visitNotExpr(ctx: StateExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)
+        override fun visitParExpr(ctx: StateExpressionParser.ParExprContext) = ctx.expr!!.accept(this)!!
+        override fun visitNotExpr(ctx: StateExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)!!
         override fun visitOrExpr(ctx: StateExpressionParser.OrExprContext) =
-            ctx.left!!.accept(this) || ctx.right!!.accept(this)
+            ctx.left!!.accept(this)!! || ctx.right!!.accept(this)!!
 
         override fun visitAndExpr(ctx: StateExpressionParser.AndExprContext) =
-            ctx.left!!.accept(this) && ctx.right!!.accept(this)
+            ctx.left!!.accept(this)!! && ctx.right!!.accept(this)!!
 
         override fun visitBooleanAtom(ctx: StateExpressionParser.BooleanAtomContext) = when (ctx.atom!!.type) {
-            Tokens.TRUE.id -> true
-            Tokens.FALSE.id -> false
+            Tokens.TRUE -> true
+            Tokens.FALSE -> false
             else -> throw IllegalStateException()
         }
 
@@ -25,22 +25,22 @@ internal class StateExpressionEvaluator(private val state: State) {
             val varName = ctx.varName!!.text!!
             val value = ctx.value!!.text!!.run { substring(1, length - 1) }
             return when (ctx.op!!.type) {
-                Tokens.EQ.id -> state.getVar(varName).contains(value)
-                Tokens.NEQ.id -> !state.getVar(varName).contains(value)
+                Tokens.EQ -> state.getVar(varName).contains(value)
+                Tokens.NEQ -> !state.getVar(varName).contains(value)
                 else -> throw IllegalStateException()
             }
         }
 
         override fun visitIntCmpExpr(ctx: StateExpressionParser.IntCmpExprContext): Boolean {
-            val left = ctx.left!!.accept(intExpr)
-            val right = ctx.right!!.accept(intExpr)
+            val left = ctx.left!!.accept(intExpr)!!
+            val right = ctx.right!!.accept(intExpr)!!
             return when (ctx.op!!.type) {
-                Tokens.EQ.id -> left == right
-                Tokens.NEQ.id -> left != right
-                Tokens.GT.id -> left > right
-                Tokens.GTE.id -> left >= right
-                Tokens.LT.id -> left < right
-                Tokens.LTE.id -> left <= right
+                Tokens.EQ -> left == right
+                Tokens.NEQ -> left != right
+                Tokens.GT -> left > right
+                Tokens.GTE -> left >= right
+                Tokens.LT -> left < right
+                Tokens.LTE -> left <= right
                 else -> throw IllegalStateException()
             }
         }
