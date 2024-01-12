@@ -1,6 +1,7 @@
 # gradle project ignores
 .gradle/
 build/
+!build/XCFrameworks/release/
 *.podspec
 
 # Android Studio project ignores
