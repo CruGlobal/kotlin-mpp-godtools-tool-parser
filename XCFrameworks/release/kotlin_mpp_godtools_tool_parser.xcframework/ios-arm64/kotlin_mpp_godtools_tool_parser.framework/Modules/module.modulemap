@@ -1,0 +1,8 @@
+framework module kotlin_mpp_godtools_tool_parser {
+    umbrella header "kotlin_mpp_godtools_tool_parser.h"
+
+    export *
+    module * { export * }
+
+    use Foundation
+}

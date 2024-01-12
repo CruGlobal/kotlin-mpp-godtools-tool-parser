@@ -19,6 +19,6 @@ let package = Package(
         .testTarget(
             name: "GodToolsSharedTests",
             dependencies: ["GodToolsShared"]),
-        .binaryTarget(name: "GodToolsSharedBinaryPackage", path: "build/XCFrameworks/release/kotlin_mpp_godtools_tool_parser.xcframework")
+        .binaryTarget(name: "GodToolsSharedBinaryPackage", path: "XCFrameworks/release/kotlin_mpp_godtools_tool_parser.xcframework")
     ]
 )

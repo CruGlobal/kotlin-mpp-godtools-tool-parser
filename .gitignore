@@ -1,6 +1,5 @@
 # gradle project ignores
 .gradle/
-!build/XCFrameworks/release/
 build/
 *.podspec
 
