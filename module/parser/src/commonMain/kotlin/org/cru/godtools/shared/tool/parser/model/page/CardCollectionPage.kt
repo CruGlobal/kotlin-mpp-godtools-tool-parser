@@ -87,6 +87,7 @@ class CardCollectionPage : Page {
         val position get() = page.cards.indexOf(this)
 
         @AndroidColorInt
+        @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _backgroundColor: PlatformColor?
         @get:AndroidColorInt
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor

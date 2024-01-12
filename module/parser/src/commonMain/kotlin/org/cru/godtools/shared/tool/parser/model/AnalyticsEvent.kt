@@ -53,6 +53,7 @@ class AnalyticsEvent : BaseModel {
         }
     }
 
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _id: String?
     internal val id get() = _id ?: action
     val action: String

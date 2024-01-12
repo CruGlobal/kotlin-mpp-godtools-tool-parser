@@ -49,8 +49,10 @@ class Multiselect : Content {
     internal val selectionLimit: Int
 
     private val optionStyle: Option.Style
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _optionBackgroundColor: PlatformColor?
     private val optionBackgroundColor get() = _optionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
+    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _optionSelectedColor: PlatformColor?
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 

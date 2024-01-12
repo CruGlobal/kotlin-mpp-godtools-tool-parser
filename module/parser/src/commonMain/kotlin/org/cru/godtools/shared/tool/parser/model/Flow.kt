@@ -74,6 +74,7 @@ class Flow : Content {
 
         val flow: Flow
 
+        @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _width: Dimension?
         internal val width get() = _width ?: flow.itemWidth
 

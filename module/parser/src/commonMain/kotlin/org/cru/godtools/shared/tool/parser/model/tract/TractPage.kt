@@ -172,6 +172,7 @@ class TractPage : Page {
         val dismissListeners: Set<EventId>
 
         @AndroidColorInt
+        @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _backgroundColor: PlatformColor?
         @get:AndroidColorInt
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
