@@ -51,7 +51,7 @@ class Text : Content {
         internal const val DEFAULT_MINIMUM_LINES = 0
     }
 
-    val text: String?
+    val text: String
 
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
@@ -100,7 +100,7 @@ class Text : Content {
     @JsName("createTestText")
     constructor(
         parent: Base = Manifest(),
-        text: String? = null,
+        text: String = "",
         textScale: Double = DEFAULT_TEXT_SCALE,
         @AndroidColorInt textColor: PlatformColor? = null,
         textAlign: Align? = null,
