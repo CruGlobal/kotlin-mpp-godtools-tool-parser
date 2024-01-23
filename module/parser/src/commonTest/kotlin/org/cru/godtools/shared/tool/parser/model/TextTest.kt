@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -9,6 +10,7 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
@@ -101,6 +103,62 @@ class TextTest : UsesResources() {
             assertEquals(3.0, Text(this).textScale, 0.001)
             assertEquals(6.0, Text(this, textScale = 2.0).textScale, 0.001)
         }
+    }
+
+    @Test
+    fun testEquals() {
+        assertEquals(Text(textScale = 1.3), Text(textScale = 1.3))
+
+        val text = Text()
+        assertEquals(text, text)
+        assertFalse(Text().equals(null))
+        assertFalse(Text(text = "text").equals("text"))
+        assertNotEquals(Text(text = "first"), Text(text = "second"))
+        assertNotEquals(Text(textAlign = Text.Align.START), Text(textAlign = Text.Align.END))
+        assertNotEquals(Text(textColor = TestColors.BLACK), Text(textColor = TestColors.GREEN))
+        assertNotEquals(Text(textScale = 1.0), Text(textScale = 2.0))
+        assertNotEquals(Text(textStyles = setOf(Text.Style.BOLD)), Text(textStyles = setOf(Text.Style.ITALIC)))
+        assertNotEquals(Text(minimumLines = 1), Text(minimumLines = 2))
+        assertNotEquals(Text(startImageSize = 30), Text(startImageSize = 40))
+        assertNotEquals(Text(endImageSize = 30), Text(endImageSize = 40))
+    }
+
+    @Test
+    fun testEqualsStartEndImages() {
+        val manifest = Manifest(resources = { listOf(Resource(name = "1.jpg"), Resource(name = "2.jpg")) })
+
+        assertEquals(Text(manifest, startImage = null), Text(manifest, startImage = "invalid.jpg"))
+        assertNotEquals(Text(manifest, startImage = "1.jpg"), Text(manifest, startImage = "2.jpg"))
+        assertNotEquals(Text(manifest, startImage = null), Text(manifest, startImage = "2.jpg"))
+
+        assertEquals(Text(manifest, endImage = null), Text(manifest, endImage = "invalid.jpg"))
+        assertNotEquals(Text(manifest, endImage = "1.jpg"), Text(manifest, endImage = "2.jpg"))
+        assertNotEquals(Text(manifest, endImage = null), Text(manifest, endImage = "2.jpg"))
+    }
+
+    @Test
+    fun testEqualsVisibilityExpressions() {
+        val expr1 = "var='test'".toExpressionOrNull()
+        val expr2 = "var='test'".toExpressionOrNull()
+        assertEquals(Text(goneIf = expr1), Text(goneIf = expr2))
+        assertEquals(Text(invisibleIf = expr1), Text(invisibleIf = expr2))
+
+        val expr3 = "var2='test'".toExpressionOrNull()
+        assertNotEquals(Text(goneIf = expr1), Text())
+        assertNotEquals(Text(goneIf = expr1), Text(goneIf = expr3))
+        assertNotEquals(Text(invisibleIf = expr1), Text())
+        assertNotEquals(Text(invisibleIf = expr1), Text(invisibleIf = expr3))
+    }
+
+    @Test
+    fun testHashCode() {
+        assertEquals(Text(text = "text").hashCode(), Text(text = "text").hashCode())
+
+        val manifest = Manifest(resources = { listOf(Resource(name = "1.jpg")) })
+        assertEquals(
+            Text(manifest, startImage = "1.jpg", endImage = "1.jpg").hashCode(),
+            Text(manifest, startImage = "1.jpg", endImage = "1.jpg").hashCode(),
+        )
     }
 
     @Test
