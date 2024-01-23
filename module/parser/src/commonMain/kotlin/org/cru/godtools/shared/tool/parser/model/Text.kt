@@ -13,6 +13,7 @@ import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
@@ -104,21 +105,61 @@ class Text : Content {
         @AndroidColorInt textColor: PlatformColor? = null,
         textAlign: Align? = null,
         textStyles: Set<Style> = emptySet(),
+        minimumLines: Int = DEFAULT_MINIMUM_LINES,
         startImage: String? = null,
+        startImageSize: Int = DEFAULT_IMAGE_SIZE,
         endImage: String? = null,
-    ) : super(parent) {
+        endImageSize: Int = DEFAULT_IMAGE_SIZE,
+        invisibleIf: Expression? = null,
+        goneIf: Expression? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.text = text
         _textAlign = textAlign
         _textColor = textColor
         _textScale = textScale
         this.textStyles = textStyles
-
-        minimumLines = DEFAULT_MINIMUM_LINES
+        this.minimumLines = minimumLines
 
         startImageName = startImage
-        startImageSize = DEFAULT_IMAGE_SIZE
+        this.startImageSize = startImageSize
         endImageName = endImage
-        endImageSize = DEFAULT_IMAGE_SIZE
+        this.endImageSize = endImageSize
+    }
+
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null -> false
+        other !is Text -> false
+        text != other.text -> false
+        textAlign != other.textAlign -> false
+        textColor != other.textColor -> false
+        textScale != other.textScale -> false
+        textStyles != other.textStyles -> false
+        minimumLines != other.minimumLines -> false
+        startImage != other.startImage -> false
+        startImageSize != other.startImageSize -> false
+        endImage != other.endImage -> false
+        endImageSize != other.endImageSize -> false
+
+        // TODO: these should be compared in a Content.equals() method once we add it.
+        //       I'm waiting on adding it until more Content types implement equals
+        invisibleIf != other.invisibleIf -> false
+        goneIf != other.goneIf -> false
+        else -> true
+    }
+
+    override fun hashCode(): Int {
+        var result = text?.hashCode() ?: 0
+        result = 31 * result + textAlign.hashCode()
+        result = 31 * result + textColor.hashCode()
+        result = 31 * result + textScale.hashCode()
+        result = 31 * result + textStyles.hashCode()
+        result = 31 * result + minimumLines
+        result = 31 * result + (startImage?.hashCode() ?: 0)
+        result = 31 * result + startImageSize
+        result = 31 * result + (endImage?.hashCode() ?: 0)
+        result = 31 * result + endImageSize
+        return result
     }
 
     // region Kotlin/JS interop
