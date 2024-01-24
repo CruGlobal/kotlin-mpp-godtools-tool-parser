@@ -2,12 +2,9 @@ package org.cru.godtools.shared.tool.parser.model
 
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import kotlin.native.concurrent.SharedImmutable
 import org.cru.godtools.shared.tool.parser.util.contains
 
-@SharedImmutable
 private val REGEX_PERCENT = Regex("^(100|[0-9]{1,2}(\\.[0-9]+)?)%$")
-@SharedImmutable
 private val REGEX_PIXELS = Regex("^[0-9]+$")
 
 @JsExport
