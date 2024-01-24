@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -12,6 +13,7 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.withDeviceType
 
@@ -114,4 +116,48 @@ class ImageTest : UsesResources() {
         assertFalse(Image(manifest, resource = "valid.png").isIgnored)
     }
     // endregion isIgnored
+
+    @Test
+    fun testEquals() {
+        val manifest = Manifest(resources = { listOf(Resource(name = "image.png")) })
+        assertEquals(Image(), Image())
+        assertEquals(Image(), Image(resource = "missing.png"))
+
+        val image = Image()
+        assertEquals(image, image)
+        assertFalse(image.equals(null))
+        assertFalse(image.equals("image"))
+        assertNotEquals(Image(), Image(manifest, resource = "image.png"))
+        assertNotEquals(Image(gravity = Gravity.Horizontal.START), Image(gravity = Gravity.Horizontal.END))
+        assertNotEquals(Image(width = Dimension.Pixels(1)), Image(width = Dimension.Percent(1f)))
+        assertNotEquals(
+            Image(events = listOf(EventId(name = "event"))),
+            Image(events = listOf(EventId(name = "event2"))),
+        )
+        assertNotEquals(Image(url = TEST_URL), Image(url = null))
+    }
+
+    @Test
+    fun testEqualsVisibilityExpressions() {
+        val expr1 = "var='test'".toExpressionOrNull()
+        val expr2 = "var='test'".toExpressionOrNull()
+        assertEquals(Image(goneIf = expr1), Image(goneIf = expr2))
+        assertEquals(Image(invisibleIf = expr1), Image(invisibleIf = expr2))
+
+        val expr3 = "var2='test'".toExpressionOrNull()
+        assertNotEquals(Image(goneIf = expr1), Image())
+        assertNotEquals(Image(goneIf = expr1), Image(goneIf = expr3))
+        assertNotEquals(Image(invisibleIf = expr1), Image())
+        assertNotEquals(Image(invisibleIf = expr1), Image(invisibleIf = expr3))
+    }
+
+    @Test
+    fun testHashCode() {
+        val manifest = Manifest(resources = { listOf(Resource(name = "image.png")) })
+        assertEquals(Image().hashCode(), Image().hashCode())
+        assertEquals(
+            Image(manifest, url = TEST_URL, resource = "image.png").hashCode(),
+            Image(manifest, url = TEST_URL, resource = "image.png").hashCode(),
+        )
+    }
 }
