@@ -22,7 +22,7 @@ jobs:
           distribution: "temurin"
           java-version-file: ".java-version"
       - name: Generate current TypeScript headers
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: :publish:npm:jsBrowserProductionLibraryPrepare --scan
       - name: Copy current TypeScript headers
@@ -33,7 +33,7 @@ jobs:
       - name: Checkout base
         run: git checkout $GITHUB_BASE_REF
       - name: Generate base TypeScript headers
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: clean :publish:npm:jsBrowserProductionLibraryPrepare --scan
       - name: Copy base TypeScript headers
