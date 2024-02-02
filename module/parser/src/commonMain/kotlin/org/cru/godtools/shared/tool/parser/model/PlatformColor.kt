@@ -2,15 +2,11 @@ package org.cru.godtools.shared.tool.parser.model
 
 import com.github.ajalt.colormath.model.HSL
 import com.github.ajalt.colormath.model.RGB
-import kotlin.native.concurrent.SharedImmutable
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 
-@SharedImmutable
 private val COLOR_REGEX =
     Regex("^\\s*rgba\\(\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9.]+)\\s*\\)\\s*$")
-@SharedImmutable
 private val VALID_RGB = 0..255
-@SharedImmutable
 private val VALID_ALPHA = 0f..1f
 
 expect class PlatformColor

@@ -4,6 +4,7 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -37,6 +38,21 @@ class ExpressionTest {
             "()",
             "isSet(a==\"b\")"
         ).forEach { assertFalse(it.toExpressionOrNull()!!.isValid(), "'$it' should be an invalid expression") }
+    }
+
+    @Test
+    fun testEquals() {
+        val expr = "true".toExpressionOrNull()!!
+        assertEquals(expr, expr)
+        assertEquals(expr, "true".toExpressionOrNull())
+        assertNotEquals(expr, "false".toExpressionOrNull())
+        assertFalse(expr.equals(null))
+        assertFalse(expr.equals("true"))
+    }
+
+    @Test
+    fun testHashCode() {
+        assertEquals("true".toExpressionOrNull()!!.hashCode(), "true".toExpressionOrNull()!!.hashCode())
     }
 
     @Test

@@ -15,6 +15,9 @@ class Resource : BaseModel {
         internal const val XML_RESOURCE = "resource"
     }
 
+    val name: String?
+    val localName: String?
+
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCE)
 
@@ -24,11 +27,27 @@ class Resource : BaseModel {
         parser.skipTag()
     }
 
-    internal constructor(manifest: Manifest = Manifest(), name: String? = null) : super(manifest) {
+    internal constructor(
+        manifest: Manifest = Manifest(),
+        name: String? = null,
+        localName: String? = null,
+    ) : super(manifest) {
         this.name = name
-        localName = null
+        this.localName = localName
     }
 
-    val name: String?
-    val localName: String?
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null -> false
+        other !is Resource -> false
+        name != other.name -> false
+        localName != other.localName -> false
+        else -> true
+    }
+
+    override fun hashCode(): Int {
+        var result = name?.hashCode() ?: 0
+        result = 31 * result + (localName?.hashCode() ?: 0)
+        return result
+    }
 }

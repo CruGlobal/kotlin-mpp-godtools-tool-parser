@@ -12,16 +12,30 @@ import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateEx
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.shared.tool.state.State
 
-class Expression internal constructor(private val expr: StateExpressionParser.BooleanExprContext?) {
+class Expression internal constructor(
+    private val expr: StateExpressionParser.BooleanExprContext?,
+    private val raw: String,
+) {
     fun isValid() = expr != null
     fun evaluate(state: State) = checkNotNull(expr).accept(StateExpressionEvaluator(state).booleanExpr)
     fun vars() = expr?.vars()?.toSet().orEmpty()
+
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null -> false
+        other !is Expression -> false
+        raw != other.raw -> false
+        else -> true
+    }
+
+    override fun hashCode() = raw.hashCode()
 }
 
 fun String?.toExpressionOrNull() = when {
     isNullOrBlank() -> null
     else -> Expression(
-        try {
+        raw = this,
+        expr = try {
             val tokens = CommonTokenStream(StateExpressionLexer(CharStreams.fromString(this)))
             val parser = StateExpressionParser(tokens)
             parser.errorHandler = BailErrorStrategy()
@@ -30,7 +44,7 @@ fun String?.toExpressionOrNull() = when {
         } catch (e: ParseCancellationException) {
             // TODO: log the exception to Napier, useful to identify invalid/unsupported expressions
             null
-        }
+        },
     )
 }
 

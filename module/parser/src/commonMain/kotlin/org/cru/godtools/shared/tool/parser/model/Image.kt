@@ -13,6 +13,7 @@ import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
+import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
@@ -70,6 +71,32 @@ class Image : Content, Clickable {
 
     override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
 
+    override fun equals(other: Any?) = when {
+        this === other -> true
+        other == null -> false
+        other !is Image -> false
+        resource != other.resource -> false
+        gravity != other.gravity -> false
+        width != other.width -> false
+        events != other.events -> false
+        url != other.url -> false
+
+        // TODO: these should be compared in a Content.equals() method once we add it.
+        //       I'm waiting on adding it until more Content types implement equals
+        invisibleIf != other.invisibleIf -> false
+        goneIf != other.goneIf -> false
+        else -> true
+    }
+
+    override fun hashCode(): Int {
+        var result = events.hashCode()
+        result = 31 * result + (url?.hashCode() ?: 0)
+        result = 31 * result + (resource?.hashCode() ?: 0)
+        result = 31 * result + gravity.hashCode()
+        result = 31 * result + width.hashCode()
+        return result
+    }
+
     @RestrictTo(RestrictToScope.TESTS)
     @JsName("createTestImage")
     constructor(
@@ -77,11 +104,15 @@ class Image : Content, Clickable {
         resource: String? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
-    ) : super(parent) {
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
+        invisibleIf: Expression? = null,
+        goneIf: Expression? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         resourceName = resource
         this.gravity = gravity
         this.width = width
-        events = emptyList()
-        url = null
+        this.events = events
+        this.url = url
     }
 }
