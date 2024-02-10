@@ -14,7 +14,7 @@ goncalossilvaResources = "0.4.0"
 ktlint = "1.1.1"
 napier = "2.6.1"
 npmPublish = "3.4.2"
-okio = "3.7.0"
+okio = "3.8.0"
 robolectric = "4.11.1"
 
 [libraries]
