@@ -40,12 +40,13 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
         private fun Map<Any?, *>.convert() =
             map { it.key?.toString().orEmpty().attrToQName() to it.value?.toString().orEmpty() }.toMap()
 
-        private fun String.attrToQName(): QName = when {
-            !contains(':') -> QName(local = this)
-            else -> {
+        private fun String.attrToQName(): QName {
+            if (contains(':')) {
                 val (ns, local) = split(':', limit = 2)
-                QName(namespaces[ns]!!.last(), local)
+                return QName(namespaces[ns]!!.last(), local)
             }
+
+            return QName(local = this)
         }
 
         init {
