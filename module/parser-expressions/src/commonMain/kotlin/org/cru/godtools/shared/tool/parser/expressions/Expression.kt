@@ -31,9 +31,10 @@ class Expression internal constructor(
     override fun hashCode() = raw.hashCode()
 }
 
-fun String?.toExpressionOrNull() = when {
-    isNullOrBlank() -> null
-    else -> Expression(
+fun String?.toExpressionOrNull(): Expression? {
+    if (isNullOrBlank()) return null
+
+    return Expression(
         raw = this,
         expr = try {
             val tokens = CommonTokenStream(StateExpressionLexer(CharStreams.fromString(this)))
