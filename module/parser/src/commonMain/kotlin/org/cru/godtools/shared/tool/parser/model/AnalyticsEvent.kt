@@ -1,12 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companion.toTrigger
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
@@ -83,12 +81,6 @@ class AnalyticsEvent : BaseModel {
                 }
             }
         }
-
-        // Log a non-fatal warning if this is a deprecated analytics event
-        if (systems.contains(System.ADOBE)) {
-            val message = "tool: ${manifest.code} locale: ${manifest.locale} action: $action"
-            Napier.e(message, DeprecationException("XML Adobe Analytics Event $message"), TAG)
-        }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
@@ -119,8 +111,6 @@ class AnalyticsEvent : BaseModel {
     fun recordTriggered(state: State) = state.recordTriggeredAnalyticsEvent(id)
 
     enum class System {
-        @Deprecated("Since 1/1/21, we no longer use Adobe analytics.")
-        ADOBE,
         @Deprecated("Since v0.9.1, we no longer use AppsFlyer.")
         APPSFLYER,
         FACEBOOK,
@@ -132,7 +122,6 @@ class AnalyticsEvent : BaseModel {
         internal companion object {
             fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
                 when (it) {
-                    XML_SYSTEM_ADOBE -> ADOBE
                     XML_SYSTEM_FACEBOOK -> FACEBOOK
                     XML_SYSTEM_FIREBASE -> FIREBASE
                     XML_SYSTEM_USER -> USER
