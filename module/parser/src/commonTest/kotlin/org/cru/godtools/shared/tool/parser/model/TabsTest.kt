@@ -53,13 +53,11 @@ class TabsTest : UsesResources() {
     fun testTabGetAnalyticsEvents() {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
         val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
-        val tab = Tabs.Tab(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
+        val tab = Tabs.Tab(analyticsEvents = listOf(defaultEvent, clickedEvent, visibleEvent))
 
         assertEquals(listOf(defaultEvent, clickedEvent), tab.getAnalyticsEvents(Trigger.CLICKED))
         assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.SELECTED) }
         assertFailsWith(IllegalStateException::class) { tab.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 }

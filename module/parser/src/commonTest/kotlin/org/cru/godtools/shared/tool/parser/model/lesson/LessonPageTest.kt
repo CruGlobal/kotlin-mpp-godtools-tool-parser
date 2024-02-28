@@ -139,12 +139,10 @@ class LessonPageTest : UsesResources("model/lesson") {
         val defaultEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.DEFAULT)
         val visibleEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.VISIBLE)
         val hiddenEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.HIDDEN)
-        val selectedEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.SELECTED)
-        val page = LessonPage(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+        val page = LessonPage(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent))
 
         assertEquals(listOf(defaultEvent, visibleEvent), page.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE))
         assertEquals(listOf(hiddenEvent), page.getAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN))
         assertFailsWith(IllegalStateException::class) { page.getAnalyticsEvents(AnalyticsEvent.Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { page.getAnalyticsEvents(AnalyticsEvent.Trigger.SELECTED) }
     }
 }

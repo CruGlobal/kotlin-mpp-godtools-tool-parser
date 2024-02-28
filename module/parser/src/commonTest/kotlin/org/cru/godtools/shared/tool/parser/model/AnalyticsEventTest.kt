@@ -71,7 +71,6 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEventTrigger() {
-        assertEquals(AnalyticsEvent.Trigger.SELECTED, "selected".toTrigger())
         assertEquals(AnalyticsEvent.Trigger.VISIBLE, "visible".toTrigger())
         assertEquals(AnalyticsEvent.Trigger.HIDDEN, "hidden".toTrigger())
         assertEquals(AnalyticsEvent.Trigger.UNKNOWN, "jkalsdf".toTrigger())

@@ -261,13 +261,11 @@ class ButtonTest : UsesResources() {
     fun testButtonGetAnalyticsEvents() {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
         val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
-        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
+        val button = Button(analyticsEvents = listOf(defaultEvent, clickedEvent, visibleEvent))
 
-        assertEquals(listOf(defaultEvent, clickedEvent, selectedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
+        assertEquals(listOf(defaultEvent, clickedEvent), button.getAnalyticsEvents(Trigger.CLICKED))
         assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.SELECTED) }
         assertFailsWith(IllegalStateException::class) { button.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 

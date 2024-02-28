@@ -105,15 +105,13 @@ class MultiselectTest : UsesResources() {
     fun testOptionGetAnalyticsEvents() {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
         val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
         val option = Multiselect.Option(
-            analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent)
+            analyticsEvents = listOf(defaultEvent, clickedEvent, visibleEvent)
         )
 
         assertEquals(listOf(defaultEvent, clickedEvent), option.getAnalyticsEvents(Trigger.CLICKED))
         assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.SELECTED) }
         assertFailsWith(IllegalStateException::class) { option.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 

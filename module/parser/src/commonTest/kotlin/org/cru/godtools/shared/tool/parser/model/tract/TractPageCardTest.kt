@@ -113,13 +113,11 @@ class TractPageCardTest : UsesResources("model/tract") {
         val defaultEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.DEFAULT)
         val visibleEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.VISIBLE)
         val hiddenEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.HIDDEN)
-        val selectedEvent = AnalyticsEvent(trigger = AnalyticsEvent.Trigger.SELECTED)
-        val card = Card(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent, selectedEvent))
+        val card = Card(analyticsEvents = listOf(defaultEvent, visibleEvent, hiddenEvent))
 
         assertEquals(listOf(defaultEvent, visibleEvent), card.getAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE))
         assertEquals(listOf(hiddenEvent), card.getAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN))
         assertFailsWith(IllegalStateException::class) { card.getAnalyticsEvents(AnalyticsEvent.Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { card.getAnalyticsEvents(AnalyticsEvent.Trigger.SELECTED) }
     }
 
     @Test
