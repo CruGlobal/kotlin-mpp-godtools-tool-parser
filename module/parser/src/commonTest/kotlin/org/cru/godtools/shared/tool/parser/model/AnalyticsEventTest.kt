@@ -62,7 +62,6 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEventSystem() {
-        assertEquals(setOf(AnalyticsEvent.System.ADOBE), "adobe".toAnalyticsSystems())
         assertEquals(setOf(AnalyticsEvent.System.FACEBOOK), "facebook".toAnalyticsSystems())
         assertEquals(setOf(AnalyticsEvent.System.FIREBASE), "firebase".toAnalyticsSystems())
         assertEquals(setOf(AnalyticsEvent.System.USER), "user".toAnalyticsSystems())
