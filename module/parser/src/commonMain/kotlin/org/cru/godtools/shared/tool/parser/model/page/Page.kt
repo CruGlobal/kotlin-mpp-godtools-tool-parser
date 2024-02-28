@@ -83,15 +83,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
             return when (parser.namespace) {
                 XMLNS_LESSON -> LessonPage(manifest, fileName, parser)
                 XMLNS_TRACT -> TractPage(manifest, fileName, parser)
-                XMLNS_PAGE -> {
-                    when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
-                        TYPE_CARD_COLLECTION -> CardCollectionPage(manifest, fileName, parser)
-                        TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
-                        else -> {
-                            val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
-                            Napier.e(message, UnsupportedOperationException(message), "Page")
-                            null
-                        }
+                XMLNS_PAGE -> when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
+                    TYPE_CARD_COLLECTION -> CardCollectionPage(manifest, fileName, parser)
+                    TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
+                    else -> {
+                        val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
+                        Napier.e(message, UnsupportedOperationException(message), "Page")
+                        null
                     }
                 }
                 else -> {
