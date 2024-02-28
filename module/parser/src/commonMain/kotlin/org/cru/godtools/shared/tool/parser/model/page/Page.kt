@@ -80,6 +80,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         fun parse(manifest: Manifest, fileName: String?, parser: XmlPullParser): Page? {
             parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
+            @Suppress("ktlint:standard:blank-line-between-when-conditions")
             return when (parser.namespace) {
                 XMLNS_LESSON -> LessonPage(manifest, fileName, parser)
                 XMLNS_TRACT -> TractPage(manifest, fileName, parser)

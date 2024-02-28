@@ -17,11 +17,14 @@ object ToolAnalyticsScreenNames {
 
     fun forTractPage(page: TractPage, card: TractPage.Card? = null) = buildString {
         append(page.manifest.code).append('-').append(page.position)
-        when (val pos = card?.position) {
-            null -> Unit
-            // convert card index to letter 'a'-'z'
-            in 0..25 -> append((97 + pos).toChar())
-            else -> append('-').append(pos)
+
+        if (card != null) {
+            if (card.position in 0..25) {
+                // convert card index to letter 'a'-'z'
+                append((97 + card.position).toChar())
+            } else {
+                append('-').append(card.position)
+            }
         }
     }
 

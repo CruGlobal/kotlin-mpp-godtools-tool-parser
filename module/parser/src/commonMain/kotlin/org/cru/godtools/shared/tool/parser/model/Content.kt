@@ -96,6 +96,8 @@ abstract class Content : BaseModel, Visibility {
     internal companion object {
         internal fun XmlPullParser.parseContentElement(parent: Base): Content? {
             require(XmlPullParser.START_TAG, null, null)
+
+            @Suppress("ktlint:standard:blank-line-between-when-conditions")
             return when (namespace) {
                 XMLNS_CONTENT -> when (name) {
                     Accordion.XML_ACCORDION -> Accordion(parent, this)
@@ -120,10 +122,12 @@ abstract class Content : BaseModel, Visibility {
                     Video.XML_VIDEO -> Video(parent, this)
                     else -> null
                 }
+
                 XMLNS_TRAINING -> when (name) {
                     InlineTip.XML_TIP -> InlineTip(parent, this)
                     else -> null
                 }
+
                 else -> null
             }
         }

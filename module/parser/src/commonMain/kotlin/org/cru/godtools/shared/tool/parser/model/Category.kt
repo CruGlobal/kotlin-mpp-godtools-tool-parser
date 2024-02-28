@@ -36,6 +36,7 @@ class Category : BaseModel, Styles {
                     XMLNS_MANIFEST -> when (parser.name) {
                         XML_LABEL -> label = parser.parseTextChild(this@Category, XMLNS_MANIFEST, XML_LABEL)
                     }
+
                     XMLNS_ARTICLE -> when (parser.name) {
                         XML_AEM_TAG -> parser.getAttributeValue(XML_ID)?.let { add(it) }
                     }

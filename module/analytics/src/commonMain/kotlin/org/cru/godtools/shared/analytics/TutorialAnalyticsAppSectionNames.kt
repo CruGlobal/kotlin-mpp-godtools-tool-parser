@@ -9,6 +9,7 @@ object TutorialAnalyticsAppSectionNames {
         TutorialAnalyticsActionNames.ONBOARDING_LINK_LESSONS,
         TutorialAnalyticsActionNames.ONBOARDING_LINK_TOOLS,
         TutorialAnalyticsActionNames.ONBOARDING_FINISH -> ONBOARDING
+
         else -> null
     }
 }
