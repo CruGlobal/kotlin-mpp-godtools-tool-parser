@@ -51,13 +51,11 @@ class LinkTest : UsesResources() {
     fun testGetAnalyticsEvents() {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
-        val selectedEvent = AnalyticsEvent(trigger = Trigger.SELECTED)
         val visibleEvent = AnalyticsEvent(trigger = Trigger.VISIBLE)
-        val link = Link(analyticsEvents = listOf(defaultEvent, clickedEvent, selectedEvent, visibleEvent))
+        val link = Link(analyticsEvents = listOf(defaultEvent, clickedEvent, visibleEvent))
 
         assertEquals(listOf(defaultEvent, clickedEvent), link.getAnalyticsEvents(Trigger.CLICKED))
         assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.DEFAULT) }
-        assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.SELECTED) }
         assertFailsWith(IllegalStateException::class) { link.getAnalyticsEvents(Trigger.VISIBLE) }
     }
 

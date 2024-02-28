@@ -3,7 +3,6 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.jvm.JvmMultifileClass
@@ -13,7 +12,6 @@ import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
-import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
@@ -114,15 +112,6 @@ class Button : Content, HasAnalyticsEvents, Clickable {
                 }
             }
         } ?: Text(defaultTextStyles)
-
-        // Log a non-fatal warning if any analytics event is still using the SELECTED trigger
-        analyticsEvents.forEach {
-            if (it.trigger == Trigger.SELECTED) {
-                val message =
-                    "tool: ${manifest.code} locale: ${manifest.locale} action: ${it.action} trigger: ${it.trigger}"
-                Napier.e(message, DeprecationException("XML Analytics Event Deprecated trigger $message"), TAG)
-            }
-        }
     }
 
     @RestrictTo(RestrictToScope.TESTS)
@@ -163,8 +152,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     internal val analyticsEvents: List<AnalyticsEvent>
 
     override fun getAnalyticsEvents(type: Trigger) = when (type) {
-        Trigger.CLICKED ->
-            analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.SELECTED, Trigger.DEFAULT) }
+        Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
         else -> error("The $type trigger type is currently unsupported on Buttons")
     }
     // endregion HasAnalyticsEvents
