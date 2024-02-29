@@ -252,6 +252,7 @@ class Manifest : BaseModel, Styles {
         pagesToParse = mutableListOf()
         tipsToParse = mutableListOf()
         parser.parseChildren {
+            @Suppress("ktlint:standard:blank-line-between-when-conditions")
             when (parser.namespace) {
                 XMLNS_MANIFEST -> when (parser.name) {
                     XML_TITLE -> title = parser.parseTextChild(this, XMLNS_MANIFEST, XML_TITLE)
@@ -264,6 +265,7 @@ class Manifest : BaseModel, Styles {
                     XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
                     XML_TIPS -> tipsToParse += parser.parseTips()
                 }
+
                 XMLNS_SHAREABLE -> when (parser.name) {
                     Shareable.XML_ITEMS -> shareables += parser.parseShareableItems(this)
                 }
@@ -381,6 +383,7 @@ class Manifest : BaseModel, Styles {
                         result.pages += fileName to src
                     }
                 }
+
                 XMLNS_ARTICLE -> when (name) {
                     XML_PAGES_AEM_IMPORT -> getAttributeValue(XML_PAGES_AEM_IMPORT_SRC).toUriOrNull()
                         ?.takeIf { it.isHttpUrl }

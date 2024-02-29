@@ -75,6 +75,7 @@ class Tabs : Content {
                     XMLNS_ANALYTICS -> when (parser.name) {
                         AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                     }
+
                     XMLNS_CONTENT -> when (parser.name) {
                         XML_LABEL -> label = parser.parseTextChild(this, XMLNS_CONTENT, XML_LABEL)
                     }

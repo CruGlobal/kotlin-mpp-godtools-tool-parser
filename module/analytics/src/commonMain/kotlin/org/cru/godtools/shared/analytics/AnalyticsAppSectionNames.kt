@@ -12,8 +12,10 @@ object AnalyticsAppSectionNames {
 
     fun forScreen(name: String) = when (name) {
         AnalyticsScreenNames.DASHBOARD_ALL_TOOLS -> TOOLS
+
         AnalyticsScreenNames.ACCOUNT_ACTIVITY,
         AnalyticsScreenNames.ACCOUNT_GLOBAL_ACTIVITY -> ACCOUNT
+
         AnalyticsScreenNames.SETTINGS_LANGUAGES,
         AnalyticsScreenNames.SETTINGS_LANGUAGE_SELECTION,
         AnalyticsScreenNames.PLATFORM_ABOUT,

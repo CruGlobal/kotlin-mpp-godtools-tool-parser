@@ -37,18 +37,22 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
                             require(horizontal == null) { "multiple X-Axis gravities in: $this" }
                             horizontal = Horizontal.START
                         }
+
                         XML_END -> {
                             require(horizontal == null) { "multiple X-Axis gravities in: $this" }
                             horizontal = Horizontal.END
                         }
+
                         XML_TOP -> {
                             require(vertical == null) { "multiple Y-Axis gravities in: $this" }
                             vertical = Vertical.TOP
                         }
+
                         XML_BOTTOM -> {
                             require(vertical == null) { "multiple Y-Axis gravities in: $this" }
                             vertical = Vertical.BOTTOM
                         }
+
                         XML_CENTER -> Unit
                     }
                 }

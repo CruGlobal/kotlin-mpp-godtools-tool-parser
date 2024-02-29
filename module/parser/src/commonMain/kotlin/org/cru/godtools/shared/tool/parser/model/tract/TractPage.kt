@@ -219,6 +219,7 @@ class TractPage : Page {
                     XMLNS_ANALYTICS -> when (parser.name) {
                         AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                     }
+
                     XMLNS_TRACT -> when (parser.name) {
                         XML_LABEL -> label = parser.parseTextChild(labelParent, XMLNS_TRACT, XML_LABEL)
                     }

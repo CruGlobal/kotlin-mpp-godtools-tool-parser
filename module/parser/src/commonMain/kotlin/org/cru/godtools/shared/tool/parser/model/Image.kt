@@ -40,6 +40,7 @@ class Image : Content, Clickable {
 
     @VisibleForTesting
     internal val resourceName: String?
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     val resource
         get() = getResource(resourceName) ?: when {
             resourceName == null -> null
@@ -71,6 +72,7 @@ class Image : Content, Clickable {
 
     override val isIgnored get() = super.isIgnored || resourceName.isNullOrEmpty()
 
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     override fun equals(other: Any?) = when {
         this === other -> true
         other == null -> false

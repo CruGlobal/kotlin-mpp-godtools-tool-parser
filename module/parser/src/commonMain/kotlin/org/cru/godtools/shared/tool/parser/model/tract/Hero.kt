@@ -46,6 +46,7 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
                 XMLNS_ANALYTICS -> when (parser.name) {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                 }
+
                 XMLNS_TRACT -> when (parser.name) {
                     XML_HEADING -> heading = parser.parseTextChild(headingParent, XMLNS_TRACT, XML_HEADING)
                 }

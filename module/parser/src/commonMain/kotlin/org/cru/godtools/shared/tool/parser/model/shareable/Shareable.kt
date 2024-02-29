@@ -34,6 +34,7 @@ sealed class Shareable : BaseModel {
                     ShareableImage.XML_IMAGE -> ShareableImage(manifest, parser)
                     else -> null
                 }
+
                 else -> null
             }
         }

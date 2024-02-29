@@ -33,8 +33,7 @@ abstract class SaxXmlPullParser : XmlPullParser {
     override fun nextText(): String {
         require(START_TAG)
         return when (next()) {
-            TEXT -> currentEvent.content.orEmpty()
-                .also { check(next() == END_TAG) }
+            TEXT -> currentEvent.content.orEmpty().also { check(next() == END_TAG) }
             END_TAG -> ""
             else -> throw XmlPullParserException("parser must be on START_TAG or TEXT to read text")
         }

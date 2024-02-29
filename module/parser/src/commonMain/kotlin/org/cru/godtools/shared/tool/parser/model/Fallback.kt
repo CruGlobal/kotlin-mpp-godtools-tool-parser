@@ -22,6 +22,7 @@ class Fallback : Content, Parent {
                     throw XmlPullParserException("expected fallback=\"true\"")
                 }
             }
+
             else -> parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FALLBACK)
         }
 

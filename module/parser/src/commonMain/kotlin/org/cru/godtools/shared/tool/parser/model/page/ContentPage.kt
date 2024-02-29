@@ -37,6 +37,7 @@ class ContentPage : Page, Parent {
                 XMLNS_ANALYTICS -> when (parser.name) {
                     AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
                 }
+
                 XMLNS_PAGE -> when (parser.name) {
                     XML_CONTENT -> content += parseContent(parser)
                 }

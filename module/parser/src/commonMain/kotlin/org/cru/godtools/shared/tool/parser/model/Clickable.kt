@@ -44,14 +44,16 @@ internal inline fun Clickable.parseClickableAttrs(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val rawUrl = parser.getAttributeValue(XML_URL)
-    val uri = when {
-        rawUrl?.hasUriScheme == false -> {
-            val message = "Non-absolute uri tool: ${manifest.code} locale: ${manifest.locale} uri: $rawUrl"
-            Napier.d(message, DeprecationException(message), "Uri")
-            rawUrl.toAbsoluteUriOrNull()
+    val uri = parser.getAttributeValue(XML_URL)?.run {
+        when {
+            !hasUriScheme -> {
+                val message = "Non-absolute uri tool: ${manifest.code} locale: ${manifest.locale} uri: $this"
+                Napier.d(message, DeprecationException(message), "Uri")
+                toAbsoluteUriOrNull()
+            }
+
+            else -> toUriOrNull()
         }
-        else -> rawUrl.toUriOrNull()
     }
 
     block(parser.getAttributeValue(XML_EVENTS).toEventIds(), uri)

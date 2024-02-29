@@ -126,6 +126,7 @@ class Text : Content {
         this.endImageSize = endImageSize
     }
 
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     override fun equals(other: Any?) = when {
         this === other -> true
         other == null -> false
