@@ -98,7 +98,7 @@ class Accordion : Content {
         override fun getAnalyticsEvents(type: Trigger) = when (type) {
             Trigger.VISIBLE -> analyticsEvents.filter { it.isTriggerType(Trigger.VISIBLE, Trigger.DEFAULT) }
             Trigger.HIDDEN -> analyticsEvents.filter { it.isTriggerType(Trigger.HIDDEN) }
-            else -> error("The $type trigger type is currently unsupported on Tabs")
+            else -> error("The $type trigger type is currently unsupported on Accordion Sections")
         }
     }
 }
