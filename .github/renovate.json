@@ -7,6 +7,14 @@
   "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
+      "groupName": "Kotlin and KSP",
+      "description": "Kotlin and KSP versions are tightly coupled.",
+      "matchPackagePrefixes": [
+        "org.jetbrains.kotlin:kotlin",
+        "com.google.devtools.ksp"
+      ],
+    },
+    {
       "matchManagers": ["gradle"],
       "matchPackagePrefixes": ["org.jetbrains.kotlinx:kotlinx-coroutines-"],
       "groupName": "kotlinx.coroutines"
