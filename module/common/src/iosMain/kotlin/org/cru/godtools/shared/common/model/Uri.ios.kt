@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.common.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import platform.Foundation.NSURL
 
 @Suppress("CONFLICTING_OVERLOADS")
@@ -10,7 +10,7 @@ actual fun String?.toUriOrNull() = this?.let {
     try {
         NSURL(string = it)
     } catch (e: NullPointerException) {
-        Napier.e("Error parsing URL '$it'", e)
+        Logger.e(e) { "Error parsing URL '$it'" }
         null
     }
 }
