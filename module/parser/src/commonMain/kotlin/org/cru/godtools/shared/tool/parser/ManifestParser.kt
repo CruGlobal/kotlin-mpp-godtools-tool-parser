@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser
 
+import co.touchlab.kermit.Logger
 import deezer.kustomexport.KustomExport
-import io.github.aakira.napier.Napier
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -31,7 +31,7 @@ open class ManifestParser(private val parserFactory: XmlPullParserFactory, val d
         } catch (e: XmlPullParserException) {
             ParserResult.Error.Corrupted(e)
         } catch (e: Exception) {
-            Napier.e("Unexpected Parsing Exception", e, "ManifestParser")
+            Logger.e("Unexpected Parsing Exception", e, "ManifestParser")
             ParserResult.Error(e)
         }
     }

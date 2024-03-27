@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -89,13 +89,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                     TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
                     else -> {
                         val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
-                        Napier.e(message, UnsupportedOperationException(message), "Page")
+                        Logger.e(message, UnsupportedOperationException(message), "Page")
                         null
                     }
                 }
                 else -> {
                     val message = "Unrecognized page namespace: ${parser.namespace}"
-                    Napier.e(message, UnsupportedOperationException(message), "Page")
+                    Logger.e(message, UnsupportedOperationException(message), "Page")
                     null
                 }
             }?.takeIf { it.supports(manifest.type) }

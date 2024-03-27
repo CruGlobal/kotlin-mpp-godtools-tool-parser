@@ -30,9 +30,9 @@ kotlin {
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.gtoSupport.fluidsonic.locale)
+                implementation(libs.kermit)
                 implementation(libs.kustomExport)
                 implementation(libs.kustomExport.coroutines)
-                implementation(libs.napier)
             }
         }
         val androidMain by getting {

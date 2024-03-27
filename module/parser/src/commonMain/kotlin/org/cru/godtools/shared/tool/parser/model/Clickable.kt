@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -48,7 +48,7 @@ internal inline fun Clickable.parseClickableAttrs(
         when {
             !hasUriScheme -> {
                 val message = "Non-absolute uri tool: ${manifest.code} locale: ${manifest.locale} uri: $this"
-                Napier.d(message, DeprecationException(message), "Uri")
+                Logger.d(message, DeprecationException(message), "Uri")
                 toAbsoluteUriOrNull()
             }
 
