@@ -24,19 +24,3 @@ kotlin {
 antlrKotlin {
     packageName = "org.cru.godtools.shared.tool.parser.expressions.grammar.generated"
 }
-
-// Workaround an implicit dependency issue with the antlr-kotlin tasks.
-// This is related to: https://github.com/gradle/gradle/issues/25885 and https://github.com/gradle/gradle/issues/19555
-tasks.whenTaskAdded {
-    when (name) {
-        "generateDebugAndroidTestLintModel",
-        "generateDebugLintModel",
-        "generateDebugUnitTestLintModel",
-        "lintAnalyzeDebug",
-        "lintAnalyzeDebugAndroidTest",
-        "lintAnalyzeDebugUnitTest" -> {
-            dependsOn("generateAndroidInstrumentedTestGrammarSource")
-            dependsOn("generateAndroidUnitTestGrammarSource")
-        }
-    }
-}
