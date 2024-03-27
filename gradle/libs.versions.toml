@@ -30,6 +30,7 @@ goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref =
 gtoSupport-androidx-annotation = { module = "org.ccci.gto.android:gto-support-androidx-annotation", version.ref = "gtoSupport" }
 gtoSupport-androidx-test-junit = { module = "org.ccci.gto.android:gto-support-androidx-test-junit", version.ref = "gtoSupport" }
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
+kermit = "co.touchlab:kermit:2.0.3"
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -38,7 +39,6 @@ kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 turbine = "app.cash.turbine:turbine:1.1.0"

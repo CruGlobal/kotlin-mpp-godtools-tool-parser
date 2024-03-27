@@ -3,7 +3,7 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -46,7 +46,7 @@ class Image : Content, Clickable {
             resourceName == null -> null
             manifest.config.legacyWebImageResources -> {
                 val message = "tool: ${manifest.code} locale: ${manifest.locale} resource: $resourceName"
-                Napier.e(message, DeprecationException("Legacy Manifest missing Image Resource $message"), "Image")
+                Logger.e(message, DeprecationException("Legacy Manifest missing Image Resource $message"), "Image")
                 Resource(manifest, resourceName)
             }
             else -> null

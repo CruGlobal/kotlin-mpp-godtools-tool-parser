@@ -13,7 +13,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.colormath)
-                implementation(libs.napier)
+                implementation(libs.kermit)
             }
         }
         val androidMain by getting {

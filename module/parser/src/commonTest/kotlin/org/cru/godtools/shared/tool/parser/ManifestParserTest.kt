@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.tool.parser.internal.CapturingAntilog
+import org.cru.godtools.shared.tool.parser.internal.CapturingLogWriter
 import org.cru.godtools.shared.tool.parser.internal.TEST_XML_PULL_PARSER_FACTORY
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -24,12 +24,12 @@ import org.cru.godtools.shared.tool.parser.xml.XmlPullParserFactory
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class ManifestParserTest : UsesResources(null) {
-    private val logger = CapturingAntilog()
+    private val logger = CapturingLogWriter()
     private val parser = ManifestParser(TEST_XML_PULL_PARSER_FACTORY, ParserConfig())
 
     @BeforeTest
     fun setup() {
-        Napier.base(logger)
+        Logger.setLogWriters(logger)
     }
 
     @Test

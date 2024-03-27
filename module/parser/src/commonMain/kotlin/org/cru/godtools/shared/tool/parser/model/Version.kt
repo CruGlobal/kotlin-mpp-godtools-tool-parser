@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -18,7 +18,7 @@ internal value class Version private constructor(val version: List<UInt>) : Comp
         internal fun String.toVersionOrNull() = try {
             toVersion()
         } catch (e: IllegalArgumentException) {
-            Napier.e("Invalid Version: $this", e, "Version")
+            Logger.e("Version", e) { "Invalid Version: $this" }
             null
         }
     }

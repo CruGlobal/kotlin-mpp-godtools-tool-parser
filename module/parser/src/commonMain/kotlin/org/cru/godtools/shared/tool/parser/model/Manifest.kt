@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -232,7 +232,7 @@ class Manifest : BaseModel, Styles {
             parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
                 ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
                     val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
-                    Napier.e(message, DeprecationException(message), "Manifest")
+                    Logger.e(message, DeprecationException(message), "Manifest")
                 }
                 ?: DEFAULT_CONTROL_COLOR
 

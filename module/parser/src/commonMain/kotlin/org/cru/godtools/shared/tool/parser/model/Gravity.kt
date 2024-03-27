@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
@@ -59,7 +59,7 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
 
                 Gravity(horizontal ?: Horizontal.CENTER, vertical ?: Vertical.CENTER)
             } catch (e: IllegalArgumentException) {
-                Napier.e(tag = "Gravity", throwable = e, message = { "error parsing Gravity: $this" })
+                Logger.e("Gravity", e) { "error parsing Gravity: $this" }
                 null
             }
         }
