@@ -20,11 +20,7 @@ gradlePlugin {
 
 repositories {
     google()
-    maven("https://cruglobal.jfrog.io/artifactory/maven-mobile/") {
-        content {
-            includeGroup("org.cru.mobile.fork.antlr-kotlin")
-        }
-    }
+    gradlePluginPortal()
     mavenCentral()
 }
 
