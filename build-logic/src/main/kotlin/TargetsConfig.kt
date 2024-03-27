@@ -27,6 +27,7 @@ internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
 fun KotlinMultiplatformExtension.configureIosTargets() {
     iosX64 { copyTestResources() }
     iosArm64 { copyTestResources() }
+    iosSimulatorArm64 { copyTestResources() }
 
     // enable running ios tests on a background thread as well
     // configuration copied from: https://github.com/square/okio/pull/929
