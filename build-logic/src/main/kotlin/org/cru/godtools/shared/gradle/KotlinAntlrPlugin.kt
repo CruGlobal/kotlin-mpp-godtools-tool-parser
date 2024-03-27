@@ -49,7 +49,9 @@ class KotlinAntlrPlugin : Plugin<Project> {
                 }
 
             // 3) Set up the Antlr output directory (adding to javac inputs!)
-            kotlin.srcDir(generateTask.map { it.outputDirectory!! })
+            // TODO: register as a generated source once it is supported in the gradle plugin
+            //       see: https://youtrack.jetbrains.com/issue/KT-45161#focus=Comments-27-8632322.0-0
+            kotlin.srcDir(generateTask)
         }
     }
 }
