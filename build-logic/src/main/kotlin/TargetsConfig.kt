@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
@@ -27,6 +28,7 @@ internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
 fun KotlinMultiplatformExtension.configureIosTargets() {
     iosX64 { copyTestResources() }
     iosArm64 { copyTestResources() }
+    iosSimulatorArm64 { copyTestResources() }
 
     // enable running ios tests on a background thread as well
     // configuration copied from: https://github.com/square/okio/pull/929
