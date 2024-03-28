@@ -13,7 +13,6 @@ import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
-import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
@@ -108,8 +107,8 @@ class Image : Content, Clickable {
         width: Dimension = DEFAULT_WIDTH,
         events: List<EventId> = emptyList(),
         url: Uri? = null,
-        invisibleIf: Expression? = null,
-        goneIf: Expression? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         resourceName = resource
         this.gravity = gravity
