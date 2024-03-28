@@ -10,7 +10,6 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
@@ -138,16 +137,13 @@ class TextTest : UsesResources() {
 
     @Test
     fun testEqualsVisibilityExpressions() {
-        val expr1 = "var='test'".toExpressionOrNull()
-        val expr2 = "var='test'".toExpressionOrNull()
-        assertEquals(Text(goneIf = expr1), Text(goneIf = expr2))
-        assertEquals(Text(invisibleIf = expr1), Text(invisibleIf = expr2))
+        assertEquals(Text(goneIf = "var='test'"), Text(goneIf = "var='test'"))
+        assertEquals(Text(invisibleIf = "var='test'"), Text(invisibleIf = "var='test'"))
 
-        val expr3 = "var2='test'".toExpressionOrNull()
-        assertNotEquals(Text(goneIf = expr1), Text())
-        assertNotEquals(Text(goneIf = expr1), Text(goneIf = expr3))
-        assertNotEquals(Text(invisibleIf = expr1), Text())
-        assertNotEquals(Text(invisibleIf = expr1), Text(invisibleIf = expr3))
+        assertNotEquals(Text(goneIf = "var='test'"), Text())
+        assertNotEquals(Text(goneIf = "var='test'"), Text(goneIf = "var2='test'"))
+        assertNotEquals(Text(invisibleIf = "var='test'"), Text())
+        assertNotEquals(Text(invisibleIf = "var='test'"), Text(invisibleIf = "var2='test'"))
     }
 
     @Test

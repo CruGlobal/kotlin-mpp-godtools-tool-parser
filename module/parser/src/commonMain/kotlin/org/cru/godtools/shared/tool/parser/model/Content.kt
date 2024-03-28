@@ -8,6 +8,7 @@ import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_REQUIRED_VERSIONS
 import org.cru.godtools.shared.tool.parser.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.model.DeviceType.Companion.toDeviceTypes
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersionOrNull
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
@@ -64,16 +65,16 @@ abstract class Content : BaseModel, Visibility {
         requiredDeviceType: Set<DeviceType> = DeviceType.ALL,
         requiredAndroidVersion: Version? = null,
         requiredIosVersion: Version? = null,
-        invisibleIf: Expression? = null,
-        goneIf: Expression? = null
+        invisibleIf: String? = null,
+        goneIf: String? = null
     ) : super(parent) {
         this.requiredDeviceType = requiredDeviceType
         this.version = version
         this.requiredFeatures = requiredFeatures
         this.requiredAndroidVersion = requiredAndroidVersion
         this.requiredIosVersion = requiredIosVersion
-        this.invisibleIf = invisibleIf
-        this.goneIf = goneIf
+        this.invisibleIf = invisibleIf.toExpressionOrNull()
+        this.goneIf = goneIf.toExpressionOrNull()
     }
 
     /**

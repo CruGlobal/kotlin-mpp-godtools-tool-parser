@@ -13,7 +13,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
-import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.withDeviceType
 
@@ -139,16 +138,13 @@ class ImageTest : UsesResources() {
 
     @Test
     fun testEqualsVisibilityExpressions() {
-        val expr1 = "var='test'".toExpressionOrNull()
-        val expr2 = "var='test'".toExpressionOrNull()
-        assertEquals(Image(goneIf = expr1), Image(goneIf = expr2))
-        assertEquals(Image(invisibleIf = expr1), Image(invisibleIf = expr2))
+        assertEquals(Image(goneIf = "var='test'"), Image(goneIf = "var='test'"))
+        assertEquals(Image(invisibleIf = "var='test'"), Image(invisibleIf = "var='test'"))
 
-        val expr3 = "var2='test'".toExpressionOrNull()
-        assertNotEquals(Image(goneIf = expr1), Image())
-        assertNotEquals(Image(goneIf = expr1), Image(goneIf = expr3))
-        assertNotEquals(Image(invisibleIf = expr1), Image())
-        assertNotEquals(Image(invisibleIf = expr1), Image(invisibleIf = expr3))
+        assertNotEquals(Image(goneIf = "var='test'"), Image())
+        assertNotEquals(Image(goneIf = "var='test'"), Image(goneIf = "var2='test'"))
+        assertNotEquals(Image(invisibleIf = "var='test'"), Image())
+        assertNotEquals(Image(invisibleIf = "var='test'"), Image(invisibleIf = "var2='test'"))
     }
 
     @Test

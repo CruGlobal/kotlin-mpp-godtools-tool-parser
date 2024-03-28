@@ -13,7 +13,6 @@ import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
-import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
@@ -110,8 +109,8 @@ class Text : Content {
         startImageSize: Int = DEFAULT_IMAGE_SIZE,
         endImage: String? = null,
         endImageSize: Int = DEFAULT_IMAGE_SIZE,
-        invisibleIf: Expression? = null,
-        goneIf: Expression? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.text = text
         _textAlign = textAlign
