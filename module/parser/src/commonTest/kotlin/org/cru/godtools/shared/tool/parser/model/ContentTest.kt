@@ -12,7 +12,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_ANIMATION
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
-import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
@@ -128,14 +127,14 @@ class ContentTest : UsesResources() {
     // region Visibility Attributes
     @Test
     fun verifyGoneIfInvalid() {
-        with(object : Content(goneIf = "invalid".toExpressionOrNull()) {}) {
+        with(object : Content(goneIf = "invalid") {}) {
             assertTrue(isIgnored)
         }
     }
 
     @Test
     fun verifyInvisibleIfInvalid() {
-        with(object : Content(invisibleIf = "invalid".toExpressionOrNull()) {}) {
+        with(object : Content(invisibleIf = "invalid") {}) {
             assertTrue(isIgnored)
         }
     }
