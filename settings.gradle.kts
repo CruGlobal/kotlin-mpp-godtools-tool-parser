@@ -43,6 +43,7 @@ includeBuild("build-logic")
 
 include("module:analytics")
 include("module:common")
+include("module:interop")
 include("module:parser")
 include("module:parser-expressions")
 include("module:state")

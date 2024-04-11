@@ -25,9 +25,10 @@ kotlin {
     configureIosTargets()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(project(":module:analytics"))
+                api(project(":module:interop"))
                 api(project(":module:parser"))
                 api(project(":module:state"))
                 api(project(":module:user-activity"))
@@ -58,6 +59,7 @@ kotlin {
             isStatic = true
 
             export(project(":module:analytics"))
+            export(project(":module:interop"))
             export(project(":module:parser"))
             export(project(":module:state"))
             export(project(":module:user-activity"))

@@ -1,4 +1,4 @@
-package org.cru.godtools.shared.common.logging
+package org.cru.godtools.shared.interop.logging
 
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Logger
