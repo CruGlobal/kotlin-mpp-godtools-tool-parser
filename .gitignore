@@ -9,3 +9,6 @@ build/
 captures/
 out/
 local.properties
+
+# Kotlin project ignores
+.kotlin/
