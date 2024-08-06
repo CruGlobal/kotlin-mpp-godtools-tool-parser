@@ -19,6 +19,9 @@ class DimensionTest {
 
         assertNull("-1".toDimensionOrNull())
         assertNull("12a".toDimensionOrNull())
+
+        // Overflow Test
+        assertNull("999999999999999999999".toDimensionOrNull())
     }
 
     @Test
