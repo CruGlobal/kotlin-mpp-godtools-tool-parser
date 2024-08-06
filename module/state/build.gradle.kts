@@ -10,6 +10,12 @@ android {
 kotlin {
     configureJsTargets()
 
+    androidTarget {
+        compilerOptions {
+            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=org.cru.godtools.shared.tool.state.internal.Parcelize")
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
