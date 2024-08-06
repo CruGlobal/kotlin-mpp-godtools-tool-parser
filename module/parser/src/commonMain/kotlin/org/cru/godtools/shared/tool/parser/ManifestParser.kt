@@ -7,8 +7,6 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.internal.FileNotFoundException
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
@@ -43,9 +41,7 @@ sealed class ParserResult {
     class Data(val manifest: Manifest) : ParserResult()
 
     @JsName("ParserError")
-    open class Error
-    @RestrictTo(RestrictToScope.LIBRARY_GROUP)
-    constructor(val error: Throwable? = null) : ParserResult() {
+    open class Error internal constructor(val error: Throwable? = null) : ParserResult() {
         class Corrupted internal constructor(e: Exception? = null) : Error(e)
         class NotFound internal constructor(e: Exception? = null) : Error(e)
     }
