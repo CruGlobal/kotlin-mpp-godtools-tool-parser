@@ -11,13 +11,11 @@ private val REGEX_PIXELS = Regex("^[0-9]+$")
 @OptIn(ExperimentalJsExport::class)
 sealed class Dimension {
     internal companion object {
-        fun String?.toDimensionOrNull(): Dimension? {
-            return when (val trimmed = this?.trim()) {
-                null -> null
-                in REGEX_PERCENT -> trimmed.trimEnd('%').toFloatOrNull()?.let { Percent(it / 100) }
-                in REGEX_PIXELS -> trimmed.toIntOrNull()?.let { Pixels(it) }
-                else -> null
-            }
+        fun String?.toDimensionOrNull() = when (val trimmed = this?.trim()) {
+            null -> null
+            in REGEX_PERCENT -> trimmed.trimEnd('%').toFloatOrNull()?.let { Percent(it / 100) }
+            in REGEX_PIXELS -> trimmed.toIntOrNull()?.let { Pixels(it) }
+            else -> null
         }
     }
 
