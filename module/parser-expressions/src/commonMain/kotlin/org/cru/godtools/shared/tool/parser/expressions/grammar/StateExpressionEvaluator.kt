@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.expressions.grammar
 
+import org.antlr.v4.kotlinruntime.Token
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionBaseVisitor
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser.Tokens
@@ -18,7 +19,7 @@ internal class StateExpressionEvaluator(private val state: State) {
         override fun visitBooleanAtom(ctx: StateExpressionParser.BooleanAtomContext) = when (ctx.atom!!.type) {
             Tokens.TRUE -> true
             Tokens.FALSE -> false
-            else -> throw IllegalStateException()
+            else -> unexpectedToken(ctx.atom!!)
         }
 
         override fun visitEqExpr(ctx: StateExpressionParser.EqExprContext): Boolean {
@@ -27,7 +28,7 @@ internal class StateExpressionEvaluator(private val state: State) {
             return when (ctx.op!!.type) {
                 Tokens.EQ -> state.getVar(varName).contains(value)
                 Tokens.NEQ -> !state.getVar(varName).contains(value)
-                else -> throw IllegalStateException()
+                else -> unexpectedToken(ctx.op!!)
             }
         }
 
@@ -41,7 +42,7 @@ internal class StateExpressionEvaluator(private val state: State) {
                 Tokens.GTE -> left >= right
                 Tokens.LT -> left < right
                 Tokens.LTE -> left <= right
-                else -> throw IllegalStateException()
+                else -> unexpectedToken(ctx.op!!)
             }
         }
 
@@ -59,4 +60,6 @@ internal class StateExpressionEvaluator(private val state: State) {
 
         override fun defaultResult() = 0
     }
+
+    private fun unexpectedToken(token: Token): Nothing = error("Unexpected token: ${token.text}")
 }
