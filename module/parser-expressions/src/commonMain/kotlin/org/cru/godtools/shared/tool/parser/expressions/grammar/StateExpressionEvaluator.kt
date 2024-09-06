@@ -8,13 +8,13 @@ import org.cru.godtools.shared.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) {
     val booleanExpr = object : StateExpressionBaseVisitor<Boolean>() {
-        override fun visitParExpr(ctx: StateExpressionParser.ParExprContext) = ctx.expr!!.accept(this)!!
-        override fun visitNotExpr(ctx: StateExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)!!
+        override fun visitParExpr(ctx: StateExpressionParser.ParExprContext) = ctx.expr!!.accept(this)
+        override fun visitNotExpr(ctx: StateExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)
         override fun visitOrExpr(ctx: StateExpressionParser.OrExprContext) =
-            ctx.left!!.accept(this)!! || ctx.right!!.accept(this)!!
+            ctx.left!!.accept(this) || ctx.right!!.accept(this)
 
         override fun visitAndExpr(ctx: StateExpressionParser.AndExprContext) =
-            ctx.left!!.accept(this)!! && ctx.right!!.accept(this)!!
+            ctx.left!!.accept(this) && ctx.right!!.accept(this)
 
         override fun visitBooleanAtom(ctx: StateExpressionParser.BooleanAtomContext) = when (ctx.atom!!.type) {
             Tokens.TRUE -> true
@@ -33,8 +33,8 @@ internal class StateExpressionEvaluator(private val state: State) {
         }
 
         override fun visitIntCmpExpr(ctx: StateExpressionParser.IntCmpExprContext): Boolean {
-            val left = ctx.left!!.accept(intExpr)!!
-            val right = ctx.right!!.accept(intExpr)!!
+            val left = ctx.left!!.accept(intExpr)
+            val right = ctx.right!!.accept(intExpr)
             return when (ctx.op!!.type) {
                 Tokens.EQ -> left == right
                 Tokens.NEQ -> left != right
