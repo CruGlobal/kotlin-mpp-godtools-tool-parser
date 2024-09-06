@@ -47,6 +47,8 @@ internal class StateExpressionEvaluator(private val state: State) {
 
         override fun visitIsSetFunc(ctx: StateExpressionParser.IsSetFuncContext) =
             state.getVar(ctx.varName!!.text!!).isNotEmpty()
+
+        override fun defaultResult() = false
     }
 
     val intExpr = object : StateExpressionBaseVisitor<Int>() {
@@ -54,5 +56,7 @@ internal class StateExpressionEvaluator(private val state: State) {
 
         override fun visitValuesFunc(ctx: StateExpressionParser.ValuesFuncContext) =
             state.getVar(ctx.varName!!.text!!).size
+
+        override fun defaultResult() = 0
     }
 }
