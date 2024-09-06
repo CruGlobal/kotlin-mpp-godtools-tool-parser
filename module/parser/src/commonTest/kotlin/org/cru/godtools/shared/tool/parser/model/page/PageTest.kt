@@ -119,6 +119,34 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Property: parentPage
 
+    // region Property: nextPage
+    @Test
+    fun testNextPage() {
+        val manifest = Manifest(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = manifest.findPage("page1")!!
+        val page2 = manifest.findPage("page2")!!
+        assertSame(page2, page1.nextPage)
+        assertNull(page2.nextPage)
+    }
+    // endregion Property: nextPage
+
+    // region Property: previousPage
+    @Test
+    fun testPreviousPage() {
+        val manifest = Manifest(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = manifest.findPage("page1")!!
+        val page2 = manifest.findPage("page2")!!
+        assertSame(page1, page2.previousPage)
+        assertNull(page1.previousPage)
+    }
+    // endregion Property: previousPage
+
     private class TestPage(
         manifest: Manifest = Manifest(),
         multiselectOptionBackgroundColor: PlatformColor? = null,

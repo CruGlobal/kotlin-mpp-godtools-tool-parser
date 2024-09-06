@@ -116,6 +116,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     private val _parentPage: String?
     val parentPage get() = manifest.findPage(_parentPage)
+    val nextPage get() = manifest.pages.getOrNull(position + 1)
+    val previousPage get() = manifest.pages.getOrNull(position - 1)
 
     val isHidden: Boolean
 
