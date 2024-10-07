@@ -3,7 +3,6 @@ package org.cru.godtools.shared.user.activity.model
 import com.github.ajalt.colormath.Color
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.ThemeType
-import org.cru.godtools.shared.common.model.toPlatformColor
 
 data class IconColors internal constructor(
     @VisibleForTesting
@@ -15,15 +14,17 @@ data class IconColors internal constructor(
     @VisibleForTesting
     internal val containerDark: Color,
 ) {
-    fun color(mode: ThemeType) = when (mode) {
+    @Suppress("FunctionName")
+    internal fun _color(mode: ThemeType) = when (mode) {
         ThemeType.LIGHT -> light
         ThemeType.DARK -> dark
-    }.toPlatformColor()
+    }
 
-    fun containerColor(mode: ThemeType) = when (mode) {
+    @Suppress("FunctionName")
+    internal fun _containerColor(mode: ThemeType) = when (mode) {
         ThemeType.LIGHT -> containerLight
         ThemeType.DARK -> containerDark
-    }.toPlatformColor()
+    }
 
     internal fun alpha(alpha: Float) = IconColors(
         light = light.toSRGB().copy(alpha = alpha),

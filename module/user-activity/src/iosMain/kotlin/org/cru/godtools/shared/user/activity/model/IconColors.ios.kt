@@ -2,6 +2,8 @@ package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.Color
 import com.github.ajalt.colormath.model.RGB
+import org.cru.godtools.shared.common.internal.colormath.toUIColor
+import org.cru.godtools.shared.common.model.ThemeType
 
 // TODO: Until material-color-utils has an ObjC/Kotlin implementation, we just store the generated values
 internal actual fun IconColors(base: Color): IconColors = when (base.toSRGB()) {
@@ -84,3 +86,6 @@ internal actual fun IconColors(base: Color): IconColors = when (base.toSRGB()) {
 
     else -> TODO("Unsupported color: ${base.toSRGB().toHex()}")
 }
+
+fun IconColors.color(mode: ThemeType) = _color(mode).toUIColor()
+fun IconColors.containerColor(mode: ThemeType) = _containerColor(mode).toUIColor()

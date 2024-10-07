@@ -1,7 +1,9 @@
 package org.cru.godtools.shared.user.activity.model
 
 import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import com.github.ajalt.colormath.model.RGBInt
+import org.cru.godtools.shared.common.model.ThemeType
 import palettes.TonalPalette
 
 internal actual fun IconColors(base: Color): IconColors {
@@ -13,3 +15,6 @@ internal actual fun IconColors(base: Color): IconColors {
         containerDark = RGBInt(palette.tone(30).toUInt()),
     )
 }
+
+fun IconColors.color(mode: ThemeType) = _color(mode).toComposeColor()
+fun IconColors.containerColor(mode: ThemeType) = _containerColor(mode).toComposeColor()
