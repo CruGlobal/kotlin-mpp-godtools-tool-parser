@@ -2,10 +2,8 @@ package org.cru.godtools.shared.common.model
 
 import android.net.Uri as AndroidUri
 
-// HACK: Suppress expect/actual errors as workaround for differences between Android Uri and iOS NSURL
-//       see: https://discuss.kotlinlang.org/t/feature-request-typealias-for-expected-types/20054/4
-@Suppress("ACTUAL_WITHOUT_EXPECT")
-actual typealias Uri = AndroidUri
-actual val Uri.scheme: String? get() = scheme
+// TODO: switch to the Android Uri if Kotlin ever supports varying types between expect & actual
+actual typealias Uri = String
+actual val Uri.scheme get() = AndroidUri.parse(this).scheme
 
-actual fun String.toUriOrNull() = AndroidUri.parse(this)
+actual fun String.toUriOrNull(): Uri? = this
