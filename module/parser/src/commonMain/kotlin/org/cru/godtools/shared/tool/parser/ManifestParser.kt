@@ -41,7 +41,9 @@ sealed class ParserResult {
     class Data(val manifest: Manifest) : ParserResult()
 
     @JsName("ParserError")
-    open class Error internal constructor(val error: Throwable? = null) : ParserResult() {
+    open class Error protected constructor(val error: Throwable? = null) : ParserResult() {
+        internal constructor(e: Exception?) : this(e as? Throwable)
+
         class Corrupted internal constructor(e: Exception? = null) : Error(e)
         class NotFound internal constructor(e: Exception? = null) : Error(e)
     }
