@@ -16,6 +16,11 @@ kotlin {
                 implementation(libs.kermit)
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.gtoSupport.androidx.test.junit)
+            }
+        }
         val androidMain by getting {
             dependencies {
                 api(libs.colormath.jetpack.compose)

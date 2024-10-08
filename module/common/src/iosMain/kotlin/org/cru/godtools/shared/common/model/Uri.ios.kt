@@ -5,12 +5,11 @@ import platform.Foundation.NSURL
 
 @Suppress("CONFLICTING_OVERLOADS")
 actual typealias Uri = NSURL
+actual val Uri.scheme get() = scheme
 
-actual fun String?.toUriOrNull() = this?.let {
-    try {
-        NSURL(string = it)
-    } catch (e: NullPointerException) {
-        Logger.e(e) { "Error parsing URL '$it'" }
-        null
-    }
+actual fun String.toUriOrNull() = try {
+    NSURL(string = this)
+} catch (e: NullPointerException) {
+    Logger.e(e) { "Error parsing URL '$this'" }
+    null
 }
