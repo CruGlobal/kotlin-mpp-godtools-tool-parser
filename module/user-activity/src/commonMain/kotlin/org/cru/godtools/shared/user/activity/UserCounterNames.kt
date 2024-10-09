@@ -23,6 +23,7 @@ object UserCounterNames {
     fun ARTICLE_OPEN(uri: Uri) =
         "$ARTICLE_OPENS_PREFIX${uri.toString().lowercase().encodeUtf8().md5().hex().lowercase()}"
     fun LESSON_OPEN(tool: String) = "$LESSON_OPENS_PREFIX$tool".lowercase()
+    fun LESSON_COMPLETION(tool: String) = "$LESSON_COMPLETIONS_PREFIX$tool".lowercase()
     fun TOOL_OPEN(tool: String) = "$TOOL_OPENS_PREFIX$tool".lowercase()
     fun SCREEN_SHARE(tool: String) = "$SCREEN_SHARES_PREFIX$tool".lowercase()
     fun LANGUAGE_USED(locale: PlatformLocale) = LANGUAGE_USED(locale.toCommon())
