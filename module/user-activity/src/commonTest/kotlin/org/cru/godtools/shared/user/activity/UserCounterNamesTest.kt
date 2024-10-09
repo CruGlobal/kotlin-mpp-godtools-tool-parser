@@ -14,6 +14,7 @@ class UserCounterNamesTest {
     fun verifyCounterNames() {
         assertEquals("tool_opens.kgp", UserCounterNames.TOOL_OPEN("kgp"))
         assertEquals("lesson_opens.lessonhs", UserCounterNames.LESSON_OPEN("lessonhs"))
+        assertEquals("lesson_completions.lessonhs", UserCounterNames.LESSON_COMPLETION("lessonhs"))
         assertEquals("screen_shares.kgp", UserCounterNames.SCREEN_SHARE("kgp"))
         assertEquals("language_used.en", UserCounterNames.LANGUAGE_USED(Locale.forLanguageTag("en").toPlatform()))
         assertEquals(
