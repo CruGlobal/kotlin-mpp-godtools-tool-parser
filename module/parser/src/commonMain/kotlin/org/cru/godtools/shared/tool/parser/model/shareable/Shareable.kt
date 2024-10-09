@@ -40,18 +40,19 @@ sealed class Shareable : BaseModel {
         }
     }
 
-    open val id: String?
+    private val _id: String?
+    open val id get() = _id
     val order: Int
 
     constructor(parent: Base, parser: XmlPullParser) : super(parent) {
         parser.require(XmlPullParser.START_TAG, XMLNS_SHAREABLE)
-        id = parser.getAttributeValue(XML_ID)
+        _id = parser.getAttributeValue(XML_ID)
         order = parser.getAttributeValue(XML_ORDER)?.toIntOrNull() ?: DEFAULT_ORDER
     }
 
     @RestrictTo(RestrictToScope.TESTS)
     constructor(parent: Base, id: String? = null) : super(parent) {
-        this.id = id
+        _id = id
         order = DEFAULT_ORDER
     }
 }

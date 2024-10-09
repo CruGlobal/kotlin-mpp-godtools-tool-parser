@@ -24,7 +24,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Generate current TypeScript headers
-        run: ./gradlew :publish:npm:jsBrowserProductionLibraryPrepare --scan
+        run: ./gradlew :publish:npm:jsBrowserProductionLibraryDistribution --scan
       - name: Copy current TypeScript headers
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/head
@@ -33,7 +33,7 @@ jobs:
       - name: Checkout base
         run: git checkout $GITHUB_BASE_REF
       - name: Generate base TypeScript headers
-        run: ./gradlew clean :publish:npm:jsBrowserProductionLibraryPrepare --scan
+        run: ./gradlew clean :publish:npm:jsBrowserProductionLibraryDistribution --scan
       - name: Copy base TypeScript headers
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/base

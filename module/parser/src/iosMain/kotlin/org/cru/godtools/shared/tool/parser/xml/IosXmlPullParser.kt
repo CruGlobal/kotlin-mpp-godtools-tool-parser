@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.xml
 
+import kotlinx.cinterop.ObjCSignatureOverride
 import platform.Foundation.NSXMLParser
 import platform.Foundation.NSXMLParserDelegateProtocol
 import platform.darwin.NSObject
@@ -15,6 +16,7 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
             namespaces.getOrPut(didStartMappingPrefix) { mutableListOf() }.add(toURI)
         }
 
+        @ObjCSignatureOverride
         override fun parser(parser: NSXMLParser, didEndMappingPrefix: String) {
             namespaces[didEndMappingPrefix]!!.removeLast()
         }
@@ -31,6 +33,7 @@ class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
         override fun parser(parser: NSXMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) =
             enqueueEndTag(QName(namespaceURI, didEndElement))
 
+        @ObjCSignatureOverride
         override fun parser(parser: NSXMLParser, foundCharacters: String) {
             enqueueText(foundCharacters)
         }
