@@ -5,6 +5,7 @@ import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
@@ -23,10 +24,10 @@ class ContentPage : Page, Parent {
     override val content: List<Content>
 
     internal constructor(
-        manifest: Manifest,
+        container: HasPages,
         fileName: String?,
         parser: XmlPullParser
-    ) : super(manifest, fileName, parser) {
+    ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_PAGE)
         parser.requirePageType(TYPE_CONTENT)
 
@@ -47,10 +48,10 @@ class ContentPage : Page, Parent {
 
     @RestrictTo(RestrictToScope.TESTS)
     internal constructor(
-        manifest: Manifest,
+        container: HasPages,
         id: String? = null,
         parentPage: String? = null
-    ) : super(manifest, id = id, parentPage = parentPage) {
+    ) : super(container, id = id, parentPage = parentPage) {
         analyticsEvents = emptyList()
         content = emptyList()
     }

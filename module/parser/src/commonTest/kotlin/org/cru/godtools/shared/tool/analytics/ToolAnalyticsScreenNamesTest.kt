@@ -14,7 +14,7 @@ class ToolAnalyticsScreenNamesTest {
     @Test
     fun testForCyoaPage() {
         val page = ContentPage(
-            manifest = Manifest(code = "cyoa"),
+            container = Manifest(code = "cyoa"),
             id = "page"
         )
 

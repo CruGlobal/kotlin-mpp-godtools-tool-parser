@@ -18,6 +18,7 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Manifest
@@ -78,16 +79,16 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
 
-        fun parse(manifest: Manifest, fileName: String?, parser: XmlPullParser): Page? {
+        internal fun parse(container: HasPages, fileName: String?, parser: XmlPullParser): Page? {
             parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
             @Suppress("ktlint:standard:blank-line-between-when-conditions")
             return when (parser.namespace) {
-                XMLNS_LESSON -> LessonPage(manifest, fileName, parser)
-                XMLNS_TRACT -> TractPage(manifest, fileName, parser)
+                XMLNS_LESSON -> LessonPage(container, fileName, parser)
+                XMLNS_TRACT -> TractPage(container, fileName, parser)
                 XMLNS_PAGE -> when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
-                    TYPE_CARD_COLLECTION -> CardCollectionPage(manifest, fileName, parser)
-                    TYPE_CONTENT -> ContentPage(manifest, fileName, parser)
+                    TYPE_CARD_COLLECTION -> CardCollectionPage(container, fileName, parser)
+                    TYPE_CONTENT -> ContentPage(container, fileName, parser)
                     else -> {
                         val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
                         Logger.e(message, UnsupportedOperationException(message), "Page")
@@ -99,7 +100,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                     Logger.e(message, UnsupportedOperationException(message), "Page")
                     null
                 }
-            }?.takeIf { it.supports(manifest.type) }
+            }?.takeIf { it.supports(container.manifest.type) }
         }
 
         internal fun XmlPullParser.requirePageType(type: String) {
@@ -170,7 +171,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
 
-    internal constructor(manifest: Manifest, fileName: String?, parser: XmlPullParser) : super(manifest) {
+    internal constructor(container: HasPages, fileName: String?, parser: XmlPullParser) : super(container) {
         parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
         _id = parser.getAttributeValue(XML_ID)
@@ -208,7 +209,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     @RestrictTo(RestrictToScope.SUBCLASSES, RestrictToScope.TESTS)
     internal constructor(
-        manifest: Manifest = Manifest(),
+        container: HasPages = Manifest(),
         id: String? = null,
         fileName: String? = null,
         parentPage: String? = null,
@@ -223,7 +224,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         multiselectOptionSelectedColor: PlatformColor? = null,
         textColor: PlatformColor? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
-    ) : super(manifest) {
+    ) : super(container) {
         _id = id
         this.fileName = fileName
         _parentPage = parentPage

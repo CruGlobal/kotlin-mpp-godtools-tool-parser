@@ -67,7 +67,7 @@ private const val XML_TIPS_TIP_SRC = "src"
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
-class Manifest : BaseModel, Styles {
+class Manifest : BaseModel, Styles, HasPages {
     internal companion object {
         @AndroidColorInt
         internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
@@ -182,8 +182,7 @@ class Manifest : BaseModel, Styles {
 
     val aemImports: List<Uri>
     val categories: List<Category>
-    @JsName("_pages")
-    var pages: List<Page> by setOnce()
+    override var pages: List<Page> by setOnce()
         private set
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -348,7 +347,6 @@ class Manifest : BaseModel, Styles {
 
     @JsExport.Ignore
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
-    fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
     @JsExport.Ignore
     fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
     @JsExport.Ignore
@@ -422,10 +420,6 @@ class Manifest : BaseModel, Styles {
     @HiddenFromObjC
     @JsName("dismissListeners")
     val jsDismissListeners get() = dismissListeners.toTypedArray()
-
-    @HiddenFromObjC
-    @JsName("pages")
-    val jsPages get() = pages.toTypedArray()
     // endregion Kotlin/JS interop
 
     enum class Type {

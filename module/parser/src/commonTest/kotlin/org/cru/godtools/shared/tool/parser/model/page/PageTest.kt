@@ -153,7 +153,7 @@ class PageTest : UsesResources("model/page") {
         multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
     ) : Page(
-        manifest = manifest,
+        container = manifest,
         multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
         multiselectOptionSelectedColor = multiselectOptionSelectedColor,
     ) {

@@ -7,6 +7,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Gravity
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
@@ -27,10 +28,10 @@ class LessonPage : Page, Parent {
     override val content: List<Content>
 
     internal constructor(
-        manifest: Manifest,
+        container: HasPages,
         fileName: String?,
         parser: XmlPullParser
-    ) : super(manifest, fileName, parser) {
+    ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_LESSON, XML_PAGE)
 
         analyticsEvents = mutableListOf()
