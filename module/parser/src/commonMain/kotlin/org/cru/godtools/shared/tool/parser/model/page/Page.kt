@@ -49,6 +49,7 @@ import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BAC
 import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.primaryTextColor
+import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.textScale
 import org.cru.godtools.shared.tool.parser.model.toColorOrNull
