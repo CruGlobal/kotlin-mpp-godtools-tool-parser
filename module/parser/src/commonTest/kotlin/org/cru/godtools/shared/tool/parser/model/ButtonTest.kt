@@ -22,7 +22,7 @@ import org.cru.godtools.shared.tool.state.State
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ButtonTest : UsesResources() {
-    private val parent = object : BaseModel(), Styles {
+    private val parentObj = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
         override var primaryColor = TestColors.BLACK
         override var primaryTextColor = TestColors.BLACK
@@ -151,16 +151,16 @@ class ButtonTest : UsesResources() {
     // region Property - style
     @Test
     fun testButtonStyleUtilizesStylesDefault() {
-        with(Button(parent)) {
-            parent.buttonStyle = Button.Style.CONTAINED
+        with(Button(parentObj)) {
+            parentObj.buttonStyle = Button.Style.CONTAINED
             assertEquals(Button.Style.CONTAINED, style)
-            parent.buttonStyle = Button.Style.OUTLINED
+            parentObj.buttonStyle = Button.Style.OUTLINED
             assertEquals(Button.Style.OUTLINED, style)
         }
 
-        parent.buttonStyle = Button.Style.CONTAINED
-        with(Button(parent, style = Button.Style.OUTLINED)) {
-            assertNotEquals(parent.buttonStyle, style)
+        parentObj.buttonStyle = Button.Style.CONTAINED
+        with(Button(parentObj, style = Button.Style.OUTLINED)) {
+            assertNotEquals(parentObj.buttonStyle, style)
             assertEquals(Button.Style.OUTLINED, style)
         }
     }
@@ -194,17 +194,17 @@ class ButtonTest : UsesResources() {
     // region Property - text - textAlign
     @Test
     fun testButtonTextTextAlignFallbackBehavior() {
-        parent.textAlign = Text.Align.START
+        parentObj.textAlign = Text.Align.START
 
         // Buttons default to center aligned text
-        with(Button(parent, text = { Text(it) })) {
-            assertNotEquals(parent.textAlign, text.textAlign)
+        with(Button(parentObj, text = { Text(it) })) {
+            assertNotEquals(parentObj.textAlign, text.textAlign)
             assertEquals(Text.Align.CENTER, text.textAlign)
         }
 
         // Text Align can still be overridden on the text element
-        with(Button(parent, text = { Text(it, textAlign = Text.Align.END) })) {
-            assertNotEquals(parent.textAlign, text.textAlign)
+        with(Button(parentObj, text = { Text(it, textAlign = Text.Align.END) })) {
+            assertNotEquals(parentObj.textAlign, text.textAlign)
             assertEquals(Text.Align.END, text.textAlign)
         }
     }
@@ -213,39 +213,39 @@ class ButtonTest : UsesResources() {
     // region Property - text - textColor
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
-        parent.primaryColor = TestColors.RED
-        parent.primaryTextColor = TestColors.GREEN
+        parentObj.primaryColor = TestColors.RED
+        parentObj.primaryTextColor = TestColors.GREEN
 
-        with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it) })) {
-            assertNotEquals(parent.primaryColor, text.textColor)
-            assertNotEquals(parent.textColor, text.textColor)
+        with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it) })) {
+            assertNotEquals(parentObj.primaryColor, text.textColor)
+            assertNotEquals(parentObj.textColor, text.textColor)
             assertNotEquals(buttonColor, text.textColor)
-            assertEquals(parent.primaryTextColor, text.textColor)
+            assertEquals(parentObj.primaryTextColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
 
-        with(Button(parent, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
-            assertNotEquals(parent.primaryTextColor, text.textColor)
+        with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
+            assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertEquals(TestColors.BLUE, text.textColor)
         }
     }
 
     @Test
     fun testButtonTextColorFallbackBehaviorOutlined() {
-        parent.primaryColor = TestColors.RED
-        parent.primaryTextColor = TestColors.RED
+        parentObj.primaryColor = TestColors.RED
+        parentObj.primaryTextColor = TestColors.RED
 
-        with(Button(parent, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
-            assertNotEquals(parent.primaryColor, text.textColor)
-            assertNotEquals(parent.primaryTextColor, text.textColor)
-            assertNotEquals(parent.textColor, text.textColor)
+        with(Button(parentObj, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
+            assertNotEquals(parentObj.primaryColor, text.textColor)
+            assertNotEquals(parentObj.primaryTextColor, text.textColor)
+            assertNotEquals(parentObj.textColor, text.textColor)
             assertEquals(buttonColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
 
         with(
             Button(
-                parent,
+                parentObj,
                 style = Button.Style.OUTLINED,
                 color = TestColors.RED,
                 text = { Text(it, textColor = TestColors.GREEN) }
