@@ -43,3 +43,7 @@ jobs:
         with:
           base: "${{ github.workspace }}/diff/base"
           head: "${{ github.workspace }}/diff/head"
+          label: typescript-headers-changed
+          comment-header: |
+            ## Typescript headers
+          comment-body-no-diff: No changes

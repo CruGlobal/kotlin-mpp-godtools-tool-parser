@@ -41,3 +41,7 @@ jobs:
         with:
           base: "${{ github.workspace }}/diff/base"
           head: "${{ github.workspace }}/diff/head"
+          label: ios-framework-headers-changed
+          comment-header: |
+            ## iOS Framework headers
+          comment-body-no-diff: No changes
