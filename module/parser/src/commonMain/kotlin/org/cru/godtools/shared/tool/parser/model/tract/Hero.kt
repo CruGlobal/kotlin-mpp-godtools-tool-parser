@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
+import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_HEADING = "heading"

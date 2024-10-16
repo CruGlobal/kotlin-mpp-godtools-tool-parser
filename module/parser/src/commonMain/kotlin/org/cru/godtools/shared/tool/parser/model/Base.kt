@@ -14,10 +14,9 @@ interface Base {
     @get:RestrictTo(RestrictToScope.LIBRARY)
     val parent: Base? get() = null
     val manifest: Manifest
-    val stylesParent: Styles?
 }
 
 val Base?.manifest get() = this?.manifest
-val Base?.stylesParent get() = this?.stylesParent
+val Base?.stylesParent: Styles? get() = this?.parent?.let { it as? Styles ?: it.stylesParent }
 
 internal fun Base.getResource(name: String?) = manifest.getResource(name)
