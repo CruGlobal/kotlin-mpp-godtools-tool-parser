@@ -7,8 +7,6 @@ import kotlin.test.assertNull
 class StylesTest {
     private val parent by lazy {
         object : Styles {
-            override val manifest get() = TODO()
-
             override var primaryColor = TestColors.RED
             override var primaryTextColor = TestColors.RED
 

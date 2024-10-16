@@ -13,10 +13,9 @@ interface Base {
     @JsExport.Ignore
     @get:RestrictTo(RestrictToScope.LIBRARY)
     val parent: Base? get() = null
-    val manifest: Manifest
+    val manifest: Manifest get() = checkNotNull(parent?.manifest) { "No manifest found in model ancestors" }
 }
 
-val Base?.manifest get() = this?.manifest
 val Base?.stylesParent: Styles? get() = this?.parent?.let { it as? Styles ?: it.stylesParent }
 
 internal fun Base.getResource(name: String?) = manifest.getResource(name)

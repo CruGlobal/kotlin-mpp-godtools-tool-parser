@@ -38,7 +38,6 @@ import org.cru.godtools.shared.tool.parser.model.XML_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.getResource
-import org.cru.godtools.shared.tool.parser.model.manifest
 import org.cru.godtools.shared.tool.parser.model.page.Page
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
@@ -317,6 +316,6 @@ class TractPage : Page {
 }
 
 @get:AndroidColorInt
-val Card?.backgroundColor get() = this?.backgroundColor ?: manifest.backgroundColor
+val Card?.backgroundColor get() = this?.backgroundColor ?: this?.manifest.backgroundColor
 val Card?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Card.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Card?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: Card.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

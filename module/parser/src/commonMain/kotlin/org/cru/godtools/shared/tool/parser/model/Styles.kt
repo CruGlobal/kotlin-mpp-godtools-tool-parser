@@ -53,7 +53,7 @@ internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Ma
 
 // region Multiselect styles
 internal val Styles?.multiselectOptionBackgroundColor
-    get() = this?.multiselectOptionBackgroundColor ?: manifest.backgroundColor
+    get() = this?.multiselectOptionBackgroundColor ?: this?.manifest.backgroundColor
 // endregion Multiselect styles
 
 // region Text styles
