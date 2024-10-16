@@ -1,0 +1,43 @@
+name: iOS Framework Headers Diff
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ios-headers-diff:
+    runs-on: macos-14
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Generate current Framework headers
+        run: ./gradlew :linkPodReleaseFrameworkIosArm64 --scan
+      - name: Copy current Framework headers
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/diff/head
+          cp build/bin/iosArm64/podReleaseFramework/*/Headers/*.h diff/head
+      - name: Checkout base
+        run: git checkout $GITHUB_BASE_REF
+      - name: Generate base Framework headers
+        run: ./gradlew clean :linkPodReleaseFrameworkIosArm64 --scan
+      - name: Copy base Framework headers
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/diff/base
+          cp build/bin/iosArm64/podReleaseFramework/*/Headers/*.h diff/base
+      - uses: int128/diff-action@v1
+        with:
+          base: "${{ github.workspace }}/diff/base"
+          head: "${{ github.workspace }}/diff/head"
