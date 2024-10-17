@@ -48,6 +48,7 @@ import org.cru.godtools.shared.tool.parser.model.page.ContentPage.Companion.TYPE
 import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+import org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage.Companion.TYPE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
@@ -89,6 +90,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                 XMLNS_PAGE -> when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
                     TYPE_CARD_COLLECTION -> CardCollectionPage(container, fileName, parser)
                     TYPE_CONTENT -> ContentPage(container, fileName, parser)
+                    TYPE_PAGE_COLLECTION -> PageCollectionPage(container, fileName, parser)
                     else -> {
                         val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
                         Logger.e(message, UnsupportedOperationException(message), "Page")
