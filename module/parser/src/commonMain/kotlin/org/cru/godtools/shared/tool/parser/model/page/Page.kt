@@ -102,7 +102,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                     Logger.e(message, UnsupportedOperationException(message), "Page")
                     null
                 }
-            }?.takeIf { it.supports(container.manifest.type) }
+            }?.takeIf { container.supportsPageType(it::class) }
         }
 
         internal fun XmlPullParser.requirePageType(type: String) {
@@ -254,8 +254,6 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _textColor = textColor
         _textScale = textScale
     }
-
-    internal abstract fun supports(type: Manifest.Type): Boolean
 
     // region HasAnalyticsEvents
     @VisibleForTesting

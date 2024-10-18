@@ -73,8 +73,6 @@ class CardCollectionPage : Page {
         cards = emptyList()
     }
 
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA
-
     class Card : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
             internal const val XML_CARD = "card"

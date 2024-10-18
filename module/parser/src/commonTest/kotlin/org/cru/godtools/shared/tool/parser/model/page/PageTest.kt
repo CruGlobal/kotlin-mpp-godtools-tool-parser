@@ -156,7 +156,5 @@ class PageTest : UsesResources("model/page") {
         container = manifest,
         multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
         multiselectOptionSelectedColor = multiselectOptionSelectedColor,
-    ) {
-        override fun supports(type: Manifest.Type) = true
-    }
+    )
 }

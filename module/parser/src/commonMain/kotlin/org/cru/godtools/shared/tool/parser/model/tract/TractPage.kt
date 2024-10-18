@@ -134,8 +134,6 @@ class TractPage : Page {
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
 
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.TRACT
-
     fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
 
     // region Cards

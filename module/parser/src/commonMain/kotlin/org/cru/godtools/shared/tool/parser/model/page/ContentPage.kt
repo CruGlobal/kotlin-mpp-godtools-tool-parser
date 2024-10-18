@@ -6,7 +6,6 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.HasPages
-import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
 import org.cru.godtools.shared.tool.parser.model.parseContent
@@ -55,6 +54,4 @@ class ContentPage : Page, Parent {
         analyticsEvents = emptyList()
         content = emptyList()
     }
-
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA
 }

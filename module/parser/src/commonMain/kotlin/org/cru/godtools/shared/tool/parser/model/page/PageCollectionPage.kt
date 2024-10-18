@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
-import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
+import kotlin.reflect.KClass
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.HasPages
-import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -51,7 +50,7 @@ class PageCollectionPage : Page, HasPages {
                 XMLNS_PAGE -> when (name) {
                     XML_PAGE -> {
                         parse(this@PageCollectionPage, null, this@parsePages)
-                            ?.takeIf { it is ContentPage }
+                            ?.takeIf { supportsPageType(it::class) }
                             ?.let { add(it) }
                     }
                 }
@@ -59,6 +58,5 @@ class PageCollectionPage : Page, HasPages {
         }
     }
 
-    override fun supports(type: Manifest.Type) =
-        type == Manifest.Type.CYOA && manifest.config.supportsFeature(FEATURE_PAGE_COLLECTION)
+    override fun <T : Page> supportsPageType(type: KClass<T>) = type == ContentPage::class
 }

@@ -6,6 +6,7 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
+import kotlin.reflect.KClass
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +19,7 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.common.model.isHttpUrl
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
@@ -27,15 +29,20 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTI
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
+import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
+import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+import org.cru.godtools.shared.tool.parser.model.page.ContentPage
 import org.cru.godtools.shared.tool.parser.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.shared.tool.parser.model.page.Page
+import org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage
 import org.cru.godtools.shared.tool.parser.model.page.XMLNS_PAGE
 import org.cru.godtools.shared.tool.parser.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.shared.tool.parser.model.shareable.Shareable
 import org.cru.godtools.shared.tool.parser.model.shareable.Shareable.Companion.parseShareableItems
 import org.cru.godtools.shared.tool.parser.model.shareable.XMLNS_SHAREABLE
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
+import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -351,6 +358,19 @@ class Manifest : BaseModel, Styles, HasPages {
     fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
     @JsExport.Ignore
     fun findTip(id: String?) = tips[id]
+
+    override fun <T : Page> supportsPageType(type: KClass<T>) = when (this.type) {
+        Type.ARTICLE -> false
+        Type.CYOA -> when (type) {
+            CardCollectionPage::class,
+            ContentPage::class -> true
+            PageCollectionPage::class -> config.supportsFeature(FEATURE_PAGE_COLLECTION)
+            else -> false
+        }
+        Type.LESSON -> type == LessonPage::class
+        Type.TRACT -> type == TractPage::class
+        Type.UNKNOWN -> false
+    }
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)

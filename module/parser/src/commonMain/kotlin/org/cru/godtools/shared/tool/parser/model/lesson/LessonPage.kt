@@ -72,6 +72,4 @@ class LessonPage : Page, Parent {
 
         content = emptyList()
     }
-
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.LESSON
 }
