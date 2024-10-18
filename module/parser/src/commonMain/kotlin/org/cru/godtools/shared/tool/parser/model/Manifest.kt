@@ -101,8 +101,8 @@ class Manifest : BaseModel, Styles, HasPages {
                 // parse pages
                 if (config.parsePages) {
                     launch {
-                        manifest.pages = manifest.pagesToParse
-                            .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
+                        manifest.pages = manifest.pageXmlFiles
+                            .map { (name, src) -> async { Page.parse(manifest, name, parseFile(src)) } }
                             .awaitAll().filterNotNull()
                     }
                 } else {
@@ -112,8 +112,8 @@ class Manifest : BaseModel, Styles, HasPages {
                 // parse tips
                 if (config.parseTips) {
                     launch {
-                        manifest.tips = manifest.tipsToParse
-                            .map { (id, src) -> async { Tip(manifest, id, parseFile(src)) } }
+                        manifest.tips = manifest.tipXmlFiles
+                            .map { (id, src) -> async { Tip(manifest, id.orEmpty(), parseFile(src)) } }
                             .awaitAll()
                             .associateBy { it.id }
                     }
@@ -198,12 +198,12 @@ class Manifest : BaseModel, Styles, HasPages {
     internal var tips: Map<String, Tip> by setOnce()
         private set
 
-    private val pagesToParse: List<Pair<String?, String>>
-    private val tipsToParse: List<Pair<String, String>>
+    private val pageXmlFiles: List<XmlFile>
+    private val tipXmlFiles: List<XmlFile>
 
     val relatedFiles get() = buildSet {
-        addAll(pagesToParse.map { it.second })
-        addAll(tipsToParse.map { it.second })
+        addAll(pageXmlFiles.map { it.src })
+        addAll(tipXmlFiles.map { it.src })
         addAll(resources.values.mapNotNull { it.localName })
     }
 
@@ -255,8 +255,8 @@ class Manifest : BaseModel, Styles, HasPages {
         categories = mutableListOf()
         resources = mutableMapOf()
         val shareables = mutableListOf<Shareable>()
-        pagesToParse = mutableListOf()
-        tipsToParse = mutableListOf()
+        pageXmlFiles = mutableListOf()
+        tipXmlFiles = mutableListOf()
         parser.parseChildren {
             @Suppress("ktlint:standard:blank-line-between-when-conditions")
             when (parser.namespace) {
@@ -266,10 +266,10 @@ class Manifest : BaseModel, Styles, HasPages {
                     XML_PAGES -> {
                         val result = parser.parsePages()
                         aemImports += result.aemImports
-                        pagesToParse += result.pages
+                        pageXmlFiles += result.pages
                     }
                     XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
-                    XML_TIPS -> tipsToParse += parser.parseTips()
+                    XML_TIPS -> tipXmlFiles += parser.parseTips()
                 }
 
                 XMLNS_SHAREABLE -> when (parser.name) {
@@ -344,12 +344,12 @@ class Manifest : BaseModel, Styles, HasPages {
         this.shareables = shareables?.invoke(this).orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
-        pagesToParse = emptyList()
-        tipsToParse = emptyList()
+        pageXmlFiles = emptyList()
+        tipXmlFiles = emptyList()
     }
 
     override val manifest get() = this
-    val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipsToParse.isNotEmpty())
+    val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipXmlFiles.isNotEmpty())
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     @JsExport.Ignore
@@ -385,7 +385,7 @@ class Manifest : BaseModel, Styles, HasPages {
 
     private class PagesData {
         val aemImports = mutableListOf<Uri>()
-        val pages = mutableListOf<Pair<String?, String>>()
+        val pages = mutableListOf<XmlFile>()
     }
 
     private fun XmlPullParser.parsePages() = PagesData().also { result ->
@@ -398,7 +398,7 @@ class Manifest : BaseModel, Styles, HasPages {
                     XML_PAGES_PAGE -> {
                         val src = getAttributeValue(XML_PAGES_PAGE_SRC) ?: return@parseChildren
                         val fileName = getAttributeValue(XML_PAGES_PAGE_FILENAME)
-                        result.pages += fileName to src
+                        result.pages += XmlFile(fileName, src)
                     }
                 }
 
@@ -429,7 +429,7 @@ class Manifest : BaseModel, Styles, HasPages {
                     XML_TIPS_TIP -> {
                         val id = getAttributeValue(XML_TIPS_TIP_ID) ?: return@parseChildren
                         val src = getAttributeValue(XML_TIPS_TIP_SRC) ?: return@parseChildren
-                        add(id to src)
+                        add(XmlFile(id, src))
                     }
                 }
             }
@@ -462,6 +462,8 @@ class Manifest : BaseModel, Styles, HasPages {
             }
         }
     }
+
+    data class XmlFile(internal val name: String?, internal val src: String)
 }
 
 @get:AndroidColorInt
