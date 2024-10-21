@@ -99,6 +99,20 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Page.parse()
 
+    // region Property: cardBackgroundColor
+    @Test
+    fun testPropertyCardBackgroundColor() {
+        val manifest = Manifest(cardBackgroundColor = TestColors.GREEN)
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.BLUE)
+
+        assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(TestColors.GREEN, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
+        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, cardBackgroundColor = null)).cardBackgroundColor)
+        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, cardBackgroundColor = null).cardBackgroundColor)
+    }
+    // endregion Property: cardBackgroundColor
+
     // region Property: controlColor
     @Test
     fun testPropertyControlColor() {
@@ -196,6 +210,7 @@ class PageTest : UsesResources("model/page") {
 
     private class TestPage(
         parent: HasPages = Manifest(),
+        cardBackgroundColor: PlatformColor? = null,
         controlColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
@@ -204,6 +219,7 @@ class PageTest : UsesResources("model/page") {
     ) :
         Page(
             container = parent,
+            cardBackgroundColor = cardBackgroundColor,
             controlColor = controlColor,
             multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
             multiselectOptionSelectedColor = multiselectOptionSelectedColor,
