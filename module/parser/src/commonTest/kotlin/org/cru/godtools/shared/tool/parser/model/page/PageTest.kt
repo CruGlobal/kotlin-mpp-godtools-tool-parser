@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -12,6 +13,7 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
@@ -97,11 +99,25 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Page.parse()
 
+    // region Property: controlColor
+    @Test
+    fun testPropertyControlColor() {
+        val manifest = Manifest(pageControlColor = TestColors.GREEN)
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.BLUE)
+
+        assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)
+        assertEquals(TestColors.GREEN, TestPage(manifest, controlColor = null).controlColor)
+        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, controlColor = null)).controlColor)
+        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, controlColor = null).controlColor)
+    }
+    // endregion Property: controlColor
+
     // region Property: multiselectOptionBackgroundColor
     @Test
     fun testPropertyMultiselectOptionBackgroundColor() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
             multiselectOptionBackgroundColor = TestColors.GREEN,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
@@ -110,7 +126,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionBackgroundColorFallback() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
             multiselectOptionBackgroundColor = null,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
@@ -121,7 +137,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColor() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionSelectedColor = TestColors.RED),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED),
             multiselectOptionSelectedColor = TestColors.GREEN,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
@@ -130,7 +146,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColorFallback() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
             multiselectOptionSelectedColor = null,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
@@ -179,13 +195,20 @@ class PageTest : UsesResources("model/page") {
     // endregion Property: previousPage
 
     private class TestPage(
-        manifest: Manifest = Manifest(),
+        parent: HasPages = Manifest(),
+        controlColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
-    ) : Page(
-        container = manifest,
-        multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
-        multiselectOptionSelectedColor = multiselectOptionSelectedColor,
-    )
+        override val pages: List<Page> = emptyList(),
+    ) :
+        Page(
+            container = parent,
+            controlColor = controlColor,
+            multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
+            multiselectOptionSelectedColor = multiselectOptionSelectedColor,
+        ),
+        HasPages {
+        override fun <T : Page> supportsPageType(type: KClass<T>) = true
+    }
 }

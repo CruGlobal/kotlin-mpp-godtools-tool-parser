@@ -127,6 +127,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
     }
 
+    private val hasPagesParent: HasPages
+        get() {
+            var parent = parent
+            while (parent !is HasPages) parent = parent?.parent ?: return manifest
+            return parent
+        }
+
     val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
     val position by lazy { manifest.pages.indexOf(this) }
 
@@ -168,7 +175,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    internal val controlColor get() = _controlColor ?: manifest.pageControlColor
+    internal val controlColor: PlatformColor
+        get() = _controlColor ?: (hasPagesParent as? Page)?.controlColor ?: manifest.pageControlColor
 
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?
