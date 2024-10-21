@@ -195,7 +195,7 @@ class PageTest : UsesResources("model/page") {
 
     // region Property: parentPage
     @Test
-    fun testParentPage() {
+    fun testParentPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2", parentPage = "page1")) }
         )
@@ -204,11 +204,22 @@ class PageTest : UsesResources("model/page") {
         val page2 = manifest.findPage("page2")!!
         assertSame(page1, page2.parentPage)
     }
+
+    @Test
+    fun testParentPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2", parentPage = "page1")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertSame(page1, page2.parentPage)
+    }
     // endregion Property: parentPage
 
     // region Property: nextPage
     @Test
-    fun testNextPage() {
+    fun testNextPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
         )
@@ -218,17 +229,41 @@ class PageTest : UsesResources("model/page") {
         assertSame(page2, page1.nextPage)
         assertNull(page2.nextPage)
     }
+
+    @Test
+    fun testNextPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertSame(page2, page1.nextPage)
+        assertNull(page2.nextPage)
+    }
     // endregion Property: nextPage
 
     // region Property: previousPage
     @Test
-    fun testPreviousPage() {
+    fun testPreviousPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
         )
 
         val page1 = manifest.findPage("page1")!!
         val page2 = manifest.findPage("page2")!!
+        assertSame(page1, page2.previousPage)
+        assertNull(page1.previousPage)
+    }
+
+    @Test
+    fun testPreviousPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
         assertSame(page1, page2.previousPage)
         assertNull(page1.previousPage)
     }
