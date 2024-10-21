@@ -80,6 +80,23 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL_X
 
+        internal suspend fun parse(
+            container: HasPages,
+            fileName: String?,
+            parser: XmlPullParser,
+            parseFile: suspend (String) -> XmlPullParser,
+        ): Page? {
+            parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
+
+            return when (parser.namespace to parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
+                XMLNS_PAGE to TYPE_PAGE_COLLECTION -> {
+                    if (!container.supportsPageType(PageCollectionPage::class)) return null
+                    PageCollectionPage.parse(container, fileName, parser, parseFile)
+                }
+                else -> parse(container, fileName, parser)
+            }?.takeIf { container.supportsPageType(it::class) }
+        }
+
         internal fun parse(container: HasPages, fileName: String?, parser: XmlPullParser): Page? {
             parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
@@ -90,7 +107,6 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
                 XMLNS_PAGE -> when (val type = parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
                     TYPE_CARD_COLLECTION -> CardCollectionPage(container, fileName, parser)
                     TYPE_CONTENT -> ContentPage(container, fileName, parser)
-                    TYPE_PAGE_COLLECTION -> PageCollectionPage(container, fileName, parser)
                     else -> {
                         val message = "Unrecognized page type: <${parser.namespace}:${parser.name} type=$type>"
                         Logger.e(message, UnsupportedOperationException(message), "Page")

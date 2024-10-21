@@ -102,7 +102,7 @@ class Manifest : BaseModel, Styles, HasPages {
                 if (config.parsePages) {
                     launch {
                         manifest.pages = manifest.pageXmlFiles
-                            .map { (name, src) -> async { Page.parse(manifest, name, parseFile(src)) } }
+                            .map { (name, src) -> async { Page.parse(manifest, name, parseFile(src), parseFile) } }
                             .awaitAll().filterNotNull()
                     }
                 } else {
@@ -198,7 +198,7 @@ class Manifest : BaseModel, Styles, HasPages {
     internal var tips: Map<String, Tip> by setOnce()
         private set
 
-    private val pageXmlFiles: List<XmlFile>
+    internal val pageXmlFiles: List<XmlFile>
     private val tipXmlFiles: List<XmlFile>
 
     val relatedFiles get() = buildSet {
@@ -304,7 +304,8 @@ class Manifest : BaseModel, Styles, HasPages {
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
-        pages: ((Manifest) -> List<Page>)? = null
+        pages: ((Manifest) -> List<Page>)? = null,
+        pageXmlFiles: List<XmlFile> = emptyList(),
     ) {
         this.config = config
 
@@ -344,7 +345,7 @@ class Manifest : BaseModel, Styles, HasPages {
         this.shareables = shareables?.invoke(this).orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
-        pageXmlFiles = emptyList()
+        this.pageXmlFiles = pageXmlFiles
         tipXmlFiles = emptyList()
     }
 

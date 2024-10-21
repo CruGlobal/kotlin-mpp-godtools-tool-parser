@@ -1,10 +1,15 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import kotlin.reflect.KClass
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -13,12 +18,25 @@ class PageCollectionPage : Page, HasPages {
         internal const val TYPE_PAGE_COLLECTION = "page-collection"
 
         private const val XML_PAGES = "pages"
+        private const val XML_IMPORT = "import"
+        private const val XML_IMPORT_FILENAME = "filename"
+
+        internal suspend fun parse(
+            container: HasPages,
+            fileName: String?,
+            parser: XmlPullParser,
+            parseFile: suspend (String) -> XmlPullParser
+        ) = PageCollectionPage(container, fileName, parser).apply {
+            buildPagesFromParsedPages(parseFile)
+        }
     }
 
     override val analyticsEvents: List<AnalyticsEvent>
-    override val pages: List<Page>
+    private val parsedPages: List<PageOrImport>
+    override var pages: List<Page> by setOnce()
+        private set
 
-    internal constructor(
+    private constructor(
         container: HasPages,
         fileName: String?,
         parser: XmlPullParser
@@ -27,7 +45,7 @@ class PageCollectionPage : Page, HasPages {
         parser.requirePageType(TYPE_PAGE_COLLECTION)
 
         analyticsEvents = mutableListOf()
-        pages = mutableListOf()
+        parsedPages = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
@@ -35,7 +53,7 @@ class PageCollectionPage : Page, HasPages {
                 }
 
                 XMLNS_PAGE -> when (parser.name) {
-                    XML_PAGES -> pages += parser.parsePages()
+                    XML_PAGES -> parsedPages += parser.parsePages()
                 }
             }
         }
@@ -50,13 +68,32 @@ class PageCollectionPage : Page, HasPages {
                 XMLNS_PAGE -> when (name) {
                     XML_PAGE -> {
                         parse(this@PageCollectionPage, null, this@parsePages)
-                            ?.takeIf { supportsPageType(it::class) }
-                            ?.let { add(it) }
+                            ?.let { add(PageOrImport(it)) }
                     }
+                    XML_IMPORT -> add(PageOrImport(ref = getAttributeValue(XML_IMPORT_FILENAME)))
                 }
             }
         }
     }
 
+    private suspend fun buildPagesFromParsedPages(parseFile: suspend (String) -> XmlPullParser) {
+        val pageIndex by lazy { manifest.pageXmlFiles.associate { it.name to it.src } }
+
+        pages = coroutineScope {
+            parsedPages
+                .map {
+                    it.page?.let { CompletableDeferred(it) }
+                        ?: async {
+                            val pageSrc = it.ref?.let { pageIndex[it] } ?: return@async null
+                            Page.parse(this@PageCollectionPage, it.ref, parseFile(pageSrc), parseFile)
+                        }
+                }
+                .awaitAll()
+                .filterNotNull()
+        }
+    }
+
     override fun <T : Page> supportsPageType(type: KClass<T>) = type == ContentPage::class
+
+    private class PageOrImport(val page: Page? = null, val ref: String? = null)
 }

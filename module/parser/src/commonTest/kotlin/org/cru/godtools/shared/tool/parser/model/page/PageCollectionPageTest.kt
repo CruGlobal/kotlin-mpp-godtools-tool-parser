@@ -19,12 +19,18 @@ class PageCollectionPageTest : UsesResources("model/page") {
     private val manifest = Manifest(
         config = ParserConfig().withSupportedFeatures(FEATURE_PAGE_COLLECTION),
         type = Manifest.Type.CYOA,
+        pageXmlFiles = listOf(
+            Manifest.XmlFile("ref_page_valid", "page_content.xml"),
+            Manifest.XmlFile("ref_page_invalid", "page_page-collection_imports.xml"),
+        ),
     )
 
     // region Parse XML
     @Test
     fun testParsePageCollectionPage() = runTest {
-        assertNotNull(PageCollectionPage(manifest, null, getTestXmlParser("page_page-collection.xml"))) {
+        assertNotNull(
+            PageCollectionPage.parse(manifest, null, getTestXmlParser("page_page-collection.xml"), parseFile)
+        ) {
             assertEquals(1, it.analyticsEvents.size)
             assertEquals(1, it.pages.size)
             assertNotNull(it.pages[0]) { page ->
@@ -35,9 +41,21 @@ class PageCollectionPageTest : UsesResources("model/page") {
     }
 
     @Test
+    fun testParsePageCollectionPage_PageImports() = runTest {
+        assertNotNull(
+            PageCollectionPage.parse(manifest, null, getTestXmlParser("page_page-collection_imports.xml"), parseFile)
+        ) {
+            assertEquals(1, it.analyticsEvents.size)
+            assertEquals(2, it.pages.size)
+            assertEquals("embedded_content_page", it.pages[0].id)
+            assertEquals("content_page", it.pages[1].id)
+        }
+    }
+
+    @Test
     fun testParsePageCollectionPageInvalidType() = runTest {
         assertFailsWith(XmlPullParserException::class) {
-            PageCollectionPage(manifest, null, getTestXmlParser("page_invalid_type.xml"))
+            PageCollectionPage.parse(manifest, null, getTestXmlParser("page_invalid_type.xml"), parseFile)
         }
     }
     // endregion Parse XML
