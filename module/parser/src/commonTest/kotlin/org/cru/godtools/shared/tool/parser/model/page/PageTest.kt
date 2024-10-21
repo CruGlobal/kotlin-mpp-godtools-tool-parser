@@ -99,6 +99,32 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Page.parse()
 
+    // region Property: position
+    @Test
+    fun testPosition_manifest() {
+        val manifest = Manifest(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = manifest.findPage("page1")!!
+        val page2 = manifest.findPage("page2")!!
+        assertEquals(0, page1.position)
+        assertEquals(1, page2.position)
+    }
+
+    @Test
+    fun testPosition_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertEquals(0, page1.position)
+        assertEquals(1, page2.position)
+    }
+    // endregion Property: position
+
     // region Property: cardBackgroundColor
     @Test
     fun testPropertyCardBackgroundColor() {
@@ -215,7 +241,7 @@ class PageTest : UsesResources("model/page") {
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
-        override val pages: List<Page> = emptyList(),
+        pages: ((HasPages) -> List<Page>?)? = null,
     ) :
         Page(
             container = parent,
@@ -225,6 +251,7 @@ class PageTest : UsesResources("model/page") {
             multiselectOptionSelectedColor = multiselectOptionSelectedColor,
         ),
         HasPages {
+        override val pages: List<Page> = pages?.invoke(this).orEmpty()
         override fun <T : Page> supportsPageType(type: KClass<T>) = true
     }
 }

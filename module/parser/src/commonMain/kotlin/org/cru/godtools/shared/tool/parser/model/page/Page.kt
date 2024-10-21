@@ -135,7 +135,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
 
     val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
-    val position by lazy { manifest.pages.indexOf(this) }
+    val position by lazy { hasPagesParent.pages.indexOf(this) }
 
     private val _id: String?
     @VisibleForTesting
