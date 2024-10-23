@@ -21,6 +21,8 @@ class PageCollectionPage : Page, HasPages {
         private const val XML_IMPORT = "import"
         private const val XML_IMPORT_FILENAME = "filename"
 
+        const val PARENT_PARAM_ACTIVE_PAGE = "active-page"
+
         internal suspend fun parse(
             container: HasPages,
             fileName: String?,
