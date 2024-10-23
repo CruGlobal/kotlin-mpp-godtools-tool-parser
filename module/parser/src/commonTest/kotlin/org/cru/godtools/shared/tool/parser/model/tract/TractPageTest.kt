@@ -105,13 +105,6 @@ class TractPageTest : UsesResources("model/tract") {
     }
 
     @Test
-    fun testCardBackgroundColorFallbackBehavior() {
-        val manifest = Manifest(cardBackgroundColor = TestColors.BLUE)
-        assertEquals(TestColors.GREEN, TractPage(manifest, cardBackgroundColor = TestColors.GREEN).cardBackgroundColor)
-        assertEquals(manifest.cardBackgroundColor, TractPage(manifest).cardBackgroundColor)
-    }
-
-    @Test
     fun testCardTextColorBehavior() {
         with(TractPage(textColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, cardTextColor)

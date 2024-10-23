@@ -31,6 +31,7 @@ data class ParserConfig private constructor(
         const val FEATURE_CONTENT_CARD = "content_card"
         const val FEATURE_FLOW = "flow"
         const val FEATURE_MULTISELECT = "multiselect"
+        const val FEATURE_PAGE_COLLECTION = "page-collection"
         internal const val FEATURE_REQUIRED_VERSIONS = "required-versions"
     }
 

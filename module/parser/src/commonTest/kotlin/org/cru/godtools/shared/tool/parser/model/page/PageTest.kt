@@ -1,15 +1,20 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
@@ -44,6 +49,35 @@ class PageTest : UsesResources("model/page") {
     }
 
     @Test
+    fun testParsePageCollectionPage() = runTest {
+        val config = ParserConfig().withSupportedFeatures(FEATURE_PAGE_COLLECTION)
+        assertIs<PageCollectionPage>(
+            Page.parse(
+                Manifest(config = config, type = Manifest.Type.CYOA),
+                null,
+                getTestXmlParser("page_page-collection.xml"),
+                parseFile,
+            ),
+        )
+        assertNull(
+            Page.parse(
+                Manifest(type = Manifest.Type.CYOA),
+                null,
+                getTestXmlParser("page_page-collection.xml"),
+                parseFile,
+            ),
+        )
+        assertNull(
+            Page.parse(
+                Manifest(config = config, type = Manifest.Type.LESSON),
+                null,
+                getTestXmlParser("page_page-collection.xml"),
+                parseFile,
+            ),
+        )
+    }
+
+    @Test
     fun testParseTractPage() = runTest {
         assertIs<TractPage>(
             Page.parse(Manifest(type = Manifest.Type.TRACT), null, getTestXmlParser("../tract/page.xml"))
@@ -64,13 +98,100 @@ class PageTest : UsesResources("model/page") {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_namespace.xml")))
         }
     }
+
+    @Test
+    fun testParseParentPage() = runTest {
+        val manifest = Manifest(
+            type = Manifest.Type.CYOA,
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent_override.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+    }
+
+    @Test
+    fun testParseParentPage_pageCollection() = runTest {
+        val manifest = Manifest(
+            config = ParserConfig().withSupportedFeatures(FEATURE_PAGE_COLLECTION),
+            type = Manifest.Type.CYOA,
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) },
+        )
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent_override.xml"))) {
+            assertSame(manifest.findPage("page2"), it.parentPage)
+            assertEquals(mapOf("param" to "value2"), it.parentPageParams)
+        }
+    }
     // endregion Page.parse()
+
+    // region Property: position
+    @Test
+    fun testPosition_manifest() {
+        val manifest = Manifest(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = manifest.findPage("page1")!!
+        val page2 = manifest.findPage("page2")!!
+        assertEquals(0, page1.position)
+        assertEquals(1, page2.position)
+    }
+
+    @Test
+    fun testPosition_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertEquals(0, page1.position)
+        assertEquals(1, page2.position)
+    }
+    // endregion Property: position
+
+    // region Property: cardBackgroundColor
+    @Test
+    fun testPropertyCardBackgroundColor() {
+        val manifest = Manifest(cardBackgroundColor = TestColors.GREEN)
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.BLUE)
+
+        assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(TestColors.GREEN, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
+        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, cardBackgroundColor = null)).cardBackgroundColor)
+        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, cardBackgroundColor = null).cardBackgroundColor)
+    }
+    // endregion Property: cardBackgroundColor
+
+    // region Property: controlColor
+    @Test
+    fun testPropertyControlColor() {
+        val manifest = Manifest(pageControlColor = TestColors.GREEN)
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.BLUE)
+
+        assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)
+        assertEquals(TestColors.GREEN, TestPage(manifest, controlColor = null).controlColor)
+        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, controlColor = null)).controlColor)
+        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, controlColor = null).controlColor)
+    }
+    // endregion Property: controlColor
 
     // region Property: multiselectOptionBackgroundColor
     @Test
     fun testPropertyMultiselectOptionBackgroundColor() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
             multiselectOptionBackgroundColor = TestColors.GREEN,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
@@ -79,7 +200,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionBackgroundColorFallback() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
             multiselectOptionBackgroundColor = null,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
@@ -90,7 +211,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColor() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionSelectedColor = TestColors.RED),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED),
             multiselectOptionSelectedColor = TestColors.GREEN,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
@@ -99,7 +220,7 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColorFallback() {
         val page = TestPage(
-            manifest = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
             multiselectOptionSelectedColor = null,
         )
         assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
@@ -108,7 +229,7 @@ class PageTest : UsesResources("model/page") {
 
     // region Property: parentPage
     @Test
-    fun testParentPage() {
+    fun testParentPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2", parentPage = "page1")) }
         )
@@ -117,11 +238,104 @@ class PageTest : UsesResources("model/page") {
         val page2 = manifest.findPage("page2")!!
         assertSame(page1, page2.parentPage)
     }
+
+    @Test
+    fun testParentPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2", parentPage = "page1")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertSame(page1, page2.parentPage)
+    }
+
+    @Test
+    fun testParentPage_restrictToCurrentContainer() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1") {
+                        listOf(
+                            TestPage(it, id = "page1_1"),
+
+                            TestPage(it, id = "test1", parentPage = "page1_1"),
+                            TestPage(it, id = "test2", parentPage = "page2"),
+                        )
+                    },
+                    TestPage(it, id = "page2"),
+
+                    // parentPage tests
+                    TestPage(it, id = "test3", parentPage = "page1"),
+                    TestPage(it, id = "test4", parentPage = "page1_1"),
+                )
+            },
+        )
+        val page1 = manifest.findPage("page1") as TestPage
+        val page11 = page1.findPage("page1_1")!!
+
+        assertSame(page11, page1.findPage("test1")!!.parentPage)
+        assertNull(page1.findPage("test2")!!.parentPage, "page2 is not in the same page container as test2")
+        assertSame(page1, manifest.findPage("test3")!!.parentPage)
+        assertNull(manifest.findPage("test4")!!.parentPage, "page1_1 is not in the same page container as test4")
+    }
+
+    @Test
+    fun testParentPage_hasParams() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1"),
+
+                    // parentPage tests
+                    TestPage(it, id = "test1", parentPage = "page1"),
+                    TestPage(it, id = "test2", parentPage = "page1?active-page=page1_2"),
+                    TestPage(it, id = "test3", parentPage = "page1?active-page=page2"),
+                    TestPage(it, id = "test4", parentPage = "missing?active-page=page2"),
+                )
+            },
+        )
+        val page1 = manifest.findPage("page1")!!
+
+        assertSame(page1, manifest.findPage("test1")!!.parentPage)
+        assertSame(page1, manifest.findPage("test2")!!.parentPage)
+        assertSame(page1, manifest.findPage("test3")!!.parentPage)
+        assertNull(manifest.findPage("test4")!!.parentPage, "missing doesn't exist")
+    }
     // endregion Property: parentPage
+
+    // region Property: parentPageParams
+    @Test
+    fun testParentPageParams() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1"),
+
+                    TestPage(it, id = "test1", parentPage = "page1"),
+                    TestPage(it, id = "test2", parentPage = "page1?active-page=page1_2"),
+                    TestPage(it, id = "test3", parentPage = "page1?a=1&c=3&b=2"),
+                    TestPage(it, id = "test4", parentPage = null),
+                    TestPage(it, id = "test5", parentPage = "missing?active-page=page2"),
+                )
+            },
+        )
+
+        assertEquals(emptyMap(), manifest.findPage("test1")!!.parentPageParams)
+        assertEquals(mapOf("active-page" to "page1_2"), manifest.findPage("test2")!!.parentPageParams)
+        assertEquals(mapOf("a" to "1", "b" to "2", "c" to "3"), manifest.findPage("test3")!!.parentPageParams)
+        assertEquals(emptyMap(), manifest.findPage("test4")!!.parentPageParams)
+        assertEquals(
+            emptyMap(),
+            manifest.findPage("test5")!!.parentPageParams,
+            "Don't parse parameters if the parentPage doesn't exist",
+        )
+    }
+    // endregion Property: parentPageParams
 
     // region Property: nextPage
     @Test
-    fun testNextPage() {
+    fun testNextPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
         )
@@ -131,11 +345,23 @@ class PageTest : UsesResources("model/page") {
         assertSame(page2, page1.nextPage)
         assertNull(page2.nextPage)
     }
+
+    @Test
+    fun testNextPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertSame(page2, page1.nextPage)
+        assertNull(page2.nextPage)
+    }
     // endregion Property: nextPage
 
     // region Property: previousPage
     @Test
-    fun testPreviousPage() {
+    fun testPreviousPage_manifest() {
         val manifest = Manifest(
             pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
         )
@@ -145,18 +371,42 @@ class PageTest : UsesResources("model/page") {
         assertSame(page1, page2.previousPage)
         assertNull(page1.previousPage)
     }
+
+    @Test
+    fun testPreviousPage_hasPagesParent() {
+        val parent = TestPage(
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+
+        val page1 = parent.findPage("page1")!!
+        val page2 = parent.findPage("page2")!!
+        assertSame(page1, page2.previousPage)
+        assertNull(page1.previousPage)
+    }
     // endregion Property: previousPage
 
     private class TestPage(
-        manifest: Manifest = Manifest(),
+        parent: HasPages = Manifest(),
+        id: String? = null,
+        parentPage: String? = null,
+        cardBackgroundColor: PlatformColor? = null,
+        controlColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
-    ) : Page(
-        manifest = manifest,
-        multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
-        multiselectOptionSelectedColor = multiselectOptionSelectedColor,
-    ) {
-        override fun supports(type: Manifest.Type) = true
+        pages: ((HasPages) -> List<Page>) = { listOf() },
+    ) :
+        Page(
+            container = parent,
+            id = id,
+            parentPage = parentPage,
+            cardBackgroundColor = cardBackgroundColor,
+            controlColor = controlColor,
+            multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
+            multiselectOptionSelectedColor = multiselectOptionSelectedColor,
+        ),
+        HasPages {
+        override val pages: List<Page> = pages(this)
+        override fun <T : Page> supportsPageType(type: KClass<T>) = true
     }
 }

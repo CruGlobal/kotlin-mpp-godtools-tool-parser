@@ -19,6 +19,7 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Manifest
@@ -66,10 +67,10 @@ class TractPage : Page {
     val callToAction: CallToAction
 
     internal constructor(
-        manifest: Manifest,
+        container: HasPages,
         fileName: String?,
         parser: XmlPullParser
-    ) : super(manifest, fileName, parser) {
+    ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
 
         _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
@@ -132,8 +133,6 @@ class TractPage : Page {
         modals = emptyList()
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
-
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.TRACT
 
     fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
 

@@ -13,10 +13,15 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.ccci.gto.support.fluidsonic.locale.toCommon
 import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
+import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
+import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+import org.cru.godtools.shared.tool.parser.model.page.ContentPage
 import org.cru.godtools.shared.tool.parser.model.page.DEFAULT_CONTROL_COLOR
+import org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage
 import org.cru.godtools.shared.tool.parser.model.shareable.ShareableImage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
@@ -201,6 +206,7 @@ class ManifestTest : UsesResources() {
         Manifest.parse(name, config) { getTestXmlParser(it) }
     // endregion parse Manifest
 
+    // region HasPages
     @Test
     fun testManifestFindPage() {
         val manifest = Manifest(code = "tool", pages = { manifest -> List(10) { TractPage(manifest) } })
@@ -209,6 +215,51 @@ class ManifestTest : UsesResources() {
             assertSame(page, manifest.findPage(page.id))
         }
     }
+
+    // region HasPages.supportsPageType()
+    @Test
+    fun testManifestSupportsPageType_Article() {
+        val manifest = Manifest(type = Manifest.Type.ARTICLE)
+        assertFalse(manifest.supportsPageType(ContentPage::class))
+        assertFalse(manifest.supportsPageType(LessonPage::class))
+        assertFalse(manifest.supportsPageType(TractPage::class))
+    }
+
+    @Test
+    fun testManifestSupportsPageType_Cyoa() {
+        val manifest = Manifest(
+            config = ParserConfig().withSupportedFeatures(FEATURE_PAGE_COLLECTION),
+            type = Manifest.Type.CYOA
+        )
+        assertTrue(manifest.supportsPageType(ContentPage::class))
+        assertTrue(manifest.supportsPageType(CardCollectionPage::class))
+        assertTrue(manifest.supportsPageType(PageCollectionPage::class))
+        assertFalse(manifest.supportsPageType(LessonPage::class))
+        assertFalse(manifest.supportsPageType(TractPage::class))
+
+        assertFalse(
+            Manifest(type = Manifest.Type.CYOA).supportsPageType(PageCollectionPage::class),
+            "PageCollectionPages are only supported when the feature is enabled",
+        )
+    }
+
+    @Test
+    fun testManifestSupportsPageType_Lesson() {
+        val manifest = Manifest(type = Manifest.Type.LESSON)
+        assertTrue(manifest.supportsPageType(LessonPage::class))
+        assertFalse(manifest.supportsPageType(ContentPage::class))
+        assertFalse(manifest.supportsPageType(TractPage::class))
+    }
+
+    @Test
+    fun testManifestSupportsPageType_Tract() {
+        val manifest = Manifest(type = Manifest.Type.TRACT)
+        assertTrue(manifest.supportsPageType(TractPage::class))
+        assertFalse(manifest.supportsPageType(ContentPage::class))
+        assertFalse(manifest.supportsPageType(LessonPage::class))
+    }
+    // endregion Manifest.supportsPageType()
+    // endregion HasPages
 
     @Test
     fun testManifestFindShareable() {

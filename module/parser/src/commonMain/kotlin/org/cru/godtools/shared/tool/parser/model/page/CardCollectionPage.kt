@@ -9,6 +9,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
+import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
@@ -32,10 +33,10 @@ class CardCollectionPage : Page {
     val cards: List<Card>
 
     internal constructor(
-        manifest: Manifest,
+        container: HasPages,
         fileName: String?,
         parser: XmlPullParser
-    ) : super(manifest, fileName, parser) {
+    ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_PAGE)
         parser.requirePageType(TYPE_CARD_COLLECTION)
 
@@ -71,8 +72,6 @@ class CardCollectionPage : Page {
         analyticsEvents = emptyList()
         cards = emptyList()
     }
-
-    override fun supports(type: Manifest.Type) = type == Manifest.Type.CYOA
 
     class Card : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
