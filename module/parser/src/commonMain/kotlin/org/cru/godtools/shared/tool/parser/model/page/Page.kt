@@ -127,7 +127,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
     }
 
-    private val hasPagesParent: HasPages
+    private val parentPageContainer: HasPages
         get() {
             var parent = parent
             while (parent !is HasPages) parent = parent?.parent ?: return manifest
@@ -135,16 +135,24 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         }
 
     val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
-    val position by lazy { hasPagesParent.pages.indexOf(this) }
+    val position by lazy { parentPageContainer.pages.indexOf(this) }
 
     private val _id: String?
     @VisibleForTesting
     internal val fileName: String?
 
     private val _parentPage: String?
-    val parentPage get() = hasPagesParent.findPage(_parentPage)
-    val nextPage get() = hasPagesParent.pages.getOrNull(position + 1)
-    val previousPage get() = hasPagesParent.pages.getOrNull(position - 1)
+    val parentPage get() = parentPageContainer.findPage(_parentPage?.substringBefore("?"))
+    val parentPageParams get() = when {
+        parentPage == null -> emptyMap()
+        else -> _parentPage.orEmpty().substringAfter("?", "")
+            .split("&")
+            .mapNotNull { it.split("=", limit = 2).takeIf { it.size == 2 } }
+            .associate { (key, value) -> key to value }
+    }
+
+    val nextPage get() = parentPageContainer.pages.getOrNull(position + 1)
+    val previousPage get() = parentPageContainer.pages.getOrNull(position - 1)
 
     val isHidden: Boolean
 
@@ -176,7 +184,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
     internal val controlColor: PlatformColor
-        get() = _controlColor ?: (hasPagesParent as? Page)?.controlColor ?: manifest.pageControlColor
+        get() = _controlColor ?: (parentPageContainer as? Page)?.controlColor ?: manifest.pageControlColor
 
     @AndroidColorInt
     private val _cardBackgroundColor: PlatformColor?

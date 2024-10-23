@@ -215,7 +215,89 @@ class PageTest : UsesResources("model/page") {
         val page2 = parent.findPage("page2")!!
         assertSame(page1, page2.parentPage)
     }
+
+    @Test
+    fun testParentPage_restrictToCurrentContainer() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1") {
+                        listOf(
+                            TestPage(it, id = "page1_1"),
+
+                            TestPage(it, id = "test1", parentPage = "page1_1"),
+                            TestPage(it, id = "test2", parentPage = "page2"),
+                        )
+                    },
+                    TestPage(it, id = "page2"),
+
+                    // parentPage tests
+                    TestPage(it, id = "test3", parentPage = "page1"),
+                    TestPage(it, id = "test4", parentPage = "page1_1"),
+                )
+            },
+        )
+        val page1 = manifest.findPage("page1") as TestPage
+        val page11 = page1.findPage("page1_1")!!
+
+        assertSame(page11, page1.findPage("test1")!!.parentPage)
+        assertNull(page1.findPage("test2")!!.parentPage, "page2 is not in the same page container as test2")
+        assertSame(page1, manifest.findPage("test3")!!.parentPage)
+        assertNull(manifest.findPage("test4")!!.parentPage, "page1_1 is not in the same page container as test4")
+    }
+
+    @Test
+    fun testParentPage_hasParams() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1"),
+
+                    // parentPage tests
+                    TestPage(it, id = "test1", parentPage = "page1"),
+                    TestPage(it, id = "test2", parentPage = "page1?active-page=page1_2"),
+                    TestPage(it, id = "test3", parentPage = "page1?active-page=page2"),
+                    TestPage(it, id = "test4", parentPage = "missing?active-page=page2"),
+                )
+            },
+        )
+        val page1 = manifest.findPage("page1")!!
+
+        assertSame(page1, manifest.findPage("test1")!!.parentPage)
+        assertSame(page1, manifest.findPage("test2")!!.parentPage)
+        assertSame(page1, manifest.findPage("test3")!!.parentPage)
+        assertNull(manifest.findPage("test4")!!.parentPage, "missing doesn't exist")
+    }
     // endregion Property: parentPage
+
+    // region Property: parentPageParams
+    @Test
+    fun testParentPageParams() {
+        val manifest = Manifest(
+            pages = {
+                listOf(
+                    TestPage(it, id = "page1"),
+
+                    TestPage(it, id = "test1", parentPage = "page1"),
+                    TestPage(it, id = "test2", parentPage = "page1?active-page=page1_2"),
+                    TestPage(it, id = "test3", parentPage = "page1?a=1&c=3&b=2"),
+                    TestPage(it, id = "test4", parentPage = null),
+                    TestPage(it, id = "test5", parentPage = "missing?active-page=page2"),
+                )
+            },
+        )
+
+        assertEquals(emptyMap(), manifest.findPage("test1")!!.parentPageParams)
+        assertEquals(mapOf("active-page" to "page1_2"), manifest.findPage("test2")!!.parentPageParams)
+        assertEquals(mapOf("a" to "1", "b" to "2", "c" to "3"), manifest.findPage("test3")!!.parentPageParams)
+        assertEquals(emptyMap(), manifest.findPage("test4")!!.parentPageParams)
+        assertEquals(
+            emptyMap(),
+            manifest.findPage("test5")!!.parentPageParams,
+            "Don't parse parameters if the parentPage doesn't exist",
+        )
+    }
+    // endregion Property: parentPageParams
 
     // region Property: nextPage
     @Test
@@ -271,22 +353,26 @@ class PageTest : UsesResources("model/page") {
 
     private class TestPage(
         parent: HasPages = Manifest(),
+        id: String? = null,
+        parentPage: String? = null,
         cardBackgroundColor: PlatformColor? = null,
         controlColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
-        pages: ((HasPages) -> List<Page>?)? = null,
+        pages: ((HasPages) -> List<Page>) = { listOf() },
     ) :
         Page(
             container = parent,
+            id = id,
+            parentPage = parentPage,
             cardBackgroundColor = cardBackgroundColor,
             controlColor = controlColor,
             multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,
             multiselectOptionSelectedColor = multiselectOptionSelectedColor,
         ),
         HasPages {
-        override val pages: List<Page> = pages?.invoke(this).orEmpty()
+        override val pages: List<Page> = pages(this)
         override fun <T : Page> supportsPageType(type: KClass<T>) = true
     }
 }
