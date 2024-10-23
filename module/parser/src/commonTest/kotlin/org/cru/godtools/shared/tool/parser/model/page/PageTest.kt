@@ -4,6 +4,7 @@ import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlinx.coroutines.test.runTest
@@ -95,6 +96,39 @@ class PageTest : UsesResources("model/page") {
     fun testParseInvalidPageNamespace() = runTest {
         Manifest.Type.values().forEach {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_namespace.xml")))
+        }
+    }
+
+    @Test
+    fun testParseParentPage() = runTest {
+        val manifest = Manifest(
+            type = Manifest.Type.CYOA,
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) }
+        )
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent_override.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+    }
+
+    @Test
+    fun testParseParentPage_pageCollection() = runTest {
+        val manifest = Manifest(
+            config = ParserConfig().withSupportedFeatures(FEATURE_PAGE_COLLECTION),
+            type = Manifest.Type.CYOA,
+            pages = { listOf(ContentPage(it, id = "page1"), ContentPage(it, id = "page2")) },
+        )
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent.xml"))) {
+            assertSame(manifest.findPage("page1"), it.parentPage)
+            assertEquals(mapOf("param" to "value"), it.parentPageParams)
+        }
+        assertNotNull(Page.parse(manifest, null, getTestXmlParser("page_content_parent_override.xml"))) {
+            assertSame(manifest.findPage("page2"), it.parentPage)
+            assertEquals(mapOf("param" to "value2"), it.parentPageParams)
         }
     }
     // endregion Page.parse()

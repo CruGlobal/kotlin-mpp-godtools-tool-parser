@@ -1,0 +1,6 @@
+<page xmlns="https://mobile-content-api.cru.org/xmlns/page"
+    xmlns:cyoa="https://mobile-content-api.cru.org/xmlns/cyoa"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="content"
+    cyoa:parent="page1?param=value">
+    <content />
+</page>

@@ -9,6 +9,7 @@ import kotlin.native.HiddenFromObjC
 import org.ccci.gto.support.androidx.annotation.RestrictTo
 import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -71,6 +72,8 @@ private const val XML_HIDDEN = "hidden"
 abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal companion object {
         internal const val XML_PAGE = "page"
+
+        private const val XML_PARENT_PAGE_COLLECTION_OVERRIDE = "parent_override_page-collection"
 
         @AndroidColorInt
         @VisibleForTesting
@@ -210,7 +213,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _id = parser.getAttributeValue(XML_ID)
         this.fileName = fileName
-        _parentPage = parser.getAttributeValue(XMLNS_CYOA, XML_PARENT)
+        _parentPage =
+            parser.getAttributeValue(XMLNS_CYOA, XML_PARENT_PAGE_COLLECTION_OVERRIDE)
+                ?.takeIf { manifest.config.supportsFeature(FEATURE_PAGE_COLLECTION) }
+                ?: parser.getAttributeValue(XMLNS_CYOA, XML_PARENT)
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
 
