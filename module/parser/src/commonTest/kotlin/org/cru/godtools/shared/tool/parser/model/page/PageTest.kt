@@ -87,14 +87,14 @@ class PageTest : UsesResources("model/page") {
 
     @Test
     fun testParseInvalidPageType() = runTest {
-        Manifest.Type.values().forEach {
+        Manifest.Type.entries.forEach {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_type.xml")))
         }
     }
 
     @Test
     fun testParseInvalidPageNamespace() = runTest {
-        Manifest.Type.values().forEach {
+        Manifest.Type.entries.forEach {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_namespace.xml")))
         }
     }
