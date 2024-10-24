@@ -56,7 +56,6 @@ kotlin {
         val frameworkBaseName = "GodToolsToolParser"
         framework {
             baseName = frameworkBaseName
-            isStatic = true
 
             export(project(":module:analytics"))
             export(project(":module:interop"))
