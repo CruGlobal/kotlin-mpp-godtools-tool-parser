@@ -6,6 +6,7 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
+import kotlin.reflect.KClass
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +19,7 @@ import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.common.model.isHttpUrl
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
@@ -27,15 +29,20 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTI
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
+import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
+import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+import org.cru.godtools.shared.tool.parser.model.page.ContentPage
 import org.cru.godtools.shared.tool.parser.model.page.DEFAULT_CONTROL_COLOR
 import org.cru.godtools.shared.tool.parser.model.page.Page
+import org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage
 import org.cru.godtools.shared.tool.parser.model.page.XMLNS_PAGE
 import org.cru.godtools.shared.tool.parser.model.page.XML_CONTROL_COLOR
 import org.cru.godtools.shared.tool.parser.model.shareable.Shareable
 import org.cru.godtools.shared.tool.parser.model.shareable.Shareable.Companion.parseShareableItems
 import org.cru.godtools.shared.tool.parser.model.shareable.XMLNS_SHAREABLE
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
+import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -67,7 +74,7 @@ private const val XML_TIPS_TIP_SRC = "src"
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
-class Manifest : BaseModel, Styles {
+class Manifest : BaseModel, Styles, HasPages {
     internal companion object {
         @AndroidColorInt
         internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
@@ -94,8 +101,8 @@ class Manifest : BaseModel, Styles {
                 // parse pages
                 if (config.parsePages) {
                     launch {
-                        manifest.pages = manifest.pagesToParse
-                            .map { (fileName, src) -> async { Page.parse(manifest, fileName, parseFile(src)) } }
+                        manifest.pages = manifest.pageXmlFiles
+                            .map { (name, src) -> async { Page.parse(manifest, name, parseFile(src), parseFile) } }
                             .awaitAll().filterNotNull()
                     }
                 } else {
@@ -105,8 +112,8 @@ class Manifest : BaseModel, Styles {
                 // parse tips
                 if (config.parseTips) {
                     launch {
-                        manifest.tips = manifest.tipsToParse
-                            .map { (id, src) -> async { Tip(manifest, id, parseFile(src)) } }
+                        manifest.tips = manifest.tipXmlFiles
+                            .map { (id, src) -> async { Tip(manifest, id.orEmpty(), parseFile(src)) } }
                             .awaitAll()
                             .associateBy { it.id }
                     }
@@ -182,8 +189,7 @@ class Manifest : BaseModel, Styles {
 
     val aemImports: List<Uri>
     val categories: List<Category>
-    @JsName("_pages")
-    var pages: List<Page> by setOnce()
+    override var pages: List<Page> by setOnce()
         private set
     @VisibleForTesting
     internal val resources: Map<String?, Resource>
@@ -192,12 +198,12 @@ class Manifest : BaseModel, Styles {
     internal var tips: Map<String, Tip> by setOnce()
         private set
 
-    private val pagesToParse: List<Pair<String?, String>>
-    private val tipsToParse: List<Pair<String, String>>
+    internal val pageXmlFiles: List<XmlFile>
+    private val tipXmlFiles: List<XmlFile>
 
     val relatedFiles get() = buildSet {
-        addAll(pagesToParse.map { it.second })
-        addAll(tipsToParse.map { it.second })
+        addAll(pageXmlFiles.map { it.src })
+        addAll(tipXmlFiles.map { it.src })
         addAll(resources.values.mapNotNull { it.localName })
     }
 
@@ -249,8 +255,8 @@ class Manifest : BaseModel, Styles {
         categories = mutableListOf()
         resources = mutableMapOf()
         val shareables = mutableListOf<Shareable>()
-        pagesToParse = mutableListOf()
-        tipsToParse = mutableListOf()
+        pageXmlFiles = mutableListOf()
+        tipXmlFiles = mutableListOf()
         parser.parseChildren {
             @Suppress("ktlint:standard:blank-line-between-when-conditions")
             when (parser.namespace) {
@@ -260,10 +266,10 @@ class Manifest : BaseModel, Styles {
                     XML_PAGES -> {
                         val result = parser.parsePages()
                         aemImports += result.aemImports
-                        pagesToParse += result.pages
+                        pageXmlFiles += result.pages
                     }
                     XML_RESOURCES -> resources += parser.parseResources().associateBy { it.name }
-                    XML_TIPS -> tipsToParse += parser.parseTips()
+                    XML_TIPS -> tipXmlFiles += parser.parseTips()
                 }
 
                 XMLNS_SHAREABLE -> when (parser.name) {
@@ -298,7 +304,8 @@ class Manifest : BaseModel, Styles {
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
-        pages: ((Manifest) -> List<Page>)? = null
+        pages: ((Manifest) -> List<Page>)? = null,
+        pageXmlFiles: List<XmlFile> = emptyList(),
     ) {
         this.config = config
 
@@ -338,21 +345,33 @@ class Manifest : BaseModel, Styles {
         this.shareables = shareables?.invoke(this).orEmpty()
         this.tips = tips?.invoke(this)?.associateBy { it.id }.orEmpty()
 
-        pagesToParse = emptyList()
-        tipsToParse = emptyList()
+        this.pageXmlFiles = pageXmlFiles
+        tipXmlFiles = emptyList()
     }
 
     override val manifest get() = this
-    val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipsToParse.isNotEmpty())
+    val hasTips get() = tips.isNotEmpty() || (!config.parseTips && tipXmlFiles.isNotEmpty())
     internal fun getResource(name: String?) = name?.let { resources[name] }
 
     @JsExport.Ignore
     fun findCategory(category: String?) = categories.firstOrNull { it.id == category }
-    fun findPage(id: String?) = id?.let { pages.firstOrNull { it.id == id } }
     @JsExport.Ignore
     fun findShareable(id: String?) = id?.let { shareables.firstOrNull { it.id == id } }
     @JsExport.Ignore
     fun findTip(id: String?) = tips[id]
+
+    override fun <T : Page> supportsPageType(type: KClass<T>) = when (this.type) {
+        Type.ARTICLE -> false
+        Type.CYOA -> when (type) {
+            CardCollectionPage::class,
+            ContentPage::class -> true
+            PageCollectionPage::class -> config.supportsFeature(FEATURE_PAGE_COLLECTION)
+            else -> false
+        }
+        Type.LESSON -> type == LessonPage::class
+        Type.TRACT -> type == TractPage::class
+        Type.UNKNOWN -> false
+    }
 
     private fun XmlPullParser.parseCategories() = buildList {
         require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORIES)
@@ -367,7 +386,7 @@ class Manifest : BaseModel, Styles {
 
     private class PagesData {
         val aemImports = mutableListOf<Uri>()
-        val pages = mutableListOf<Pair<String?, String>>()
+        val pages = mutableListOf<XmlFile>()
     }
 
     private fun XmlPullParser.parsePages() = PagesData().also { result ->
@@ -380,7 +399,7 @@ class Manifest : BaseModel, Styles {
                     XML_PAGES_PAGE -> {
                         val src = getAttributeValue(XML_PAGES_PAGE_SRC) ?: return@parseChildren
                         val fileName = getAttributeValue(XML_PAGES_PAGE_FILENAME)
-                        result.pages += fileName to src
+                        result.pages += XmlFile(fileName, src)
                     }
                 }
 
@@ -411,7 +430,7 @@ class Manifest : BaseModel, Styles {
                     XML_TIPS_TIP -> {
                         val id = getAttributeValue(XML_TIPS_TIP_ID) ?: return@parseChildren
                         val src = getAttributeValue(XML_TIPS_TIP_SRC) ?: return@parseChildren
-                        add(id to src)
+                        add(XmlFile(id, src))
                     }
                 }
             }
@@ -422,10 +441,6 @@ class Manifest : BaseModel, Styles {
     @HiddenFromObjC
     @JsName("dismissListeners")
     val jsDismissListeners get() = dismissListeners.toTypedArray()
-
-    @HiddenFromObjC
-    @JsName("pages")
-    val jsPages get() = pages.toTypedArray()
     // endregion Kotlin/JS interop
 
     enum class Type {
@@ -448,6 +463,8 @@ class Manifest : BaseModel, Styles {
             }
         }
     }
+
+    data class XmlFile(internal val name: String?, internal val src: String)
 }
 
 @get:AndroidColorInt
