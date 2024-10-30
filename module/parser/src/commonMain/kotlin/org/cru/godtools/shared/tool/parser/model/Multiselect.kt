@@ -3,6 +3,8 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -11,9 +13,6 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -83,7 +82,7 @@ class Multiselect : Content {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         stateName: String = "",
@@ -160,7 +159,7 @@ class Multiselect : Content {
             }
         }
 
-        @RestrictTo(RestrictToScope.TESTS)
+        @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
             multiselect: Multiselect = Multiselect(),
             style: Style? = null,

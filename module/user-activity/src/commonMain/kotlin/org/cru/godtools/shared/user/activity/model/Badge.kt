@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.user.activity.model
 
+import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.model.RGB
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 
 data class Badge internal constructor(
     val type: BadgeType,

@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_FLOW
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull

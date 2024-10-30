@@ -1,14 +1,13 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
@@ -247,7 +246,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
     }
 
-    @RestrictTo(RestrictToScope.SUBCLASSES, RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES, RestrictTo.Scope.TESTS)
     internal constructor(
         container: HasPages = Manifest(),
         id: String? = null,

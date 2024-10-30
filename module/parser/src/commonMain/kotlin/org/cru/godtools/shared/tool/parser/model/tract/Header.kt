@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
@@ -66,7 +65,7 @@ class Header : BaseModel, Styles {
         this.title = title
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
         backgroundColor: PlatformColor? = null,

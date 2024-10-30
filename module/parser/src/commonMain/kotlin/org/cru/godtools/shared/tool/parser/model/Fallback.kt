@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 
@@ -29,7 +28,7 @@ class Fallback : Content, Parent {
         _content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(parent: Base = Manifest(), content: ((Fallback) -> List<Content>)? = null) : super(parent) {
         _content = content?.invoke(this).orEmpty()
     }

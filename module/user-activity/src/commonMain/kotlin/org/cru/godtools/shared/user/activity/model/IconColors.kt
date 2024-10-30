@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.user.activity.model
 
+import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.ThemeType
 
 data class IconColors internal constructor(

@@ -1,17 +1,16 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 interface Base {
     @HiddenFromObjC
     @JsExport.Ignore
-    @get:RestrictTo(RestrictToScope.LIBRARY)
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY)
     val parent: Base? get() = null
     val manifest: Manifest get() = checkNotNull(parent?.manifest) { "No manifest found in model ancestors" }
 }

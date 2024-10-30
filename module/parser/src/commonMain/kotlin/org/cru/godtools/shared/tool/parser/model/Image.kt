@@ -3,15 +3,14 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
@@ -98,7 +97,7 @@ class Image : Content, Clickable {
         return result
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestImage")
     constructor(
         parent: Base = Manifest(),

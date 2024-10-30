@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_REQUIRED_VERSIONS
 import org.cru.godtools.shared.tool.parser.expressions.Expression
@@ -57,7 +56,7 @@ abstract class Content : BaseModel, Visibility {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         version: Int = SCHEMA_VERSION,

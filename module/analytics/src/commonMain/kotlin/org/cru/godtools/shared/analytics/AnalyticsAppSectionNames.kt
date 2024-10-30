@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.analytics
 
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 
 object AnalyticsAppSectionNames {
     @VisibleForTesting

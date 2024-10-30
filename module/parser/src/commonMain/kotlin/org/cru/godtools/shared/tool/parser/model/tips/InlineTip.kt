@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -32,7 +31,7 @@ class InlineTip : Content {
         parser.skipTag()
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestInlineTip")
     constructor(parent: Base, id: String? = null) : super(parent) {
         this.id = id

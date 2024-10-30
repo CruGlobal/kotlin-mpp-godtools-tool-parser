@@ -1,9 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 @JsExport
@@ -21,7 +20,7 @@ class Form : Content, Parent {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(parent: Base, content: (Form) -> List<Content>) : super(parent) {
         this.content = content(this)
     }

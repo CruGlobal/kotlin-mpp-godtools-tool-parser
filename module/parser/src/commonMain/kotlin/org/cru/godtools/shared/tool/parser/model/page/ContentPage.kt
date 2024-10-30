@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -45,7 +44,7 @@ class ContentPage : Page, Parent {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         container: HasPages,
         id: String? = null,

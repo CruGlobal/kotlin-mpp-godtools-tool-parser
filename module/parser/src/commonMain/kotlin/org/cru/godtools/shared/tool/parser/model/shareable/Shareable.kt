@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.shareable
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Manifest
@@ -50,7 +49,7 @@ sealed class Shareable : BaseModel {
         order = parser.getAttributeValue(XML_ORDER)?.toIntOrNull() ?: DEFAULT_ORDER
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(parent: Base, id: String? = null) : super(parent) {
         _id = id
         order = DEFAULT_ORDER
