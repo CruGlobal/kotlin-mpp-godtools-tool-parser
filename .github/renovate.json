@@ -1,23 +1,31 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "labels": [ "dependencies" ],
+  "labels": [
+    "dependencies"
+  ],
   "dependencyDashboard": true,
-  "lockFileMaintenance": { "enabled": true },
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "groupName": "Kotlin and KSP",
       "description": "Kotlin and KSP versions are tightly coupled.",
-      "matchPackagePrefixes": [
-        "org.jetbrains.kotlin:kotlin",
-        "com.google.devtools.ksp"
-      ],
+      "matchPackageNames": [
+        "org.jetbrains.kotlin:kotlin{/,}**",
+        "com.google.devtools.ksp{/,}**"
+      ]
     },
     {
-      "matchManagers": ["gradle"],
-      "matchPackagePrefixes": ["org.jetbrains.kotlinx:kotlinx-coroutines-"],
-      "groupName": "kotlinx.coroutines"
+      "matchManagers": [
+        "gradle"
+      ],
+      "groupName": "kotlinx.coroutines",
+      "matchPackageNames": [
+        "org.jetbrains.kotlinx:kotlinx-coroutines-{/,}**"
+      ]
     }
   ]
 }
