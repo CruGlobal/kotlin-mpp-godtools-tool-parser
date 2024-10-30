@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 @JsExport
@@ -23,7 +22,7 @@ class Paragraph : Content, Parent {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestParagraph")
     constructor(
         parent: Base = Manifest(),

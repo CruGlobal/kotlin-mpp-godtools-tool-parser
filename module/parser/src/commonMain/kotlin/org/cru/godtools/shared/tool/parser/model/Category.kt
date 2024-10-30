@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -46,7 +45,7 @@ class Category : BaseModel, Styles {
         this.label = label
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(manifest: Manifest = Manifest(), label: (Base) -> Text?) : super(manifest) {
         id = null
         this.label = label(this)

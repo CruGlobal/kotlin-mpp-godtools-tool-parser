@@ -1,11 +1,10 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
@@ -59,7 +58,7 @@ class CallToAction : BaseModel {
     }
 
     @JsName("createTestCallToAction")
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         page: TractPage = TractPage(),
         label: ((CallToAction) -> Text)? = null,

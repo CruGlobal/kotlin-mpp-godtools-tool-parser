@@ -17,9 +17,9 @@ kotlin {
             dependencies {
                 api(project(":module:common"))
 
+                implementation(libs.androidx.annotation)
                 implementation(libs.colormath)
                 implementation(libs.fluidLocale)
-                implementation(libs.gtoSupport.androidx.annotation)
                 implementation(libs.gtoSupport.fluidsonic.locale)
                 implementation(libs.okio)
             }

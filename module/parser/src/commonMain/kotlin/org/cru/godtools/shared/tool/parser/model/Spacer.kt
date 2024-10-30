@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.tool.parser.model.Spacer.Mode.Companion.toModeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
@@ -33,7 +32,7 @@ class Spacer : Content {
         parser.skipTag()
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestSpacer")
     constructor(parent: Base = Manifest(), mode: Mode = Mode.AUTO, height: Int = 0) : super(parent) {
         this.mode = mode

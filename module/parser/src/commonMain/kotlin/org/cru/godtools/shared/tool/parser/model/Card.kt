@@ -3,12 +3,11 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTENT_CARD
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -43,7 +42,7 @@ class Card : Content, Parent, Clickable {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(parent: Base = Manifest(), backgroundColor: PlatformColor? = null) : super(parent) {
         _backgroundColor = backgroundColor
         content = emptyList()

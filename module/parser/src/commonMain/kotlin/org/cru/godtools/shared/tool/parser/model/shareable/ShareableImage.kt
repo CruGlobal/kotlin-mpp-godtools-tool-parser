@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.shareable
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.getResource
@@ -40,7 +39,7 @@ class ShareableImage : Shareable {
         this.description = description
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
         id: String? = null,

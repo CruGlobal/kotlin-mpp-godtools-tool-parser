@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Parent
@@ -25,7 +24,7 @@ class TipPage : BaseModel, Parent {
         content = parseContent(parser)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         tip: Tip,
         position: Int,

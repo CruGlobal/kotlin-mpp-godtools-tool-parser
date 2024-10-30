@@ -1,10 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -42,7 +41,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
 
     override val isIgnored get() = super.isIgnored || !isClickable
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),

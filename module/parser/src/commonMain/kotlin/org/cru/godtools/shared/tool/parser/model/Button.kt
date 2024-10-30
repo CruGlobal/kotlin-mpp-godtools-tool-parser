@@ -3,13 +3,12 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -114,7 +113,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         } ?: Text(defaultTextStyles)
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         parent: Base = Manifest(),
         style: Style? = null,

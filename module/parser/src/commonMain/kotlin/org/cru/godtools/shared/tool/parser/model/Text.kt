@@ -3,6 +3,8 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -10,9 +12,6 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
@@ -95,7 +94,7 @@ class Text : Content {
         text = parser.nextText()
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestText")
     constructor(
         parent: Base = Manifest(),

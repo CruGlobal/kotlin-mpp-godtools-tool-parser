@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Styles
@@ -44,7 +43,7 @@ class Tip : BaseModel, Styles {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(manifest: Manifest? = null, id: String = "", type: Type = Type.DEFAULT) : super(manifest) {
         this.id = id
         this.type = type

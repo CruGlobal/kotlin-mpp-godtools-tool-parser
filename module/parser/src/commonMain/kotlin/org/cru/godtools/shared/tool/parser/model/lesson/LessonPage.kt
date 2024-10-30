@@ -1,8 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.lesson
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -49,7 +48,7 @@ class LessonPage : Page, Parent {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),

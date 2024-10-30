@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
@@ -11,9 +13,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.ccci.gto.support.fluidsonic.locale.PlatformLocale
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.common.model.isHttpUrl
@@ -283,7 +282,7 @@ class Manifest : BaseModel, Styles, HasPages {
     }
 
     @JsName("createTestManifest")
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         config: ParserConfig = ParserConfig(),
         type: Type = Type.DEFAULT,

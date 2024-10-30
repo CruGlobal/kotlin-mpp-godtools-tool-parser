@@ -1,13 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -98,7 +97,7 @@ class TractPage : Page {
     }
 
     @JsName("createTestTractPage")
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
@@ -226,7 +225,7 @@ class TractPage : Page {
             this.label = label
         }
 
-        @RestrictTo(RestrictToScope.TESTS)
+        @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
             page: TractPage = TractPage(),
             position: Int = 0,

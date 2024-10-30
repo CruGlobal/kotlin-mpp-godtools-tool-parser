@@ -1,13 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
-import org.ccci.gto.support.androidx.annotation.VisibleForTesting
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -41,7 +40,7 @@ class Tabs : Content {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(parent: Base = Manifest()) : super(parent) {
         tabs = emptyList()
     }
@@ -84,7 +83,7 @@ class Tabs : Content {
             this.label = label
         }
 
-        @RestrictTo(RestrictToScope.TESTS)
+        @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
             parent: Tabs = Tabs(),
             analyticsEvents: List<AnalyticsEvent> = emptyList()

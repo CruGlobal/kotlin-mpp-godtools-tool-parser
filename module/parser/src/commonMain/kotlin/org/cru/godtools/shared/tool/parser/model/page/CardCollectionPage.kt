@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
-import org.ccci.gto.support.androidx.annotation.RestrictTo
-import org.ccci.gto.support.androidx.annotation.RestrictToScope
+import androidx.annotation.RestrictTo
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -63,7 +62,7 @@ class CardCollectionPage : Page {
         }
     }
 
-    @RestrictTo(RestrictToScope.TESTS)
+    @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         manifest: Manifest,
         id: String?,
@@ -119,7 +118,7 @@ class CardCollectionPage : Page {
             }
         }
 
-        @RestrictTo(RestrictToScope.TESTS)
+        @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
             page: CardCollectionPage,
             id: String?,
