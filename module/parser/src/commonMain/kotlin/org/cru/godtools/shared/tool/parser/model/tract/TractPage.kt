@@ -225,8 +225,9 @@ class TractPage : Page {
             this.label = label
         }
 
+        @JsName("createTestCard")
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        constructor(
             page: TractPage = TractPage(),
             position: Int = 0,
             backgroundColor: PlatformColor? = null,
