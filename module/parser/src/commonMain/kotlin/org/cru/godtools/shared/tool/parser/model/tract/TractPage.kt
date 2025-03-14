@@ -61,6 +61,7 @@ class TractPage : Page {
 
     val header: Header?
     val hero: Hero?
+    @JsExport.Ignore
     @JsName("_modals")
     val modals: List<Modal>
     val callToAction: CallToAction
@@ -136,6 +137,7 @@ class TractPage : Page {
     fun findModal(id: String?) = modals.firstOrNull { it.id.equals(id, ignoreCase = true) }
 
     // region Cards
+    @JsExport.Ignore
     @JsName("_cards")
     val cards: List<Card>
     val visibleCards get() = cards.filter { !it.isHidden }
