@@ -59,6 +59,7 @@ class Text : Content {
     val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     val textScale get() = _textScale * stylesParent.textScale
+    @JsExport.Ignore
     @JsName("_textStyles")
     val textStyles: Set<Style>
 
