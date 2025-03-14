@@ -130,6 +130,7 @@ class Manifest : BaseModel, Styles, HasPages {
     val locale: PlatformLocale?
     val type: Type
 
+    @JsExport.Ignore
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
