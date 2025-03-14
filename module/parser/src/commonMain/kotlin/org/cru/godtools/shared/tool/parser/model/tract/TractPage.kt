@@ -163,8 +163,11 @@ class TractPage : Page {
         val isLastVisibleCard get() = this == page.visibleCards.lastOrNull()
 
         val isHidden: Boolean
+
+        @JsExport.Ignore
         @JsName("_listeners")
         val listeners: Set<EventId>
+        @JsExport.Ignore
         @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
