@@ -34,6 +34,7 @@ class Flow : Content {
 
     internal val rowGravity: Gravity.Horizontal
 
+    @JsExport.Ignore
     @JsName("_items")
     val items: List<Item>
 

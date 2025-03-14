@@ -55,6 +55,7 @@ class Multiselect : Content {
     private val _optionSelectedColor: PlatformColor?
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
+    @JsExport.Ignore
     @JsName("_options")
     val options: List<Option>
     override val tips get() = options.flatMap { it.contentTips }

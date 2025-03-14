@@ -38,8 +38,10 @@ class Modal : BaseModel, Parent, Styles {
     val title: Text?
     override val content: List<Content>
 
+    @JsExport.Ignore
     @JsName("_listeners")
     val listeners: Set<EventId>
+    @JsExport.Ignore
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 

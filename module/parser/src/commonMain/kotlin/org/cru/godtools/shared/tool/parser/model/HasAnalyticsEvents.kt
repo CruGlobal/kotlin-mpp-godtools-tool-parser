@@ -9,6 +9,7 @@ import kotlin.native.HiddenFromObjC
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 interface HasAnalyticsEvents {
+    @JsExport.Ignore
     @JsName("_getAnalyticsEvents")
     fun getAnalyticsEvents(type: AnalyticsEvent.Trigger): List<AnalyticsEvent>
 

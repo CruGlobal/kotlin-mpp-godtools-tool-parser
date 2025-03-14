@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.model.page.Page
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 interface HasPages : Base {
+    @JsExport.Ignore
     @JsName("_pages")
     val pages: List<Page>
 

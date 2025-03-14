@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 interface Parent : Base {
+    @JsExport.Ignore
     @JsName("_content")
     val content: List<Content>
 
