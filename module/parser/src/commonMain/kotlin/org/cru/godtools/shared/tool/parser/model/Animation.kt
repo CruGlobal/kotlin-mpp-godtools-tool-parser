@@ -32,8 +32,10 @@ class Animation : Content, Clickable {
     val loop: Boolean
     val autoPlay: Boolean
 
+    @JsExport.Ignore
     @JsName("_playListeners")
     val playListeners: Set<EventId>
+    @JsExport.Ignore
     @JsName("_stopListeners")
     val stopListeners: Set<EventId>
 
