@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import kotlin.reflect.KClass
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
@@ -13,6 +15,8 @@ import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class PageCollectionPage : Page, HasPages {
     companion object {
         internal const val TYPE_PAGE_COLLECTION = "page-collection"

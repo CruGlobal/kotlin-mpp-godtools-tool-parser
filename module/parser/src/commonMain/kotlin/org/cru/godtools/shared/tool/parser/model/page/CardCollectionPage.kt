@@ -1,6 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import androidx.annotation.RestrictTo
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -23,6 +25,8 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_CARDS = "cards"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class CardCollectionPage : Page {
     internal companion object {
         const val TYPE_CARD_COLLECTION = "cardcollection"

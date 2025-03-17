@@ -1,6 +1,8 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import androidx.annotation.RestrictTo
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -13,6 +15,8 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_CONTENT = "content"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class ContentPage : Page, Parent {
     internal companion object {
         internal const val TYPE_CONTENT = "content"
