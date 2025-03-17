@@ -22,6 +22,7 @@ class Accordion : Content {
     }
 
     @JsName("_sections")
+    @JsExport.Ignore
     val sections: List<Section>
     override val tips get() = sections.flatMap { it.contentTips }
 

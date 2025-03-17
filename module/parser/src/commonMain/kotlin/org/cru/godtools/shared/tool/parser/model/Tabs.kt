@@ -22,6 +22,7 @@ class Tabs : Content {
         internal const val XML_TABS = "tabs"
     }
 
+    @JsExport.Ignore
     @JsName("_tabs")
     val tabs: List<Tab>
     override val tips get() = tabs.flatMap { it.contentTips }

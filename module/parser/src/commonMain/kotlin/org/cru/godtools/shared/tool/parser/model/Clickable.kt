@@ -24,6 +24,7 @@ private const val XML_URL = "url"
 interface Clickable : Base {
     val isClickable get() = url != null || events.isNotEmpty()
 
+    @JsExport.Ignore
     @JsName("_events")
     val events: List<EventId>
     val url: Uri?
