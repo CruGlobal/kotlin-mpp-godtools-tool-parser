@@ -91,6 +91,7 @@ abstract class Content : BaseModel, Visibility {
             manifest.config.isRequiredVersionSatisfied(DeviceType.ANDROID, requiredAndroidVersion) &&
             manifest.config.isRequiredVersionSatisfied(DeviceType.IOS, requiredIosVersion)
 
+    @JsExport.Ignore
     open val tips get() = emptyList<Tip>()
 
     internal companion object {

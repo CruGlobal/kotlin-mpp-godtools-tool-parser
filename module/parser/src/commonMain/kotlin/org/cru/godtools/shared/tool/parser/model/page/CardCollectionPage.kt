@@ -108,6 +108,7 @@ class CardCollectionPage : Page {
 
         private val analyticsEvents: List<AnalyticsEvent>
         override val content: List<Content>
+        @JsExport.Ignore
         val tips get() = contentTips
 
         internal constructor(page: CardCollectionPage, parser: XmlPullParser) : super(page) {
