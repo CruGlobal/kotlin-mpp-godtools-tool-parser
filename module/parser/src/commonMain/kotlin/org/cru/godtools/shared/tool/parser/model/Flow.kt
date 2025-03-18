@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("FlowKt")
+
 package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.VisibleForTesting
@@ -5,6 +8,8 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_FLOW
 import org.cru.godtools.shared.tool.parser.expressions.Expression
@@ -32,7 +37,7 @@ class Flow : Content {
     @VisibleForTesting
     internal val itemWidth: Dimension
 
-    internal val rowGravity: Gravity.Horizontal
+    val rowGravity: Gravity.Horizontal
 
     @JsExport.Ignore
     @JsName("_items")
@@ -77,7 +82,7 @@ class Flow : Content {
 
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _width: Dimension?
-        internal val width get() = _width ?: flow.itemWidth
+        val width get() = _width ?: flow.itemWidth
 
         override val invisibleIf: Expression?
         override val goneIf: Expression?
@@ -107,6 +112,3 @@ class Flow : Content {
         }
     }
 }
-
-val Flow?.rowGravity get() = this?.rowGravity ?: DEFAULT_ROW_GRAVITY
-val Flow.Item?.width get() = this?.width ?: DEFAULT_ITEM_WIDTH
