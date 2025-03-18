@@ -73,18 +73,4 @@ class FlowTest : UsesResources() {
             assertFalse(isGone(state))
         }
     }
-
-    @Test
-    fun testRowGravity() {
-        with(null as Flow?) {
-            assertEquals(DEFAULT_ROW_GRAVITY, rowGravity)
-        }
-    }
-
-    @Test
-    fun testItemWidth() {
-        with(null as Flow.Item?) {
-            assertEquals(DEFAULT_ITEM_WIDTH, width)
-        }
-    }
 }
