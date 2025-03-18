@@ -1,6 +1,11 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import androidx.annotation.RestrictTo
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
+import kotlin.js.JsName
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -23,12 +28,16 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_CARDS = "cards"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class CardCollectionPage : Page {
     internal companion object {
         const val TYPE_CARD_COLLECTION = "cardcollection"
     }
 
     override val analyticsEvents: List<AnalyticsEvent>
+    @JsExport.Ignore
+    @JsName("_cards")
     val cards: List<Card>
 
     internal constructor(
@@ -72,6 +81,12 @@ class CardCollectionPage : Page {
         cards = emptyList()
     }
 
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("cards")
+    val jsCards get() = cards.toTypedArray()
+    // endregion Kotlin/JS interop
+
     class Card : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
             internal const val XML_CARD = "card"
@@ -93,6 +108,7 @@ class CardCollectionPage : Page {
 
         private val analyticsEvents: List<AnalyticsEvent>
         override val content: List<Content>
+        @JsExport.Ignore
         val tips get() = contentTips
 
         internal constructor(page: CardCollectionPage, parser: XmlPullParser) : super(page) {
