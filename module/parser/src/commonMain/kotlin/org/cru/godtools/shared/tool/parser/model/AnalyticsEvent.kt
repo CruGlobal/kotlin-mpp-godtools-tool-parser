@@ -18,7 +18,6 @@ private const val XML_ID = "id"
 private const val XML_ACTION = "action"
 private const val XML_DELAY = "delay"
 private const val XML_SYSTEM = "system"
-private const val XML_SYSTEM_ADOBE = "adobe"
 private const val XML_SYSTEM_FACEBOOK = "facebook"
 private const val XML_SYSTEM_FIREBASE = "firebase"
 private const val XML_SYSTEM_USER = "user"
@@ -49,7 +48,6 @@ class AnalyticsEvent : BaseModel {
         }
     }
 
-    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _id: String?
     internal val id get() = _id ?: action
     val action: String
