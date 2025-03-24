@@ -87,7 +87,9 @@ class Text : Content {
 
         _textAlign = parser.getAttributeValue(XML_TEXT_ALIGN)?.toTextAlignOrNull()
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
-        _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
+        _textScale = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_SCALE)?.toDoubleOrNull()
+            ?: DEFAULT_TEXT_SCALE
+
         textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
 
         fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()?.coerceIn(1..1000)
