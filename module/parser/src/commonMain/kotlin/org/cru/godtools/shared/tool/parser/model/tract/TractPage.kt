@@ -199,7 +199,7 @@ class TractPage : Page {
 
             parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CARD)
 
-            isHidden = parser.getAttributeValue(null, XML_HIDDEN)?.toBoolean() ?: false
+            isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
             listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
             dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 

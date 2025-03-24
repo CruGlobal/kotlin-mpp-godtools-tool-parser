@@ -39,7 +39,7 @@ abstract class Content : BaseModel, Visibility {
     final override val goneIf: Expression?
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
-        version = parser.getAttributeValue(null, XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
+        version = parser.getAttributeValue(XML_VERSION)?.toIntOrNull() ?: SCHEMA_VERSION
         requiredFeatures = parser.getAttributeValue(XML_REQUIRED_FEATURES)
             ?.split(REGEX_SEQUENCE_SEPARATOR)?.filterTo(mutableSetOf()) { it.isNotBlank() }.orEmpty()
         requiredDeviceType = parser.getAttributeValue(XML_REQUIRED_DEVICE_TYPE)?.toDeviceTypes()

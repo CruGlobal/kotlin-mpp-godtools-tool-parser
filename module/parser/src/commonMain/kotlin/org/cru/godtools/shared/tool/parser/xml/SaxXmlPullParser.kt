@@ -39,7 +39,9 @@ abstract class SaxXmlPullParser : XmlPullParser {
         }
     }
 
-    override fun getAttributeValue(namespace: String?, name: String): String? {
+    override fun getAttributeValue(name: String) = getAttributeValueInt(null, name)
+    override fun getAttributeValue(namespace: String, name: String) = getAttributeValueInt(namespace, name)
+    private fun getAttributeValueInt(namespace: String?, name: String): String? {
         val event = currentEvent.takeIf { it.type == START_TAG } ?: throw IndexOutOfBoundsException()
         return event.attrs?.get(QName(namespace, name))
     }

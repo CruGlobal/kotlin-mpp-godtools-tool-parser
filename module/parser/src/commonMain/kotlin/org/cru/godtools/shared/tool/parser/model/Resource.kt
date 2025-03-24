@@ -21,8 +21,8 @@ class Resource : BaseModel {
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_RESOURCE)
 
-        name = parser.getAttributeValue(null, XML_FILENAME)
-        localName = parser.getAttributeValue(null, XML_SRC)
+        name = parser.getAttributeValue(XML_FILENAME)
+        localName = parser.getAttributeValue(XML_SRC)
 
         parser.skipTag()
     }
