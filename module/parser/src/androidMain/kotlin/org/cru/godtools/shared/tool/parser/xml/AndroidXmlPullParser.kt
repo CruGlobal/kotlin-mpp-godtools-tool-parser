@@ -11,6 +11,7 @@ internal class AndroidXmlPullParser(private val delegate: org.xmlpull.v1.XmlPull
     override fun nextTag() = delegate.nextTag()
     override fun nextText(): String = delegate.nextText()
 
-    override fun getAttributeValue(namespace: String?, name: String): String? =
+    override fun getAttributeValue(name: String): String? = delegate.getAttributeValue("", name)
+    override fun getAttributeValue(namespace: String, name: String): String? =
         delegate.getAttributeValue(namespace, name)
 }

@@ -226,7 +226,7 @@ class Manifest : BaseModel, Styles, HasPages {
         _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()
 
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
-        _backgroundImage = parser.getAttributeValue(null, XML_BACKGROUND_IMAGE)
+        _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
         backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()

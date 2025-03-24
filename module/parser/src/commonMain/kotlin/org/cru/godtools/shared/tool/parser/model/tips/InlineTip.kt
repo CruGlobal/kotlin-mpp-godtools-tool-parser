@@ -26,7 +26,7 @@ class InlineTip : Content {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_TIP)
 
-        id = parser.getAttributeValue(null, XML_ID)
+        id = parser.getAttributeValue(XML_ID)
 
         parser.skipTag()
     }

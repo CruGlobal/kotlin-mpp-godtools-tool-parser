@@ -11,8 +11,8 @@ internal interface XmlPullParser {
     fun nextTag(): Int
     fun nextText(): String
 
-    fun getAttributeValue(name: String) = getAttributeValue(null, name)
-    fun getAttributeValue(namespace: String?, name: String): String?
+    fun getAttributeValue(name: String): String?
+    fun getAttributeValue(namespace: String, name: String): String?
 
     companion object {
         const val START_DOCUMENT = 0

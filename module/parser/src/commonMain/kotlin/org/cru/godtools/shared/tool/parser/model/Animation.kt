@@ -45,9 +45,9 @@ class Animation : Content, Clickable {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ANIMATION)
 
-        resourceName = parser.getAttributeValue(null, XML_RESOURCE)
-        loop = parser.getAttributeValue(null, XML_LOOP)?.toBoolean() ?: true
-        autoPlay = parser.getAttributeValue(null, XML_AUTOPLAY)?.toBoolean() ?: true
+        resourceName = parser.getAttributeValue(XML_RESOURCE)
+        loop = parser.getAttributeValue(XML_LOOP)?.toBoolean() ?: true
+        autoPlay = parser.getAttributeValue(XML_AUTOPLAY)?.toBoolean() ?: true
 
         playListeners = parser.getAttributeValue(XML_PLAY_LISTENERS).toEventIds().toSet()
         stopListeners = parser.getAttributeValue(XML_STOP_LISTENERS).toEventIds().toSet()

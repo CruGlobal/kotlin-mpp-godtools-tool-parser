@@ -31,7 +31,7 @@ class Tip : BaseModel, Styles {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_TIP)
 
         this.id = id
-        type = parser.getAttributeValue(null, XML_TYPE)?.toTypeOrNull() ?: Type.DEFAULT
+        type = parser.getAttributeValue(XML_TYPE)?.toTypeOrNull() ?: Type.DEFAULT
         pages = buildList {
             parser.parseChildren {
                 when (parser.namespace) {
