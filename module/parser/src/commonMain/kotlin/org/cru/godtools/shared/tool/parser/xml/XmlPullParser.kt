@@ -1,5 +1,9 @@
 package org.cru.godtools.shared.tool.parser.xml
 
+import org.cru.godtools.shared.tool.parser.ParserConfig
+import org.cru.godtools.shared.tool.parser.model.DeviceType
+import org.cru.godtools.shared.tool.parser.model.XMLNS_WEB
+
 internal interface XmlPullParser {
     val eventType: Int
     val namespace: String?
@@ -22,6 +26,11 @@ internal interface XmlPullParser {
         const val TEXT = 4
     }
 }
+
+internal fun XmlPullParser.getDeviceAttributeValue(config: ParserConfig, name: String) = when (config.deviceType) {
+    DeviceType.WEB -> getAttributeValue(XMLNS_WEB, name)
+    else -> null
+} ?: getAttributeValue(name)
 
 internal inline fun XmlPullParser.parseChildren(block: () -> Unit = { }) {
     while (next() != XmlPullParser.END_TAG) {

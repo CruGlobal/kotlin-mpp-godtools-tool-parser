@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlig
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import org.cru.godtools.shared.tool.parser.xml.getDeviceAttributeValue
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_START_IMAGE = "start-image"
@@ -41,16 +42,21 @@ private const val XML_TEXT_STYLE_UNDERLINE = "underline"
 class Text : Content {
     internal companion object {
         internal const val XML_TEXT = "text"
+        private const val XML_FONT_WEIGHT = "font-weight"
 
         @VisibleForTesting
         @AndroidDimension(unit = DP)
         internal const val DEFAULT_IMAGE_SIZE = 40
         @VisibleForTesting
         internal const val DEFAULT_MINIMUM_LINES = 0
+
+        @VisibleForTesting
+        internal const val FONT_WEIGHT_BOLD = 700
     }
 
     val text: String
 
+    val fontWeight: Int?
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
     @AndroidColorInt
@@ -81,8 +87,13 @@ class Text : Content {
 
         _textAlign = parser.getAttributeValue(XML_TEXT_ALIGN)?.toTextAlignOrNull()
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
-        _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
+        _textScale = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_SCALE)?.toDoubleOrNull()
+            ?: DEFAULT_TEXT_SCALE
+
         textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
+
+        fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()?.coerceIn(1..1000)
+            ?: FONT_WEIGHT_BOLD.takeIf { Style.BOLD in textStyles }
 
         minimumLines =
             parser.getAttributeValue(XML_MINIMUM_LINES)?.toIntOrNull()?.takeIf { it >= 0 } ?: DEFAULT_MINIMUM_LINES
@@ -100,6 +111,7 @@ class Text : Content {
     constructor(
         parent: Base = Manifest(),
         text: String = "",
+        fontWeight: Int? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         @AndroidColorInt textColor: PlatformColor? = null,
         textAlign: Align? = null,
@@ -113,6 +125,7 @@ class Text : Content {
         goneIf: String? = null,
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.text = text
+        this.fontWeight = fontWeight
         _textAlign = textAlign
         _textColor = textColor
         _textScale = textScale
@@ -131,6 +144,7 @@ class Text : Content {
         other == null -> false
         other !is Text -> false
         text != other.text -> false
+        fontWeight != other.fontWeight -> false
         textAlign != other.textAlign -> false
         textColor != other.textColor -> false
         textScale != other.textScale -> false
@@ -149,7 +163,8 @@ class Text : Content {
     }
 
     override fun hashCode(): Int {
-        var result = text?.hashCode() ?: 0
+        var result = text.hashCode()
+        result = 31 * result + (fontWeight?.hashCode() ?: 0)
         result = 31 * result + textAlign.hashCode()
         result = 31 * result + textColor.hashCode()
         result = 31 * result + textScale.hashCode()
@@ -184,6 +199,7 @@ class Text : Content {
     }
 
     enum class Style {
+        @Deprecated("Since v1.1.2, use Text.fontWeight instead")
         BOLD,
         ITALIC,
         UNDERLINE;

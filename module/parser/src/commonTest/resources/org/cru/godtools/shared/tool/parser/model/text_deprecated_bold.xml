@@ -1,0 +1,4 @@
+<content:paragraph xmlns:content="https://mobile-content-api.cru.org/xmlns/content">
+    <content:text text-style="bold">Test</content:text>
+    <content:text text-style="bold" font-weight="900">Test</content:text>
+</content:paragraph>

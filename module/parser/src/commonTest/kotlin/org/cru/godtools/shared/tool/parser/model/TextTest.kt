@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -31,6 +32,7 @@ class TextTest : UsesResources() {
         assertEquals(Text.DEFAULT_IMAGE_SIZE, text.startImageSize)
         assertEquals(Text.DEFAULT_IMAGE_SIZE, text.endImageSize)
         assertTrue(text.textStyles.isEmpty())
+        assertNull(text.fontWeight)
     }
 
     @Test
@@ -48,7 +50,37 @@ class TextTest : UsesResources() {
         assertEquals(5, text.startImageSize)
         assertEquals("end.png", text.endImageName)
         assertEquals(11, text.endImageSize)
-        assertEquals(setOf(Text.Style.BOLD, Text.Style.ITALIC), text.textStyles)
+        assertEquals(setOf(Text.Style.ITALIC, Text.Style.UNDERLINE), text.textStyles)
+        assertEquals(300, text.fontWeight)
+    }
+
+    @Test
+    fun `Text Parsing - Deprecated Style - Bold`() = runTest {
+        val manifest = Manifest()
+        val tests = Paragraph(manifest, getTestXmlParser("text_deprecated_bold.xml"))
+
+        assertEquals(Text.FONT_WEIGHT_BOLD, assertIs<Text>(tests.content[0]).fontWeight)
+        assertEquals(900, assertIs<Text>(tests.content[1]).fontWeight)
+    }
+
+    @Test
+    fun `Text Parsing - Device Overrides - Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType != DeviceType.WEB) return@runTest
+
+        val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
+        assertEquals(200, text.fontWeight)
+        assertEquals(3.0, text.textScale, 0.001)
+    }
+
+    @Test
+    fun `Text Parsing - Device Overrides - Not Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType == DeviceType.WEB) return@runTest
+
+        val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
+        assertEquals(100, text.fontWeight)
+        assertEquals(2.0, text.textScale, 0.001)
     }
     // endregion Parsing
 
@@ -113,6 +145,7 @@ class TextTest : UsesResources() {
         assertFalse(Text().equals(null))
         assertFalse(Text(text = "text").equals("text"))
         assertNotEquals(Text(text = "first"), Text(text = "second"))
+        assertNotEquals(Text(fontWeight = 100), Text(fontWeight = 200))
         assertNotEquals(Text(textAlign = Text.Align.START), Text(textAlign = Text.Align.END))
         assertNotEquals(Text(textColor = TestColors.BLACK), Text(textColor = TestColors.GREEN))
         assertNotEquals(Text(textScale = 1.0), Text(textScale = 2.0))
@@ -155,6 +188,8 @@ class TextTest : UsesResources() {
             Text(manifest, startImage = "1.jpg", endImage = "1.jpg").hashCode(),
             Text(manifest, startImage = "1.jpg", endImage = "1.jpg").hashCode(),
         )
+
+        assertEquals(Text(fontWeight = 100).hashCode(), Text(fontWeight = 100).hashCode())
     }
 
     @Test
