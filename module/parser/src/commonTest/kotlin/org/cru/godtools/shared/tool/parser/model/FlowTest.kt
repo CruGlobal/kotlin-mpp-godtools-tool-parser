@@ -73,4 +73,26 @@ class FlowTest : UsesResources() {
             assertFalse(isGone(state))
         }
     }
+
+    @Test
+    fun `Flow Parsing - Device Overrides - Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType != DeviceType.WEB) return@runTest
+
+        val flow = Flow(manifest, getTestXmlParser("flow_device_overrides.xml"))
+        assertEquals(Gravity.Horizontal.END, flow.rowGravity)
+        assertEquals(Dimension.Percent(.25f), flow.items[0].width)
+        assertEquals(Dimension.Pixels(25), flow.items[1].width)
+    }
+
+    @Test
+    fun `Flow Parsing - Device Overrides - Not Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType == DeviceType.WEB) return@runTest
+
+        val flow = Flow(manifest, getTestXmlParser("flow_device_overrides.xml"))
+        assertEquals(Gravity.Horizontal.CENTER, flow.rowGravity)
+        assertEquals(Dimension.Percent(.5f), flow.items[0].width)
+        assertEquals(Dimension.Pixels(50), flow.items[1].width)
+    }
 }
