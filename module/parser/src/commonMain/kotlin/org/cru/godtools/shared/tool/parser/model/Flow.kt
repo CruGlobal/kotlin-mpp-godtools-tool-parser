@@ -18,6 +18,7 @@ import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WID
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import org.cru.godtools.shared.tool.parser.xml.getDeviceAttributeValue
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_ROW_GRAVITY = "row-gravity"
@@ -46,8 +47,10 @@ class Flow : Content {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
-        itemWidth = parser.getAttributeValue(XML_ITEM_WIDTH).toDimensionOrNull() ?: DEFAULT_ITEM_WIDTH
-        rowGravity = parser.getAttributeValue(XML_ROW_GRAVITY)?.toGravityOrNull()?.horizontal ?: DEFAULT_ROW_GRAVITY
+        itemWidth =
+            parser.getDeviceAttributeValue(manifest.config, XML_ITEM_WIDTH).toDimensionOrNull() ?: DEFAULT_ITEM_WIDTH
+        rowGravity = parser.getDeviceAttributeValue(manifest.config, XML_ROW_GRAVITY)?.toGravityOrNull()?.horizontal
+            ?: DEFAULT_ROW_GRAVITY
 
         items = mutableListOf()
         parser.parseChildren {
@@ -93,7 +96,7 @@ class Flow : Content {
             parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_ITEM)
             this.flow = flow
 
-            _width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()
+            _width = parser.getDeviceAttributeValue(manifest.config, XML_WIDTH).toDimensionOrNull()
 
             parser.parseVisibilityAttrs { invisibleIf, goneIf ->
                 this.invisibleIf = invisibleIf?.takeIf { it.isValid() }

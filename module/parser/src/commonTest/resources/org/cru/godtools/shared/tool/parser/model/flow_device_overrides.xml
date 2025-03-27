@@ -1,0 +1,9 @@
+<content:flow xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
+    xmlns:web="https://mobile-content-api.cru.org/xmlns/web" item-width="50%" row-gravity="center"
+    web:item-width="25%" web:row-gravity="end">
+    <content:spacer height="20" mode="fixed" />
+    <content:item width="50" web:width="25">
+        <content:text>Test</content:text>
+        <content:spacer height="20" mode="fixed" />
+    </content:item>
+</content:flow>
