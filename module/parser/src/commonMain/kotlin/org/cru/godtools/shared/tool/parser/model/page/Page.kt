@@ -1,3 +1,6 @@
+@file:JvmMultifileClass
+@file:JvmName("PageKt")
+
 package org.cru.godtools.shared.tool.parser.model.page
 
 import androidx.annotation.RestrictTo
@@ -7,6 +10,8 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
@@ -184,10 +189,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal val backgroundImageScaleType: ImageScaleType
 
     @AndroidColorInt
-    @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    internal val controlColor: PlatformColor
+    val controlColor: PlatformColor
         get() = _controlColor ?: (parentPageContainer as? Page)?.controlColor ?: manifest.pageControlColor
 
     @AndroidColorInt
@@ -320,6 +324,3 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
 val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
-
-@get:AndroidColorInt
-val Page?.controlColor get() = this?.controlColor ?: DEFAULT_CONTROL_COLOR

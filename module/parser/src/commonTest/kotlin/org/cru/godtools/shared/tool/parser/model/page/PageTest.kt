@@ -385,7 +385,7 @@ class PageTest : UsesResources("model/page") {
     }
     // endregion Property: previousPage
 
-    private class TestPage(
+    class TestPage(
         parent: HasPages = Manifest(),
         id: String? = null,
         parentPage: String? = null,
