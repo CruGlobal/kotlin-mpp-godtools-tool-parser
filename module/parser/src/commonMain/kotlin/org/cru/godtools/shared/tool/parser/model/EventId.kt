@@ -14,7 +14,7 @@ internal const val EVENT_NAMESPACE_STATE = "state"
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
-class EventId internal constructor(val namespace: String? = null, val name: String) {
+class EventId(val namespace: String? = null, val name: String) {
     companion object {
         val FOLLOWUP = EventId(EVENT_NAMESPACE_FOLLOWUP, "send")
 
