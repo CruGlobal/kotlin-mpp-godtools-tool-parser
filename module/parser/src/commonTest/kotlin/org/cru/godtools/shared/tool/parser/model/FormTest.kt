@@ -10,7 +10,6 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
-import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FormTest : UsesResources() {
@@ -24,7 +23,7 @@ class FormTest : UsesResources() {
 
     @Test
     fun testParseParagraphIgnoredContent() = runTest {
-        val manifest = Manifest(ParserConfig().withDeviceType(DeviceType.ANDROID))
+        val manifest = Manifest(ParserConfig().withAppVersion(DeviceType.ANDROID, null))
         val form = Form(manifest, getTestXmlParser("form_ignored_content.xml"))
         assertEquals(1, form.content.size)
         assertIs<Text>(form.content[0])

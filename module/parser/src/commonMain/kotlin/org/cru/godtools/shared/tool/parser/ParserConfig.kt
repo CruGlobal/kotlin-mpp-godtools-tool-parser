@@ -13,6 +13,7 @@ import org.cru.godtools.shared.tool.parser.model.Version
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 
 @JsExport
+@ConsistentCopyVisibility
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 data class ParserConfig private constructor(
     internal val deviceType: DeviceType = DeviceType.DEFAULT,
