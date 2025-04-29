@@ -45,4 +45,4 @@ class EventId internal constructor(val namespace: String? = null, val name: Stri
     override fun toString() = if (namespace != null) "$namespace:$name" else name
 }
 
-internal inline fun String?.toEventIds() = EventId.parse(this)
+internal fun String?.toEventIds() = EventId.parse(this)
