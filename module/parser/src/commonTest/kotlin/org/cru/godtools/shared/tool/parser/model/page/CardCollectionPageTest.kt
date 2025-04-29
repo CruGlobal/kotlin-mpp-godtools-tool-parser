@@ -17,6 +17,7 @@ import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
+import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header.Companion.DEFAULT_TEXT_ALIGN
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -83,4 +84,25 @@ class CardCollectionPageTest : UsesResources("model/page") {
         }
     }
     // endregion Parse XML
+
+    // region Header
+    @Test
+    fun `Property - header - Styles - textAlign`() = runTest {
+        val header = CardCollectionPage.Header(
+            content = {
+                listOf(
+                    Text(it),
+                    Text(it, textAlign = Text.Align.START),
+                    Text(it, textAlign = Text.Align.CENTER),
+                    Text(it, textAlign = Text.Align.END),
+                )
+            },
+        )
+
+        assertEquals(DEFAULT_TEXT_ALIGN, assertIs<Text>(header.content[0]).textAlign)
+        assertEquals(Text.Align.START, assertIs<Text>(header.content[1]).textAlign)
+        assertEquals(Text.Align.CENTER, assertIs<Text>(header.content[2]).textAlign)
+        assertEquals(Text.Align.END, assertIs<Text>(header.content[3]).textAlign)
+    }
+    // endregion Header
 }

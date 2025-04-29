@@ -17,6 +17,8 @@ import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
+import org.cru.godtools.shared.tool.parser.model.Styles
+import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.contentTips
@@ -77,8 +79,8 @@ class CardCollectionPage : Page {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        manifest: Manifest,
-        id: String?,
+        manifest: Manifest = Manifest(),
+        id: String? = null,
         parentPage: String? = null,
     ) : super(manifest, id = id, parentPage = parentPage) {
         analyticsEvents = emptyList()
@@ -92,16 +94,30 @@ class CardCollectionPage : Page {
     val jsCards get() = cards.toTypedArray()
     // endregion Kotlin/JS interop
 
-    class Header : BaseModel, Parent {
+    class Header : BaseModel, Parent, Styles {
         internal companion object {
             internal const val XML_HEADER = "header"
+
+            val DEFAULT_TEXT_ALIGN = Text.Align.CENTER
         }
+
+        // region Text Styles
+        override val textAlign = DEFAULT_TEXT_ALIGN
+        // endregion Text Styles
 
         override val content: List<Content>
 
         internal constructor(page: CardCollectionPage, parser: XmlPullParser) : super(page) {
             parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_HEADER)
             content = parseContent(parser)
+        }
+
+        @RestrictTo(RestrictTo.Scope.TESTS)
+        internal constructor(
+            page: CardCollectionPage = CardCollectionPage(),
+            content: (Header) -> List<Content> = { emptyList() }
+        ) : super(page) {
+            this.content = content(this)
         }
     }
 
