@@ -108,12 +108,8 @@ class AnalyticsEvent : BaseModel {
     fun recordTriggered(state: State) = state.recordTriggeredAnalyticsEvent(id)
 
     enum class System {
-        @Deprecated("Since v0.9.1, we no longer use AppsFlyer.")
-        APPSFLYER,
         FACEBOOK,
         FIREBASE,
-        @Deprecated("Since v0.8.2, we no longer use Snowplow.")
-        SNOWPLOW,
         USER;
 
         internal companion object {
