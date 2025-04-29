@@ -28,9 +28,13 @@ class HeroTest : UsesResources("model/tract") {
     fun testParseHero() = runTest {
         val hero = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("hero.xml")).hero)
         assertEquals(1, hero.analyticsEvents.size)
-        assertEquals("Heading", hero.heading!!.text)
-        assertEquals(hero.stylesParent!!.primaryColor, hero.heading!!.textColor)
-        assertNotEquals(hero.stylesParent!!.textColor, hero.heading!!.textColor)
+
+        assertNotNull(hero.heading) { heading ->
+            assertEquals("Heading", heading.text)
+            assertEquals(hero.stylesParent!!.primaryColor, heading.textColor)
+            assertNotEquals(hero.stylesParent!!.textColor, heading.textColor)
+        }
+
         assertEquals(3, hero.content.size)
         assertIs<Image>(hero.content[0])
         assertIs<Paragraph>(hero.content[1])
