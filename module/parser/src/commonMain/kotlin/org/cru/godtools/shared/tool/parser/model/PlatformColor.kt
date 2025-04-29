@@ -25,7 +25,7 @@ internal fun String?.toColorOrNull(): PlatformColor? = this?.let { COLOR_REGEX.m
 }
 
 @AndroidColorInt
-internal inline fun color(red: Int, green: Int, blue: Int, alpha: Double) =
+internal fun color(red: Int, green: Int, blue: Int, alpha: Double) =
     RGB(red / 255f, green / 255f, blue / 255f, alpha).toPlatformColor()
 
 internal expect fun PlatformColor.toRGB(): RGB
