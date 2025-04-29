@@ -22,10 +22,10 @@ interface Visibility {
     val invisibleIf: Expression?
     val goneIf: Expression?
 
-    fun isInvisible(state: State) = invisibleIf?.evaluate(state) ?: false
+    fun isInvisible(state: State) = invisibleIf?.evaluate(state) == true
     fun isInvisibleFlow(state: State) =
         state.varsChangeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
-    fun isGone(state: State) = goneIf?.evaluate(state) ?: false
+    fun isGone(state: State) = goneIf?.evaluate(state) == true
     fun isGoneFlow(state: State) = state.varsChangeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
 
     fun watchIsGone(state: State, block: (Boolean) -> Unit) = isGoneFlow(state).watch(block)
