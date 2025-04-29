@@ -19,6 +19,8 @@ sealed class Dimension {
         }
     }
 
+    @ConsistentCopyVisibility
     data class Percent internal constructor(val value: Float) : Dimension()
+    @ConsistentCopyVisibility
     data class Pixels internal constructor(val value: Int) : Dimension()
 }
