@@ -36,6 +36,7 @@ class CardCollectionPage : Page {
     }
 
     override val analyticsEvents: List<AnalyticsEvent>
+    val header: Header?
     @JsExport.Ignore
     @JsName("_cards")
     val cards: List<Card>
@@ -49,6 +50,7 @@ class CardCollectionPage : Page {
         parser.requirePageType(TYPE_CARD_COLLECTION)
 
         analyticsEvents = mutableListOf()
+        var header: Header? = null
         cards = mutableListOf()
         parser.parseChildren {
             when (parser.namespace) {
@@ -57,10 +59,12 @@ class CardCollectionPage : Page {
                 }
 
                 XMLNS_PAGE -> when (parser.name) {
+                    Header.XML_HEADER -> header = Header(this, parser)
                     XML_CARDS -> cards += parseCards(parser)
                 }
             }
         }
+        this.header = header
     }
 
     private fun parseCards(parser: XmlPullParser) = buildList {
@@ -78,6 +82,7 @@ class CardCollectionPage : Page {
         parentPage: String? = null,
     ) : super(manifest, id = id, parentPage = parentPage) {
         analyticsEvents = emptyList()
+        header = null
         cards = emptyList()
     }
 
@@ -86,6 +91,19 @@ class CardCollectionPage : Page {
     @JsName("cards")
     val jsCards get() = cards.toTypedArray()
     // endregion Kotlin/JS interop
+
+    class Header : BaseModel, Parent {
+        internal companion object {
+            internal const val XML_HEADER = "header"
+        }
+
+        override val content: List<Content>
+
+        internal constructor(page: CardCollectionPage, parser: XmlPullParser) : super(page) {
+            parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_HEADER)
+            content = parseContent(parser)
+        }
+    }
 
     class Card : BaseModel, Parent, HasAnalyticsEvents {
         internal companion object {
