@@ -12,7 +12,7 @@ import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 class ParserConfigTest {
     @Test
     fun testWithAppVersion() {
-        val orig = ParserConfig().withDeviceType(DeviceType.UNKNOWN)
+        val orig = ParserConfig().withAppVersion(DeviceType.UNKNOWN, null)
         assertEquals(DeviceType.UNKNOWN, orig.deviceType)
         assertNull(orig.appVersion)
 

@@ -16,7 +16,6 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Content.Companion.parseContentElement
 import org.cru.godtools.shared.tool.parser.model.Version.Companion.toVersion
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
-import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ContentTest : UsesResources() {
@@ -46,7 +45,7 @@ class ContentTest : UsesResources() {
     // region required-device-type
     @Test
     fun verifyRequiredDeviceType() {
-        val android = Manifest(ParserConfig().withDeviceType(DeviceType.ANDROID))
+        val android = Manifest(ParserConfig().withAppVersion(DeviceType.ANDROID, null))
         assertFalse(object : Content(android, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
         assertFalse(object : Content(android, requiredDeviceType = setOf(DeviceType.ANDROID)) {}.isIgnored)
         assertFalse(object : Content(android, requiredDeviceType = setOf(DeviceType.MOBILE)) {}.isIgnored)
@@ -54,7 +53,7 @@ class ContentTest : UsesResources() {
         assertTrue(object : Content(android, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
         assertTrue(object : Content(android, requiredDeviceType = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
 
-        val ios = Manifest(ParserConfig().withDeviceType(DeviceType.IOS))
+        val ios = Manifest(ParserConfig().withAppVersion(DeviceType.IOS, null))
         assertFalse(object : Content(ios, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
         assertFalse(object : Content(ios, requiredDeviceType = setOf(DeviceType.IOS)) {}.isIgnored)
         assertFalse(object : Content(ios, requiredDeviceType = setOf(DeviceType.MOBILE)) {}.isIgnored)
@@ -62,7 +61,7 @@ class ContentTest : UsesResources() {
         assertTrue(object : Content(ios, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
         assertTrue(object : Content(ios, requiredDeviceType = setOf(DeviceType.UNKNOWN)) {}.isIgnored)
 
-        val web = Manifest(ParserConfig().withDeviceType(DeviceType.WEB))
+        val web = Manifest(ParserConfig().withAppVersion(DeviceType.WEB, null))
         assertFalse(object : Content(web, requiredDeviceType = DeviceType.ALL) {}.isIgnored)
         assertFalse(object : Content(web, requiredDeviceType = setOf(DeviceType.WEB)) {}.isIgnored)
         assertTrue(object : Content(web, requiredDeviceType = setOf(DeviceType.ANDROID)) {}.isIgnored)

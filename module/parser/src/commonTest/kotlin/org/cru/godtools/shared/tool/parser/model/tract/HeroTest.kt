@@ -21,7 +21,6 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.stylesParent
-import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeroTest : UsesResources("model/tract") {
@@ -40,7 +39,7 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testParseHeroIgnoredContent() = runTest {
-        val config = ParserConfig().withDeviceType(DeviceType.ANDROID)
+        val config = ParserConfig().withAppVersion(DeviceType.ANDROID, null)
         val page = TractPage(Manifest(config = config), null, getTestXmlParser("hero_ignored_content.xml"))
         with(assertNotNull(page.hero)) {
             assertEquals(2, content.size)

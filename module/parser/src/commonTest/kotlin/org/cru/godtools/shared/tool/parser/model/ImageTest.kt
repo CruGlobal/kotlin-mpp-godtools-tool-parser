@@ -14,7 +14,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
-import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ImageTest : UsesResources() {
@@ -56,7 +55,7 @@ class ImageTest : UsesResources() {
     @Test
     fun testParseImageRestricted() = runTest {
         val manifest = Manifest(
-            config = ParserConfig().withDeviceType(DeviceType.IOS),
+            config = ParserConfig().withAppVersion(DeviceType.IOS, null),
             resources = { listOf(Resource(it, "image.png")) }
         )
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))

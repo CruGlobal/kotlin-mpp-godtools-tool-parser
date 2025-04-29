@@ -17,7 +17,6 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.shared.tool.parser.model.Button.Type.Companion.toButtonTypeOrNull
-import org.cru.godtools.shared.tool.parser.withDeviceType
 import org.cru.godtools.shared.tool.state.State
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -68,17 +67,17 @@ class ButtonTest : UsesResources() {
 
     @Test
     fun testParseButtonRestrictTo() = runTest {
-        val webConfig = ParserConfig().withDeviceType(DeviceType.WEB)
+        val webConfig = ParserConfig().withAppVersion(DeviceType.WEB, null)
         with(Button(Manifest(config = webConfig), getTestXmlParser("button_restrictTo.xml"))) {
             assertFalse(isIgnored)
         }
 
-        val androidConfig = ParserConfig().withDeviceType(DeviceType.ANDROID)
+        val androidConfig = ParserConfig().withAppVersion(DeviceType.ANDROID, null)
         with(Button(Manifest(config = androidConfig), getTestXmlParser("button_restrictTo.xml"))) {
             assertTrue(isIgnored)
         }
 
-        val iosConfig = ParserConfig().withDeviceType(DeviceType.IOS)
+        val iosConfig = ParserConfig().withAppVersion(DeviceType.IOS, null)
         with(Button(Manifest(config = iosConfig), getTestXmlParser("button_restrictTo.xml"))) {
             assertTrue(isIgnored)
         }

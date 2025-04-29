@@ -10,7 +10,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
-import org.cru.godtools.shared.tool.parser.withDeviceType
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TabsTest : UsesResources() {
@@ -43,7 +42,7 @@ class TabsTest : UsesResources() {
 
     @Test
     fun testParseTabsIgnoredContent() = runTest {
-        val manifest = Manifest(ParserConfig().withDeviceType(DeviceType.IOS))
+        val manifest = Manifest(ParserConfig().withAppVersion(DeviceType.IOS, null))
         val tab = Tabs(manifest, getTestXmlParser("tabs_ignored_content.xml")).tabs.single()
         assertEquals(1, tab.content.size)
         assertIs<Paragraph>(tab.content[0])
