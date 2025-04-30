@@ -6,6 +6,10 @@
     <analytics:events>
         <analytics:event action="page" system="firebase" />
     </analytics:events>
+    <header>
+        <content:text>Header</content:text>
+        <content:spacer height="10" mode="fixed" />
+    </header>
     <cards>
         <card>
             <content>
