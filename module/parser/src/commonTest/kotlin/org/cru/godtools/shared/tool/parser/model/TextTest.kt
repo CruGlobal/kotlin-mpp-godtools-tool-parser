@@ -71,6 +71,7 @@ class TextTest : UsesResources() {
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(200, text.fontWeight)
         assertEquals(3.0, text.textScale, 0.001)
+        assertEquals(3, text.minimumLines)
     }
 
     @Test
@@ -81,6 +82,7 @@ class TextTest : UsesResources() {
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(100, text.fontWeight)
         assertEquals(2.0, text.textScale, 0.001)
+        assertEquals(2, text.minimumLines)
     }
     // endregion Parsing
 

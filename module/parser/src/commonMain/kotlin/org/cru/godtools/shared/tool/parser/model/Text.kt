@@ -92,11 +92,13 @@ class Text : Content {
 
         textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
 
-        fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()?.coerceIn(1..1000)
+        fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()
+            ?.coerceIn(1..1000)
             ?: FONT_WEIGHT_BOLD.takeIf { Style.BOLD in textStyles }
 
-        minimumLines =
-            parser.getAttributeValue(XML_MINIMUM_LINES)?.toIntOrNull()?.takeIf { it >= 0 } ?: DEFAULT_MINIMUM_LINES
+        minimumLines = parser.getDeviceAttributeValue(manifest.config, XML_MINIMUM_LINES)?.toIntOrNull()
+            ?.takeIf { it >= 0 }
+            ?: DEFAULT_MINIMUM_LINES
 
         startImageName = parser.getAttributeValue(XML_START_IMAGE)
         startImageSize = parser.getAttributeValue(XML_START_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
