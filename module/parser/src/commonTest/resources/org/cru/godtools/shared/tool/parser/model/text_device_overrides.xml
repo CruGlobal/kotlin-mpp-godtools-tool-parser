@@ -1,3 +1,4 @@
 <content:text xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    xmlns:web="https://mobile-content-api.cru.org/xmlns/web" font-weight="100"
-    web:font-weight="200" text-scale="2.0" web:text-scale="3.0">Web Text</content:text>
+    xmlns:web="https://mobile-content-api.cru.org/xmlns/web" font-weight="100" minimum-lines="2"
+    text-scale="2.0" web:font-weight="200" web:minimum-lines="3" web:text-scale="3.0">Web Text
+</content:text>
