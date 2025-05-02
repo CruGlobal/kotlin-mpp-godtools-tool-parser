@@ -70,7 +70,12 @@ class TextTest : UsesResources() {
 
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(200, text.fontWeight)
+        assertEquals(Text.Align.START, text.textAlign)
+        assertEquals(TestColors.GREEN, text.textColor)
         assertEquals(3.0, text.textScale, 0.001)
+        assertEquals(setOf(Text.Style.UNDERLINE), text.textStyles)
+        assertEquals(20, text.startImageSize)
+        assertEquals(40, text.endImageSize)
         assertEquals(3, text.minimumLines)
     }
 
@@ -81,7 +86,12 @@ class TextTest : UsesResources() {
 
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(100, text.fontWeight)
+        assertEquals(Text.Align.CENTER, text.textAlign)
+        assertEquals(TestColors.RED, text.textColor)
         assertEquals(2.0, text.textScale, 0.001)
+        assertEquals(setOf(Text.Style.ITALIC), text.textStyles)
+        assertEquals(10, text.startImageSize)
+        assertEquals(30, text.endImageSize)
         assertEquals(2, text.minimumLines)
     }
     // endregion Parsing
