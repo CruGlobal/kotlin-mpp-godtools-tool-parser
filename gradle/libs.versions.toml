@@ -54,6 +54,8 @@ common-test-framework = ["kotlin-coroutines-test"]
 ktlint-rulesets = ["ktlint-rules-compose"]
 
 [plugins]
+compose = { id = "org.jetbrains.compose", version = "1.7.3" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.0" }
 ksp = { id = "com.google.devtools.ksp", version = "2.1.21-2.0.1" }
