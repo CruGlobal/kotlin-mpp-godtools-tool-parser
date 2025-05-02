@@ -127,6 +127,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: 'true'
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
@@ -147,7 +149,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Android Unit Tests
-        run: ./gradlew test koverXmlReportRelease --scan --no-build-cache
+        run: ./gradlew test verifyPaparazzi koverXmlReportRelease --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v5
         with:

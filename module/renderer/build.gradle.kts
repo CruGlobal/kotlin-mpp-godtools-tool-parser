@@ -2,6 +2,7 @@ plugins {
     id("godtools-shared.module-conventions")
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
