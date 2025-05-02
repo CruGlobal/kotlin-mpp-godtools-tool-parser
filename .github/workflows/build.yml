@@ -86,7 +86,7 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Ktlint
-        run: ./gradlew ktlintCheck --scan
+        run: ./gradlew :build-logic:ktlintCheck ktlintCheck --scan
       - name: Archive ktlint results
         if: always()
         uses: actions/upload-artifact@v4

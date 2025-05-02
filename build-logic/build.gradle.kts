@@ -1,6 +1,7 @@
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
+    alias(libs.plugins.ktlint)
 }
 
 kotlin.jvmToolchain {
@@ -30,4 +31,12 @@ dependencies {
     implementation(libs.kotlin.gradle)
     implementation(libs.kotlin.kover.gradle)
     implementation(libs.antlr.kotlin.gradle)
+}
+
+ktlint {
+    version.set(libs.versions.ktlint)
+
+    filter {
+        exclude { layout.buildDirectory.asFileTree.contains(it.file) }
+    }
 }
