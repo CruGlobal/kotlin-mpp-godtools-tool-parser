@@ -19,6 +19,7 @@ kotlin {
 
     configureCommonSourceSets()
 }
+configureKtlint()
 
 koverReport {
     androidReports("release") {

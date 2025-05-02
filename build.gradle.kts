@@ -74,6 +74,7 @@ kotlin {
         ios.deploymentTarget = "14.0"
     }
 }
+configureKtlint()
 
 // region Cocoapods
 // HACK: customize the podspec until KT-42105 is implemented
@@ -108,18 +109,3 @@ tasks.create("cleanPodspec", Delete::class) {
     delete(tasks.podspec.map { it.outputFile })
 }.also { tasks.clean.configure { dependsOn(it) } }
 // endregion Cocoapods
-
-// region KtLint
-allprojects {
-    beforeEvaluate {
-        apply(plugin = "org.jlleitschuh.gradle.ktlint")
-        ktlint {
-            version.set(libs.versions.ktlint)
-
-            filter {
-                exclude { it.file.path.startsWith("${buildDir.path}/") }
-            }
-        }
-    }
-}
-// endregion KtLint
