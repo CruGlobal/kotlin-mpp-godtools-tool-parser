@@ -47,6 +47,7 @@ include("module:interop")
 include("module:parser")
 include("module:parser-base")
 include("module:parser-expressions")
+include("module:renderer")
 include("module:user-activity")
 
 include("publishing:npm")
