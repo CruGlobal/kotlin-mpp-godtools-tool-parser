@@ -11,6 +11,7 @@ kotlinCoroutines = "1.9.0"
 kustomExport = "0.8.2"
 goncalossilvaResources = "0.10.0"
 ktlint = "1.5.0"
+ktlintGradle = "12.2.0"
 napier = "2.6.1"
 npmPublish = "3.5.3"
 okio = "3.11.0"
@@ -34,6 +35,7 @@ kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-kover-gradle = "org.jetbrains.kotlinx:kover-gradle-plugin:0.7.5"
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport" }
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
@@ -48,10 +50,11 @@ ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
 [bundles]
 android-test-framework = ["androidx-test-junit", "robolectric"]
 common-test-framework = ["kotlin-coroutines-test"]
+ktlint-rulesets = []
 
 [plugins]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.0" }
 ksp = { id = "com.google.devtools.ksp", version = "2.1.20-2.0.1" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.2.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
