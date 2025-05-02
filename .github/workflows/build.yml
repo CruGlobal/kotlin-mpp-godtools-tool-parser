@@ -2,9 +2,9 @@ name: Build Library
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/*]
   pull_request:
-    branches: [main]
+    branches: [main, feature/*]
   workflow_dispatch:
     inputs:
       triggerRelease:
@@ -215,7 +215,9 @@ jobs:
   lint_ios_podspec:
     name: Lint iOS Podspec
     runs-on: macos-14
-    if: github.event_name == 'pull_request'
+    if: |
+      (github.event_name == 'pull_request') ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/'))
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

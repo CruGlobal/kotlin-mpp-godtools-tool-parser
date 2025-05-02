@@ -2,7 +2,7 @@ name: iOS Framework Headers Diff
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feature/*]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
