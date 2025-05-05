@@ -21,10 +21,10 @@ kotlin {
 }
 configureKtlint()
 
-koverReport {
-    androidReports("release") {
-        xml {
-            setReportFile(layout.buildDirectory.file("reports/kover/release/report.xml"))
+kover.reports {
+    androidComponents.onVariants { variant ->
+        variant(variant.name) {
+            xml.xmlFile.set(layout.buildDirectory.file("reports/kover/${variant.name}/report.xml"))
         }
     }
 }
