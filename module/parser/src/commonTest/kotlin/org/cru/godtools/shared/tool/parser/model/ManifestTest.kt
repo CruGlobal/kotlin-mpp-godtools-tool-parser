@@ -4,6 +4,7 @@ import io.fluidsonic.locale.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertSame
@@ -305,20 +306,22 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifestNull.navBarColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, manifestNull.navBarControlColor)
 
-        val manifestPrimary = Manifest(primaryColor = TestColors.GREEN, primaryTextColor = TestColors.BLUE)
-        assertEquals(TestColors.GREEN, manifestPrimary.navBarColor)
-        assertEquals(TestColors.GREEN, (manifestPrimary as Manifest?).navBarColor)
-        assertEquals(TestColors.BLUE, manifestPrimary.navBarControlColor)
-        assertEquals(TestColors.BLUE, (manifestPrimary as Manifest?).navBarControlColor)
+        val manifestPrimary = Manifest(primaryColor = TestColors.RANDOM, primaryTextColor = TestColors.RANDOM)
+        assertEquals(manifestPrimary.primaryColor, manifestPrimary.navBarColor)
+        assertEquals(manifestPrimary.primaryColor, (manifestPrimary as Manifest?).navBarColor)
+        assertEquals(manifestPrimary.primaryTextColor, manifestPrimary.navBarControlColor)
+        assertEquals(manifestPrimary.primaryTextColor, (manifestPrimary as Manifest?).navBarControlColor)
 
         val manifestNavBar = Manifest(
-            primaryColor = TestColors.RED,
-            primaryTextColor = TestColors.RED,
+            primaryColor = TestColors.RANDOM,
+            primaryTextColor = TestColors.RANDOM,
             navBarColor = TestColors.GREEN,
             navBarControlColor = TestColors.BLUE
         )
+        assertNotEquals(manifestNavBar.primaryColor, manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN, manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN, (manifestNavBar as Manifest?).navBarColor)
+        assertNotEquals(manifestNavBar.primaryTextColor, manifestNavBar.navBarControlColor)
         assertEquals(TestColors.BLUE, manifestNavBar.navBarControlColor)
         assertEquals(TestColors.BLUE, (manifestNavBar as Manifest?).navBarControlColor)
     }
