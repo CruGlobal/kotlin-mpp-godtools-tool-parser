@@ -23,6 +23,7 @@ import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
@@ -219,14 +220,16 @@ class Manifest : BaseModel, Styles, HasPages {
 
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-        primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_COLOR
-        primaryTextColor =
-            parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_TEXT_COLOR
+        primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: DEFAULT_PRIMARY_COLOR
+        primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: DEFAULT_PRIMARY_TEXT_COLOR
 
-        _navBarColor = parser.getAttributeValue(XML_NAVBAR_COLOR)?.toColorOrNull()
-        _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()
+        _navBarColor = parser.getAttributeValue(XML_NAVBAR_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
 
-        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
         backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -234,21 +237,24 @@ class Manifest : BaseModel, Styles, HasPages {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
-        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
-        pageControlColor =
-            parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
-                ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
+            ?.toPlatformColor()
+        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()?.toPlatformColor()
+        pageControlColor = parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
+                ?.also {
                     val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
                     Logger.e(message, DeprecationException(message), "Manifest")
                 }
-                ?: DEFAULT_CONTROL_COLOR
+            ?: DEFAULT_CONTROL_COLOR
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+                ?.toPlatformColor()
         multiselectOptionSelectedColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
+                ?.toPlatformColor()
 
-        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
+        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor() ?: DEFAULT_TEXT_COLOR
         textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
         var title: Text? = null

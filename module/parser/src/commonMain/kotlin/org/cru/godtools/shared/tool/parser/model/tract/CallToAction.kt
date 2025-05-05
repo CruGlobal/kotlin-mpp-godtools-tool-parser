@@ -6,6 +6,7 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -13,7 +14,7 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_CONTROL_COLOR = "control-color"
@@ -51,7 +52,7 @@ class CallToAction : BaseModel {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_CALL_TO_ACTION)
 
         this.page = page
-        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
+        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
         tipId = parser.getAttributeValue(XMLNS_TRAINING, XML_TIP)
 
         label = parser.parseTextChild(this, XMLNS_TRACT, XML_CALL_TO_ACTION)

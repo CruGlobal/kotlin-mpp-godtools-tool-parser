@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
@@ -14,7 +15,7 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -48,7 +49,7 @@ class Header : BaseModel, Styles {
     internal constructor(page: TractPage, parser: XmlPullParser) : super(page) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_HEADER)
 
-        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
+        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
         tipId = parser.getAttributeValue(XMLNS_TRAINING, XML_TIP)
 
         var number: Text? = null

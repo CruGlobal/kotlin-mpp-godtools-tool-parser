@@ -8,6 +8,7 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -42,8 +43,8 @@ import org.cru.godtools.shared.tool.parser.model.page.Page
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -73,7 +74,7 @@ class TractPage : Page {
     ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
 
-        _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
+        _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
 
         // process any child elements
         var header: Header? = null
@@ -203,7 +204,7 @@ class TractPage : Page {
             listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
             dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
             _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
             backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
                 ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -211,7 +212,7 @@ class TractPage : Page {
                 parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
                     ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-            _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
+            _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
 
             // process any child elements
             analyticsEvents = mutableListOf()

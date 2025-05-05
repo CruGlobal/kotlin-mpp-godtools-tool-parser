@@ -16,6 +16,7 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.color
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.BaseModel
@@ -59,7 +60,6 @@ import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.textScale
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
@@ -229,27 +229,30 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
-        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
+        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
 
-        backgroundColor =
-            parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
         backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
+        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
+            ?.toPlatformColor()
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
+                ?.toPlatformColor()
         _multiselectOptionSelectedColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
+                ?.toPlatformColor()
 
-        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
+        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
     }
 
