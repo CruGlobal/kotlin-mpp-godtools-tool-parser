@@ -182,14 +182,14 @@ class PageTest : UsesResources("model/page") {
     // region Property: controlColor
     @Test
     fun testPropertyControlColor() {
-        val manifest = Manifest(pageControlColor = TestColors.GREEN)
-        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.BLUE)
+        val manifest = Manifest(pageControlColor = TestColors.RANDOM)
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.RANDOM)
 
         assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
         assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)
-        assertEquals(TestColors.GREEN, TestPage(manifest, controlColor = null).controlColor)
-        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, controlColor = null)).controlColor)
-        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, controlColor = null).controlColor)
+        assertEquals(manifest.pageControlColor, TestPage(manifest, controlColor = null).controlColor)
+        assertEquals(manifest.pageControlColor, TestPage(TestPage(manifest, controlColor = null)).controlColor)
+        assertEquals(hasPagesParent.controlColor, TestPage(hasPagesParent, controlColor = null).controlColor)
     }
     // endregion Property: controlColor
 
