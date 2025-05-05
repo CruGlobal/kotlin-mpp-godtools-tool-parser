@@ -69,13 +69,13 @@ class HeroTest : UsesResources("model/tract") {
     @Test
     fun testHeadingTextColor() {
         val page = TractPage(primaryColor = TestColors.BLUE)
-        with(Hero(page, heading = { Text(it) })) {
-            assertEquals(page.primaryColor, heading!!.textColor)
+        assertNotNull(Hero(page, heading = { Text(it) }).heading) { heading ->
+            assertEquals(page.primaryColor, heading.textColor)
         }
 
-        with(Hero(page, heading = { Text(it, textColor = TestColors.GREEN) })) {
-            assertEquals(TestColors.GREEN, heading!!.textColor)
-            assertNotEquals(page.primaryColor, heading!!.textColor)
+        assertNotNull(Hero(page, heading = { Text(it, textColor = TestColors.GREEN) }).heading) { heading ->
+            assertEquals(TestColors.GREEN, heading.textColor)
+            assertNotEquals(page.primaryColor, heading.textColor)
         }
     }
 }
