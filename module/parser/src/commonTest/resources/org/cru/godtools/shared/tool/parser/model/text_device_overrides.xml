@@ -1,4 +1,11 @@
 <content:text xmlns:content="https://mobile-content-api.cru.org/xmlns/content"
-    xmlns:web="https://mobile-content-api.cru.org/xmlns/web" font-weight="100" minimum-lines="2"
-    text-scale="2.0" web:font-weight="200" web:minimum-lines="3" web:text-scale="3.0">Web Text
-</content:text>
+    xmlns:web="https://mobile-content-api.cru.org/xmlns/web"
+    font-weight="100" web:font-weight="200"
+    text-align="center" web:text-align="start"
+    text-color="rgba(255,0,0,1)" web:text-color="rgba(0,255,0,1)"
+    text-scale="2.0" web:text-scale="3.0"
+    text-style="italic" web:text-style="underline"
+    start-image-size="10" web:start-image-size="20"
+    end-image-size="30" web:end-image-size="40"
+    minimum-lines="2" web:minimum-lines="3"
+>Web Text</content:text>

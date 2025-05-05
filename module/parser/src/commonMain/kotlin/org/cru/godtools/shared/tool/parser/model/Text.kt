@@ -85,12 +85,12 @@ class Text : Content {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
 
-        _textAlign = parser.getAttributeValue(XML_TEXT_ALIGN)?.toTextAlignOrNull()
-        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
+        _textAlign = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_ALIGN)?.toTextAlignOrNull()
+        _textColor = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_SCALE)?.toDoubleOrNull()
             ?: DEFAULT_TEXT_SCALE
 
-        textStyles = parser.getAttributeValue(XML_TEXT_STYLE)?.toTextStyles().orEmpty()
+        textStyles = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_STYLE)?.toTextStyles().orEmpty()
 
         fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()
             ?.coerceIn(1..1000)
@@ -101,9 +101,11 @@ class Text : Content {
             ?: DEFAULT_MINIMUM_LINES
 
         startImageName = parser.getAttributeValue(XML_START_IMAGE)
-        startImageSize = parser.getAttributeValue(XML_START_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
+        startImageSize = parser.getDeviceAttributeValue(manifest.config, XML_START_IMAGE_SIZE)?.toIntOrNull()
+            ?: DEFAULT_IMAGE_SIZE
         endImageName = parser.getAttributeValue(XML_END_IMAGE)
-        endImageSize = parser.getAttributeValue(XML_END_IMAGE_SIZE)?.toIntOrNull() ?: DEFAULT_IMAGE_SIZE
+        endImageSize = parser.getDeviceAttributeValue(manifest.config, XML_END_IMAGE_SIZE)?.toIntOrNull()
+            ?: DEFAULT_IMAGE_SIZE
 
         text = parser.nextText()
     }
