@@ -36,6 +36,7 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-kover-gradle = "org.jetbrains.kotlinx:kover-gradle-plugin:0.9.1"
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
+ktlint-rules-compose = "io.nlopez.compose.rules:ktlint:0.4.22"
 kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport" }
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
@@ -50,7 +51,7 @@ ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
 [bundles]
 android-test-framework = ["androidx-test-junit", "robolectric"]
 common-test-framework = ["kotlin-coroutines-test"]
-ktlint-rulesets = []
+ktlint-rulesets = ["ktlint-rules-compose"]
 
 [plugins]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
