@@ -162,14 +162,20 @@ class PageTest : UsesResources("model/page") {
     // region Property: cardBackgroundColor
     @Test
     fun testPropertyCardBackgroundColor() {
-        val manifest = Manifest(cardBackgroundColor = TestColors.GREEN)
-        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.BLUE)
+        val manifest = Manifest(cardBackgroundColor = TestColors.RANDOM)
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.RANDOM)
 
         assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
         assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
-        assertEquals(TestColors.GREEN, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
-        assertEquals(TestColors.GREEN, TestPage(TestPage(manifest, cardBackgroundColor = null)).cardBackgroundColor)
-        assertEquals(TestColors.BLUE, TestPage(hasPagesParent, cardBackgroundColor = null).cardBackgroundColor)
+        assertEquals(manifest.cardBackgroundColor, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
+        assertEquals(
+            manifest.cardBackgroundColor,
+            TestPage(TestPage(manifest, cardBackgroundColor = null)).cardBackgroundColor,
+        )
+        assertEquals(
+            hasPagesParent.cardBackgroundColor,
+            TestPage(hasPagesParent, cardBackgroundColor = null).cardBackgroundColor,
+        )
     }
     // endregion Property: cardBackgroundColor
 
