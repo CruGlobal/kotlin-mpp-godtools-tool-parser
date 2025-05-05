@@ -15,6 +15,7 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.Tip.Type.Companion.toTypeOrNull
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TipTest : UsesResources("model/tips") {
@@ -44,8 +45,11 @@ class TipTest : UsesResources("model/tips") {
 
     @Test
     fun testTipDefaults() {
-        val manifest =
-            Manifest(primaryColor = TestColors.RED, primaryTextColor = TestColors.RED, textColor = TestColors.RED)
+        val manifest = Manifest(
+            primaryColor = TestColors.RED.toPlatformColor(),
+            primaryTextColor = TestColors.RED.toPlatformColor(),
+            textColor = TestColors.RED.toPlatformColor()
+        )
         val tip = Tip(manifest)
         assertNotEquals(manifest.primaryColor, tip.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, tip.primaryColor)

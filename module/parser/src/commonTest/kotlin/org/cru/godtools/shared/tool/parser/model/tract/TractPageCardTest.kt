@@ -22,6 +22,7 @@ import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -33,7 +34,7 @@ class TractPageCardTest : UsesResources("model/tract") {
         assertEquals("Card 1", card.label!!.text)
         assertEquals(card.primaryColor, card.label!!.textColor)
         assertNotEquals(card.textColor, card.label!!.textColor)
-        assertEquals(TestColors.RED, card.backgroundColor)
+        assertEquals(TestColors.RED.toPlatformColor(), card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), card.dismissListeners)
         assertEquals(1, card.analyticsEvents.size)
@@ -76,7 +77,7 @@ class TractPageCardTest : UsesResources("model/tract") {
         val manifest = Manifest(resources = { listOf(Resource(it, name = "background.png")) })
         val card = Card(
             TractPage(manifest),
-            backgroundColor = TestColors.GREEN,
+            backgroundColor = TestColors.GREEN.toPlatformColor(),
             backgroundImage = "background.png",
             backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
@@ -89,12 +90,12 @@ class TractPageCardTest : UsesResources("model/tract") {
             assertEquals(Card.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
         }
         with(card as Card?) {
-            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
         with(card) {
-            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
             assertEquals(resource, backgroundImage)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
@@ -103,9 +104,12 @@ class TractPageCardTest : UsesResources("model/tract") {
 
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
-        val page = TractPage(cardBackgroundColor = TestColors.GREEN)
-        assertEquals(TestColors.GREEN, Card(page).backgroundColor)
-        assertEquals(TestColors.BLUE, Card(page, backgroundColor = TestColors.BLUE).backgroundColor)
+        val page = TractPage(cardBackgroundColor = TestColors.GREEN.toPlatformColor())
+        assertEquals(TestColors.GREEN.toPlatformColor(), Card(page).backgroundColor)
+        assertEquals(
+            TestColors.BLUE.toPlatformColor(),
+            Card(page, backgroundColor = TestColors.BLUE.toPlatformColor()).backgroundColor,
+        )
     }
 
     @Test
@@ -127,8 +131,8 @@ class TractPageCardTest : UsesResources("model/tract") {
             assertNotEquals(textColor, label!!.textColor)
         }
 
-        with(Card(label = { Text(it, textColor = TestColors.GREEN) })) {
-            assertEquals(TestColors.GREEN, label!!.textColor)
+        with(Card(label = { Text(it, textColor = TestColors.GREEN.toPlatformColor()) })) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), label!!.textColor)
             assertNotEquals(primaryColor, label!!.textColor)
             assertNotEquals(textColor, label!!.textColor)
         }

@@ -23,8 +23,8 @@ import org.cru.godtools.shared.tool.state.State
 class ButtonTest : UsesResources() {
     private val parentObj = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
-        override var primaryColor = TestColors.BLACK
-        override var primaryTextColor = TestColors.BLACK
+        override var primaryColor = TestColors.BLACK.toPlatformColor()
+        override var primaryTextColor = TestColors.BLACK.toPlatformColor()
         override var textAlign = Text.Align.START
     }
     private val state = State()
@@ -40,7 +40,7 @@ class ButtonTest : UsesResources() {
             assertEquals(manifest.buttonStyle, style)
             assertEquals(EventId.parse("event1 event2"), events)
             assertEquals("event button", text.text)
-            assertEquals(TestColors.RED, buttonColor)
+            assertEquals(TestColors.RED.toPlatformColor(), buttonColor)
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
             assertEquals(Dimension.Pixels(50), width)
             assertEquals(Gravity.Horizontal.END, gravity)
@@ -56,7 +56,7 @@ class ButtonTest : UsesResources() {
         val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
         assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
-        assertEquals(TestColors.GREEN, button.backgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), button.backgroundColor)
         assertEquals("https://www.google.com/", button.url!!.toString())
         assertEquals("url button", button.text.text)
         assertEquals(1, button.analyticsEvents.size)
@@ -170,20 +170,20 @@ class ButtonTest : UsesResources() {
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
         assertEquals(manifest.primaryColor, Button(manifest).buttonColor)
-        with(Button(manifest, color = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN, buttonColor)
+        with(Button(manifest, color = TestColors.GREEN.toPlatformColor())) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), buttonColor)
             assertNotEquals(manifest.primaryColor, buttonColor)
         }
 
         val parent = object : BaseModel(manifest), Styles {
-            override val primaryColor = TestColors.random()
+            override val primaryColor = TestColors.random().toPlatformColor()
         }
         with(Button(parent)) {
             assertEquals(parent.primaryColor, buttonColor)
             assertNotEquals(manifest.primaryColor, buttonColor)
         }
-        with(Button(parent, color = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN, buttonColor)
+        with(Button(parent, color = TestColors.GREEN.toPlatformColor())) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), buttonColor)
             assertNotEquals(parent.primaryColor, buttonColor)
             assertNotEquals(manifest.primaryColor, buttonColor)
         }
@@ -212,46 +212,59 @@ class ButtonTest : UsesResources() {
     // region Property - text - textColor
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
-        parentObj.primaryColor = TestColors.RED
-        parentObj.primaryTextColor = TestColors.GREEN
+        parentObj.primaryColor = TestColors.RED.toPlatformColor()
+        parentObj.primaryTextColor = TestColors.GREEN.toPlatformColor()
 
         with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it) })) {
             assertNotEquals(parentObj.primaryColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertNotEquals(buttonColor, text.textColor)
             assertEquals(parentObj.primaryTextColor, text.textColor)
-            assertEquals(TestColors.GREEN, text.textColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
         }
 
-        with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
+        with(
+            Button(
+                parentObj,
+                style = Button.Style.CONTAINED,
+                text = { Text(it, textColor = TestColors.BLUE.toPlatformColor()) }
+            )
+        ) {
             assertNotEquals(parentObj.primaryTextColor, text.textColor)
-            assertEquals(TestColors.BLUE, text.textColor)
+            assertEquals(TestColors.BLUE.toPlatformColor(), text.textColor)
         }
     }
 
     @Test
     fun testButtonTextColorFallbackBehaviorOutlined() {
-        parentObj.primaryColor = TestColors.RED
-        parentObj.primaryTextColor = TestColors.RED
+        parentObj.primaryColor = TestColors.RED.toPlatformColor()
+        parentObj.primaryTextColor = TestColors.RED.toPlatformColor()
 
-        with(Button(parentObj, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
+        with(
+            Button(
+                parentObj,
+                style = Button.Style.OUTLINED,
+                color = TestColors.GREEN.toPlatformColor(),
+                text = { Text(it) }
+            )
+        ) {
             assertNotEquals(parentObj.primaryColor, text.textColor)
             assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertEquals(buttonColor, text.textColor)
-            assertEquals(TestColors.GREEN, text.textColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
         }
 
         with(
             Button(
                 parentObj,
                 style = Button.Style.OUTLINED,
-                color = TestColors.RED,
-                text = { Text(it, textColor = TestColors.GREEN) }
+                color = TestColors.RED.toPlatformColor(),
+                text = { Text(it, textColor = TestColors.GREEN.toPlatformColor()) }
             )
         ) {
             assertNotEquals(buttonColor, text.textColor)
-            assertEquals(TestColors.GREEN, text.textColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
         }
     }
     // endregion Property - text - textColor

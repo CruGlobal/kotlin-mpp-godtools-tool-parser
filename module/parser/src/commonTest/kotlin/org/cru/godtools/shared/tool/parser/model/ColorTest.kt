@@ -6,10 +6,10 @@ import kotlin.test.assertEquals
 class ColorTest {
     @Test
     fun testToRGB() {
-        assertEquals(TestColors.RED, TestColors.RED.toRGB().toPlatformColor())
-        assertEquals(TestColors.GREEN, TestColors.GREEN.toRGB().toPlatformColor())
-        assertEquals(TestColors.BLUE, TestColors.BLUE.toRGB().toPlatformColor())
-        assertEquals(TestColors.BLACK, TestColors.BLACK.toRGB().toPlatformColor())
+        assertEquals(TestColors.RED, TestColors.RED.toPlatformColor().toRGB())
+        assertEquals(TestColors.GREEN, TestColors.GREEN.toPlatformColor().toRGB())
+        assertEquals(TestColors.BLUE, TestColors.BLUE.toPlatformColor().toRGB())
+        assertEquals(TestColors.BLACK, TestColors.BLACK.toPlatformColor().toRGB())
         assertEquals(TRANSPARENT, TRANSPARENT.toRGB().toPlatformColor())
     }
 }

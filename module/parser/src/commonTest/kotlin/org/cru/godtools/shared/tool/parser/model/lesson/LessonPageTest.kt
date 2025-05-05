@@ -27,6 +27,7 @@ import org.cru.godtools.shared.tool.parser.model.page.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.page.backgroundImageGravity
 import org.cru.godtools.shared.tool.parser.model.page.backgroundImageScaleType
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class LessonPageTest : UsesResources("model/lesson") {
@@ -36,15 +37,15 @@ class LessonPageTest : UsesResources("model/lesson") {
         val manifest = Manifest(resources = { listOf(Resource(it, "background.png")) })
         val page = parsePageXml("page.xml", manifest)
         assertFalse(page.isHidden)
-        assertEquals(TestColors.GREEN, page.controlColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.controlColor)
         assertEquals(1.2345, page.textScale, 0.00001)
         assertEquals(1, page.content.size)
         assertEquals(AnalyticsEvent.System.FIREBASE, page.analyticsEvents.single().systems.single())
         assertIs<Text>(page.content[0])
         assertNotNull(page.backgroundImage) { assertEquals(manifest.getResource("background.png"), it) }
-        assertEquals(TestColors.RED, page.multiselectOptionBackgroundColor)
-        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
-        assertEquals(TestColors.RED, page.backgroundColor)
+        assertEquals(TestColors.RED.toPlatformColor(), page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionSelectedColor)
+        assertEquals(TestColors.RED.toPlatformColor(), page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
         assertTrue(page.backgroundImageGravity.isEnd)
         assertEquals(ImageScaleType.FIT, page.backgroundImageScaleType)
@@ -78,9 +79,9 @@ class LessonPageTest : UsesResources("model/lesson") {
     fun testBackgroundColor() {
         assertEquals(DEFAULT_BACKGROUND_COLOR, (null as LessonPage?).backgroundColor)
 
-        val page = LessonPage(Manifest(), backgroundColor = TestColors.GREEN)
-        assertEquals(TestColors.GREEN, page.backgroundColor)
-        assertEquals(TestColors.GREEN, (page as LessonPage?).backgroundColor)
+        val page = LessonPage(Manifest(), backgroundColor = TestColors.GREEN.toPlatformColor())
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.backgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), (page as LessonPage?).backgroundColor)
     }
 
     @Test
@@ -104,11 +105,20 @@ class LessonPageTest : UsesResources("model/lesson") {
 
     @Test
     fun testControlColor() {
-        assertEquals(TestColors.GREEN, LessonPage(Manifest(), controlColor = TestColors.GREEN).controlColor)
-        assertEquals(TestColors.GREEN, LessonPage(Manifest(pageControlColor = TestColors.GREEN)).controlColor)
         assertEquals(
-            TestColors.GREEN,
-            LessonPage(Manifest(pageControlColor = TestColors.RED), controlColor = TestColors.GREEN).controlColor
+            TestColors.GREEN.toPlatformColor(),
+            LessonPage(controlColor = TestColors.GREEN.toPlatformColor()).controlColor
+        )
+        assertEquals(
+            TestColors.GREEN.toPlatformColor(),
+            LessonPage(Manifest(pageControlColor = TestColors.GREEN.toPlatformColor())).controlColor
+        )
+        assertEquals(
+            TestColors.GREEN.toPlatformColor(),
+            LessonPage(
+                Manifest(pageControlColor = TestColors.RED.toPlatformColor()),
+                controlColor = TestColors.GREEN.toPlatformColor()
+            ).controlColor
         )
     }
 

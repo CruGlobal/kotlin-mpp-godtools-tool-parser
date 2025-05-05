@@ -7,16 +7,16 @@ import kotlin.test.assertNull
 class StylesTest {
     private val parent by lazy {
         object : Styles {
-            override var primaryColor = TestColors.RED
-            override var primaryTextColor = TestColors.RED
+            override var primaryColor = TestColors.RED.toPlatformColor()
+            override var primaryTextColor = TestColors.RED.toPlatformColor()
 
             override lateinit var buttonStyle: Button.Style
 
-            override var multiselectOptionBackgroundColor = TestColors.random()
+            override var multiselectOptionBackgroundColor = TestColors.random().toPlatformColor()
             override var multiselectOptionSelectedColor: PlatformColor? = null
 
             override var textAlign = Text.Align.END
-            override var textColor = TestColors.RED
+            override var textColor = TestColors.RED.toPlatformColor()
             override var textScale = 0.0
         }
     }
@@ -24,14 +24,14 @@ class StylesTest {
 
     @Test
     fun testStylesPrimaryColorFallback() {
-        parent.primaryColor = TestColors.random()
+        parent.primaryColor = TestColors.random().toPlatformColor()
         assertEquals(parent.primaryColor, child.primaryColor)
         assertEquals(parent.primaryColor, (child as Styles?).primaryColor)
     }
 
     @Test
     fun testStylesPrimaryTextColorFallback() {
-        parent.primaryTextColor = TestColors.random()
+        parent.primaryTextColor = TestColors.random().toPlatformColor()
         assertEquals(parent.primaryTextColor, child.primaryTextColor)
         assertEquals(parent.primaryTextColor, (child as Styles?).primaryTextColor)
     }
@@ -53,7 +53,7 @@ class StylesTest {
     fun testStylesMultiselectOptionSelectedColorFallback() {
         parent.multiselectOptionSelectedColor = null
         assertNull(child.multiselectOptionSelectedColor)
-        parent.multiselectOptionSelectedColor = TestColors.random()
+        parent.multiselectOptionSelectedColor = TestColors.random().toPlatformColor()
         assertEquals(parent.multiselectOptionSelectedColor, child.multiselectOptionSelectedColor)
     }
 
@@ -66,7 +66,7 @@ class StylesTest {
 
     @Test
     fun testStylesTextColorFallback() {
-        parent.textColor = TestColors.random()
+        parent.textColor = TestColors.random().toPlatformColor()
         assertEquals(parent.textColor, child.textColor)
         assertEquals(parent.textColor, (child as Styles?).textColor)
     }
