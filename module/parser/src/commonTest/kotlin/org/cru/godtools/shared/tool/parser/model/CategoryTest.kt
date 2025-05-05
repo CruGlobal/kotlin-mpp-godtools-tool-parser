@@ -27,16 +27,16 @@ class CategoryTest : UsesResources() {
 
     @Test
     fun testLabelTextColor() {
-        val manifest = Manifest(categoryLabelColor = TestColors.BLUE)
-        with(Category(manifest, label = { Text(it) })) {
-            assertEquals(manifest.categoryLabelColor, label!!.textColor)
-            assertNotEquals(manifest.textColor, label!!.textColor)
+        val manifest = Manifest(categoryLabelColor = TestColors.RANDOM)
+        assertNotNull(Category(manifest, label = { Text(it) }).label) { label ->
+            assertEquals(manifest.categoryLabelColor, label.textColor)
+            assertNotEquals(manifest.textColor, label.textColor)
         }
 
-        with(Category(manifest, label = { Text(it, textColor = TestColors.GREEN) })) {
-            assertEquals(TestColors.GREEN, label!!.textColor)
-            assertNotEquals(manifest.categoryLabelColor, label!!.textColor)
-            assertNotEquals(manifest.textColor, label!!.textColor)
+        assertNotNull(Category(manifest, label = { Text(it, textColor = TestColors.GREEN) }).label) { label ->
+            assertEquals(TestColors.GREEN, label.textColor)
+            assertNotEquals(manifest.categoryLabelColor, label.textColor)
+            assertNotEquals(manifest.textColor, label.textColor)
         }
     }
 }
