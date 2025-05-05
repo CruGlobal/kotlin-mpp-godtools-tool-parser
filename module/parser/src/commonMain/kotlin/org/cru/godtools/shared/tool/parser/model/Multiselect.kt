@@ -14,6 +14,7 @@ import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
@@ -71,7 +72,8 @@ class Multiselect : Content {
         optionStyle =
             parser.getAttributeValue(XML_OPTION_STYLE).toMultiselectOptionStyleOrNull() ?: Option.DEFAULT_STYLE
         _optionBackgroundColor = parser.getAttributeValue(XML_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
-        _optionSelectedColor = parser.getAttributeValue(XML_OPTION_SELECTED_COLOR)?.toColorOrNull()
+            ?.toPlatformColor()
+        _optionSelectedColor = parser.getAttributeValue(XML_OPTION_SELECTED_COLOR)?.toColorOrNull()?.toPlatformColor()
 
         options = mutableListOf()
         parser.parseChildren {
@@ -145,8 +147,8 @@ class Multiselect : Content {
 
             _style = parser.getAttributeValue(XML_STYLE).toMultiselectOptionStyleOrNull()
 
-            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
-            _selectedColor = parser.getAttributeValue(XML_SELECTED_COLOR)?.toColorOrNull()
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            _selectedColor = parser.getAttributeValue(XML_SELECTED_COLOR)?.toColorOrNull()?.toPlatformColor()
 
             value = parser.getAttributeValue(XML_VALUE).orEmpty()
 

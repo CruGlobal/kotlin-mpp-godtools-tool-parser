@@ -15,6 +15,7 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles
@@ -86,7 +87,7 @@ class Text : Content {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
 
         _textAlign = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_ALIGN)?.toTextAlignOrNull()
-        _textColor = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_COLOR)?.toColorOrNull()
+        _textColor = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
         _textScale = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_SCALE)?.toDoubleOrNull()
             ?: DEFAULT_TEXT_SCALE
 

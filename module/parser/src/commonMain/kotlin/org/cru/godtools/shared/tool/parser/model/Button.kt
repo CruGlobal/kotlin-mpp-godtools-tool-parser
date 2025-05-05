@@ -11,6 +11,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
@@ -95,8 +96,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         gravity = parser.getAttributeValue(XML_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
         width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
-        _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
-        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
+        _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()?.toPlatformColor()
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
         iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_ICON_GRAVITY

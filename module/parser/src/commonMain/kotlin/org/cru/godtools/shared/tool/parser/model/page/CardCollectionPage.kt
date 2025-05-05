@@ -7,6 +7,7 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -24,7 +25,7 @@ import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card.Companion.XML_CARD
 import org.cru.godtools.shared.tool.parser.model.parseContent
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -150,7 +151,7 @@ class CardCollectionPage : Page {
             parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_CARD)
 
             _id = parser.getAttributeValue(XML_ID)
-            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
 
             // process any child elements
             analyticsEvents = mutableListOf()

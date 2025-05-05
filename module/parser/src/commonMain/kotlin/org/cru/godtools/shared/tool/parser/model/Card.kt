@@ -10,6 +10,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTENT_CARD
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 @JsExport
@@ -32,7 +33,7 @@ class Card : Content, Parent, Clickable {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_CARD)
 
-        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR).toColorOrNull()
+        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
 
         parseClickableAttrs(parser) { events, url ->
             this.events = events
