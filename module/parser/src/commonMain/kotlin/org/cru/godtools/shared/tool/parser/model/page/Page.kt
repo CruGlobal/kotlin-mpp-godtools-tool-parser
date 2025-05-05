@@ -15,6 +15,7 @@ import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.BaseModel
@@ -44,7 +45,6 @@ import org.cru.godtools.shared.tool.parser.model.XML_PRIMARY_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_PRIMARY_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_SCALE
-import org.cru.godtools.shared.tool.parser.model.color
 import org.cru.godtools.shared.tool.parser.model.getResource
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
@@ -61,6 +61,7 @@ import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.textScale
 import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -81,7 +82,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         @AndroidColorInt
         @VisibleForTesting
-        internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
+        internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0).toPlatformColor()
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         @VisibleForTesting

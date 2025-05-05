@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import com.github.ajalt.colormath.model.HSL
 import com.github.ajalt.colormath.model.RGB
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.color
 
 private val COLOR_REGEX =
     Regex("^\\s*rgba\\(\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9.]+)\\s*\\)\\s*$")
@@ -18,15 +19,11 @@ internal fun String?.toColorOrNull(): PlatformColor? = this?.let { COLOR_REGEX.m
         val green = it.groupValues[2].toInt().also { require(it in VALID_RGB) }
         val blue = it.groupValues[3].toInt().also { require(it in VALID_RGB) }
         val alpha = it.groupValues[4].toDouble().also { require(it in VALID_ALPHA) }
-        color(red, green, blue, alpha)
+        color(red, green, blue, alpha).toPlatformColor()
     } catch (ignored: IllegalArgumentException) {
         null
     }
 }
-
-@AndroidColorInt
-internal fun color(red: Int, green: Int, blue: Int, alpha: Double) =
-    RGB(red / 255f, green / 255f, blue / 255f, alpha).toPlatformColor()
 
 internal expect fun PlatformColor.toRGB(): RGB
 internal expect fun RGB.toPlatformColor(): PlatformColor

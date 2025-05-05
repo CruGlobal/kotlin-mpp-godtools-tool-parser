@@ -16,6 +16,7 @@ import org.ccci.gto.support.fluidsonic.locale.toCommon
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
@@ -118,8 +119,8 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.RED, manifest.primaryColor)
         assertEquals(TestColors.BLUE, manifest.primaryTextColor)
         assertEquals(TestColors.GREEN, manifest.navBarColor)
-        assertEquals(color(255, 0, 255, 1.0), manifest.navBarControlColor)
-        assertEquals(color(255, 255, 0, 1.0), manifest.pageControlColor)
+        assertEquals(color(255, 0, 255, 1.0).toPlatformColor(), manifest.navBarControlColor)
+        assertEquals(color(255, 255, 0, 1.0).toPlatformColor(), manifest.pageControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
         assertEquals(2, manifest.pages.size)
         assertEquals("page0.xml", manifest.pages[0].fileName)

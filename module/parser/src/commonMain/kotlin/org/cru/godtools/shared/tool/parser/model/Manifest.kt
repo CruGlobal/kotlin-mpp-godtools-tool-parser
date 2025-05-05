@@ -21,6 +21,7 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
@@ -76,19 +77,19 @@ private const val XML_TIPS_TIP_SRC = "src"
 class Manifest : BaseModel, Styles, HasPages {
     internal companion object {
         @AndroidColorInt
-        internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
+        internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0).toPlatformColor()
         @AndroidColorInt
-        internal val DEFAULT_PRIMARY_TEXT_COLOR = color(255, 255, 255, 1.0)
+        internal val DEFAULT_PRIMARY_TEXT_COLOR = color(255, 255, 255, 1.0).toPlatformColor()
 
         @AndroidColorInt
-        internal val DEFAULT_BACKGROUND_COLOR = color(255, 255, 255, 1.0)
+        internal val DEFAULT_BACKGROUND_COLOR = color(255, 255, 255, 1.0).toPlatformColor()
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         internal val DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE = ImageScaleType.FILL
 
         internal val DEFAULT_BUTTON_STYLE = Button.Style.CONTAINED
 
         @AndroidColorInt
-        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
+        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0).toPlatformColor()
 
         internal suspend fun parse(
             fileName: String,

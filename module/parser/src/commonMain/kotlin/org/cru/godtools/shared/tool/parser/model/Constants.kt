@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.cru.godtools.shared.tool.parser.internal.color
+
 internal const val SCHEMA_VERSION = 2
 
 // XML namespaces
@@ -23,5 +25,5 @@ internal const val XML_TEXT_SCALE = "text-scale"
 internal const val XML_LISTENERS = "listeners"
 
 // common colors
-internal val TRANSPARENT = color(0, 0, 0, 0.0)
-internal val WHITE = color(255, 255, 255, 1.0)
+internal val TRANSPARENT = color(0, 0, 0, 0.0).toPlatformColor()
+internal val WHITE = color(255, 255, 255, 1.0).toPlatformColor()

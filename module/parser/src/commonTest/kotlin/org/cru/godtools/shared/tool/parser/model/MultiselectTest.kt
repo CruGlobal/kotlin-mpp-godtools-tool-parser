@@ -17,6 +17,7 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
@@ -263,13 +264,13 @@ class MultiselectTest : UsesResources() {
     @Test
     fun testOptionSelectedColorFallback() {
         val parent = object : BaseModel(), Styles {
-            override var primaryColor = color(254, 0, 0, 0.5)
+            override var primaryColor = color(254, 0, 0, 0.5).toPlatformColor()
             override var multiselectOptionSelectedColor: PlatformColor? = null
         }
 
         // 40% lighter primary color w/ 100% alpha
         with(Multiselect.Option(Multiselect(parent))) {
-            assertEquals(color(255, 203, 203, 1.0), selectedColor)
+            assertEquals(color(255, 203, 203, 1.0).toPlatformColor(), selectedColor)
         }
 
         // 40% lighter of white primary color should still be white
