@@ -46,6 +46,7 @@ include("module:common")
 include("module:interop")
 include("module:parser")
 include("module:parser-expressions")
+include("module:renderer")
 include("module:state")
 include("module:user-activity")
 
