@@ -17,7 +17,7 @@ class CardTest : UsesResources() {
     @Test
     fun testParseCard() = runTest {
         val card = Card(Manifest(), getTestXmlParser("card.xml"))
-        assertEquals(TestColors.RED, card.backgroundColor)
+        assertEquals(TestColors.RED.toPlatformColor(), card.backgroundColor)
         assertTrue(card.isClickable)
         assertEquals("https://www.example.com", card.url.toString())
         assertEquals(2, card.content.size)
@@ -46,9 +46,12 @@ class CardTest : UsesResources() {
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
         val parent = object : BaseModel(), Styles {
-            override val cardBackgroundColor = TestColors.random()
+            override val cardBackgroundColor = TestColors.random().toPlatformColor()
         }
         assertEquals(parent.cardBackgroundColor, Card(parent).backgroundColor)
-        assertEquals(TestColors.GREEN, Card(parent, backgroundColor = TestColors.GREEN).backgroundColor)
+        assertEquals(
+            TestColors.GREEN.toPlatformColor(),
+            Card(parent, backgroundColor = TestColors.GREEN.toPlatformColor()).backgroundColor
+        )
     }
 }

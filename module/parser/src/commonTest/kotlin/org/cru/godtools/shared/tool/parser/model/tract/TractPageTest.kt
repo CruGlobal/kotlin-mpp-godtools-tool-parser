@@ -23,13 +23,14 @@ import org.cru.godtools.shared.tool.parser.model.page.backgroundImageGravity
 import org.cru.godtools.shared.tool.parser.model.page.backgroundImageScaleType
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TractPageTest : UsesResources("model/tract") {
     @Test
     fun verifyParse() = runTest {
         val page = parsePageXml("page.xml")
-        assertEquals(TestColors.RED, page.backgroundColor)
+        assertEquals(TestColors.RED.toPlatformColor(), page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
         assertTrue(page.backgroundImageGravity.isStart)
         assertEquals(ImageScaleType.FILL, page.backgroundImageScaleType)
@@ -46,14 +47,14 @@ class TractPageTest : UsesResources("model/tract") {
     fun verifyParseCards() = runTest {
         val page = parsePageXml("page_cards.xml")
         assertEquals(2, page.cards.size)
-        assertEquals(TestColors.GREEN, page.cardBackgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.cardBackgroundColor)
         with(page.cards[0]) {
             assertEquals("Card 1", label!!.text)
-            assertEquals(TestColors.BLACK, backgroundColor)
+            assertEquals(TestColors.BLACK.toPlatformColor(), backgroundColor)
         }
         with(page.cards[1]) {
             assertEquals("Card 2", label!!.text)
-            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
         }
     }
 
@@ -79,7 +80,7 @@ class TractPageTest : UsesResources("model/tract") {
         val manifest = Manifest(resources = { listOf(Resource(it, name = "background.png")) })
         val page = TractPage(
             manifest,
-            backgroundColor = TestColors.GREEN,
+            backgroundColor = TestColors.GREEN.toPlatformColor(),
             backgroundImage = "background.png",
             backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
@@ -92,12 +93,12 @@ class TractPageTest : UsesResources("model/tract") {
             assertEquals(DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
         }
         with(page as TractPage?) {
-            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
         with(page) {
-            assertEquals(TestColors.GREEN, backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
             assertEquals(resource, backgroundImage)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
@@ -106,28 +107,28 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testCardTextColorBehavior() {
-        with(TractPage(textColor = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN, cardTextColor)
+        with(TractPage(textColor = TestColors.GREEN.toPlatformColor())) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
             assertEquals(textColor, cardTextColor)
         }
-        with(TractPage(cardTextColor = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN, cardTextColor)
+        with(TractPage(cardTextColor = TestColors.GREEN.toPlatformColor())) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
             assertNotEquals(textColor, cardTextColor)
         }
     }
 
     @Test
     fun testTextColor() {
-        val manifest = Manifest(textColor = TestColors.random())
+        val manifest = Manifest(textColor = TestColors.random().toPlatformColor())
 
         with(null as TractPage?) { assertEquals(Manifest.DEFAULT_TEXT_COLOR, textColor) }
         with(TractPage(manifest)) {
             assertEquals(manifest.textColor, (this as TractPage?).textColor)
             assertEquals(manifest.textColor, textColor)
         }
-        with(TractPage(manifest, textColor = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN, (this as TractPage?).textColor)
-            assertEquals(TestColors.GREEN, textColor)
+        with(TractPage(manifest, textColor = TestColors.GREEN.toPlatformColor())) {
+            assertEquals(TestColors.GREEN.toPlatformColor(), (this as TractPage?).textColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), textColor)
         }
     }
 

@@ -42,7 +42,7 @@ class TextTest : UsesResources() {
 
         assertEquals("Attributes", text.text)
         assertEquals(1.23, text.textScale, 0.001)
-        assertEquals(TestColors.GREEN, text.textColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
         assertEquals(Text.Align.END, text.textAlign)
         assertNotEquals(manifest.textAlign, text.textAlign)
         assertEquals(5, text.minimumLines)
@@ -71,7 +71,7 @@ class TextTest : UsesResources() {
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(200, text.fontWeight)
         assertEquals(Text.Align.START, text.textAlign)
-        assertEquals(TestColors.GREEN, text.textColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
         assertEquals(3.0, text.textScale, 0.001)
         assertEquals(setOf(Text.Style.UNDERLINE), text.textStyles)
         assertEquals(20, text.startImageSize)
@@ -87,7 +87,7 @@ class TextTest : UsesResources() {
         val text = Text(manifest, getTestXmlParser("text_device_overrides.xml"))
         assertEquals(100, text.fontWeight)
         assertEquals(Text.Align.CENTER, text.textAlign)
-        assertEquals(TestColors.RED, text.textColor)
+        assertEquals(TestColors.RED.toPlatformColor(), text.textColor)
         assertEquals(2.0, text.textScale, 0.001)
         assertEquals(setOf(Text.Style.ITALIC), text.textStyles)
         assertEquals(10, text.startImageSize)
@@ -128,10 +128,13 @@ class TextTest : UsesResources() {
 
     @Test
     fun testPropertyTextColor() {
-        val manifest = Manifest(textColor = TestColors.random())
+        val manifest = Manifest(textColor = TestColors.random().toPlatformColor())
 
         assertEquals(manifest.textColor, Text(manifest).textColor)
-        assertEquals(TestColors.GREEN, Text(manifest, textColor = TestColors.GREEN).textColor)
+        assertEquals(
+            TestColors.GREEN.toPlatformColor(),
+            Text(manifest, textColor = TestColors.GREEN.toPlatformColor()).textColor
+        )
     }
 
     @Test
@@ -158,7 +161,10 @@ class TextTest : UsesResources() {
         assertNotEquals(Text(text = "first"), Text(text = "second"))
         assertNotEquals(Text(fontWeight = 100), Text(fontWeight = 200))
         assertNotEquals(Text(textAlign = Text.Align.START), Text(textAlign = Text.Align.END))
-        assertNotEquals(Text(textColor = TestColors.BLACK), Text(textColor = TestColors.GREEN))
+        assertNotEquals(
+            Text(textColor = TestColors.BLACK.toPlatformColor()),
+            Text(textColor = TestColors.GREEN.toPlatformColor())
+        )
         assertNotEquals(Text(textScale = 1.0), Text(textScale = 2.0))
         assertNotEquals(Text(textStyles = setOf(Text.Style.BOLD)), Text(textStyles = setOf(Text.Style.ITALIC)))
         assertNotEquals(Text(minimumLines = 1), Text(minimumLines = 2))

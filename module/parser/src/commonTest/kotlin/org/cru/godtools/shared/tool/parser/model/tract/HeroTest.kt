@@ -21,6 +21,7 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.stylesParent
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeroTest : UsesResources("model/tract") {
@@ -68,13 +69,15 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testHeadingTextColor() {
-        val page = TractPage(primaryColor = TestColors.BLUE)
+        val page = TractPage(primaryColor = TestColors.BLUE.toPlatformColor())
         assertNotNull(Hero(page, heading = { Text(it) }).heading) { heading ->
             assertEquals(page.primaryColor, heading.textColor)
         }
 
-        assertNotNull(Hero(page, heading = { Text(it, textColor = TestColors.GREEN) }).heading) { heading ->
-            assertEquals(TestColors.GREEN, heading.textColor)
+        assertNotNull(
+            Hero(page, heading = { Text(it, textColor = TestColors.GREEN.toPlatformColor()) }).heading
+        ) { heading ->
+            assertEquals(TestColors.GREEN.toPlatformColor(), heading.textColor)
             assertNotEquals(page.primaryColor, heading.textColor)
         }
     }

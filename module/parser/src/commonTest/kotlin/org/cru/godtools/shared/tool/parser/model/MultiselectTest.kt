@@ -38,15 +38,15 @@ class MultiselectTest : UsesResources() {
         assertEquals(3, multiselect.options.size)
         with(multiselect.options[0]) {
             assertEquals(Multiselect.Option.Style.CARD, style)
-            assertEquals(TestColors.RED, backgroundColor)
-            assertEquals(TestColors.BLUE, selectedColor)
+            assertEquals(TestColors.RED.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.BLUE.toPlatformColor(), selectedColor)
             assertTrue(AnalyticsEvent.System.FIREBASE in analyticsEvents.single().systems)
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
             assertEquals(Multiselect.Option.Style.FLAT, style)
-            assertEquals(TestColors.BLUE, backgroundColor)
-            assertEquals(TestColors.GREEN, selectedColor)
+            assertEquals(TestColors.BLUE.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.GREEN.toPlatformColor(), selectedColor)
             assertEquals(1, content.size)
             with(assertIs<Text>(content.single())) {
                 assertEquals("Answer 2", text)
@@ -56,7 +56,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testParseMultiselectDefaults() = runTest {
-        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.random())
+        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.random().toPlatformColor())
         val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
         assertEquals(1, multiselect.columns)
@@ -244,18 +244,18 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionBackgroundColorFallback() {
-        val parent = Manifest(multiselectOptionBackgroundColor = TestColors.random())
+        val parent = Manifest(multiselectOptionBackgroundColor = TestColors.random().toPlatformColor())
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(parent.multiselectOptionBackgroundColor, backgroundColor)
         }
 
-        val multiselectBackgroundColor = TestColors.random()
+        val multiselectBackgroundColor = TestColors.random().toPlatformColor()
         val multiselect = Multiselect(parent, optionBackgroundColor = multiselectBackgroundColor)
         with(Multiselect.Option(multiselect)) {
             assertEquals(multiselectBackgroundColor, backgroundColor)
         }
 
-        val optionBackgroundColor = TestColors.random()
+        val optionBackgroundColor = TestColors.random().toPlatformColor()
         with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor)) {
             assertEquals(optionBackgroundColor, backgroundColor)
         }
@@ -279,18 +279,18 @@ class MultiselectTest : UsesResources() {
             assertEquals(WHITE, selectedColor)
         }
 
-        parent.multiselectOptionSelectedColor = TestColors.random()
+        parent.multiselectOptionSelectedColor = TestColors.random().toPlatformColor()
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(parent.multiselectOptionSelectedColor, selectedColor)
         }
 
-        val multiselectSelectedColor = TestColors.random()
+        val multiselectSelectedColor = TestColors.random().toPlatformColor()
         val multiselect = Multiselect(parent, optionSelectedColor = multiselectSelectedColor)
         with(Multiselect.Option(multiselect)) {
             assertEquals(multiselectSelectedColor, selectedColor)
         }
 
-        val optionSelectedColor = TestColors.random()
+        val optionSelectedColor = TestColors.random().toPlatformColor()
         with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor)) {
             assertEquals(optionSelectedColor, selectedColor)
         }

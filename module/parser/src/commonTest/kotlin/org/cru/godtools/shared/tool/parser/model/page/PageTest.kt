@@ -19,6 +19,7 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -162,11 +163,17 @@ class PageTest : UsesResources("model/page") {
     // region Property: cardBackgroundColor
     @Test
     fun testPropertyCardBackgroundColor() {
-        val manifest = Manifest(cardBackgroundColor = TestColors.random())
-        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.random())
+        val manifest = Manifest(cardBackgroundColor = TestColors.random().toPlatformColor())
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.random().toPlatformColor())
 
-        assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
-        assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(
+            TestColors.RED.toPlatformColor(),
+            TestPage(manifest, cardBackgroundColor = TestColors.RED.toPlatformColor()).cardBackgroundColor
+        )
+        assertEquals(
+            TestColors.RED.toPlatformColor(),
+            TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED.toPlatformColor()).cardBackgroundColor
+        )
         assertEquals(manifest.cardBackgroundColor, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
         assertEquals(
             manifest.cardBackgroundColor,
@@ -182,11 +189,17 @@ class PageTest : UsesResources("model/page") {
     // region Property: controlColor
     @Test
     fun testPropertyControlColor() {
-        val manifest = Manifest(pageControlColor = TestColors.random())
-        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.random())
+        val manifest = Manifest(pageControlColor = TestColors.random().toPlatformColor())
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.random().toPlatformColor())
 
-        assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
-        assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)
+        assertEquals(
+            TestColors.RED.toPlatformColor(),
+            TestPage(manifest, controlColor = TestColors.RED.toPlatformColor()).controlColor
+        )
+        assertEquals(
+            TestColors.RED.toPlatformColor(),
+            TestPage(hasPagesParent, controlColor = TestColors.RED.toPlatformColor()).controlColor
+        )
         assertEquals(manifest.pageControlColor, TestPage(manifest, controlColor = null).controlColor)
         assertEquals(manifest.pageControlColor, TestPage(TestPage(manifest, controlColor = null)).controlColor)
         assertEquals(hasPagesParent.controlColor, TestPage(hasPagesParent, controlColor = null).controlColor)
@@ -197,19 +210,19 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionBackgroundColor() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
-            multiselectOptionBackgroundColor = TestColors.GREEN,
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED.toPlatformColor()),
+            multiselectOptionBackgroundColor = TestColors.GREEN.toPlatformColor(),
         )
-        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionBackgroundColor)
     }
 
     @Test
     fun testPropertyMultiselectOptionBackgroundColorFallback() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN.toPlatformColor()),
             multiselectOptionBackgroundColor = null,
         )
-        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionBackgroundColor)
     }
     // endregion Property: multiselectOptionBackgroundColor
 
@@ -217,19 +230,19 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColor() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED),
-            multiselectOptionSelectedColor = TestColors.GREEN,
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED.toPlatformColor()),
+            multiselectOptionSelectedColor = TestColors.GREEN.toPlatformColor(),
         )
-        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionSelectedColor)
     }
 
     @Test
     fun testPropertyMultiselectOptionSelectedColorFallback() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN.toPlatformColor()),
             multiselectOptionSelectedColor = null,
         )
-        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
+        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionSelectedColor)
     }
     // endregion Property: multiselectOptionSelectedColor
 
