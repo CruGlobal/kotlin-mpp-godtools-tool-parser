@@ -26,8 +26,8 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation(libs.kotlin.coroutines.core)
 
+                api(libs.colormath)
                 implementation(libs.androidx.annotation)
-                implementation(libs.colormath)
                 implementation(libs.fluidLocale)
                 implementation(libs.gtoSupport.fluidsonic.locale)
                 implementation(libs.kermit)

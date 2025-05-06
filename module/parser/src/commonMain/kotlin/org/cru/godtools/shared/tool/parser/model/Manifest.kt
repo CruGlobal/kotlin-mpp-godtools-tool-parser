@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -89,8 +90,7 @@ class Manifest : BaseModel, Styles, HasPages {
 
         internal val DEFAULT_BUTTON_STYLE = Button.Style.CONTAINED
 
-        @AndroidColorInt
-        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0).toPlatformColor()
+        internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
 
         internal suspend fun parse(
             fileName: String,
@@ -170,7 +170,7 @@ class Manifest : BaseModel, Styles, HasPages {
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _categoryLabelColor: PlatformColor?
     @get:AndroidColorInt
-    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
+    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor.toPlatformColor()
 
     @AndroidColorInt
     internal val pageControlColor: PlatformColor
@@ -182,8 +182,7 @@ class Manifest : BaseModel, Styles, HasPages {
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
     override val multiselectOptionSelectedColor: PlatformColor?
 
-    @AndroidColorInt
-    override val textColor: PlatformColor
+    override val textColor: Color
     override val textScale: Double
 
     private val _title: Text?
@@ -254,7 +253,7 @@ class Manifest : BaseModel, Styles, HasPages {
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
                 ?.toPlatformColor()
 
-        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor() ?: DEFAULT_TEXT_COLOR
+        textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
         textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
 
         var title: Text? = null
@@ -306,7 +305,7 @@ class Manifest : BaseModel, Styles, HasPages {
         pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
-        textColor: PlatformColor = DEFAULT_TEXT_COLOR,
+        textColor: Color = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
@@ -491,4 +490,4 @@ val Manifest?.backgroundImageScaleType
     get() = this?.backgroundImageScaleType ?: Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
 @get:AndroidColorInt
-val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
+val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor.toPlatformColor()

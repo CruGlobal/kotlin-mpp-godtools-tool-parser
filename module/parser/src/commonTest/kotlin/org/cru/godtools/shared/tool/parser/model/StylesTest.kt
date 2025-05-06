@@ -16,7 +16,7 @@ class StylesTest {
             override var multiselectOptionSelectedColor: PlatformColor? = null
 
             override var textAlign = Text.Align.END
-            override var textColor = TestColors.RED.toPlatformColor()
+            override var textColor = TestColors.RED
             override var textScale = 0.0
         }
     }
@@ -66,7 +66,7 @@ class StylesTest {
 
     @Test
     fun testStylesTextColorFallback() {
-        parent.textColor = TestColors.random().toPlatformColor()
+        parent.textColor = TestColors.random()
         assertEquals(parent.textColor, child.textColor)
         assertEquals(parent.textColor, (child as Styles?).textColor)
     }

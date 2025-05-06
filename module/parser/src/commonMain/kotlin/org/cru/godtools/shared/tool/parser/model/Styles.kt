@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import com.github.ajalt.colormath.Color
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_ALIGN
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
@@ -33,8 +34,7 @@ interface Styles : Base {
     // endregion Multiselect styles
 
     // region Text styles
-    @get:AndroidColorInt
-    val textColor: PlatformColor get() = stylesParent.textColor
+    val textColor: Color get() = stylesParent.textColor
     val textScale: Double get() = stylesParent.textScale
     val textAlign: Text.Align get() = stylesParent.textAlign
     // endregion Text styles
@@ -58,7 +58,6 @@ internal val Styles?.multiselectOptionBackgroundColor
 
 // region Text styles
 val Styles?.textAlign get() = this?.textAlign ?: DEFAULT_TEXT_ALIGN
-@get:AndroidColorInt
 val Styles?.textColor get() = this?.textColor ?: Manifest.DEFAULT_TEXT_COLOR
 val Styles?.textScale get() = this?.textScale ?: DEFAULT_TEXT_SCALE
 // endregion Text styles

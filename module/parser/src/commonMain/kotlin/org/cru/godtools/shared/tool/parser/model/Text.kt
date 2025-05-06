@@ -5,6 +5,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -12,7 +13,6 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
@@ -60,9 +60,7 @@ class Text : Content {
     val fontWeight: Int?
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
-    @AndroidColorInt
-    private val _textColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _textColor: Color?
     val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     val textScale get() = _textScale * stylesParent.textScale
@@ -87,7 +85,7 @@ class Text : Content {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
 
         _textAlign = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_ALIGN)?.toTextAlignOrNull()
-        _textColor = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _textColor = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_SCALE)?.toDoubleOrNull()
             ?: DEFAULT_TEXT_SCALE
 
@@ -118,7 +116,7 @@ class Text : Content {
         text: String = "",
         fontWeight: Int? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        @AndroidColorInt textColor: PlatformColor? = null,
+        textColor: Color? = null,
         textAlign: Align? = null,
         textStyles: Set<Style> = emptySet(),
         minimumLines: Int = DEFAULT_MINIMUM_LINES,

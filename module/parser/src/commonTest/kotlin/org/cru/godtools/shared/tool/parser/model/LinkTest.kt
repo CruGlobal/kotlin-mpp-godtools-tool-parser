@@ -33,16 +33,16 @@ class LinkTest : UsesResources() {
             override val primaryColor = TestColors.random().toPlatformColor()
         }
 
-        assertEquals(parent.primaryColor, Link(parent).text.textColor)
+        assertEquals(parent.primaryColor.toRGB(), Link(parent).text.textColor)
 
         with(Link(parent) { Text(it) }) {
             assertNotEquals(parent.textColor, text.textColor)
-            assertEquals(parent.primaryColor, text.textColor)
+            assertEquals(parent.primaryColor.toRGB(), text.textColor)
         }
 
-        with(Link(parent) { Text(it, textColor = TestColors.GREEN.toPlatformColor()) }) {
-            assertNotEquals(parent.primaryColor, text.textColor)
-            assertEquals(TestColors.GREEN.toPlatformColor(), text.textColor)
+        with(Link(parent) { Text(it, textColor = TestColors.GREEN) }) {
+            assertNotEquals(parent.primaryColor.toRGB(), text.textColor)
+            assertEquals(TestColors.GREEN, text.textColor)
         }
     }
 

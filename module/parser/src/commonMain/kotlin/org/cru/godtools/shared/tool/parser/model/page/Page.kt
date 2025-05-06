@@ -6,6 +6,7 @@ package org.cru.godtools.shared.tool.parser.model.page
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -207,9 +208,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     override val multiselectOptionSelectedColor
         get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
 
-    @AndroidColorInt
-    private val _textColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _textColor: Color?
     override val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
@@ -252,7 +251,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
                 ?.toPlatformColor()
 
-        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
     }
 
@@ -271,7 +270,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         cardBackgroundColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
-        textColor: PlatformColor? = null,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(container) {
         _id = id

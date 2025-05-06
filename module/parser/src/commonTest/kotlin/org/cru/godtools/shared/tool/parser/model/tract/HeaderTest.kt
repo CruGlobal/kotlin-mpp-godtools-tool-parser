@@ -14,6 +14,7 @@ import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
+import org.cru.godtools.shared.tool.parser.model.toRGB
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeaderTest : UsesResources("model/tract") {
@@ -32,7 +33,7 @@ class HeaderTest : UsesResources("model/tract") {
         val header = assertNotNull(page.header)
 
         assertEquals(page.primaryColor, header.backgroundColor)
-        assertEquals(page.primaryTextColor, header.textColor)
+        assertEquals(page.primaryTextColor.toRGB(), header.textColor)
         assertNull(header.number)
         assertNull(header.title)
         assertNull(header.tipId)
