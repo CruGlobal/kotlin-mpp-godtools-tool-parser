@@ -118,12 +118,14 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testTextColor() {
+        val manifest = Manifest(textColor = TestColors.random())
+
         with(null as TractPage?) { assertEquals(Manifest.DEFAULT_TEXT_COLOR, textColor) }
-        with(TractPage(Manifest(textColor = TestColors.GREEN))) {
-            assertEquals(TestColors.GREEN, (this as TractPage?).textColor)
-            assertEquals(TestColors.GREEN, textColor)
+        with(TractPage(manifest)) {
+            assertEquals(manifest.textColor, (this as TractPage?).textColor)
+            assertEquals(manifest.textColor, textColor)
         }
-        with(TractPage(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN)) {
+        with(TractPage(manifest, textColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, (this as TractPage?).textColor)
             assertEquals(TestColors.GREEN, textColor)
         }
