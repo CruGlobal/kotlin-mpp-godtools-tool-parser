@@ -12,7 +12,7 @@ class StylesTest {
 
             override lateinit var buttonStyle: Button.Style
 
-            override var multiselectOptionBackgroundColor = TestColors.RANDOM
+            override var multiselectOptionBackgroundColor = TestColors.random()
             override var multiselectOptionSelectedColor: PlatformColor? = null
 
             override var textAlign = Text.Align.END
@@ -24,14 +24,14 @@ class StylesTest {
 
     @Test
     fun testStylesPrimaryColorFallback() {
-        parent.primaryColor = TestColors.RANDOM
+        parent.primaryColor = TestColors.random()
         assertEquals(parent.primaryColor, child.primaryColor)
         assertEquals(parent.primaryColor, (child as Styles?).primaryColor)
     }
 
     @Test
     fun testStylesPrimaryTextColorFallback() {
-        parent.primaryTextColor = TestColors.RANDOM
+        parent.primaryTextColor = TestColors.random()
         assertEquals(parent.primaryTextColor, child.primaryTextColor)
         assertEquals(parent.primaryTextColor, (child as Styles?).primaryTextColor)
     }
@@ -53,7 +53,7 @@ class StylesTest {
     fun testStylesMultiselectOptionSelectedColorFallback() {
         parent.multiselectOptionSelectedColor = null
         assertNull(child.multiselectOptionSelectedColor)
-        parent.multiselectOptionSelectedColor = TestColors.RANDOM
+        parent.multiselectOptionSelectedColor = TestColors.random()
         assertEquals(parent.multiselectOptionSelectedColor, child.multiselectOptionSelectedColor)
     }
 
@@ -66,7 +66,7 @@ class StylesTest {
 
     @Test
     fun testStylesTextColorFallback() {
-        parent.textColor = TestColors.RANDOM
+        parent.textColor = TestColors.random()
         assertEquals(parent.textColor, child.textColor)
         assertEquals(parent.textColor, (child as Styles?).textColor)
     }

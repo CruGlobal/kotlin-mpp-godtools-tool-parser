@@ -27,7 +27,7 @@ class CategoryTest : UsesResources() {
 
     @Test
     fun testLabelTextColor() {
-        val manifest = Manifest(categoryLabelColor = TestColors.RANDOM)
+        val manifest = Manifest(categoryLabelColor = TestColors.random())
         assertNotNull(Category(manifest, label = { Text(it) }).label) { label ->
             assertEquals(manifest.categoryLabelColor, label.textColor)
             assertNotEquals(manifest.textColor, label.textColor)

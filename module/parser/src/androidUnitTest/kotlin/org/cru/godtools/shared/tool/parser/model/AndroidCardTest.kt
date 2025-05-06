@@ -10,7 +10,7 @@ class AndroidCardTest {
             assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, backgroundColor)
         }
 
-        val parent = Manifest(cardBackgroundColor = TestColors.RANDOM)
+        val parent = Manifest(cardBackgroundColor = TestColors.random())
         with(Card(parent) as Card?) {
             assertEquals(parent.cardBackgroundColor, backgroundColor)
         }

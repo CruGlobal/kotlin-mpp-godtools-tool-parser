@@ -46,7 +46,7 @@ class CardTest : UsesResources() {
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
         val parent = object : BaseModel(), Styles {
-            override val cardBackgroundColor = TestColors.RANDOM
+            override val cardBackgroundColor = TestColors.random()
         }
         assertEquals(parent.cardBackgroundColor, Card(parent).backgroundColor)
         assertEquals(TestColors.GREEN, Card(parent, backgroundColor = TestColors.GREEN).backgroundColor)
