@@ -10,6 +10,6 @@ class ColorTest {
         assertEquals(TestColors.GREEN, TestColors.GREEN.toPlatformColor().toRGB())
         assertEquals(TestColors.BLUE, TestColors.BLUE.toPlatformColor().toRGB())
         assertEquals(TestColors.BLACK, TestColors.BLACK.toPlatformColor().toRGB())
-        assertEquals(TRANSPARENT, TRANSPARENT.toRGB().toPlatformColor())
+        assertEquals(TRANSPARENT, TRANSPARENT.toPlatformColor().toRGB())
     }
 }

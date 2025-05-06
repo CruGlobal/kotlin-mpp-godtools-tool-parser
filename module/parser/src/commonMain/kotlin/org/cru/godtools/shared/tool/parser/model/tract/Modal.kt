@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.XML_LISTENERS
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_TITLE = "title"
@@ -46,17 +47,17 @@ class Modal : BaseModel, Parent, Styles {
     val dismissListeners: Set<EventId>
 
     @get:AndroidColorInt
-    override val primaryColor get() = TRANSPARENT
+    override val primaryColor get() = TRANSPARENT.toPlatformColor()
     @get:AndroidColorInt
-    override val primaryTextColor get() = WHITE
+    override val primaryTextColor get() = WHITE.toPlatformColor()
 
     @get:AndroidColorInt
-    override val buttonColor get() = WHITE
+    override val buttonColor get() = WHITE.toPlatformColor()
     override val buttonStyle get() = Button.Style.OUTLINED
 
     override val textAlign get() = Text.Align.CENTER
     @get:AndroidColorInt
-    override val textColor get() = WHITE
+    override val textColor get() = WHITE.toPlatformColor()
 
     internal constructor(parent: TractPage, parser: XmlPullParser) : super(parent) {
         page = parent

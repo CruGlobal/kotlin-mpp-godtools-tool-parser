@@ -14,6 +14,7 @@ import org.cru.godtools.shared.tool.parser.model.TRANSPARENT
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.WHITE
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ModalTest : UsesResources("model/tract") {
@@ -31,13 +32,13 @@ class ModalTest : UsesResources("model/tract") {
     }
 
     private fun assertFixedAttributes(modal: Modal) {
-        assertEquals(TRANSPARENT, modal.primaryColor)
-        assertEquals(WHITE, modal.primaryTextColor)
+        assertEquals(TRANSPARENT.toPlatformColor(), modal.primaryColor)
+        assertEquals(WHITE.toPlatformColor(), modal.primaryTextColor)
 
-        assertEquals(WHITE, modal.buttonColor)
+        assertEquals(WHITE.toPlatformColor(), modal.buttonColor)
         assertEquals(Button.Style.OUTLINED, modal.buttonStyle)
 
         assertEquals(Text.Align.CENTER, modal.textAlign)
-        assertEquals(WHITE, modal.textColor)
+        assertEquals(WHITE.toPlatformColor(), modal.textColor)
     }
 }
