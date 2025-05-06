@@ -22,15 +22,17 @@ class AndroidTextTest {
 
     @Test
     fun testPropertyTextColor() {
+        val manifest = Manifest(textColor = TestColors.RANDOM)
+
         with(null as Text?) {
             assertEquals(Manifest.DEFAULT_TEXT_COLOR, textColor)
         }
 
-        with(Text(Manifest(textColor = TestColors.GREEN)) as Text?) {
-            assertEquals(TestColors.GREEN, textColor)
+        with(Text(manifest) as Text?) {
+            assertEquals(manifest.textColor, textColor)
         }
 
-        with(Text(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN) as Text?) {
+        with(Text(manifest, textColor = TestColors.GREEN) as Text?) {
             assertEquals(TestColors.GREEN, textColor)
         }
     }
