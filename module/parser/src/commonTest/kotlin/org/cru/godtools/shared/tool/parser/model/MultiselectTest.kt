@@ -273,9 +273,9 @@ class MultiselectTest : UsesResources() {
         }
 
         // 40% lighter of white primary color should still be white
-        parent.primaryColor = TestColors.WHITE
+        parent.primaryColor = WHITE
         with(Multiselect.Option(Multiselect(parent))) {
-            assertEquals(TestColors.WHITE, selectedColor)
+            assertEquals(WHITE, selectedColor)
         }
 
         parent.multiselectOptionSelectedColor = TestColors.random()
