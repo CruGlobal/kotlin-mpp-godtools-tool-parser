@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.cru.godtools.shared.tool.parser.model.TRANSPARENT
 import org.cru.godtools.shared.tool.parser.model.TestColors
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 class ColorTest {
     @Test
@@ -15,7 +14,7 @@ class ColorTest {
         assertEquals(TestColors.BLUE, "rgba(0,0,255,1)".toColorOrNull())
         assertEquals(TestColors.BLACK, "rgba(0,0,0,1)".toColorOrNull())
         assertEquals(TestColors.BLACK, "rgba(0,0,0,1.0)".toColorOrNull())
-        assertEquals(TRANSPARENT, "rgba(0,0,0,0)".toColorOrNull()?.toPlatformColor())
+        assertEquals(TRANSPARENT, "rgba(0,0,0,0)".toColorOrNull())
     }
 
     @Test

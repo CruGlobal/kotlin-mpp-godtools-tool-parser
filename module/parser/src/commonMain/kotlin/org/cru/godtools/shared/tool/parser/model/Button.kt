@@ -44,7 +44,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 
         internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
         internal val DEFAULT_WIDTH = Dimension.Percent(1f)
-        internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
+        internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT.toPlatformColor()
         internal val DEFAULT_ICON_GRAVITY = Gravity.Horizontal.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
