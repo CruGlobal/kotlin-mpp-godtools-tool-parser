@@ -30,7 +30,7 @@ class LinkTest : UsesResources() {
     @Test
     fun testLinkTextColor() {
         val parent = object : BaseModel(), Styles {
-            override val primaryColor = TestColors.RANDOM
+            override val primaryColor = TestColors.random()
         }
 
         assertEquals(parent.primaryColor, Link(parent).text.textColor)

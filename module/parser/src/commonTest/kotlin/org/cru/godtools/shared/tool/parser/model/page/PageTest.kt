@@ -162,8 +162,8 @@ class PageTest : UsesResources("model/page") {
     // region Property: cardBackgroundColor
     @Test
     fun testPropertyCardBackgroundColor() {
-        val manifest = Manifest(cardBackgroundColor = TestColors.RANDOM)
-        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.RANDOM)
+        val manifest = Manifest(cardBackgroundColor = TestColors.random())
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.random())
 
         assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
         assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
@@ -182,8 +182,8 @@ class PageTest : UsesResources("model/page") {
     // region Property: controlColor
     @Test
     fun testPropertyControlColor() {
-        val manifest = Manifest(pageControlColor = TestColors.RANDOM)
-        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.RANDOM)
+        val manifest = Manifest(pageControlColor = TestColors.random())
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.random())
 
         assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
         assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)

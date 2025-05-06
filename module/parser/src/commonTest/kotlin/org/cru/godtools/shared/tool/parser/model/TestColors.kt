@@ -9,5 +9,5 @@ object TestColors {
     val BLACK = color(0, 0, 0, 1.0)
     val WHITE = color(255, 255, 255, 1.0)
 
-    val RANDOM get() = color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256), Random.nextDouble())
+    fun random() = color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256), Random.nextDouble())
 }

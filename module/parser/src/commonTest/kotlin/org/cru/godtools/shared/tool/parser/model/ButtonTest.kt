@@ -176,7 +176,7 @@ class ButtonTest : UsesResources() {
         }
 
         val parent = object : BaseModel(manifest), Styles {
-            override val primaryColor = TestColors.RANDOM
+            override val primaryColor = TestColors.random()
         }
         with(Button(parent)) {
             assertEquals(parent.primaryColor, buttonColor)
