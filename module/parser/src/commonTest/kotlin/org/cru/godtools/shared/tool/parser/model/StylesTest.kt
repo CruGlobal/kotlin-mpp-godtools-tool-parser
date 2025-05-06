@@ -24,23 +24,23 @@ class StylesTest {
 
     @Test
     fun testStylesPrimaryColorFallback() {
-        parent.primaryColor = TestColors.GREEN
-        assertEquals(TestColors.GREEN, child.primaryColor)
-        assertEquals(TestColors.GREEN, (child as Styles?).primaryColor)
+        parent.primaryColor = TestColors.RANDOM
+        assertEquals(parent.primaryColor, child.primaryColor)
+        assertEquals(parent.primaryColor, (child as Styles?).primaryColor)
     }
 
     @Test
     fun testStylesPrimaryTextColorFallback() {
-        parent.primaryTextColor = TestColors.GREEN
-        assertEquals(TestColors.GREEN, child.primaryTextColor)
-        assertEquals(TestColors.GREEN, (child as Styles?).primaryTextColor)
+        parent.primaryTextColor = TestColors.RANDOM
+        assertEquals(parent.primaryTextColor, child.primaryTextColor)
+        assertEquals(parent.primaryTextColor, (child as Styles?).primaryTextColor)
     }
 
     @Test
     fun testStylesButtonStyleFallback() {
-        parent.buttonStyle = Button.Style.OUTLINED
-        assertEquals(Button.Style.OUTLINED, child.buttonStyle)
-        assertEquals(Button.Style.OUTLINED, (child as Styles?).buttonStyle)
+        parent.buttonStyle = Button.Style.entries.random()
+        assertEquals(parent.buttonStyle, child.buttonStyle)
+        assertEquals(parent.buttonStyle, (child as Styles?).buttonStyle)
     }
 
     @Test
@@ -59,16 +59,16 @@ class StylesTest {
 
     @Test
     fun testStylesTextAlignFallback() {
-        parent.textAlign = Text.Align.CENTER
-        assertEquals(Text.Align.CENTER, child.textAlign)
-        assertEquals(Text.Align.CENTER, (child as Styles?).textAlign)
+        parent.textAlign = Text.Align.entries.random()
+        assertEquals(parent.textAlign, child.textAlign)
+        assertEquals(parent.textAlign, (child as Styles?).textAlign)
     }
 
     @Test
     fun testStylesTextColorFallback() {
-        parent.textColor = TestColors.GREEN
-        assertEquals(TestColors.GREEN, child.textColor)
-        assertEquals(TestColors.GREEN, (child as Styles?).textColor)
+        parent.textColor = TestColors.RANDOM
+        assertEquals(parent.textColor, child.textColor)
+        assertEquals(parent.textColor, (child as Styles?).textColor)
     }
 
     @Test
