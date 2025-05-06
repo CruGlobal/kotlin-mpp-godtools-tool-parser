@@ -128,11 +128,10 @@ class TextTest : UsesResources() {
 
     @Test
     fun testPropertyTextColor() {
-        assertEquals(TestColors.GREEN, Text(Manifest(textColor = TestColors.GREEN)).textColor)
-        assertEquals(
-            TestColors.GREEN,
-            Text(Manifest(textColor = TestColors.RED), textColor = TestColors.GREEN).textColor,
-        )
+        val manifest = Manifest(textColor = TestColors.random())
+
+        assertEquals(manifest.textColor, Text(manifest).textColor)
+        assertEquals(TestColors.GREEN, Text(manifest, textColor = TestColors.GREEN).textColor)
     }
 
     @Test
