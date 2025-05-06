@@ -48,7 +48,7 @@ class TipTest : UsesResources("model/tips") {
         val manifest = Manifest(
             primaryColor = TestColors.RED.toPlatformColor(),
             primaryTextColor = TestColors.RED.toPlatformColor(),
-            textColor = TestColors.RED.toPlatformColor()
+            textColor = TestColors.RED
         )
         val tip = Tip(manifest)
         assertNotEquals(manifest.primaryColor, tip.primaryColor)

@@ -39,6 +39,6 @@ class ModalTest : UsesResources("model/tract") {
         assertEquals(Button.Style.OUTLINED, modal.buttonStyle)
 
         assertEquals(Text.Align.CENTER, modal.textAlign)
-        assertEquals(WHITE.toPlatformColor(), modal.textColor)
+        assertEquals(WHITE, modal.textColor)
     }
 }

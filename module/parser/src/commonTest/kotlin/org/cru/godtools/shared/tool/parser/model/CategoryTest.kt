@@ -22,22 +22,20 @@ class CategoryTest : UsesResources() {
         }
         assertEquals(setOf("tag1", "tag2"), category.aemTags)
         assertEquals("Category", category.label!!.text)
-        assertEquals(TestColors.RED.toPlatformColor(), category.label!!.textColor)
+        assertEquals(TestColors.RED, category.label!!.textColor)
     }
 
     @Test
     fun testLabelTextColor() {
         val manifest = Manifest(categoryLabelColor = TestColors.random().toPlatformColor())
         assertNotNull(Category(manifest, label = { Text(it) }).label) { label ->
-            assertEquals(manifest.categoryLabelColor, label.textColor)
+            assertEquals(manifest.categoryLabelColor.toRGB(), label.textColor)
             assertNotEquals(manifest.textColor, label.textColor)
         }
 
-        assertNotNull(
-            Category(manifest, label = { Text(it, textColor = TestColors.GREEN.toPlatformColor()) }).label
-        ) { label ->
-            assertEquals(TestColors.GREEN.toPlatformColor(), label.textColor)
-            assertNotEquals(manifest.categoryLabelColor, label.textColor)
+        assertNotNull(Category(manifest, label = { Text(it, textColor = TestColors.GREEN) }).label) { label ->
+            assertEquals(TestColors.GREEN, label.textColor)
+            assertNotEquals(manifest.categoryLabelColor.toRGB(), label.textColor)
             assertNotEquals(manifest.textColor, label.textColor)
         }
     }

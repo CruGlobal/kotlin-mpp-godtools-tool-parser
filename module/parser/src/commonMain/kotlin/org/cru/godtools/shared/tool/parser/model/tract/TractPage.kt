@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -45,6 +46,7 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
+import org.cru.godtools.shared.tool.parser.model.toRGB
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -108,7 +110,7 @@ class TractPage : Page {
         primaryColor: PlatformColor? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        textColor: PlatformColor? = null,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: PlatformColor? = null,
         cardTextColor: PlatformColor? = null,
@@ -146,7 +148,7 @@ class TractPage : Page {
     @AndroidColorInt
     private val _cardTextColor: PlatformColor?
     @get:AndroidColorInt
-    val cardTextColor get() = _cardTextColor ?: textColor
+    val cardTextColor get() = _cardTextColor ?: textColor.toPlatformColor()
 
     class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         internal companion object {
@@ -184,12 +186,10 @@ class TractPage : Page {
         internal val backgroundImageGravity: Gravity
         internal val backgroundImageScaleType: ImageScaleType
 
-        @AndroidColorInt
-        private val _textColor: PlatformColor?
-        @get:AndroidColorInt
-        override val textColor get() = _textColor ?: page.cardTextColor
+        private val _textColor: Color?
+        override val textColor get() = _textColor ?: page.cardTextColor.toRGB()
 
-        private val labelParent by lazy { stylesOverride(textColor = { primaryColor }) }
+        private val labelParent by lazy { stylesOverride(textColor = { primaryColor.toRGB() }) }
         val label: Text?
         override val content: List<Content>
         val tips get() = contentTips
@@ -212,7 +212,7 @@ class TractPage : Page {
                 parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
                     ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-            _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+            _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
 
             // process any child elements
             analyticsEvents = mutableListOf()

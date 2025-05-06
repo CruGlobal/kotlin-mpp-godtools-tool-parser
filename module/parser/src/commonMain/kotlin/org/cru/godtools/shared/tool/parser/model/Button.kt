@@ -78,7 +78,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
                 when (style) {
                     Style.CONTAINED, Style.UNKNOWN -> stylesParent.primaryTextColor
                     Style.OUTLINED -> buttonColor
-                }
+                }.toRGB()
             }
         )
     }

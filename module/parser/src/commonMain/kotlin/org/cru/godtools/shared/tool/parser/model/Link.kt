@@ -19,7 +19,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
     override val events: List<EventId>
     override val url: Uri?
 
-    private val defaultTextStyles by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
+    private val defaultTextStyles by lazy { stylesOverride(textColor = { stylesParent.primaryColor.toRGB() }) }
     val text: Text
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {

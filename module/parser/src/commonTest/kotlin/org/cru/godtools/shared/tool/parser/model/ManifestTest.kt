@@ -46,7 +46,7 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, manifest.backgroundImageScaleType)
 
         assertEquals(manifest.backgroundColor, manifest.cardBackgroundColor)
-        assertEquals(manifest.textColor, manifest.categoryLabelColor)
+        assertEquals(manifest.textColor, manifest.categoryLabelColor.toRGB())
         assertEquals(DEFAULT_CONTROL_COLOR, manifest.pageControlColor)
 
         assertEquals(manifest.backgroundColor, manifest.multiselectOptionBackgroundColor)
@@ -66,7 +66,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_article.xml")
         assertEquals(Manifest.Type.ARTICLE, manifest.type)
         assertEquals(TestColors.GREEN.toPlatformColor(), manifest.categoryLabelColor)
-        assertEquals(TestColors.RED.toPlatformColor(), manifest.textColor)
+        assertEquals(TestColors.RED, manifest.textColor)
         val category = assertNotNull(manifest.findCategory("testParseCategory"))
         assertEquals("testParseCategory", category.id)
         val banner = assertNotNull(category.banner)
@@ -289,22 +289,17 @@ class ManifestTest : UsesResources() {
     @Test
     fun testCategoryLabelColorFallbackBehavior() {
         with(null as Manifest?) {
-            assertEquals(Manifest.DEFAULT_TEXT_COLOR, categoryLabelColor)
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR.toPlatformColor(), categoryLabelColor)
         }
         with(Manifest()) {
-            assertEquals(Manifest.DEFAULT_TEXT_COLOR, categoryLabelColor)
-            assertEquals(Manifest.DEFAULT_TEXT_COLOR, (this as Manifest?).categoryLabelColor)
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR.toPlatformColor(), categoryLabelColor)
+            assertEquals(Manifest.DEFAULT_TEXT_COLOR.toPlatformColor(), (this as Manifest?).categoryLabelColor)
         }
-        with(Manifest(textColor = TestColors.GREEN.toPlatformColor())) {
+        with(Manifest(textColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN.toPlatformColor(), categoryLabelColor)
             assertEquals(TestColors.GREEN.toPlatformColor(), (this as Manifest?).categoryLabelColor)
         }
-        with(
-            Manifest(
-                textColor = TestColors.RED.toPlatformColor(),
-                categoryLabelColor = TestColors.GREEN.toPlatformColor()
-            )
-        ) {
+        with(Manifest(textColor = TestColors.RED, categoryLabelColor = TestColors.GREEN.toPlatformColor())) {
             assertEquals(TestColors.GREEN.toPlatformColor(), categoryLabelColor)
             assertEquals(TestColors.GREEN.toPlatformColor(), (this as Manifest?).categoryLabelColor)
         }

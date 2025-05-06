@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
 import org.cru.godtools.shared.tool.parser.model.stylesParent
+import org.cru.godtools.shared.tool.parser.model.toRGB
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_HEADING = "heading"
@@ -31,7 +32,7 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
         internal const val XML_HERO = "hero"
     }
 
-    private val headingParent by lazy { stylesOverride(textColor = { stylesParent.primaryColor }) }
+    private val headingParent by lazy { stylesOverride(textColor = { stylesParent.primaryColor.toRGB() }) }
     val heading: Text?
     override val content: List<Content>
 

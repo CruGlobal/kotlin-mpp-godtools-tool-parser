@@ -107,28 +107,28 @@ class TractPageTest : UsesResources("model/tract") {
 
     @Test
     fun testCardTextColorBehavior() {
-        with(TractPage(textColor = TestColors.GREEN.toPlatformColor())) {
+        with(TractPage(textColor = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
-            assertEquals(textColor, cardTextColor)
+            assertEquals(textColor.toPlatformColor(), cardTextColor)
         }
         with(TractPage(cardTextColor = TestColors.GREEN.toPlatformColor())) {
             assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
-            assertNotEquals(textColor, cardTextColor)
+            assertNotEquals(textColor.toPlatformColor(), cardTextColor)
         }
     }
 
     @Test
     fun testTextColor() {
-        val manifest = Manifest(textColor = TestColors.random().toPlatformColor())
+        val manifest = Manifest(textColor = TestColors.random())
 
         with(null as TractPage?) { assertEquals(Manifest.DEFAULT_TEXT_COLOR, textColor) }
         with(TractPage(manifest)) {
             assertEquals(manifest.textColor, (this as TractPage?).textColor)
             assertEquals(manifest.textColor, textColor)
         }
-        with(TractPage(manifest, textColor = TestColors.GREEN.toPlatformColor())) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), (this as TractPage?).textColor)
-            assertEquals(TestColors.GREEN.toPlatformColor(), textColor)
+        with(TractPage(manifest, textColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, (this as TractPage?).textColor)
+            assertEquals(TestColors.GREEN, textColor)
         }
     }
 
