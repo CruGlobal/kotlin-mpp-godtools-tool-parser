@@ -16,7 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
-import org.cru.godtools.shared.tool.parser.model.toRGB
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -37,7 +36,7 @@ class Header : BaseModel, Styles {
     @get:AndroidColorInt
     internal val backgroundColor get() = _backgroundColor ?: primaryColor
 
-    override val textColor get() = primaryTextColor.toRGB()
+    override val textColor get() = primaryTextColor
 
     val number: Text?
     val title: Text?

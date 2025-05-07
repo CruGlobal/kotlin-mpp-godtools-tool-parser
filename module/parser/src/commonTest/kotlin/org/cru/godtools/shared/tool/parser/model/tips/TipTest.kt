@@ -47,7 +47,7 @@ class TipTest : UsesResources("model/tips") {
     fun testTipDefaults() {
         val manifest = Manifest(
             primaryColor = TestColors.RED.toPlatformColor(),
-            primaryTextColor = TestColors.RED.toPlatformColor(),
+            primaryTextColor = TestColors.RED,
             textColor = TestColors.RED
         )
         val tip = Tip(manifest)

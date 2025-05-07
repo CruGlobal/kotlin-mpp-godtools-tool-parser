@@ -8,7 +8,7 @@ class StylesTest {
     private val parent by lazy {
         object : Styles {
             override var primaryColor = TestColors.RED.toPlatformColor()
-            override var primaryTextColor = TestColors.RED.toPlatformColor()
+            override var primaryTextColor = TestColors.RED
 
             override lateinit var buttonStyle: Button.Style
 
@@ -31,7 +31,7 @@ class StylesTest {
 
     @Test
     fun testStylesPrimaryTextColorFallback() {
-        parent.primaryTextColor = TestColors.random().toPlatformColor()
+        parent.primaryTextColor = TestColors.random()
         assertEquals(parent.primaryTextColor, child.primaryTextColor)
         assertEquals(parent.primaryTextColor, (child as Styles?).primaryTextColor)
     }

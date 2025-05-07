@@ -177,9 +177,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @get:AndroidColorInt
     override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
 
-    @AndroidColorInt
-    private val _primaryTextColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
 
     @AndroidColorInt
@@ -229,7 +227,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
         _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()?.toPlatformColor()
-        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
 
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
             ?: DEFAULT_BACKGROUND_COLOR
