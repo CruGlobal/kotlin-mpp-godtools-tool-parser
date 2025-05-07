@@ -33,7 +33,7 @@ class ModalTest : UsesResources("model/tract") {
 
     private fun assertFixedAttributes(modal: Modal) {
         assertEquals(TRANSPARENT.toPlatformColor(), modal.primaryColor)
-        assertEquals(WHITE.toPlatformColor(), modal.primaryTextColor)
+        assertEquals(WHITE, modal.primaryTextColor)
 
         assertEquals(WHITE.toPlatformColor(), modal.buttonColor)
         assertEquals(Button.Style.OUTLINED, modal.buttonStyle)

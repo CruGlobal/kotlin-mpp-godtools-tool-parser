@@ -24,7 +24,7 @@ class ButtonTest : UsesResources() {
     private val parentObj = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
         override var primaryColor = TestColors.BLACK.toPlatformColor()
-        override var primaryTextColor = TestColors.BLACK.toPlatformColor()
+        override var primaryTextColor = TestColors.BLACK
         override var textAlign = Text.Align.START
     }
     private val state = State()
@@ -213,18 +213,18 @@ class ButtonTest : UsesResources() {
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
         parentObj.primaryColor = TestColors.RED.toPlatformColor()
-        parentObj.primaryTextColor = TestColors.GREEN.toPlatformColor()
+        parentObj.primaryTextColor = TestColors.GREEN
 
         with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it) })) {
             assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertNotEquals(buttonColor.toRGB(), text.textColor)
-            assertEquals(parentObj.primaryTextColor.toRGB(), text.textColor)
+            assertEquals(parentObj.primaryTextColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
 
         with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it, textColor = TestColors.BLUE) })) {
-            assertNotEquals(parentObj.primaryTextColor.toRGB(), text.textColor)
+            assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertEquals(TestColors.BLUE, text.textColor)
         }
     }
@@ -232,7 +232,7 @@ class ButtonTest : UsesResources() {
     @Test
     fun testButtonTextColorFallbackBehaviorOutlined() {
         parentObj.primaryColor = TestColors.RED.toPlatformColor()
-        parentObj.primaryTextColor = TestColors.RED.toPlatformColor()
+        parentObj.primaryTextColor = TestColors.RED
 
         with(
             Button(
@@ -243,7 +243,7 @@ class ButtonTest : UsesResources() {
             )
         ) {
             assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
-            assertNotEquals(parentObj.primaryTextColor.toRGB(), text.textColor)
+            assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertEquals(buttonColor.toRGB(), text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
