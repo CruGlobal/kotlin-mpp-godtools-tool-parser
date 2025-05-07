@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.colormath)
+                api(libs.colormath)
                 implementation(libs.kermit)
             }
         }
