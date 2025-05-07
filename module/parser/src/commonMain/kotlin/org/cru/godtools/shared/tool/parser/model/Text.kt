@@ -61,6 +61,8 @@ class Text : Content {
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
     private val _textColor: Color?
+    @JsExport.Ignore
+    @JsName("_textColor")
     val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     val textScale get() = _textScale * stylesParent.textScale
@@ -181,6 +183,9 @@ class Text : Content {
     }
 
     // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("textColor")
+    val platformTextColor get() = textColor.toPlatformColor()
     @HiddenFromObjC
     @JsName("textStyles")
     val jsTextStyles get() = textStyles.toTypedArray()
