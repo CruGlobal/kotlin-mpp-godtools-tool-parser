@@ -43,12 +43,12 @@ val Styles?.primaryTextColor get() = this?.primaryTextColor ?: Manifest.DEFAULT_
 val Styles?.buttonStyle get() = this?.buttonStyle ?: Manifest.DEFAULT_BUTTON_STYLE
 
 // region Card styles
-internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR.toRGB()
+internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR
 // endregion Card styles
 
 // region Multiselect styles
 internal val Styles?.multiselectOptionBackgroundColor
-    get() = this?.multiselectOptionBackgroundColor ?: this?.manifest.backgroundColor
+    get() = this?.multiselectOptionBackgroundColor ?: this?.manifest.backgroundColor.toPlatformColor()
 // endregion Multiselect styles
 
 // region Text styles

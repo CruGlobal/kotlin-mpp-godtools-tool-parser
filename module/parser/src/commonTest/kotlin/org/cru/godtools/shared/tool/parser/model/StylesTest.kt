@@ -84,7 +84,7 @@ class StylesTest {
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, styles.primaryColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR, styles.primaryTextColor)
         assertEquals(Manifest.DEFAULT_BUTTON_STYLE, styles.buttonStyle)
-        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, styles.multiselectOptionBackgroundColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR.toPlatformColor(), styles.multiselectOptionBackgroundColor)
         assertEquals(Styles.DEFAULT_TEXT_ALIGN, styles.textAlign)
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, styles.textColor)
         assertEquals(Styles.DEFAULT_TEXT_SCALE, styles.textScale)

@@ -7,7 +7,7 @@ class AndroidCardTest {
     @Test
     fun testPropertyBackgroundColor() {
         with(null as Card?) {
-            assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR.toRGB(), backgroundColor)
+            assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, backgroundColor)
         }
 
         val parent = Manifest(cardBackgroundColor = TestColors.random())

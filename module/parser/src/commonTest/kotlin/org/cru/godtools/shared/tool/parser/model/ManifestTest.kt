@@ -45,11 +45,11 @@ class ManifestTest : UsesResources() {
         assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY, manifest.backgroundImageGravity)
         assertEquals(Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, manifest.backgroundImageScaleType)
 
-        assertEquals(manifest.backgroundColor.toRGB(), manifest.cardBackgroundColor)
+        assertEquals(manifest.backgroundColor, manifest.cardBackgroundColor)
         assertEquals(manifest.textColor, manifest.categoryLabelColor.toRGB())
         assertEquals(DEFAULT_CONTROL_COLOR, manifest.pageControlColor)
 
-        assertEquals(manifest.backgroundColor, manifest.multiselectOptionBackgroundColor)
+        assertEquals(manifest.backgroundColor.toPlatformColor(), manifest.multiselectOptionBackgroundColor)
         assertNull(manifest.multiselectOptionSelectedColor)
 
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
@@ -132,7 +132,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testParseManifestBackgroundAttrs() = runTest {
         val manifest = parseManifest("manifest_background.xml")
-        assertEquals(TestColors.GREEN.toPlatformColor(), manifest.backgroundColor)
+        assertEquals(TestColors.GREEN, manifest.backgroundColor)
         assertEquals(TestColors.BLUE, manifest.cardBackgroundColor)
         assertEquals(ImageScaleType.FIT, manifest.backgroundImageScaleType)
         assertTrue(manifest.backgroundImageGravity.isTop)
@@ -277,7 +277,7 @@ class ManifestTest : UsesResources() {
     @Test
     fun testCardBackgroundColorFallbackBehavior() {
         assertEquals(TestColors.GREEN, Manifest(cardBackgroundColor = TestColors.GREEN).cardBackgroundColor)
-        assertEquals(TestColors.BLUE, Manifest(backgroundColor = TestColors.BLUE.toPlatformColor()).cardBackgroundColor)
+        assertEquals(TestColors.BLUE, Manifest(backgroundColor = TestColors.BLUE).cardBackgroundColor)
     }
 
     @Test
