@@ -56,7 +56,7 @@ class ButtonTest : UsesResources() {
         val button = Button(Manifest(), getTestXmlParser("button_url.xml"))
         assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
-        assertEquals(TestColors.GREEN.toPlatformColor(), button.backgroundColor)
+        assertEquals(TestColors.GREEN, button.backgroundColor)
         assertEquals("https://www.google.com/", button.url!!.toString())
         assertEquals("url button", button.text.text)
         assertEquals(1, button.analyticsEvents.size)

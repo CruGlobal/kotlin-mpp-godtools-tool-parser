@@ -5,10 +5,14 @@ package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
@@ -37,14 +41,14 @@ private const val XML_ICON_SIZE = "icon-size"
 private const val TAG = "Button"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Button : Content, HasAnalyticsEvents, Clickable {
     internal companion object {
         internal const val XML_BUTTON = "button"
 
         internal val DEFAULT_GRAVITY = Gravity.Horizontal.CENTER
         internal val DEFAULT_WIDTH = Dimension.Percent(1f)
-        internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT.toPlatformColor()
+        internal val DEFAULT_BACKGROUND_COLOR = TRANSPARENT
         internal val DEFAULT_ICON_GRAVITY = Gravity.Horizontal.START
         internal const val DEFAULT_ICON_SIZE = 18
     }
@@ -63,8 +67,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     @get:AndroidColorInt
     val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
 
-    @AndroidColorInt
-    val backgroundColor: PlatformColor
+    @JsName("_backgroundColor")
+    @JsExport.Ignore
+    val backgroundColor: Color
 
     private val iconName: String?
     val icon get() = getResource(iconName)
@@ -97,8 +102,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         gravity = parser.getAttributeValue(XML_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
         width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
         _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()?.toPlatformColor()
-        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
-            ?: DEFAULT_BACKGROUND_COLOR
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
         iconGravity = parser.getAttributeValue(XML_ICON_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_ICON_GRAVITY
@@ -157,6 +161,12 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         else -> error("The $type trigger type is currently unsupported on Buttons")
     }
     // endregion HasAnalyticsEvents
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("backgroundColor")
+    val platformBackgroundColor get() = backgroundColor.toPlatformColor()
+    // endregion Kotlin/JS interop
 
     internal enum class Type {
         EVENT,
