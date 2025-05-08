@@ -165,10 +165,8 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
-    @AndroidColorInt
-    private val _cardBackgroundColor: PlatformColor?
-    @get:AndroidColorInt
-    override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
+    private val _cardBackgroundColor: Color?
+    override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor.toRGB()
 
     @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
@@ -239,7 +237,6 @@ class Manifest : BaseModel, Styles, HasPages {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
-            ?.toPlatformColor()
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()?.toPlatformColor()
         pageControlColor = parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
             ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
@@ -303,7 +300,7 @@ class Manifest : BaseModel, Styles, HasPages {
         navBarColor: PlatformColor? = null,
         navBarControlColor: PlatformColor? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
-        cardBackgroundColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
         categoryLabelColor: PlatformColor? = null,
         pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
         multiselectOptionBackgroundColor: PlatformColor? = null,

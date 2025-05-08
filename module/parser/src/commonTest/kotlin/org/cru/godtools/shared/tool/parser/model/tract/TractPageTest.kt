@@ -47,14 +47,14 @@ class TractPageTest : UsesResources("model/tract") {
     fun verifyParseCards() = runTest {
         val page = parsePageXml("page_cards.xml")
         assertEquals(2, page.cards.size)
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.cardBackgroundColor)
+        assertEquals(TestColors.GREEN, page.cardBackgroundColor)
         with(page.cards[0]) {
             assertEquals("Card 1", label!!.text)
-            assertEquals(TestColors.BLACK.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.BLACK, backgroundColor)
         }
         with(page.cards[1]) {
             assertEquals("Card 2", label!!.text)
-            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.GREEN, backgroundColor)
         }
     }
 

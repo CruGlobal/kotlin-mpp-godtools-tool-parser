@@ -4,17 +4,21 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.RestrictTo
+import com.github.ajalt.colormath.Color
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_CONTENT_CARD
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Card : Content, Parent, Clickable {
     internal companion object {
         internal const val XML_CARD = "card"
@@ -22,7 +26,9 @@ class Card : Content, Parent, Clickable {
         internal const val XML_CARD_BACKGROUND_COLOR = "card-background-color"
     }
 
-    private val _backgroundColor: PlatformColor?
+    private val _backgroundColor: Color?
+    @JsName("_backgroundColor")
+    @JsExport.Ignore
     val backgroundColor get() = _backgroundColor ?: stylesParent.cardBackgroundColor
 
     override val content: List<Content>
@@ -33,7 +39,7 @@ class Card : Content, Parent, Clickable {
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_CARD)
 
-        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
 
         parseClickableAttrs(parser) { events, url ->
             this.events = events
@@ -44,7 +50,7 @@ class Card : Content, Parent, Clickable {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest(), backgroundColor: PlatformColor? = null) : super(parent) {
+    internal constructor(parent: Base = Manifest(), backgroundColor: Color? = null) : super(parent) {
         _backgroundColor = backgroundColor
         content = emptyList()
         events = emptyList()
@@ -52,4 +58,10 @@ class Card : Content, Parent, Clickable {
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_CONTENT_CARD) || super.isIgnored
+
+    // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("backgroundColor")
+    val platformBackgroundColor get() = backgroundColor.toPlatformColor()
+    // endregion Kotlin/JS interop
 }

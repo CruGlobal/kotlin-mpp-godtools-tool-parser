@@ -112,7 +112,7 @@ class TractPage : Page {
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        cardBackgroundColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
         cardTextColor: PlatformColor? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
@@ -176,10 +176,8 @@ class TractPage : Page {
         @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
-        @AndroidColorInt
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-        private val _backgroundColor: PlatformColor?
-        @get:AndroidColorInt
+        private val _backgroundColor: Color?
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
         private val _backgroundImage: String?
         val backgroundImage get() = getResource(_backgroundImage)
@@ -204,7 +202,7 @@ class TractPage : Page {
             listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
             dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
             _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
             backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
                 ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -236,7 +234,7 @@ class TractPage : Page {
         constructor(
             page: TractPage = TractPage(),
             position: Int = 0,
-            backgroundColor: PlatformColor? = null,
+            backgroundColor: Color? = null,
             backgroundImage: String? = null,
             backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
             backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,

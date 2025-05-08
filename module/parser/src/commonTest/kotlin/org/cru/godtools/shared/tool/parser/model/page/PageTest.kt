@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import com.github.ajalt.colormath.Color
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -163,17 +164,11 @@ class PageTest : UsesResources("model/page") {
     // region Property: cardBackgroundColor
     @Test
     fun testPropertyCardBackgroundColor() {
-        val manifest = Manifest(cardBackgroundColor = TestColors.random().toPlatformColor())
-        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.random().toPlatformColor())
+        val manifest = Manifest(cardBackgroundColor = TestColors.random())
+        val hasPagesParent = TestPage(parent = manifest, cardBackgroundColor = TestColors.random())
 
-        assertEquals(
-            TestColors.RED.toPlatformColor(),
-            TestPage(manifest, cardBackgroundColor = TestColors.RED.toPlatformColor()).cardBackgroundColor
-        )
-        assertEquals(
-            TestColors.RED.toPlatformColor(),
-            TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED.toPlatformColor()).cardBackgroundColor
-        )
+        assertEquals(TestColors.RED, TestPage(manifest, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, cardBackgroundColor = TestColors.RED).cardBackgroundColor)
         assertEquals(manifest.cardBackgroundColor, TestPage(manifest, cardBackgroundColor = null).cardBackgroundColor)
         assertEquals(
             manifest.cardBackgroundColor,
@@ -408,7 +403,7 @@ class PageTest : UsesResources("model/page") {
         parent: HasPages = Manifest(),
         id: String? = null,
         parentPage: String? = null,
-        cardBackgroundColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
         controlColor: PlatformColor? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
