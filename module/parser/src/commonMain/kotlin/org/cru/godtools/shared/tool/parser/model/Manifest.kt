@@ -137,25 +137,21 @@ class Manifest : BaseModel, Styles, HasPages {
     override val primaryColor: Color
     override val primaryTextColor: Color
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _navBarColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _navBarColor: Color?
     internal val navBarColor
         get() = when {
             _navBarColor != null -> _navBarColor
             type == Type.LESSON -> DEFAULT_LESSON_NAV_BAR_COLOR
-            else -> primaryColor.toPlatformColor()
+            else -> primaryColor
         }
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _navBarControlColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _navBarControlColor: Color?
     internal val navBarControlColor
         get() = when {
             _navBarControlColor != null -> _navBarControlColor
-            type == Type.LESSON -> primaryColor.toPlatformColor()
-            else -> primaryTextColor.toPlatformColor()
+            type == Type.LESSON -> primaryColor
+            else -> primaryTextColor
         }
 
     internal val backgroundColor: Color
@@ -223,8 +219,8 @@ class Manifest : BaseModel, Styles, HasPages {
         primaryTextColor =
             parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_TEXT_COLOR
 
-        _navBarColor = parser.getAttributeValue(XML_NAVBAR_COLOR)?.toColorOrNull()?.toPlatformColor()
-        _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _navBarColor = parser.getAttributeValue(XML_NAVBAR_COLOR)?.toColorOrNull()
+        _navBarControlColor = parser.getAttributeValue(XML_NAVBAR_CONTROL_COLOR)?.toColorOrNull()
 
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
@@ -292,8 +288,8 @@ class Manifest : BaseModel, Styles, HasPages {
         locale: PlatformLocale? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
-        navBarColor: PlatformColor? = null,
-        navBarControlColor: PlatformColor? = null,
+        navBarColor: Color? = null,
+        navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: PlatformColor? = null,
@@ -468,15 +464,11 @@ class Manifest : BaseModel, Styles, HasPages {
     data class XmlFile(internal val name: String?, internal val src: String)
 }
 
-@get:AndroidColorInt
-val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor.toPlatformColor()
-@get:AndroidColorInt
-val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor.toPlatformColor()
+val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
+val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor
 
-@get:AndroidColorInt
 val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
-@get:AndroidColorInt
-val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor.toPlatformColor()
+val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
 
 val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR
 val Manifest?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY
