@@ -10,8 +10,8 @@ class AndroidMultiselectTest {
             assertEquals(stylesParent.multiselectOptionBackgroundColor, backgroundColor)
         }
 
-        with(Multiselect.Option(backgroundColor = TestColors.GREEN.toPlatformColor()) as Multiselect.Option?) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
+        with(Multiselect.Option(backgroundColor = TestColors.GREEN) as Multiselect.Option?) {
+            assertEquals(TestColors.GREEN, backgroundColor)
         }
     }
 
@@ -21,8 +21,8 @@ class AndroidMultiselectTest {
             assertEquals(stylesParent.defaultSelectedColor, selectedColor)
         }
 
-        with(Multiselect.Option(selectedColor = TestColors.GREEN.toPlatformColor()) as Multiselect.Option?) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), selectedColor)
+        with(Multiselect.Option(selectedColor = TestColors.GREEN) as Multiselect.Option?) {
+            assertEquals(TestColors.GREEN, selectedColor)
         }
     }
 }

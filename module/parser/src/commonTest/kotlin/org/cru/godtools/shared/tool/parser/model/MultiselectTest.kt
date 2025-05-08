@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import app.cash.turbine.test
+import com.github.ajalt.colormath.Color
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -22,6 +23,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.state.State
+import org.cru.godtools.shared.tool.util.assertEquals
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,15 +40,15 @@ class MultiselectTest : UsesResources() {
         assertEquals(3, multiselect.options.size)
         with(multiselect.options[0]) {
             assertEquals(Multiselect.Option.Style.CARD, style)
-            assertEquals(TestColors.RED.toPlatformColor(), backgroundColor)
-            assertEquals(TestColors.BLUE.toPlatformColor(), selectedColor)
+            assertEquals(TestColors.RED, backgroundColor)
+            assertEquals(TestColors.BLUE, selectedColor)
             assertTrue(AnalyticsEvent.System.FIREBASE in analyticsEvents.single().systems)
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)
             assertEquals(Multiselect.Option.Style.FLAT, style)
-            assertEquals(TestColors.BLUE.toPlatformColor(), backgroundColor)
-            assertEquals(TestColors.GREEN.toPlatformColor(), selectedColor)
+            assertEquals(TestColors.BLUE, backgroundColor)
+            assertEquals(TestColors.GREEN, selectedColor)
             assertEquals(1, content.size)
             with(assertIs<Text>(content.single())) {
                 assertEquals("Answer 2", text)
@@ -56,7 +58,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testParseMultiselectDefaults() = runTest {
-        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.random().toPlatformColor())
+        val manifest = Manifest(multiselectOptionSelectedColor = TestColors.random())
         val multiselect = Multiselect(manifest, getTestXmlParser("multiselect_defaults.xml"))
         assertEquals("", multiselect.stateName)
         assertEquals(1, multiselect.columns)
@@ -65,7 +67,7 @@ class MultiselectTest : UsesResources() {
         with(multiselect.options.single()) {
             assertEquals(Multiselect.Option.DEFAULT_STYLE, style)
             assertEquals("valueAttr", value)
-            assertEquals(manifest.backgroundColor.toPlatformColor(), backgroundColor)
+            assertEquals(manifest.backgroundColor, backgroundColor)
             assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)
             assertTrue(analyticsEvents.isEmpty())
             assertTrue(content.isEmpty())
@@ -244,18 +246,18 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testOptionBackgroundColorFallback() {
-        val parent = Manifest(multiselectOptionBackgroundColor = TestColors.random().toPlatformColor())
+        val parent = Manifest(multiselectOptionBackgroundColor = TestColors.random())
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(parent.multiselectOptionBackgroundColor, backgroundColor)
         }
 
-        val multiselectBackgroundColor = TestColors.random().toPlatformColor()
+        val multiselectBackgroundColor = TestColors.random()
         val multiselect = Multiselect(parent, optionBackgroundColor = multiselectBackgroundColor)
         with(Multiselect.Option(multiselect)) {
             assertEquals(multiselectBackgroundColor, backgroundColor)
         }
 
-        val optionBackgroundColor = TestColors.random().toPlatformColor()
+        val optionBackgroundColor = TestColors.random()
         with(Multiselect.Option(multiselect, backgroundColor = optionBackgroundColor)) {
             assertEquals(optionBackgroundColor, backgroundColor)
         }
@@ -265,32 +267,32 @@ class MultiselectTest : UsesResources() {
     fun testOptionSelectedColorFallback() {
         val parent = object : BaseModel(), Styles {
             override var primaryColor = color(254, 0, 0, 0.5)
-            override var multiselectOptionSelectedColor: PlatformColor? = null
+            override var multiselectOptionSelectedColor: Color? = null
         }
 
         // 40% lighter primary color w/ 100% alpha
         with(Multiselect.Option(Multiselect(parent))) {
-            assertEquals(color(255, 203, 203, 1.0).toPlatformColor(), selectedColor)
+            assertEquals(color(255, 203, 203, 1.0), selectedColor)
         }
 
         // 40% lighter of white primary color should still be white
         parent.primaryColor = WHITE
         with(Multiselect.Option(Multiselect(parent))) {
-            assertEquals(WHITE.toPlatformColor(), selectedColor)
+            assertEquals(WHITE, selectedColor)
         }
 
-        parent.multiselectOptionSelectedColor = TestColors.random().toPlatformColor()
+        parent.multiselectOptionSelectedColor = TestColors.random()
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(parent.multiselectOptionSelectedColor, selectedColor)
         }
 
-        val multiselectSelectedColor = TestColors.random().toPlatformColor()
+        val multiselectSelectedColor = TestColors.random()
         val multiselect = Multiselect(parent, optionSelectedColor = multiselectSelectedColor)
         with(Multiselect.Option(multiselect)) {
             assertEquals(multiselectSelectedColor, selectedColor)
         }
 
-        val optionSelectedColor = TestColors.random().toPlatformColor()
+        val optionSelectedColor = TestColors.random()
         with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor)) {
             assertEquals(optionSelectedColor, selectedColor)
         }

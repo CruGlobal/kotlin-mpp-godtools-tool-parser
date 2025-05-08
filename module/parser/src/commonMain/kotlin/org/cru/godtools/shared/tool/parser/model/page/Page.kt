@@ -195,10 +195,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _cardBackgroundColor: Color?
     override val cardBackgroundColor get() = _cardBackgroundColor ?: super.cardBackgroundColor
 
-    private val _multiselectOptionBackgroundColor: PlatformColor?
+    private val _multiselectOptionBackgroundColor: Color?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
-    private val _multiselectOptionSelectedColor: PlatformColor?
+    private val _multiselectOptionSelectedColor: Color?
     override val multiselectOptionSelectedColor
         get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
 
@@ -239,10 +239,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
-                ?.toPlatformColor()
         _multiselectOptionSelectedColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
-                ?.toPlatformColor()
 
         _textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull()
         _textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
@@ -261,8 +259,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
         cardBackgroundColor: Color? = null,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
         textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(container) {

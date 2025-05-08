@@ -49,7 +49,7 @@ class ManifestTest : UsesResources() {
         assertEquals(manifest.textColor, manifest.categoryLabelColor.toRGB())
         assertEquals(DEFAULT_CONTROL_COLOR, manifest.pageControlColor)
 
-        assertEquals(manifest.backgroundColor.toPlatformColor(), manifest.multiselectOptionBackgroundColor)
+        assertEquals(manifest.backgroundColor, manifest.multiselectOptionBackgroundColor)
         assertNull(manifest.multiselectOptionSelectedColor)
 
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, manifest.textColor)
@@ -101,8 +101,8 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.RED.toPlatformColor(), manifest.pageControlColor)
         assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 
-        assertEquals(TestColors.RED.toPlatformColor(), manifest.multiselectOptionBackgroundColor)
-        assertEquals(TestColors.GREEN.toPlatformColor(), manifest.multiselectOptionSelectedColor)
+        assertEquals(TestColors.RED, manifest.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN, manifest.multiselectOptionSelectedColor)
 
         assertEquals(1, manifest.pages.size)
         assertEquals("page0.xml", manifest.pages[0].fileName)
