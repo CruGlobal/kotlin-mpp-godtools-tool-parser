@@ -17,8 +17,7 @@ interface Styles : Base {
 
     // region Button styles
     val buttonStyle: Button.Style get() = stylesParent.buttonStyle
-    @get:AndroidColorInt
-    val buttonColor: PlatformColor? get() = stylesParent?.buttonColor
+    val buttonColor: Color? get() = stylesParent?.buttonColor
     // endregion Button styles
 
     // region Card styles

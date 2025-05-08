@@ -40,7 +40,7 @@ class ButtonTest : UsesResources() {
             assertEquals(manifest.buttonStyle, style)
             assertEquals(EventId.parse("event1 event2"), events)
             assertEquals("event button", text.text)
-            assertEquals(TestColors.RED.toPlatformColor(), buttonColor)
+            assertEquals(TestColors.RED, buttonColor)
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)
             assertEquals(Dimension.Pixels(50), width)
             assertEquals(Gravity.Horizontal.END, gravity)
@@ -169,23 +169,23 @@ class ButtonTest : UsesResources() {
     @Test
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
-        assertEquals(manifest.primaryColor, Button(manifest).buttonColor)
-        with(Button(manifest, color = TestColors.GREEN.toPlatformColor())) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), buttonColor)
-            assertNotEquals(manifest.primaryColor, buttonColor)
+        assertEquals(manifest.primaryColor.toRGB(), Button(manifest).buttonColor)
+        with(Button(manifest, color = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, buttonColor)
+            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
         }
 
         val parent = object : BaseModel(manifest), Styles {
             override val primaryColor = TestColors.random().toPlatformColor()
         }
         with(Button(parent)) {
-            assertEquals(parent.primaryColor, buttonColor)
-            assertNotEquals(manifest.primaryColor, buttonColor)
+            assertEquals(parent.primaryColor.toRGB(), buttonColor)
+            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
         }
-        with(Button(parent, color = TestColors.GREEN.toPlatformColor())) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), buttonColor)
-            assertNotEquals(parent.primaryColor, buttonColor)
-            assertNotEquals(manifest.primaryColor, buttonColor)
+        with(Button(parent, color = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, buttonColor)
+            assertNotEquals(parent.primaryColor.toRGB(), buttonColor)
+            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
         }
     }
     // endregion Property - buttonColor
@@ -218,7 +218,7 @@ class ButtonTest : UsesResources() {
         with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it) })) {
             assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
-            assertNotEquals(buttonColor.toRGB(), text.textColor)
+            assertNotEquals(buttonColor, text.textColor)
             assertEquals(parentObj.primaryTextColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
@@ -234,18 +234,11 @@ class ButtonTest : UsesResources() {
         parentObj.primaryColor = TestColors.RED.toPlatformColor()
         parentObj.primaryTextColor = TestColors.RED
 
-        with(
-            Button(
-                parentObj,
-                style = Button.Style.OUTLINED,
-                color = TestColors.GREEN.toPlatformColor(),
-                text = { Text(it) }
-            )
-        ) {
+        with(Button(parentObj, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
             assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
             assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
-            assertEquals(buttonColor.toRGB(), text.textColor)
+            assertEquals(buttonColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
 
@@ -253,11 +246,11 @@ class ButtonTest : UsesResources() {
             Button(
                 parentObj,
                 style = Button.Style.OUTLINED,
-                color = TestColors.RED.toPlatformColor(),
+                color = TestColors.RED,
                 text = { Text(it, textColor = TestColors.GREEN) }
             )
         ) {
-            assertNotEquals(buttonColor.toRGB(), text.textColor)
+            assertNotEquals(buttonColor, text.textColor)
             assertEquals(TestColors.GREEN, text.textColor)
         }
     }

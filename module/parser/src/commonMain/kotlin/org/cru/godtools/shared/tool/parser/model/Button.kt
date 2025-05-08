@@ -14,7 +14,6 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -62,10 +61,10 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     val gravity: Gravity.Horizontal
     val width: Dimension
 
-    @AndroidColorInt
-    private val _buttonColor: PlatformColor?
-    @get:AndroidColorInt
-    val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
+    private val _buttonColor: Color?
+    @JsName("_buttonColor")
+    @JsExport.Ignore
+    val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor.toRGB() }
 
     @JsName("_backgroundColor")
     @JsExport.Ignore
@@ -82,7 +81,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
             textColor = {
                 when (style) {
                     Style.CONTAINED, Style.UNKNOWN -> stylesParent.primaryTextColor
-                    Style.OUTLINED -> buttonColor.toRGB()
+                    Style.OUTLINED -> buttonColor
                 }
             }
         )
@@ -101,7 +100,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         _style = parser.getAttributeValue(XML_STYLE)?.toButtonStyle()
         gravity = parser.getAttributeValue(XML_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
         width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
-        _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _buttonColor = parser.getAttributeValue(XML_COLOR)?.toColorOrNull()
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
 
         iconName = parser.getAttributeValue(XML_ICON)
@@ -123,7 +122,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     internal constructor(
         parent: Base = Manifest(),
         style: Style? = null,
-        @AndroidColorInt color: PlatformColor? = null,
+        color: Color? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
         iconGravity: Gravity.Horizontal = DEFAULT_ICON_GRAVITY,
@@ -164,6 +163,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
 
     // region Kotlin/JS interop
     @HiddenFromObjC
+    @JsName("buttonColor")
+    val platformButtonColor get() = buttonColor.toPlatformColor()
+    @HiddenFromObjC
     @JsName("backgroundColor")
     val platformBackgroundColor get() = backgroundColor.toPlatformColor()
     // endregion Kotlin/JS interop
@@ -199,4 +201,4 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 }
 
-val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor
+val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor.toRGB()
