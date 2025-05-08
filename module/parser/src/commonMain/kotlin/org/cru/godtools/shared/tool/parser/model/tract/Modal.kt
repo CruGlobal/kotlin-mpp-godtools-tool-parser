@@ -50,8 +50,7 @@ class Modal : BaseModel, Parent, Styles {
     override val primaryColor get() = TRANSPARENT.toPlatformColor()
     override val primaryTextColor get() = WHITE
 
-    @get:AndroidColorInt
-    override val buttonColor get() = WHITE.toPlatformColor()
+    override val buttonColor get() = WHITE
     override val buttonStyle get() = Button.Style.OUTLINED
 
     override val textAlign get() = Text.Align.CENTER
