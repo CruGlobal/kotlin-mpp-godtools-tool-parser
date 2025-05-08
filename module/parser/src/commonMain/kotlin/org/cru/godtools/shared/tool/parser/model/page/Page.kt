@@ -192,9 +192,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     val controlColor: PlatformColor
         get() = _controlColor ?: (parentPageContainer as? Page)?.controlColor ?: manifest.pageControlColor
 
-    @AndroidColorInt
-    private val _cardBackgroundColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _cardBackgroundColor: Color?
     override val cardBackgroundColor get() = _cardBackgroundColor ?: super.cardBackgroundColor
 
     private val _multiselectOptionBackgroundColor: PlatformColor?
@@ -238,7 +236,6 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
-            ?.toPlatformColor()
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
@@ -263,7 +260,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: PlatformColor? = null,
-        cardBackgroundColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
         multiselectOptionBackgroundColor: PlatformColor? = null,
         multiselectOptionSelectedColor: PlatformColor? = null,
         textColor: Color? = null,

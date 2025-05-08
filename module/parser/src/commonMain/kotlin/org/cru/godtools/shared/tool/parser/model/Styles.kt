@@ -20,7 +20,7 @@ interface Styles : Base {
     // endregion Button styles
 
     // region Card styles
-    val cardBackgroundColor: PlatformColor get() = stylesParent.cardBackgroundColor
+    val cardBackgroundColor: Color get() = stylesParent.cardBackgroundColor
     // endregion Card styles
 
     // region Multiselect styles
@@ -43,7 +43,7 @@ val Styles?.primaryTextColor get() = this?.primaryTextColor ?: Manifest.DEFAULT_
 val Styles?.buttonStyle get() = this?.buttonStyle ?: Manifest.DEFAULT_BUTTON_STYLE
 
 // region Card styles
-internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR
+internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR.toRGB()
 // endregion Card styles
 
 // region Multiselect styles
