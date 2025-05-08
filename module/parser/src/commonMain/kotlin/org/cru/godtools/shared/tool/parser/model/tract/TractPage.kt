@@ -107,7 +107,7 @@ class TractPage : Page {
         fileName: String? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        primaryColor: PlatformColor? = null,
+        primaryColor: Color? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         textColor: Color? = null,
@@ -189,7 +189,7 @@ class TractPage : Page {
         private val _textColor: Color?
         override val textColor get() = _textColor ?: page.cardTextColor.toRGB()
 
-        private val labelParent by lazy { stylesOverride(textColor = { primaryColor.toRGB() }) }
+        private val labelParent by lazy { stylesOverride(textColor = { primaryColor }) }
         val label: Text?
         override val content: List<Content>
         val tips get() = contentTips

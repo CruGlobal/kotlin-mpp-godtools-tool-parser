@@ -11,8 +11,7 @@ interface Styles : Base {
         internal const val DEFAULT_TEXT_SCALE = 1.0
     }
 
-    @get:AndroidColorInt
-    val primaryColor: PlatformColor get() = stylesParent.primaryColor
+    val primaryColor: Color get() = stylesParent.primaryColor
     val primaryTextColor: Color get() = stylesParent.primaryTextColor
 
     // region Button styles
@@ -38,7 +37,6 @@ interface Styles : Base {
     // endregion Text styles
 }
 
-@get:AndroidColorInt
 val Styles?.primaryColor get() = this?.primaryColor ?: Manifest.DEFAULT_PRIMARY_COLOR
 val Styles?.primaryTextColor get() = this?.primaryTextColor ?: Manifest.DEFAULT_PRIMARY_TEXT_COLOR
 

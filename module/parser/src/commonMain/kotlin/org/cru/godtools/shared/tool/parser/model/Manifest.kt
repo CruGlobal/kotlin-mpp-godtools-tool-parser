@@ -78,8 +78,7 @@ private const val XML_TIPS_TIP_SRC = "src"
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Manifest : BaseModel, Styles, HasPages {
     internal companion object {
-        @AndroidColorInt
-        internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0).toPlatformColor()
+        internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
         internal val DEFAULT_PRIMARY_TEXT_COLOR = color(255, 255, 255, 1.0)
 
         @AndroidColorInt
@@ -135,8 +134,7 @@ class Manifest : BaseModel, Styles, HasPages {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @AndroidColorInt
-    override val primaryColor: PlatformColor
+    override val primaryColor: Color
     override val primaryTextColor: Color
 
     @AndroidColorInt
@@ -144,13 +142,21 @@ class Manifest : BaseModel, Styles, HasPages {
     private val _navBarColor: PlatformColor?
     @get:AndroidColorInt
     internal val navBarColor
-        get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
+        get() = when {
+            _navBarColor != null -> _navBarColor
+            type == Type.LESSON -> DEFAULT_LESSON_NAV_BAR_COLOR
+            else -> primaryColor.toPlatformColor()
+        }
     @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _navBarControlColor: PlatformColor?
     @get:AndroidColorInt
     internal val navBarControlColor
-        get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor.toPlatformColor()
+        get() = when {
+            _navBarControlColor != null -> _navBarControlColor
+            type == Type.LESSON -> primaryColor.toPlatformColor()
+            else -> primaryTextColor.toPlatformColor()
+        }
 
     @AndroidColorInt
     internal val backgroundColor: PlatformColor
@@ -217,8 +223,7 @@ class Manifest : BaseModel, Styles, HasPages {
 
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-        primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()?.toPlatformColor()
-            ?: DEFAULT_PRIMARY_COLOR
+        primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_COLOR
         primaryTextColor =
             parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_TEXT_COLOR
 
@@ -293,7 +298,7 @@ class Manifest : BaseModel, Styles, HasPages {
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
-        primaryColor: PlatformColor = DEFAULT_PRIMARY_COLOR,
+        primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: PlatformColor? = null,
         navBarControlColor: PlatformColor? = null,
@@ -472,14 +477,14 @@ class Manifest : BaseModel, Styles, HasPages {
 }
 
 @get:AndroidColorInt
-val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
+val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor.toPlatformColor()
 @get:AndroidColorInt
 val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor.toPlatformColor()
 
 @get:AndroidColorInt
 val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
 @get:AndroidColorInt
-val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
+val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor.toPlatformColor()
 
 @get:AndroidColorInt
 val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR

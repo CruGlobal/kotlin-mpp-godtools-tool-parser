@@ -5,7 +5,6 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -20,7 +19,6 @@ import org.cru.godtools.shared.tool.parser.model.XML_LISTENERS
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.toEventIds
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_TITLE = "title"
@@ -46,8 +44,7 @@ class Modal : BaseModel, Parent, Styles {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @get:AndroidColorInt
-    override val primaryColor get() = TRANSPARENT.toPlatformColor()
+    override val primaryColor get() = TRANSPARENT
     override val primaryTextColor get() = WHITE
 
     override val buttonColor get() = WHITE

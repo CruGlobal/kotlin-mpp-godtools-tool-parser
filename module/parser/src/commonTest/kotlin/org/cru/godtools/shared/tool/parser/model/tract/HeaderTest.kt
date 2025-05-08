@@ -31,7 +31,7 @@ class HeaderTest : UsesResources("model/tract") {
         val page = TractPage(Manifest(), null, getTestXmlParser("header_defaults.xml"))
         val header = assertNotNull(page.header)
 
-        assertEquals(page.primaryColor, header.backgroundColor)
+        assertEquals(page.primaryColor.toPlatformColor(), header.backgroundColor)
         assertEquals(page.primaryTextColor, header.textColor)
         assertNull(header.number)
         assertNull(header.title)
@@ -42,7 +42,7 @@ class HeaderTest : UsesResources("model/tract") {
     fun testBackgroundColorBehavior() {
         val header = Header(backgroundColor = TestColors.GREEN.toPlatformColor())
 
-        with(null as Header?) { assertEquals(stylesParent.primaryColor, backgroundColor) }
+        with(null as Header?) { assertEquals(stylesParent.primaryColor.toPlatformColor(), backgroundColor) }
         with(header as Header?) { assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor) }
         with(header) { assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor) }
     }

@@ -264,7 +264,7 @@ class MultiselectTest : UsesResources() {
     @Test
     fun testOptionSelectedColorFallback() {
         val parent = object : BaseModel(), Styles {
-            override var primaryColor = color(254, 0, 0, 0.5).toPlatformColor()
+            override var primaryColor = color(254, 0, 0, 0.5)
             override var multiselectOptionSelectedColor: PlatformColor? = null
         }
 
@@ -274,7 +274,7 @@ class MultiselectTest : UsesResources() {
         }
 
         // 40% lighter of white primary color should still be white
-        parent.primaryColor = WHITE.toPlatformColor()
+        parent.primaryColor = WHITE
         with(Multiselect.Option(Multiselect(parent))) {
             assertEquals(WHITE.toPlatformColor(), selectedColor)
         }

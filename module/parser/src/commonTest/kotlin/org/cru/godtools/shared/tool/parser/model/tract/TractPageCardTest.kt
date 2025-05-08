@@ -23,7 +23,6 @@ import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
-import org.cru.godtools.shared.tool.parser.model.toRGB
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -33,7 +32,7 @@ class TractPageCardTest : UsesResources("model/tract") {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
         assertEquals("page.xml-0", card.id)
         assertEquals("Card 1", card.label!!.text)
-        assertEquals(card.primaryColor.toRGB(), card.label!!.textColor)
+        assertEquals(card.primaryColor, card.label!!.textColor)
         assertNotEquals(card.textColor, card.label!!.textColor)
         assertEquals(TestColors.RED.toPlatformColor(), card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)
@@ -128,13 +127,13 @@ class TractPageCardTest : UsesResources("model/tract") {
     @Test
     fun testLabelTextColor() {
         with(Card(label = { Text(it) })) {
-            assertEquals(primaryColor.toRGB(), label!!.textColor)
+            assertEquals(primaryColor, label!!.textColor)
             assertNotEquals(textColor, label!!.textColor)
         }
 
         with(Card(label = { Text(it, textColor = TestColors.GREEN) })) {
             assertEquals(TestColors.GREEN, label!!.textColor)
-            assertNotEquals(primaryColor.toRGB(), label!!.textColor)
+            assertNotEquals(primaryColor, label!!.textColor)
             assertNotEquals(textColor, label!!.textColor)
         }
     }
