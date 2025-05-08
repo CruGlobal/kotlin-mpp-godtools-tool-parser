@@ -37,7 +37,7 @@ class LessonPageTest : UsesResources("model/lesson") {
         val manifest = Manifest(resources = { listOf(Resource(it, "background.png")) })
         val page = parsePageXml("page.xml", manifest)
         assertFalse(page.isHidden)
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.controlColor)
+        assertEquals(TestColors.GREEN, page.controlColor)
         assertEquals(1.2345, page.textScale, 0.00001)
         assertEquals(1, page.content.size)
         assertEquals(AnalyticsEvent.System.FIREBASE, page.analyticsEvents.single().systems.single())
@@ -105,20 +105,11 @@ class LessonPageTest : UsesResources("model/lesson") {
 
     @Test
     fun testControlColor() {
+        assertEquals(TestColors.GREEN, LessonPage(controlColor = TestColors.GREEN).controlColor)
+        assertEquals(TestColors.GREEN, LessonPage(Manifest(pageControlColor = TestColors.GREEN)).controlColor)
         assertEquals(
-            TestColors.GREEN.toPlatformColor(),
-            LessonPage(controlColor = TestColors.GREEN.toPlatformColor()).controlColor
-        )
-        assertEquals(
-            TestColors.GREEN.toPlatformColor(),
-            LessonPage(Manifest(pageControlColor = TestColors.GREEN.toPlatformColor())).controlColor
-        )
-        assertEquals(
-            TestColors.GREEN.toPlatformColor(),
-            LessonPage(
-                Manifest(pageControlColor = TestColors.RED.toPlatformColor()),
-                controlColor = TestColors.GREEN.toPlatformColor()
-            ).controlColor
+            TestColors.GREEN,
+            LessonPage(Manifest(pageControlColor = TestColors.RED), controlColor = TestColors.GREEN).controlColor
         )
     }
 

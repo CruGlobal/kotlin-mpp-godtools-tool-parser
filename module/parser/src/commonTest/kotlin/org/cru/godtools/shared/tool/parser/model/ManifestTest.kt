@@ -98,7 +98,7 @@ class ManifestTest : UsesResources() {
         assertEquals("lesson1", manifest.code)
         assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
-        assertEquals(TestColors.RED.toPlatformColor(), manifest.pageControlColor)
+        assertEquals(TestColors.RED, manifest.pageControlColor)
         assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
 
         assertEquals(TestColors.RED, manifest.multiselectOptionBackgroundColor)
@@ -120,7 +120,7 @@ class ManifestTest : UsesResources() {
         assertEquals(TestColors.BLUE, manifest.primaryTextColor)
         assertEquals(TestColors.GREEN.toPlatformColor(), manifest.navBarColor)
         assertEquals(color(255, 0, 255, 1.0).toPlatformColor(), manifest.navBarControlColor)
-        assertEquals(color(255, 255, 0, 1.0).toPlatformColor(), manifest.pageControlColor)
+        assertEquals(color(255, 255, 0, 1.0), manifest.pageControlColor)
         assertEquals(1.2345, manifest.textScale, 0.00001)
         assertEquals(2, manifest.pages.size)
         assertEquals("page0.xml", manifest.pages[0].fileName)

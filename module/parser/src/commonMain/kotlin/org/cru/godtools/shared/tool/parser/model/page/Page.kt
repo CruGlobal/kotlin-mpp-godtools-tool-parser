@@ -186,10 +186,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
-    @AndroidColorInt
-    private val _controlColor: PlatformColor?
-    @get:AndroidColorInt
-    val controlColor: PlatformColor
+    private val _controlColor: Color?
+    @JsName("_controlColor")
+    @JsExport.Ignore
+    val controlColor: Color
         get() = _controlColor ?: (parentPageContainer as? Page)?.controlColor ?: manifest.pageControlColor
 
     private val _cardBackgroundColor: Color?
@@ -233,7 +233,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImageScaleType = parser.getAttributeValue(XML_BACKGROUND_IMAGE_SCALE_TYPE)?.toImageScaleTypeOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
-        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _controlColor = parser.getAttributeValue(XML_CONTROL_COLOR)?.toColorOrNull()
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
 
@@ -257,7 +257,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        controlColor: PlatformColor? = null,
+        controlColor: Color? = null,
         cardBackgroundColor: Color? = null,
         multiselectOptionBackgroundColor: Color? = null,
         multiselectOptionSelectedColor: Color? = null,
@@ -311,6 +311,10 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @HiddenFromObjC
     @JsName("listeners")
     val jsListeners get() = listeners.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("controlColor")
+    val platformControlColor get() = controlColor.toPlatformColor()
     // endregion Kotlin/JS interop
 }
 

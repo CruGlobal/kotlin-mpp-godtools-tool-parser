@@ -17,10 +17,8 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -184,17 +182,11 @@ class PageTest : UsesResources("model/page") {
     // region Property: controlColor
     @Test
     fun testPropertyControlColor() {
-        val manifest = Manifest(pageControlColor = TestColors.random().toPlatformColor())
-        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.random().toPlatformColor())
+        val manifest = Manifest(pageControlColor = TestColors.random())
+        val hasPagesParent = TestPage(parent = manifest, controlColor = TestColors.random())
 
-        assertEquals(
-            TestColors.RED.toPlatformColor(),
-            TestPage(manifest, controlColor = TestColors.RED.toPlatformColor()).controlColor
-        )
-        assertEquals(
-            TestColors.RED.toPlatformColor(),
-            TestPage(hasPagesParent, controlColor = TestColors.RED.toPlatformColor()).controlColor
-        )
+        assertEquals(TestColors.RED, TestPage(manifest, controlColor = TestColors.RED).controlColor)
+        assertEquals(TestColors.RED, TestPage(hasPagesParent, controlColor = TestColors.RED).controlColor)
         assertEquals(manifest.pageControlColor, TestPage(manifest, controlColor = null).controlColor)
         assertEquals(manifest.pageControlColor, TestPage(TestPage(manifest, controlColor = null)).controlColor)
         assertEquals(hasPagesParent.controlColor, TestPage(hasPagesParent, controlColor = null).controlColor)
@@ -404,7 +396,7 @@ class PageTest : UsesResources("model/page") {
         id: String? = null,
         parentPage: String? = null,
         cardBackgroundColor: Color? = null,
-        controlColor: PlatformColor? = null,
+        controlColor: Color? = null,
         multiselectOptionBackgroundColor: Color? = null,
         multiselectOptionSelectedColor: Color? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
