@@ -65,7 +65,7 @@ class MultiselectTest : UsesResources() {
         with(multiselect.options.single()) {
             assertEquals(Multiselect.Option.DEFAULT_STYLE, style)
             assertEquals("valueAttr", value)
-            assertEquals(manifest.backgroundColor, backgroundColor)
+            assertEquals(manifest.backgroundColor.toPlatformColor(), backgroundColor)
             assertEquals(manifest.multiselectOptionSelectedColor, selectedColor)
             assertTrue(analyticsEvents.isEmpty())
             assertTrue(content.isEmpty())

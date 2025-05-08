@@ -28,7 +28,7 @@ class CardTest : UsesResources() {
     @Test
     fun testParseCardDefaults() = runTest {
         val card = Card(Manifest(), getTestXmlParser("card_defaults.xml"))
-        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR.toRGB(), card.backgroundColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, card.backgroundColor)
         assertFalse(card.isClickable)
         assertTrue(card.content.isEmpty())
     }
