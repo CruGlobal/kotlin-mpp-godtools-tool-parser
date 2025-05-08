@@ -205,19 +205,19 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionBackgroundColor() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED.toPlatformColor()),
-            multiselectOptionBackgroundColor = TestColors.GREEN.toPlatformColor(),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.RED),
+            multiselectOptionBackgroundColor = TestColors.GREEN,
         )
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
     }
 
     @Test
     fun testPropertyMultiselectOptionBackgroundColorFallback() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN.toPlatformColor()),
+            parent = Manifest(multiselectOptionBackgroundColor = TestColors.GREEN),
             multiselectOptionBackgroundColor = null,
         )
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionBackgroundColor)
+        assertEquals(TestColors.GREEN, page.multiselectOptionBackgroundColor)
     }
     // endregion Property: multiselectOptionBackgroundColor
 
@@ -225,19 +225,19 @@ class PageTest : UsesResources("model/page") {
     @Test
     fun testPropertyMultiselectOptionSelectedColor() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED.toPlatformColor()),
-            multiselectOptionSelectedColor = TestColors.GREEN.toPlatformColor(),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.RED),
+            multiselectOptionSelectedColor = TestColors.GREEN,
         )
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionSelectedColor)
+        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
     }
 
     @Test
     fun testPropertyMultiselectOptionSelectedColorFallback() {
         val page = TestPage(
-            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN.toPlatformColor()),
+            parent = Manifest(multiselectOptionSelectedColor = TestColors.GREEN),
             multiselectOptionSelectedColor = null,
         )
-        assertEquals(TestColors.GREEN.toPlatformColor(), page.multiselectOptionSelectedColor)
+        assertEquals(TestColors.GREEN, page.multiselectOptionSelectedColor)
     }
     // endregion Property: multiselectOptionSelectedColor
 
@@ -405,8 +405,8 @@ class PageTest : UsesResources("model/page") {
         parentPage: String? = null,
         cardBackgroundColor: Color? = null,
         controlColor: PlatformColor? = null,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
         pages: ((HasPages) -> List<Page>) = { listOf() },
     ) :

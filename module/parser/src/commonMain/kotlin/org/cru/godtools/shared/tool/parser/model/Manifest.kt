@@ -178,10 +178,10 @@ class Manifest : BaseModel, Styles, HasPages {
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
-    private val _multiselectOptionBackgroundColor: PlatformColor?
+    private val _multiselectOptionBackgroundColor: Color?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
-    override val multiselectOptionSelectedColor: PlatformColor?
+    override val multiselectOptionSelectedColor: Color?
 
     override val textColor: Color
     override val textScale: Double
@@ -246,10 +246,8 @@ class Manifest : BaseModel, Styles, HasPages {
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
-                ?.toPlatformColor()
         multiselectOptionSelectedColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_SELECTED_COLOR)?.toColorOrNull()
-                ?.toPlatformColor()
 
         textColor = parser.getAttributeValue(XML_TEXT_COLOR)?.toColorOrNull() ?: DEFAULT_TEXT_COLOR
         textScale = parser.getAttributeValue(XML_TEXT_SCALE)?.toDoubleOrNull() ?: DEFAULT_TEXT_SCALE
@@ -301,8 +299,8 @@ class Manifest : BaseModel, Styles, HasPages {
         cardBackgroundColor: Color? = null,
         categoryLabelColor: PlatformColor? = null,
         pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
         textColor: Color = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,

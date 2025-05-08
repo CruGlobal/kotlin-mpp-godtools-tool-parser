@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import com.github.ajalt.colormath.Color
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_ALIGN
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 
@@ -24,10 +23,8 @@ interface Styles : Base {
     // endregion Card styles
 
     // region Multiselect styles
-    @get:AndroidColorInt
-    val multiselectOptionBackgroundColor: PlatformColor get() = stylesParent.multiselectOptionBackgroundColor
-    @get:AndroidColorInt
-    val multiselectOptionSelectedColor: PlatformColor? get() = stylesParent?.multiselectOptionSelectedColor
+    val multiselectOptionBackgroundColor: Color get() = stylesParent.multiselectOptionBackgroundColor
+    val multiselectOptionSelectedColor: Color? get() = stylesParent?.multiselectOptionSelectedColor
     // endregion Multiselect styles
 
     // region Text styles
@@ -48,7 +45,7 @@ internal val Styles?.cardBackgroundColor get() = this?.cardBackgroundColor ?: Ma
 
 // region Multiselect styles
 internal val Styles?.multiselectOptionBackgroundColor
-    get() = this?.multiselectOptionBackgroundColor ?: this?.manifest.backgroundColor.toPlatformColor()
+    get() = this?.multiselectOptionBackgroundColor ?: this?.manifest.backgroundColor
 // endregion Multiselect styles
 
 // region Text styles
