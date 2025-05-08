@@ -172,9 +172,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @AndroidColorInt
-    private val _primaryColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _primaryColor: Color?
     override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
 
     private val _primaryTextColor: Color?
@@ -226,7 +224,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
         dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
 
-        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
         _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
 
         backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
@@ -259,7 +257,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         id: String? = null,
         fileName: String? = null,
         parentPage: String? = null,
-        primaryColor: PlatformColor? = null,
+        primaryColor: Color? = null,
         backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,

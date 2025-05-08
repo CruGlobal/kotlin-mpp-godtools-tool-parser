@@ -7,7 +7,7 @@ import kotlin.test.assertNull
 class StylesTest {
     private val parent by lazy {
         object : Styles {
-            override var primaryColor = TestColors.RED.toPlatformColor()
+            override var primaryColor = TestColors.RED
             override var primaryTextColor = TestColors.RED
 
             override lateinit var buttonStyle: Button.Style
@@ -24,7 +24,7 @@ class StylesTest {
 
     @Test
     fun testStylesPrimaryColorFallback() {
-        parent.primaryColor = TestColors.random().toPlatformColor()
+        parent.primaryColor = TestColors.random()
         assertEquals(parent.primaryColor, child.primaryColor)
         assertEquals(parent.primaryColor, (child as Styles?).primaryColor)
     }

@@ -64,7 +64,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     private val _buttonColor: Color?
     @JsName("_buttonColor")
     @JsExport.Ignore
-    val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor.toRGB() }
+    val buttonColor get() = _buttonColor ?: stylesParent.let { it?.buttonColor ?: it.primaryColor }
 
     @JsName("_backgroundColor")
     @JsExport.Ignore
@@ -201,4 +201,4 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 }
 
-val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor.toRGB()
+val Button?.buttonColor get() = this?.buttonColor ?: stylesParent.primaryColor

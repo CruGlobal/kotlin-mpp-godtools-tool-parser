@@ -116,7 +116,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_tract.xml")
         assertEquals("title", manifest.title)
         assertEquals(Manifest.Type.TRACT, manifest.type)
-        assertEquals(TestColors.RED.toPlatformColor(), manifest.primaryColor)
+        assertEquals(TestColors.RED, manifest.primaryColor)
         assertEquals(TestColors.BLUE, manifest.primaryTextColor)
         assertEquals(TestColors.GREEN.toPlatformColor(), manifest.navBarColor)
         assertEquals(color(255, 0, 255, 1.0).toPlatformColor(), manifest.navBarControlColor)
@@ -310,15 +310,12 @@ class ManifestTest : UsesResources() {
     @Test
     fun testNavBarColors() {
         val manifestNull: Manifest? = null
-        assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifestNull.navBarColor)
+        assertEquals(Manifest.DEFAULT_PRIMARY_COLOR.toPlatformColor(), manifestNull.navBarColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_TEXT_COLOR.toPlatformColor(), manifestNull.navBarControlColor)
 
-        val manifestPrimary = Manifest(
-            primaryColor = TestColors.random().toPlatformColor(),
-            primaryTextColor = TestColors.random()
-        )
-        assertEquals(manifestPrimary.primaryColor, manifestPrimary.navBarColor)
-        assertEquals(manifestPrimary.primaryColor, (manifestPrimary as Manifest?).navBarColor)
+        val manifestPrimary = Manifest(primaryColor = TestColors.random(), primaryTextColor = TestColors.random())
+        assertEquals(manifestPrimary.primaryColor.toPlatformColor(), manifestPrimary.navBarColor)
+        assertEquals(manifestPrimary.primaryColor.toPlatformColor(), (manifestPrimary as Manifest?).navBarColor)
         assertEquals(manifestPrimary.primaryTextColor.toPlatformColor(), manifestPrimary.navBarControlColor)
         assertEquals(
             manifestPrimary.primaryTextColor.toPlatformColor(),
@@ -326,12 +323,12 @@ class ManifestTest : UsesResources() {
         )
 
         val manifestNavBar = Manifest(
-            primaryColor = TestColors.random().toPlatformColor(),
+            primaryColor = TestColors.random(),
             primaryTextColor = TestColors.random(),
             navBarColor = TestColors.GREEN.toPlatformColor(),
             navBarControlColor = TestColors.BLUE.toPlatformColor()
         )
-        assertNotEquals(manifestNavBar.primaryColor, manifestNavBar.navBarColor)
+        assertNotEquals(manifestNavBar.primaryColor.toPlatformColor(), manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN.toPlatformColor(), manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN.toPlatformColor(), (manifestNavBar as Manifest?).navBarColor)
         assertNotEquals(manifestNavBar.primaryTextColor.toPlatformColor(), manifestNavBar.navBarControlColor)
@@ -343,11 +340,11 @@ class ManifestTest : UsesResources() {
     fun testLessonNavBarColors() {
         val manifestNull: Manifest? = null
         assertEquals(DEFAULT_LESSON_NAV_BAR_COLOR, manifestNull.lessonNavBarColor)
-        assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifestNull.lessonNavBarControlColor)
+        assertEquals(Manifest.DEFAULT_PRIMARY_COLOR.toPlatformColor(), manifestNull.lessonNavBarControlColor)
 
         val manifestPrimary = Manifest(
             type = Manifest.Type.LESSON,
-            primaryColor = TestColors.GREEN.toPlatformColor(),
+            primaryColor = TestColors.GREEN,
             primaryTextColor = TestColors.RED
         )
         assertEquals(DEFAULT_LESSON_NAV_BAR_COLOR, manifestPrimary.navBarColor)
@@ -357,7 +354,7 @@ class ManifestTest : UsesResources() {
 
         val manifestNavBar = Manifest(
             type = Manifest.Type.LESSON,
-            primaryColor = TestColors.RED.toPlatformColor(),
+            primaryColor = TestColors.RED,
             primaryTextColor = TestColors.RED,
             navBarColor = TestColors.GREEN.toPlatformColor(),
             navBarControlColor = TestColors.BLUE.toPlatformColor()

@@ -35,7 +35,7 @@ class CallToAction : BaseModel {
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
     private val _controlColor: PlatformColor?
     @get:AndroidColorInt
-    internal val controlColor get() = _controlColor ?: stylesParent.primaryColor
+    internal val controlColor get() = _controlColor ?: stylesParent.primaryColor.toPlatformColor()
 
     @VisibleForTesting
     internal val tipId: String?
@@ -74,4 +74,4 @@ class CallToAction : BaseModel {
 }
 
 @get:AndroidColorInt
-val CallToAction?.controlColor get() = this?.controlColor ?: stylesParent.primaryColor
+val CallToAction?.controlColor get() = this?.controlColor ?: stylesParent.primaryColor.toPlatformColor()

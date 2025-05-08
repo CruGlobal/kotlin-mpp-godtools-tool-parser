@@ -21,8 +21,6 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.stylesParent
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
-import org.cru.godtools.shared.tool.parser.model.toRGB
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeroTest : UsesResources("model/tract") {
@@ -33,7 +31,7 @@ class HeroTest : UsesResources("model/tract") {
 
         assertNotNull(hero.heading) { heading ->
             assertEquals("Heading", heading.text)
-            assertEquals(hero.stylesParent!!.primaryColor.toRGB(), heading.textColor)
+            assertEquals(hero.stylesParent!!.primaryColor, heading.textColor)
             assertNotEquals(hero.stylesParent!!.textColor, heading.textColor)
         }
 
@@ -70,14 +68,14 @@ class HeroTest : UsesResources("model/tract") {
 
     @Test
     fun testHeadingTextColor() {
-        val page = TractPage(primaryColor = TestColors.BLUE.toPlatformColor())
+        val page = TractPage(primaryColor = TestColors.BLUE)
         assertNotNull(Hero(page, heading = { Text(it) }).heading) { heading ->
-            assertEquals(page.primaryColor.toRGB(), heading.textColor)
+            assertEquals(page.primaryColor, heading.textColor)
         }
 
         assertNotNull(Hero(page, heading = { Text(it, textColor = TestColors.GREEN) }).heading) { heading ->
             assertEquals(TestColors.GREEN, heading.textColor)
-            assertNotEquals(page.primaryColor.toRGB(), heading.textColor)
+            assertNotEquals(page.primaryColor, heading.textColor)
         }
     }
 }

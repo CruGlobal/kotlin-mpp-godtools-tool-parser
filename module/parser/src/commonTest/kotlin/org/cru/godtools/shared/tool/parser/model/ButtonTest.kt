@@ -23,7 +23,7 @@ import org.cru.godtools.shared.tool.state.State
 class ButtonTest : UsesResources() {
     private val parentObj = object : BaseModel(), Styles {
         override lateinit var buttonStyle: Button.Style
-        override var primaryColor = TestColors.BLACK.toPlatformColor()
+        override var primaryColor = TestColors.BLACK
         override var primaryTextColor = TestColors.BLACK
         override var textAlign = Text.Align.START
     }
@@ -169,23 +169,23 @@ class ButtonTest : UsesResources() {
     @Test
     fun testButtonColorFallbackBehavior() {
         val manifest = Manifest()
-        assertEquals(manifest.primaryColor.toRGB(), Button(manifest).buttonColor)
+        assertEquals(manifest.primaryColor, Button(manifest).buttonColor)
         with(Button(manifest, color = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, buttonColor)
-            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
+            assertNotEquals(manifest.primaryColor, buttonColor)
         }
 
         val parent = object : BaseModel(manifest), Styles {
-            override val primaryColor = TestColors.random().toPlatformColor()
+            override val primaryColor = TestColors.random()
         }
         with(Button(parent)) {
-            assertEquals(parent.primaryColor.toRGB(), buttonColor)
-            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
+            assertEquals(parent.primaryColor, buttonColor)
+            assertNotEquals(manifest.primaryColor, buttonColor)
         }
         with(Button(parent, color = TestColors.GREEN)) {
             assertEquals(TestColors.GREEN, buttonColor)
-            assertNotEquals(parent.primaryColor.toRGB(), buttonColor)
-            assertNotEquals(manifest.primaryColor.toRGB(), buttonColor)
+            assertNotEquals(parent.primaryColor, buttonColor)
+            assertNotEquals(manifest.primaryColor, buttonColor)
         }
     }
     // endregion Property - buttonColor
@@ -212,11 +212,11 @@ class ButtonTest : UsesResources() {
     // region Property - text - textColor
     @Test
     fun testButtonTextColorFallbackBehaviorContained() {
-        parentObj.primaryColor = TestColors.RED.toPlatformColor()
+        parentObj.primaryColor = TestColors.RED
         parentObj.primaryTextColor = TestColors.GREEN
 
         with(Button(parentObj, style = Button.Style.CONTAINED, text = { Text(it) })) {
-            assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
+            assertNotEquals(parentObj.primaryColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertNotEquals(buttonColor, text.textColor)
             assertEquals(parentObj.primaryTextColor, text.textColor)
@@ -231,11 +231,11 @@ class ButtonTest : UsesResources() {
 
     @Test
     fun testButtonTextColorFallbackBehaviorOutlined() {
-        parentObj.primaryColor = TestColors.RED.toPlatformColor()
+        parentObj.primaryColor = TestColors.RED
         parentObj.primaryTextColor = TestColors.RED
 
         with(Button(parentObj, style = Button.Style.OUTLINED, color = TestColors.GREEN, text = { Text(it) })) {
-            assertNotEquals(parentObj.primaryColor.toRGB(), text.textColor)
+            assertNotEquals(parentObj.primaryColor, text.textColor)
             assertNotEquals(parentObj.primaryTextColor, text.textColor)
             assertNotEquals(parentObj.textColor, text.textColor)
             assertEquals(buttonColor, text.textColor)
