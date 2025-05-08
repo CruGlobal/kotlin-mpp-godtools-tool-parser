@@ -173,8 +173,7 @@ class Manifest : BaseModel, Styles, HasPages {
     @get:AndroidColorInt
     internal val categoryLabelColor get() = _categoryLabelColor ?: textColor.toPlatformColor()
 
-    @AndroidColorInt
-    internal val pageControlColor: PlatformColor
+    internal val pageControlColor: Color
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
@@ -236,13 +235,13 @@ class Manifest : BaseModel, Styles, HasPages {
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
         _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()?.toPlatformColor()
-        pageControlColor = parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
-            ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.toPlatformColor()
-                ?.also {
+        pageControlColor =
+            parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
+                ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
                     val message = "Deprecated lesson:control-color defined on tool: $code language: $locale"
                     Logger.e(message, DeprecationException(message), "Manifest")
                 }
-            ?: DEFAULT_CONTROL_COLOR
+                ?: DEFAULT_CONTROL_COLOR
 
         _multiselectOptionBackgroundColor =
             parser.getAttributeValue(XMLNS_CONTENT, XML_MULTISELECT_OPTION_BACKGROUND_COLOR)?.toColorOrNull()
@@ -298,7 +297,7 @@ class Manifest : BaseModel, Styles, HasPages {
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: PlatformColor? = null,
-        pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
+        pageControlColor: Color = DEFAULT_CONTROL_COLOR,
         multiselectOptionBackgroundColor: Color? = null,
         multiselectOptionSelectedColor: Color? = null,
         textColor: Color = DEFAULT_TEXT_COLOR,

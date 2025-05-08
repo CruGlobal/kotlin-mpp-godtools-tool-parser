@@ -2,6 +2,7 @@ package org.cru.godtools.shared.tool.parser.model.lesson
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -56,7 +57,7 @@ class LessonPage : Page, Parent {
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        controlColor: PlatformColor? = null,
+        controlColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(
         manifest,
