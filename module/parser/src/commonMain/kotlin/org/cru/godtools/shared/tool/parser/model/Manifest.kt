@@ -163,11 +163,9 @@ class Manifest : BaseModel, Styles, HasPages {
     private val _cardBackgroundColor: Color?
     override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _categoryLabelColor: PlatformColor?
-    @get:AndroidColorInt
-    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor.toPlatformColor()
+    private val _categoryLabelColor: Color?
+    internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
 
     internal val pageControlColor: Color
 
@@ -230,7 +228,7 @@ class Manifest : BaseModel, Styles, HasPages {
             ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
         _cardBackgroundColor = parser.getAttributeValue(XMLNS_CONTENT, Card.XML_CARD_BACKGROUND_COLOR)?.toColorOrNull()
-        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _categoryLabelColor = parser.getAttributeValue(XML_CATEGORY_LABEL_COLOR)?.toColorOrNull()
         pageControlColor =
             parser.getAttributeValue(XMLNS_PAGE, XML_CONTROL_COLOR)?.toColorOrNull()
                 ?: parser.getAttributeValue(XMLNS_LESSON, XML_CONTROL_COLOR)?.toColorOrNull()?.also {
@@ -292,7 +290,7 @@ class Manifest : BaseModel, Styles, HasPages {
         navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         cardBackgroundColor: Color? = null,
-        categoryLabelColor: PlatformColor? = null,
+        categoryLabelColor: Color? = null,
         pageControlColor: Color = DEFAULT_CONTROL_COLOR,
         multiselectOptionBackgroundColor: Color? = null,
         multiselectOptionSelectedColor: Color? = null,
@@ -476,4 +474,4 @@ val Manifest?.backgroundImageScaleType
     get() = this?.backgroundImageScaleType ?: Manifest.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 
 @get:AndroidColorInt
-val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor.toPlatformColor()
+val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
