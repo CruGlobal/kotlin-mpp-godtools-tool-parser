@@ -25,7 +25,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -45,8 +44,6 @@ import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
 import org.cru.godtools.shared.tool.parser.model.toEventIds
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
-import org.cru.godtools.shared.tool.parser.model.toRGB
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -76,7 +73,7 @@ class TractPage : Page {
     ) : super(container, fileName, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_PAGE)
 
-        _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _cardTextColor = parser.getAttributeValue(XML_CARD_TEXT_COLOR)?.toColorOrNull()
 
         // process any child elements
         var header: Header? = null
@@ -113,7 +110,7 @@ class TractPage : Page {
         textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
-        cardTextColor: PlatformColor? = null,
+        cardTextColor: Color? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(
@@ -145,10 +142,8 @@ class TractPage : Page {
     val cards: List<Card>
     val visibleCards get() = cards.filter { !it.isHidden }
 
-    @AndroidColorInt
-    private val _cardTextColor: PlatformColor?
-    @get:AndroidColorInt
-    val cardTextColor get() = _cardTextColor ?: textColor.toPlatformColor()
+    private val _cardTextColor: Color?
+    internal val cardTextColor get() = _cardTextColor ?: textColor
 
     class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         internal companion object {
@@ -185,7 +180,7 @@ class TractPage : Page {
         internal val backgroundImageScaleType: ImageScaleType
 
         private val _textColor: Color?
-        override val textColor get() = _textColor ?: page.cardTextColor.toRGB()
+        override val textColor get() = _textColor ?: page.cardTextColor
 
         private val labelParent by lazy { stylesOverride(textColor = { primaryColor }) }
         val label: Text?
