@@ -15,7 +15,6 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
@@ -32,7 +31,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImag
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.XMLNS_CONTENT
@@ -81,9 +79,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         private const val XML_PARENT_PAGE_COLLECTION_OVERRIDE = "parent_override_page-collection"
 
-        @AndroidColorInt
         @VisibleForTesting
-        internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0).toPlatformColor()
+        internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_IMAGE_GRAVITY = Gravity.CENTER
         @VisibleForTesting
@@ -178,8 +175,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
 
-    @AndroidColorInt
-    internal val backgroundColor: PlatformColor
+    internal val backgroundColor: Color
 
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
@@ -225,8 +221,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
         _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
 
-        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
-            ?: DEFAULT_BACKGROUND_COLOR
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
         backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -253,7 +248,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         fileName: String? = null,
         parentPage: String? = null,
         primaryColor: Color? = null,
-        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
@@ -318,7 +313,6 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     // endregion Kotlin/JS interop
 }
 
-@get:AndroidColorInt
 val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
 val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

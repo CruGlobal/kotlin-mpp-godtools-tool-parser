@@ -30,7 +30,7 @@ class TractPageTest : UsesResources("model/tract") {
     @Test
     fun verifyParse() = runTest {
         val page = parsePageXml("page.xml")
-        assertEquals(TestColors.RED.toPlatformColor(), page.backgroundColor)
+        assertEquals(TestColors.RED, page.backgroundColor)
         assertTrue(page.backgroundImageGravity.isTop)
         assertTrue(page.backgroundImageGravity.isStart)
         assertEquals(ImageScaleType.FILL, page.backgroundImageScaleType)
@@ -80,7 +80,7 @@ class TractPageTest : UsesResources("model/tract") {
         val manifest = Manifest(resources = { listOf(Resource(it, name = "background.png")) })
         val page = TractPage(
             manifest,
-            backgroundColor = TestColors.GREEN.toPlatformColor(),
+            backgroundColor = TestColors.GREEN,
             backgroundImage = "background.png",
             backgroundImageGravity = TEST_GRAVITY,
             backgroundImageScaleType = ImageScaleType.FILL_Y
@@ -93,12 +93,12 @@ class TractPageTest : UsesResources("model/tract") {
             assertEquals(DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
         }
         with(page as TractPage?) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.GREEN, backgroundColor)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
         }
         with(page) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
+            assertEquals(TestColors.GREEN, backgroundColor)
             assertEquals(resource, backgroundImage)
             assertEquals(TEST_GRAVITY, backgroundImageGravity)
             assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
