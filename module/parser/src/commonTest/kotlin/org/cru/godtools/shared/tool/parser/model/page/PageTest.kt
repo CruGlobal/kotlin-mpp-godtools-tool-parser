@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import com.github.ajalt.colormath.Color
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,7 +17,6 @@ import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
@@ -94,7 +94,8 @@ class PageTest : UsesResources("model/page") {
 
     @Test
     fun testParseInvalidPageNamespace() = runTest {
-        Manifest.Type.entries.forEach {
+        // TODO: Switch values() to entries once https://youtrack.jetbrains.com/issue/KT-76027 is released
+        Manifest.Type.values().forEach {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_namespace.xml")))
         }
     }
@@ -395,10 +396,10 @@ class PageTest : UsesResources("model/page") {
         parent: HasPages = Manifest(),
         id: String? = null,
         parentPage: String? = null,
-        cardBackgroundColor: PlatformColor? = null,
-        controlColor: PlatformColor? = null,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
+        controlColor: Color? = null,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
         override val analyticsEvents: List<AnalyticsEvent> = emptyList(),
         pages: ((HasPages) -> List<Page>) = { listOf() },
     ) :

@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -21,7 +22,9 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
@@ -75,9 +78,7 @@ private const val XML_TIPS_TIP_SRC = "src"
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class Manifest : BaseModel, Styles, HasPages {
     internal companion object {
-        @AndroidColorInt
         internal val DEFAULT_PRIMARY_COLOR = color(59, 164, 219, 1.0)
-        @AndroidColorInt
         internal val DEFAULT_PRIMARY_TEXT_COLOR = color(255, 255, 255, 1.0)
 
         @AndroidColorInt
@@ -87,7 +88,6 @@ class Manifest : BaseModel, Styles, HasPages {
 
         internal val DEFAULT_BUTTON_STYLE = Button.Style.CONTAINED
 
-        @AndroidColorInt
         internal val DEFAULT_TEXT_COLOR = color(90, 90, 90, 1.0)
 
         internal suspend fun parse(
@@ -134,54 +134,49 @@ class Manifest : BaseModel, Styles, HasPages {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @AndroidColorInt
-    override val primaryColor: PlatformColor
-    @AndroidColorInt
-    override val primaryTextColor: PlatformColor
+    override val primaryColor: Color
+    override val primaryTextColor: Color
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _navBarColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _navBarColor: Color?
     internal val navBarColor
-        get() = _navBarColor ?: if (type == Type.LESSON) DEFAULT_LESSON_NAV_BAR_COLOR else primaryColor
-    @AndroidColorInt
+        get() = when {
+            _navBarColor != null -> _navBarColor
+            type == Type.LESSON -> DEFAULT_LESSON_NAV_BAR_COLOR
+            else -> primaryColor
+        }
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _navBarControlColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _navBarControlColor: Color?
     internal val navBarControlColor
-        get() = _navBarControlColor ?: if (type == Type.LESSON) primaryColor else primaryTextColor
+        get() = when {
+            _navBarControlColor != null -> _navBarControlColor
+            type == Type.LESSON -> primaryColor
+            else -> primaryTextColor
+        }
 
-    @AndroidColorInt
-    internal val backgroundColor: PlatformColor
+    internal val backgroundColor: Color
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
-    @AndroidColorInt
-    private val _cardBackgroundColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _cardBackgroundColor: Color?
     override val cardBackgroundColor get() = _cardBackgroundColor ?: backgroundColor
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _categoryLabelColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _categoryLabelColor: Color?
     internal val categoryLabelColor get() = _categoryLabelColor ?: textColor
 
-    @AndroidColorInt
-    internal val pageControlColor: PlatformColor
+    internal val pageControlColor: Color
 
     override val buttonStyle get() = DEFAULT_BUTTON_STYLE
 
-    private val _multiselectOptionBackgroundColor: PlatformColor?
+    private val _multiselectOptionBackgroundColor: Color?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
-    override val multiselectOptionSelectedColor: PlatformColor?
+    override val multiselectOptionSelectedColor: Color?
 
-    @AndroidColorInt
-    override val textColor: PlatformColor
+    override val textColor: Color
     override val textScale: Double
 
     private val _title: Text?
@@ -289,17 +284,17 @@ class Manifest : BaseModel, Styles, HasPages {
         type: Type = Type.DEFAULT,
         code: String? = null,
         locale: PlatformLocale? = null,
-        primaryColor: PlatformColor = DEFAULT_PRIMARY_COLOR,
-        primaryTextColor: PlatformColor = DEFAULT_PRIMARY_TEXT_COLOR,
-        navBarColor: PlatformColor? = null,
-        navBarControlColor: PlatformColor? = null,
-        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
-        cardBackgroundColor: PlatformColor? = null,
-        categoryLabelColor: PlatformColor? = null,
-        pageControlColor: PlatformColor = DEFAULT_CONTROL_COLOR,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
-        textColor: PlatformColor = DEFAULT_TEXT_COLOR,
+        primaryColor: Color = DEFAULT_PRIMARY_COLOR,
+        primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
+        navBarColor: Color? = null,
+        navBarControlColor: Color? = null,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        cardBackgroundColor: Color? = null,
+        categoryLabelColor: Color? = null,
+        pageControlColor: Color = DEFAULT_CONTROL_COLOR,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
+        textColor: Color = DEFAULT_TEXT_COLOR,
         textScale: Double = DEFAULT_TEXT_SCALE,
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
@@ -467,17 +462,12 @@ class Manifest : BaseModel, Styles, HasPages {
     data class XmlFile(internal val name: String?, internal val src: String)
 }
 
-@get:AndroidColorInt
 val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
-@get:AndroidColorInt
 val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor
 
-@get:AndroidColorInt
 val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
-@get:AndroidColorInt
 val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
 
-@get:AndroidColorInt
 val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR
 val Manifest?.backgroundImageGravity get() = this?.backgroundImageGravity ?: Manifest.DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Manifest?.backgroundImageScaleType

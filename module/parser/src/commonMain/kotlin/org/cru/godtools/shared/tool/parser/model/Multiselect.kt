@@ -5,6 +5,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -14,6 +15,7 @@ import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
@@ -49,10 +51,10 @@ class Multiselect : Content {
 
     private val optionStyle: Option.Style
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _optionBackgroundColor: PlatformColor?
+    private val _optionBackgroundColor: Color?
     private val optionBackgroundColor get() = _optionBackgroundColor ?: stylesParent.multiselectOptionBackgroundColor
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _optionSelectedColor: PlatformColor?
+    private val _optionSelectedColor: Color?
     private val optionSelectedColor get() = _optionSelectedColor ?: stylesParent?.multiselectOptionSelectedColor
 
     @JsExport.Ignore
@@ -89,8 +91,8 @@ class Multiselect : Content {
         stateName: String = "",
         selectionLimit: Int = 1,
         optionStyle: Option.Style = Option.DEFAULT_STYLE,
-        optionBackgroundColor: PlatformColor? = null,
-        optionSelectedColor: PlatformColor? = null,
+        optionBackgroundColor: Color? = null,
+        optionSelectedColor: Color? = null,
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent) {
         this.stateName = stateName
@@ -127,9 +129,13 @@ class Multiselect : Content {
         private val _style: Style?
         val style get() = _style ?: multiselect.optionStyle
 
-        private val _backgroundColor: PlatformColor?
+        private val _backgroundColor: Color?
+        @JsName("_backgroundColor")
+        @JsExport.Ignore
         val backgroundColor get() = _backgroundColor ?: multiselect.optionBackgroundColor
-        private val _selectedColor: PlatformColor?
+        private val _selectedColor: Color?
+        @JsName("_selectedColor")
+        @JsExport.Ignore
         val selectedColor get() = _selectedColor ?: multiselect.optionSelectedColor ?: stylesParent.defaultSelectedColor
 
         @VisibleForTesting
@@ -165,8 +171,8 @@ class Multiselect : Content {
             multiselect: Multiselect = Multiselect(),
             style: Style? = null,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
-            backgroundColor: PlatformColor? = null,
-            selectedColor: PlatformColor? = null,
+            backgroundColor: Color? = null,
+            selectedColor: Color? = null,
             value: String = "",
             content: (Option) -> List<Content> = { emptyList() },
         ) : super(multiselect) {
@@ -199,6 +205,15 @@ class Multiselect : Content {
             return true
         }
 
+        // region Kotlin/JS interop
+        @HiddenFromObjC
+        @JsName("backgroundColor")
+        val platformBackgroundColor get() = backgroundColor.toPlatformColor()
+        @HiddenFromObjC
+        @JsName("selectedColor")
+        val platformSelectedColor get() = selectedColor.toPlatformColor()
+        // endregion Kotlin/JS interop
+
         enum class Style {
             CARD,
             FLAT;
@@ -215,4 +230,4 @@ class Multiselect : Content {
 }
 
 internal val Styles?.defaultSelectedColor
-    get() = primaryColor.toHSL().run { copy(alpha = 1f, l = (l + 0.4f).coerceAtMost(1f)) }.toPlatformColor()
+    get() = primaryColor.toHSL().run { copy(alpha = 1f, l = (l + 0.4f).coerceAtMost(1f)) }

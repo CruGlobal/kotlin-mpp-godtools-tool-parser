@@ -8,8 +8,10 @@ android {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        iosMain {
             dependencies {
+                implementation(project(":module:common"))
+
                 implementation(libs.kermit)
             }
         }

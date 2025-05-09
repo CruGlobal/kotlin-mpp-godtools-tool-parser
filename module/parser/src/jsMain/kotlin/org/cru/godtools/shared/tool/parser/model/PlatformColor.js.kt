@@ -8,7 +8,7 @@ import com.github.ajalt.colormath.parse
 
 actual typealias PlatformColor = String
 
-internal actual fun RGB.toPlatformColor() = formatCssString(
+internal actual fun Color.toPlatformColor() = toSRGB().formatCssString(
     renderAlpha = RenderCondition.ALWAYS,
     legacyFormat = true,
     legacyName = true

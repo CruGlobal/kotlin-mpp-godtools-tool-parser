@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
-import org.cru.godtools.shared.tool.parser.model.color
+import org.cru.godtools.shared.tool.parser.internal.color
 
 internal const val XMLNS_PAGE = "https://mobile-content-api.cru.org/xmlns/page"
 internal const val XMLNS_XSI = "http://www.w3.org/2001/XMLSchema-instance"

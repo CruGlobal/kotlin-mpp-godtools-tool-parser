@@ -5,6 +5,7 @@ package org.cru.godtools.shared.tool.parser.model
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -12,9 +13,9 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles
@@ -59,9 +60,9 @@ class Text : Content {
     val fontWeight: Int?
     private val _textAlign: Align?
     val textAlign get() = _textAlign ?: stylesParent.textAlign
-    @AndroidColorInt
-    private val _textColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _textColor: Color?
+    @JsExport.Ignore
+    @JsName("_textColor")
     val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     val textScale get() = _textScale * stylesParent.textScale
@@ -117,7 +118,7 @@ class Text : Content {
         text: String = "",
         fontWeight: Int? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        @AndroidColorInt textColor: PlatformColor? = null,
+        textColor: Color? = null,
         textAlign: Align? = null,
         textStyles: Set<Style> = emptySet(),
         minimumLines: Int = DEFAULT_MINIMUM_LINES,
@@ -182,6 +183,9 @@ class Text : Content {
     }
 
     // region Kotlin/JS interop
+    @HiddenFromObjC
+    @JsName("textColor")
+    val platformTextColor get() = textColor.toPlatformColor()
     @HiddenFromObjC
     @JsName("textStyles")
     val jsTextStyles get() = textStyles.toTypedArray()
