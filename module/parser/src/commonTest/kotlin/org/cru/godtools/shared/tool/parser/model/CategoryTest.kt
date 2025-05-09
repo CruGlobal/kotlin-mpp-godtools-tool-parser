@@ -27,15 +27,15 @@ class CategoryTest : UsesResources() {
 
     @Test
     fun testLabelTextColor() {
-        val manifest = Manifest(categoryLabelColor = TestColors.random().toPlatformColor())
+        val manifest = Manifest(categoryLabelColor = TestColors.random())
         assertNotNull(Category(manifest, label = { Text(it) }).label) { label ->
-            assertEquals(manifest.categoryLabelColor.toRGB(), label.textColor)
+            assertEquals(manifest.categoryLabelColor, label.textColor)
             assertNotEquals(manifest.textColor, label.textColor)
         }
 
         assertNotNull(Category(manifest, label = { Text(it, textColor = TestColors.GREEN) }).label) { label ->
             assertEquals(TestColors.GREEN, label.textColor)
-            assertNotEquals(manifest.categoryLabelColor.toRGB(), label.textColor)
+            assertNotEquals(manifest.categoryLabelColor, label.textColor)
             assertNotEquals(manifest.textColor, label.textColor)
         }
     }

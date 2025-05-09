@@ -20,7 +20,7 @@ class Category : BaseModel, Styles {
     private val _banner: String?
     val banner get() = getResource(_banner)
 
-    override val textColor get() = manifest.categoryLabelColor.toRGB()
+    override val textColor get() = manifest.categoryLabelColor
 
     internal constructor(manifest: Manifest, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_MANIFEST, XML_CATEGORY)
