@@ -2,12 +2,11 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
@@ -15,7 +14,6 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -30,11 +28,9 @@ class Header : BaseModel, Styles {
         internal const val XML_HEADER = "header"
     }
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _backgroundColor: PlatformColor?
-    @get:AndroidColorInt
-    internal val backgroundColor get() = _backgroundColor ?: primaryColor.toPlatformColor()
+    private val _backgroundColor: Color?
+    internal val backgroundColor get() = _backgroundColor ?: primaryColor
 
     override val textColor get() = primaryTextColor
 
@@ -48,7 +44,7 @@ class Header : BaseModel, Styles {
     internal constructor(page: TractPage, parser: XmlPullParser) : super(page) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_HEADER)
 
-        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+        _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
         tipId = parser.getAttributeValue(XMLNS_TRAINING, XML_TIP)
 
         var number: Text? = null
@@ -68,7 +64,7 @@ class Header : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
-        backgroundColor: PlatformColor? = null,
+        backgroundColor: Color? = null,
         tip: String? = null
     ) : super(page) {
         _backgroundColor = backgroundColor
@@ -80,4 +76,4 @@ class Header : BaseModel, Styles {
     }
 }
 
-val Header?.backgroundColor get() = this?.backgroundColor ?: stylesParent.primaryColor.toPlatformColor()
+val Header?.backgroundColor get() = this?.backgroundColor ?: stylesParent.primaryColor
