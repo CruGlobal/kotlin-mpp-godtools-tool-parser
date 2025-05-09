@@ -105,7 +105,7 @@ class TractPage : Page {
     constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
-        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         primaryColor: Color? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,

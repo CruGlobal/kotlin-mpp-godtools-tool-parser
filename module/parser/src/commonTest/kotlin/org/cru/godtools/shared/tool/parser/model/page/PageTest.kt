@@ -94,7 +94,8 @@ class PageTest : UsesResources("model/page") {
 
     @Test
     fun testParseInvalidPageNamespace() = runTest {
-        Manifest.Type.entries.forEach {
+        // TODO: Switch values() to entries once https://youtrack.jetbrains.com/issue/KT-76027 is released
+        Manifest.Type.values().forEach {
             assertNull(Page.parse(Manifest(type = it), null, getTestXmlParser("page_invalid_namespace.xml")))
         }
     }
