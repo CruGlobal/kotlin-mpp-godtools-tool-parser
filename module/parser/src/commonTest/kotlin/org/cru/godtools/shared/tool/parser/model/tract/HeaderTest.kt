@@ -13,7 +13,6 @@ import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class HeaderTest : UsesResources("model/tract") {
@@ -22,7 +21,7 @@ class HeaderTest : UsesResources("model/tract") {
         val header = assertNotNull(TractPage(Manifest(), null, getTestXmlParser("header.xml")).header)
         assertEquals("5", header.number!!.text)
         assertEquals("title", header.title!!.text)
-        assertEquals(TestColors.RED.toPlatformColor(), header.backgroundColor)
+        assertEquals(TestColors.RED, header.backgroundColor)
         assertEquals("header-tip", header.tipId)
     }
 
@@ -31,7 +30,7 @@ class HeaderTest : UsesResources("model/tract") {
         val page = TractPage(Manifest(), null, getTestXmlParser("header_defaults.xml"))
         val header = assertNotNull(page.header)
 
-        assertEquals(page.primaryColor.toPlatformColor(), header.backgroundColor)
+        assertEquals(page.primaryColor, header.backgroundColor)
         assertEquals(page.primaryTextColor, header.textColor)
         assertNull(header.number)
         assertNull(header.title)
@@ -40,11 +39,11 @@ class HeaderTest : UsesResources("model/tract") {
 
     @Test
     fun testBackgroundColorBehavior() {
-        val header = Header(backgroundColor = TestColors.GREEN.toPlatformColor())
+        val header = Header(backgroundColor = TestColors.GREEN)
 
-        with(null as Header?) { assertEquals(stylesParent.primaryColor.toPlatformColor(), backgroundColor) }
-        with(header as Header?) { assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor) }
-        with(header) { assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor) }
+        with(null as Header?) { assertEquals(stylesParent.primaryColor, backgroundColor) }
+        with(header as Header?) { assertEquals(TestColors.GREEN, backgroundColor) }
+        with(header) { assertEquals(TestColors.GREEN, backgroundColor) }
     }
 
     @Test
