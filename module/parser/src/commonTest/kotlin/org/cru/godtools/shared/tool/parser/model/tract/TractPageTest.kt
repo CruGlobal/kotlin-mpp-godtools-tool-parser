@@ -23,7 +23,6 @@ import org.cru.godtools.shared.tool.parser.model.page.backgroundImageGravity
 import org.cru.godtools.shared.tool.parser.model.page.backgroundImageScaleType
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.toEventIds
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TractPageTest : UsesResources("model/tract") {
@@ -108,12 +107,12 @@ class TractPageTest : UsesResources("model/tract") {
     @Test
     fun testCardTextColorBehavior() {
         with(TractPage(textColor = TestColors.GREEN)) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
-            assertEquals(textColor.toPlatformColor(), cardTextColor)
+            assertEquals(TestColors.GREEN, cardTextColor)
+            assertEquals(textColor, cardTextColor)
         }
-        with(TractPage(cardTextColor = TestColors.GREEN.toPlatformColor())) {
-            assertEquals(TestColors.GREEN.toPlatformColor(), cardTextColor)
-            assertNotEquals(textColor.toPlatformColor(), cardTextColor)
+        with(TractPage(cardTextColor = TestColors.GREEN)) {
+            assertEquals(TestColors.GREEN, cardTextColor)
+            assertNotEquals(textColor, cardTextColor)
         }
     }
 
