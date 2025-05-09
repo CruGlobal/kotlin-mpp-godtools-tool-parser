@@ -1,12 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
 import androidx.annotation.RestrictTo
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -17,7 +17,6 @@ import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
@@ -25,7 +24,6 @@ import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card.Companion.XML_CARD
 import org.cru.godtools.shared.tool.parser.model.parseContent
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -135,10 +133,8 @@ class CardCollectionPage : Page {
         val id get() = _id ?: "${page.id}-$position"
         val position get() = page.cards.indexOf(this)
 
-        @AndroidColorInt
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-        private val _backgroundColor: PlatformColor?
-        @get:AndroidColorInt
+        private val _backgroundColor: Color?
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
 
         private val analyticsEvents: List<AnalyticsEvent>
@@ -151,7 +147,7 @@ class CardCollectionPage : Page {
             parser.require(XmlPullParser.START_TAG, XMLNS_PAGE, XML_CARD)
 
             _id = parser.getAttributeValue(XML_ID)
-            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()?.toPlatformColor()
+            _backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull()
 
             // process any child elements
             analyticsEvents = mutableListOf()
