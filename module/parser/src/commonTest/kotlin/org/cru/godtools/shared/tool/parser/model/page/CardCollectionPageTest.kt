@@ -18,7 +18,6 @@ import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header.Companion.DEFAULT_TEXT_ALIGN
-import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -63,7 +62,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
                     assertEquals("hidden", this[0].action)
                     assertEquals(Trigger.HIDDEN, this[0].trigger)
                 }
-                assertEquals(TestColors.GREEN.toPlatformColor(), backgroundColor)
+                assertEquals(TestColors.GREEN, backgroundColor)
                 assertTrue(content.isEmpty())
             }
         }
