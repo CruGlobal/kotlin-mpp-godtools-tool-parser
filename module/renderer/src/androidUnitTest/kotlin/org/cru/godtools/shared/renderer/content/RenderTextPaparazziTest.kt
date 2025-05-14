@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.renderer.content
 
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
+import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -9,6 +10,18 @@ class RenderTextPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.
     @Test
     fun `RenderText() - Simple`() = contentSnapshot {
         RenderContentStack(listOf(Text(text = "Simple Text")))
+    }
+
+    @Test
+    fun `RenderText() - Color`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Default Color"),
+                Text(text = "Red Color", textColor = RGB(1, 0, 0, 1)),
+                Text(text = "Green Color", textColor = RGB(0, 1, 0, 1)),
+                Text(text = "Blue Color", textColor = RGB(0, 0, 1, 1)),
+            ),
+        )
     }
 
     @Test
