@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.lesson
 
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
-import org.cru.godtools.shared.tool.parser.model.color
+import org.cru.godtools.shared.tool.parser.internal.color
 
 internal const val XMLNS_LESSON = "https://mobile-content-api.cru.org/xmlns/lesson"
 

@@ -5,7 +5,6 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -45,17 +44,13 @@ class Modal : BaseModel, Parent, Styles {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @get:AndroidColorInt
     override val primaryColor get() = TRANSPARENT
-    @get:AndroidColorInt
     override val primaryTextColor get() = WHITE
 
-    @get:AndroidColorInt
     override val buttonColor get() = WHITE
     override val buttonStyle get() = Button.Style.OUTLINED
 
     override val textAlign get() = Text.Align.CENTER
-    @get:AndroidColorInt
     override val textColor get() = WHITE
 
     internal constructor(parent: TractPage, parser: XmlPullParser) : super(parent) {

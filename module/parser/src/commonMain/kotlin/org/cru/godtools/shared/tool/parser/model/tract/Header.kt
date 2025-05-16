@@ -2,11 +2,11 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
@@ -14,7 +14,6 @@ import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -29,13 +28,10 @@ class Header : BaseModel, Styles {
         internal const val XML_HEADER = "header"
     }
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _backgroundColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _backgroundColor: Color?
     internal val backgroundColor get() = _backgroundColor ?: primaryColor
 
-    @get:AndroidColorInt
     override val textColor get() = primaryTextColor
 
     val number: Text?
@@ -68,7 +64,7 @@ class Header : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
         page: TractPage = TractPage(),
-        backgroundColor: PlatformColor? = null,
+        backgroundColor: Color? = null,
         tip: String? = null
     ) : super(page) {
         _backgroundColor = backgroundColor

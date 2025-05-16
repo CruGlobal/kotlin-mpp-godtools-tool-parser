@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import org.cru.godtools.shared.tool.parser.internal.color
+
 internal const val SCHEMA_VERSION = 2
 
 // XML namespaces

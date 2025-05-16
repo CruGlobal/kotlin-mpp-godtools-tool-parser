@@ -2,18 +2,18 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.tips.XMLNS_TRAINING
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 private const val XML_CONTROL_COLOR = "control-color"
@@ -30,10 +30,8 @@ class CallToAction : BaseModel {
 
     val label: Text?
 
-    @AndroidColorInt
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-    private val _controlColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _controlColor: Color?
     internal val controlColor get() = _controlColor ?: stylesParent.primaryColor
 
     @VisibleForTesting
@@ -62,7 +60,7 @@ class CallToAction : BaseModel {
     constructor(
         page: TractPage = TractPage(),
         label: ((CallToAction) -> Text)? = null,
-        @AndroidColorInt controlColor: PlatformColor? = null,
+        controlColor: Color? = null,
         tip: String? = null
     ) : super(page) {
         this.page = page

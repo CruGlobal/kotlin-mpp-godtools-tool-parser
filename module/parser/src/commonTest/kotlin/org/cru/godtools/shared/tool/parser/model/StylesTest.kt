@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import com.github.ajalt.colormath.Color
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -13,7 +14,7 @@ class StylesTest {
             override lateinit var buttonStyle: Button.Style
 
             override var multiselectOptionBackgroundColor = TestColors.random()
-            override var multiselectOptionSelectedColor: PlatformColor? = null
+            override var multiselectOptionSelectedColor: Color? = null
 
             override var textAlign = Text.Align.END
             override var textColor = TestColors.RED

@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model
 
 import app.cash.turbine.test
+import com.github.ajalt.colormath.Color
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,10 +18,12 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.cru.godtools.shared.tool.state.State
+import org.cru.godtools.shared.tool.util.assertEquals
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -264,7 +267,7 @@ class MultiselectTest : UsesResources() {
     fun testOptionSelectedColorFallback() {
         val parent = object : BaseModel(), Styles {
             override var primaryColor = color(254, 0, 0, 0.5)
-            override var multiselectOptionSelectedColor: PlatformColor? = null
+            override var multiselectOptionSelectedColor: Color? = null
         }
 
         // 40% lighter primary color w/ 100% alpha

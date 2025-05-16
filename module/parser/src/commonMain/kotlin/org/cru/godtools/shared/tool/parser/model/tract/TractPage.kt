@@ -2,12 +2,14 @@ package org.cru.godtools.shared.tool.parser.model.tract
 
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -23,7 +25,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -42,7 +43,6 @@ import org.cru.godtools.shared.tool.parser.model.page.Page
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -102,15 +102,15 @@ class TractPage : Page {
     constructor(
         manifest: Manifest = Manifest(),
         fileName: String? = null,
-        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
-        primaryColor: PlatformColor? = null,
+        primaryColor: Color? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        textColor: PlatformColor? = null,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
-        cardBackgroundColor: PlatformColor? = null,
-        cardTextColor: PlatformColor? = null,
+        cardBackgroundColor: Color? = null,
+        cardTextColor: Color? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         callToAction: ((TractPage) -> CallToAction?)? = null
     ) : super(
@@ -142,10 +142,8 @@ class TractPage : Page {
     val cards: List<Card>
     val visibleCards get() = cards.filter { !it.isHidden }
 
-    @AndroidColorInt
-    private val _cardTextColor: PlatformColor?
-    @get:AndroidColorInt
-    val cardTextColor get() = _cardTextColor ?: textColor
+    private val _cardTextColor: Color?
+    internal val cardTextColor get() = _cardTextColor ?: textColor
 
     class Card : BaseModel, Styles, Parent, HasAnalyticsEvents {
         internal companion object {
@@ -173,19 +171,15 @@ class TractPage : Page {
         @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
-        @AndroidColorInt
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
-        private val _backgroundColor: PlatformColor?
-        @get:AndroidColorInt
+        private val _backgroundColor: Color?
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
         private val _backgroundImage: String?
         val backgroundImage get() = getResource(_backgroundImage)
         internal val backgroundImageGravity: Gravity
         internal val backgroundImageScaleType: ImageScaleType
 
-        @AndroidColorInt
-        private val _textColor: PlatformColor?
-        @get:AndroidColorInt
+        private val _textColor: Color?
         override val textColor get() = _textColor ?: page.cardTextColor
 
         private val labelParent by lazy { stylesOverride(textColor = { primaryColor }) }
@@ -235,7 +229,7 @@ class TractPage : Page {
         constructor(
             page: TractPage = TractPage(),
             position: Int = 0,
-            backgroundColor: PlatformColor? = null,
+            backgroundColor: Color? = null,
             backgroundImage: String? = null,
             backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
             backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,

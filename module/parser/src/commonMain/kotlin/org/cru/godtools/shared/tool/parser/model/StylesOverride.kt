@@ -1,11 +1,12 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import com.github.ajalt.colormath.Color
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 
 private class StylesOverride(
     parent: Base,
     private val _textAlign: (() -> Text.Align?)?,
-    private val _textColor: (() -> PlatformColor?)?,
+    private val _textColor: (() -> Color?)?,
     private val _textScale: Double
 ) : BaseModel(parent), Styles {
     override val textAlign get() = _textAlign?.invoke() ?: super.textAlign
@@ -15,6 +16,6 @@ private class StylesOverride(
 
 internal fun Base.stylesOverride(
     textAlign: (() -> Text.Align?)? = null,
-    textColor: (() -> PlatformColor?)? = null,
+    textColor: (() -> Color?)? = null,
     textScale: Double = DEFAULT_TEXT_SCALE
 ): Base = StylesOverride(this, textAlign, textColor, textScale)

@@ -6,6 +6,7 @@ package org.cru.godtools.shared.tool.parser.model.page
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
+import com.github.ajalt.colormath.Color
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -14,7 +15,8 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
-import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
+import org.cru.godtools.shared.tool.parser.internal.color
+import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.BaseModel
@@ -29,7 +31,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImag
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
-import org.cru.godtools.shared.tool.parser.model.PlatformColor
 import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.XMLNS_CONTENT
@@ -44,7 +45,6 @@ import org.cru.godtools.shared.tool.parser.model.XML_PRIMARY_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_PRIMARY_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_SCALE
-import org.cru.godtools.shared.tool.parser.model.color
 import org.cru.godtools.shared.tool.parser.model.getResource
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
@@ -59,8 +59,8 @@ import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.textScale
-import org.cru.godtools.shared.tool.parser.model.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.toEventIds
+import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -79,7 +79,6 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         private const val XML_PARENT_PAGE_COLLECTION_OVERRIDE = "parent_override_page-collection"
 
-        @AndroidColorInt
         @VisibleForTesting
         internal val DEFAULT_BACKGROUND_COLOR = color(0, 0, 0, 0.0)
         @VisibleForTesting
@@ -170,45 +169,36 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @JsName("_dismissListeners")
     val dismissListeners: Set<EventId>
 
-    @AndroidColorInt
-    private val _primaryColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _primaryColor: Color?
     override val primaryColor get() = _primaryColor ?: stylesParent.primaryColor
 
-    @AndroidColorInt
-    private val _primaryTextColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
 
-    @AndroidColorInt
-    internal val backgroundColor: PlatformColor
+    internal val backgroundColor: Color
 
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
     internal val backgroundImageGravity: Gravity
     internal val backgroundImageScaleType: ImageScaleType
 
-    @AndroidColorInt
-    private val _controlColor: PlatformColor?
-    @get:AndroidColorInt
-    val controlColor: PlatformColor
+    private val _controlColor: Color?
+    @JsName("_controlColor")
+    @JsExport.Ignore
+    val controlColor: Color
         get() = _controlColor ?: (parentPageContainer as? Page)?.controlColor ?: manifest.pageControlColor
 
-    @AndroidColorInt
-    private val _cardBackgroundColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _cardBackgroundColor: Color?
     override val cardBackgroundColor get() = _cardBackgroundColor ?: super.cardBackgroundColor
 
-    private val _multiselectOptionBackgroundColor: PlatformColor?
+    private val _multiselectOptionBackgroundColor: Color?
     override val multiselectOptionBackgroundColor
         get() = _multiselectOptionBackgroundColor ?: super.multiselectOptionBackgroundColor
-    private val _multiselectOptionSelectedColor: PlatformColor?
+    private val _multiselectOptionSelectedColor: Color?
     override val multiselectOptionSelectedColor
         get() = _multiselectOptionSelectedColor ?: super.multiselectOptionSelectedColor
 
-    @AndroidColorInt
-    private val _textColor: PlatformColor?
-    @get:AndroidColorInt
+    private val _textColor: Color?
     override val textColor get() = _textColor ?: stylesParent.textColor
     private val _textScale: Double
     override val textScale get() = _textScale * stylesParent.textScale
@@ -231,8 +221,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
         _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()
 
-        backgroundColor =
-            parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
+        backgroundColor = parser.getAttributeValue(XML_BACKGROUND_COLOR)?.toColorOrNull() ?: DEFAULT_BACKGROUND_COLOR
         _backgroundImage = parser.getAttributeValue(XML_BACKGROUND_IMAGE)
         backgroundImageGravity = parser.getAttributeValue(XML_BACKGROUND_IMAGE_GRAVITY)?.toGravityOrNull()
             ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
@@ -258,16 +247,16 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         id: String? = null,
         fileName: String? = null,
         parentPage: String? = null,
-        primaryColor: PlatformColor? = null,
-        backgroundColor: PlatformColor = DEFAULT_BACKGROUND_COLOR,
+        primaryColor: Color? = null,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
-        controlColor: PlatformColor? = null,
-        cardBackgroundColor: PlatformColor? = null,
-        multiselectOptionBackgroundColor: PlatformColor? = null,
-        multiselectOptionSelectedColor: PlatformColor? = null,
-        textColor: PlatformColor? = null,
+        controlColor: Color? = null,
+        cardBackgroundColor: Color? = null,
+        multiselectOptionBackgroundColor: Color? = null,
+        multiselectOptionSelectedColor: Color? = null,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE
     ) : super(container) {
         _id = id
@@ -317,10 +306,13 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     @HiddenFromObjC
     @JsName("listeners")
     val jsListeners get() = listeners.toTypedArray()
+
+    @HiddenFromObjC
+    @JsName("controlColor")
+    val platformControlColor get() = controlColor.toPlatformColor()
     // endregion Kotlin/JS interop
 }
 
-@get:AndroidColorInt
 val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
 val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
 val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE

@@ -104,7 +104,7 @@ class LessonPageTest : UsesResources("model/lesson") {
 
     @Test
     fun testControlColor() {
-        assertEquals(TestColors.GREEN, LessonPage(Manifest(), controlColor = TestColors.GREEN).controlColor)
+        assertEquals(TestColors.GREEN, LessonPage(controlColor = TestColors.GREEN).controlColor)
         assertEquals(TestColors.GREEN, LessonPage(Manifest(pageControlColor = TestColors.GREEN)).controlColor)
         assertEquals(
             TestColors.GREEN,
