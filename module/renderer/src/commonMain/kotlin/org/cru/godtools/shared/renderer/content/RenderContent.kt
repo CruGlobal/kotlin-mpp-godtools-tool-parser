@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
@@ -17,6 +18,7 @@ internal fun ColumnScope.RenderContent(content: List<Content>) {
 @Composable
 internal fun ColumnScope.RenderContent(content: Content) {
     when (content) {
+        is Button -> RenderButton(content)
         is Paragraph -> RenderParagraph(content)
         is Text -> RenderText(content)
         is Spacer -> RenderSpacer(content)
