@@ -118,7 +118,8 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    @JsName("createTestButton")
+    constructor(
         parent: Base = Manifest(),
         style: Style? = null,
         color: Color? = null,
