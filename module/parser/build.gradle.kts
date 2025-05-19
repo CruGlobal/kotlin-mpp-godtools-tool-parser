@@ -19,7 +19,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":module:state"))
+                api(project(":module:parser-base"))
                 implementation(project(":module:common"))
                 implementation(project(":module:parser-expressions"))
 

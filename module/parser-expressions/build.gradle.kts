@@ -13,9 +13,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":module:parser-base"))
+
                 implementation(kotlin("stdlib-common"))
                 implementation(libs.antlr.kotlin.runtime)
-                implementation(project(":module:state"))
             }
         }
     }
