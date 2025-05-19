@@ -6,9 +6,11 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 import org.cru.godtools.shared.tool.state.State
 
-private val ID1 = EventId("followup", "seND")
-
 class EventIdTest {
+    companion object {
+        private val ID1 = EventId("followup", "seND")
+    }
+
     @Test
     fun verifyHashCode() {
         assertEquals(EventId.FOLLOWUP.hashCode(), ID1.hashCode())
@@ -26,7 +28,7 @@ class EventIdTest {
     fun testResolve() {
         val state = State()
         state.setVar("selectorState", listOf("a", "b"))
-        val events = EventId(EVENT_NAMESPACE_STATE, "selectorState").resolve(state)
+        val events = EventId(EventId.NAMESPACE_STATE, "selectorState").resolve(state)
         assertEquals(2, events.size)
         assertEquals(EventId(name = "a"), events[0])
         assertEquals(EventId(name = "b"), events[1])
@@ -34,7 +36,7 @@ class EventIdTest {
 
     @Test
     fun testResolveUnset() {
-        assertTrue(EventId(EVENT_NAMESPACE_STATE, "missing").resolve(State()).isEmpty())
+        assertTrue(EventId(EventId.NAMESPACE_STATE, "missing").resolve(State()).isEmpty())
     }
 
     @Test

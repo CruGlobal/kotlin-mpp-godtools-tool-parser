@@ -6,19 +6,19 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.state.State
 
-private const val EVENT_NAMESPACE_FOLLOWUP = "followup"
-@VisibleForTesting
-internal const val EVENT_NAMESPACE_STATE = "state"
-
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class EventId(val namespace: String? = null, val name: String) {
     companion object {
-        val FOLLOWUP = EventId(EVENT_NAMESPACE_FOLLOWUP, "send")
+        private const val NAMESPACE_FOLLOWUP = "followup"
+        @VisibleForTesting
+        const val NAMESPACE_STATE = "state"
+
+        val FOLLOWUP = EventId(NAMESPACE_FOLLOWUP, "send")
     }
 
     fun resolve(state: State) = when (namespace) {
-        EVENT_NAMESPACE_STATE -> state.getVar(name).map { EventId(name = it) }
+        NAMESPACE_STATE -> state.getVar(name).map { EventId(name = it) }
         else -> listOf(this)
     }
 

@@ -236,7 +236,7 @@ class MultiselectTest : UsesResources() {
 
     @Test
     fun testMultiselectAffectsEventIdResolution() {
-        val eventId = EventId(EVENT_NAMESPACE_STATE, "test")
+        val eventId = EventId(EventId.NAMESPACE_STATE, "test")
         val multiselect = Multiselect(stateName = eventId.name, selectionLimit = 2) { it.options(3) }
 
         multiselect.options[2].toggleSelected(state)
