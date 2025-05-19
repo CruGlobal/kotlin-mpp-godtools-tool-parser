@@ -21,22 +21,6 @@ class EventIdTest {
         assertNotEquals(EventId.FOLLOWUP, EventId(null, "send"))
     }
 
-    @Test
-    fun verifyParse() {
-        val events = EventId.parse("EVent1 eveNT2 evENt1 followup:send")
-        assertEquals(4, events.size)
-        assertEquals(EventId(name = "event1"), events[0])
-        assertEquals(EventId(name = "event2"), events[1])
-        assertEquals(EventId(name = "event1"), events[2])
-        assertEquals(EventId.FOLLOWUP, events[3])
-    }
-
-    @Test
-    fun verifyParseEmpty() {
-        assertEquals(0, EventId.parse("").size)
-        assertEquals(0, EventId.parse(null).size)
-    }
-
     // region resolve(State)
     @Test
     fun testResolve() {

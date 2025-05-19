@@ -58,8 +58,8 @@ class Modal : BaseModel, Parent, Styles {
 
         parser.require(XmlPullParser.START_TAG, XMLNS_TRACT, XML_MODAL)
 
-        listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
-        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
+        listeners = parser.getAttributeValue(XML_LISTENERS)?.toEventIds()?.toSet().orEmpty()
+        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
         // process any child elements
         var title: Text? = null

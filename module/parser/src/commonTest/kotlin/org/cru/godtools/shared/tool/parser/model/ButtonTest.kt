@@ -38,7 +38,7 @@ class ButtonTest : UsesResources() {
             assertFalse(isGone(state))
             assertFalse(isInvisible(state))
             assertEquals(manifest.buttonStyle, style)
-            assertEquals(EventId.parse("event1 event2"), events)
+            assertEquals(listOf(EventId(name = "event1"), EventId(name = "event2")), events)
             assertEquals("event button", text.text)
             assertEquals(TestColors.RED, buttonColor)
             assertEquals(Button.DEFAULT_BACKGROUND_COLOR, backgroundColor)

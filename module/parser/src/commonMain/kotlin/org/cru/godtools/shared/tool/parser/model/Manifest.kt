@@ -211,7 +211,7 @@ class Manifest : BaseModel, Styles, HasPages {
         locale = parser.getAttributeValue(XML_LOCALE)?.toLocaleOrNull()
         type = Type.parseOrNull(parser.getAttributeValue(XML_TYPE)) ?: Type.DEFAULT
 
-        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
+        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
         primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull() ?: DEFAULT_PRIMARY_COLOR
         primaryTextColor =

@@ -49,8 +49,8 @@ class Animation : Content, Clickable {
         loop = parser.getAttributeValue(XML_LOOP)?.toBoolean() ?: true
         autoPlay = parser.getAttributeValue(XML_AUTOPLAY)?.toBoolean() ?: true
 
-        playListeners = parser.getAttributeValue(XML_PLAY_LISTENERS).toEventIds().toSet()
-        stopListeners = parser.getAttributeValue(XML_STOP_LISTENERS).toEventIds().toSet()
+        playListeners = parser.getAttributeValue(XML_PLAY_LISTENERS)?.toEventIds()?.toSet().orEmpty()
+        stopListeners = parser.getAttributeValue(XML_STOP_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
         parseClickableAttrs(parser) { events, url ->
             this.events = events
