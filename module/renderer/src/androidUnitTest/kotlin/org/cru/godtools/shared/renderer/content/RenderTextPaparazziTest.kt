@@ -52,4 +52,15 @@ class RenderTextPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.
             ),
         )
     }
+
+    @Test
+    fun `RenderText() - Text Align`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Start Align", textAlign = Text.Align.START),
+                Text(text = "Center Align", textAlign = Text.Align.CENTER),
+                Text(text = "End Align", textAlign = Text.Align.END),
+            ),
+        )
+    }
 }
