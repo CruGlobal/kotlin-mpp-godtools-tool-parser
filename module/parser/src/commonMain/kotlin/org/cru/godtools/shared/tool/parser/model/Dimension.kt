@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.util.contains
@@ -19,8 +20,6 @@ sealed class Dimension {
         }
     }
 
-    @ConsistentCopyVisibility
-    data class Percent internal constructor(val value: Float) : Dimension()
-    @ConsistentCopyVisibility
-    data class Pixels internal constructor(val value: Int) : Dimension()
+    data class Percent @VisibleForTesting constructor(val value: Float) : Dimension()
+    data class Pixels @VisibleForTesting constructor(val value: Int) : Dimension()
 }

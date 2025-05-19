@@ -1,10 +1,14 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Modifier
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.tool.parser.model.Button
+import org.cru.godtools.shared.tool.parser.model.Dimension
+import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Text
 
 class RenderButtonPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
@@ -59,6 +63,56 @@ class RenderButtonPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
                     text = { Text(it, "Blue Outlined Button") }
                 ),
             )
+        )
+    }
+
+    @Test
+    fun `RenderButton() - Width`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Pixels(200),
+                    text = { Text(it, "200dp Width") }
+                ),
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Percent(0.5f),
+                    text = { Text(it, "50% Width") }
+                ),
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Percent(1f),
+                    text = { Text(it, "100% Width") }
+                ),
+            )
+        )
+    }
+
+    @Test
+    fun `RenderButton() - Gravity`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Percent(0.5f),
+                    gravity = Gravity.Horizontal.START,
+                    text = { Text(it, "Start Gravity") }
+                ),
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Percent(0.5f),
+                    gravity = Gravity.Horizontal.CENTER,
+                    text = { Text(it, "Center Gravity") }
+                ),
+                Button(
+                    style = Button.Style.CONTAINED,
+                    width = Dimension.Percent(0.5f),
+                    gravity = Gravity.Horizontal.END,
+                    text = { Text(it, "End Gravity") }
+                ),
+            ),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
