@@ -215,8 +215,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         isHidden = parser.getAttributeValue(XML_HIDDEN)?.toBoolean() ?: false
 
-        listeners = parser.getAttributeValue(XML_LISTENERS).toEventIds().toSet()
-        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS).toEventIds().toSet()
+        listeners = parser.getAttributeValue(XML_LISTENERS)?.toEventIds()?.toSet().orEmpty()
+        dismissListeners = parser.getAttributeValue(XML_DISMISS_LISTENERS)?.toEventIds()?.toSet().orEmpty()
 
         _primaryColor = parser.getAttributeValue(XML_PRIMARY_COLOR)?.toColorOrNull()
         _primaryTextColor = parser.getAttributeValue(XML_PRIMARY_TEXT_COLOR)?.toColorOrNull()

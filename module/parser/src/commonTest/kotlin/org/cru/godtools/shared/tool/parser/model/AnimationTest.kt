@@ -30,9 +30,9 @@ class AnimationTest : UsesResources() {
         assertEquals("animation.json", animation.resourceName)
         assertFalse(animation.autoPlay)
         assertFalse(animation.loop)
-        assertEquals(EventId.parse("event1 event2"), animation.events)
-        assertEquals(EventId.parse("event1").toSet(), animation.playListeners)
-        assertEquals(EventId.parse("event2").toSet(), animation.stopListeners)
+        assertEquals(listOf(EventId(name = "event1"), EventId(name = "event2")), animation.events)
+        assertEquals(setOf(EventId(name = "event1")), animation.playListeners)
+        assertEquals(setOf(EventId(name = "event2")), animation.stopListeners)
     }
 
     @Test

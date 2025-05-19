@@ -99,7 +99,7 @@ class ManifestTest : UsesResources() {
         assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
         assertEquals(Manifest.Type.LESSON, manifest.type)
         assertEquals(TestColors.RED, manifest.pageControlColor)
-        assertEquals(EventId.parse("dismiss_event").toSet(), manifest.dismissListeners)
+        assertEquals(setOf(EventId(name = "dismiss_event")), manifest.dismissListeners)
 
         assertEquals(TestColors.RED, manifest.multiselectOptionBackgroundColor)
         assertEquals(TestColors.GREEN, manifest.multiselectOptionSelectedColor)

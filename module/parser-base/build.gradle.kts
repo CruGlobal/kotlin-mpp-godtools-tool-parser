@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "org.cru.godtools.shared.tool.state"
+    namespace = "org.cru.godtools.shared.tool.parser.base"
 }
 
 kotlin {

@@ -57,5 +57,5 @@ internal inline fun Clickable.parseClickableAttrs(
         }
     }
 
-    block(parser.getAttributeValue(XML_EVENTS).toEventIds(), uri)
+    block(parser.getAttributeValue(XML_EVENTS)?.toEventIds().orEmpty(), uri)
 }
