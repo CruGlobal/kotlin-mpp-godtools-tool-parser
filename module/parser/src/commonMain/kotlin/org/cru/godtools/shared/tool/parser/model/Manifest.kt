@@ -4,6 +4,7 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import co.touchlab.kermit.Logger
 import com.github.ajalt.colormath.Color
+import io.fluidsonic.locale.Locale
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -14,7 +15,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.ccci.gto.support.fluidsonic.locale.PlatformLocale
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.common.model.isHttpUrl
 import org.cru.godtools.shared.common.model.toUriOrNull
@@ -127,7 +127,9 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val config: ParserConfig
 
     val code: String?
-    val locale: PlatformLocale?
+    @JsExport.Ignore
+    @HiddenFromObjC
+    val locale: Locale?
     val type: Type
 
     @JsExport.Ignore
@@ -283,7 +285,7 @@ class Manifest : BaseModel, Styles, HasPages {
         config: ParserConfig = ParserConfig(),
         type: Type = Type.DEFAULT,
         code: String? = null,
-        locale: PlatformLocale? = null,
+        locale: Locale? = null,
         primaryColor: Color = DEFAULT_PRIMARY_COLOR,
         primaryTextColor: Color = DEFAULT_PRIMARY_TEXT_COLOR,
         navBarColor: Color? = null,
