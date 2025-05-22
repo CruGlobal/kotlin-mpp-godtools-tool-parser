@@ -12,7 +12,6 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.ccci.gto.support.fluidsonic.locale.toCommon
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
@@ -84,7 +83,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_cyoa.xml")
         assertEquals("title", manifest.title)
         assertEquals("cyoa1", manifest.code)
-        assertEquals(Locale.forLanguage("fr"), manifest.locale?.toCommon())
+        assertEquals(Locale.forLanguage("fr"), manifest.locale)
         assertEquals(Manifest.Type.CYOA, manifest.type)
 
         assertEquals(1, manifest.pages.size)
@@ -96,7 +95,7 @@ class ManifestTest : UsesResources() {
         val manifest = parseManifest("manifest_lesson.xml")
         assertEquals("title", manifest.title)
         assertEquals("lesson1", manifest.code)
-        assertEquals(Locale.forLanguage("ar"), manifest.locale?.toCommon())
+        assertEquals(Locale.forLanguage("ar"), manifest.locale)
         assertEquals(Manifest.Type.LESSON, manifest.type)
         assertEquals(TestColors.RED, manifest.pageControlColor)
         assertEquals(setOf(EventId(name = "dismiss_event")), manifest.dismissListeners)
