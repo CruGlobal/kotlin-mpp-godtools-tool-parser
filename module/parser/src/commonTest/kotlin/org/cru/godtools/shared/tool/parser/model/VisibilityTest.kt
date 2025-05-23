@@ -12,9 +12,9 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
-import org.cru.godtools.shared.tool.state.State
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class VisibilityTest {

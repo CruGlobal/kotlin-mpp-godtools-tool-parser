@@ -9,7 +9,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
-import org.cru.godtools.shared.tool.state.State
+import org.cru.godtools.shared.renderer.state.State
 
 class ExpressionTest {
     private val state = State()

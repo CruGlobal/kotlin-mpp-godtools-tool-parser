@@ -1,10 +1,10 @@
 package org.cru.godtools.shared.tool.parser.expressions.grammar
 
 import org.antlr.v4.kotlinruntime.Token
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionBaseVisitor
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser.Tokens
-import org.cru.godtools.shared.tool.state.State
 
 internal class StateExpressionEvaluator(private val state: State) {
     val booleanExpr = object : StateExpressionBaseVisitor<Boolean>() {

@@ -61,6 +61,7 @@ kotlin {
             export(project(":module:interop"))
             export(project(":module:parser"))
             export(project(":module:parser-base"))
+            export(project(":module:renderer-state"))
             export(project(":module:user-activity"))
         }
 

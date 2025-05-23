@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.cru.godtools.shared.tool.state.State
+import org.cru.godtools.shared.renderer.state.State
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
