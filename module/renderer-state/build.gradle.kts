@@ -24,6 +24,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":module:parser-base"))
+
                 implementation(libs.androidx.annotation)
                 implementation(libs.kotlin.coroutines.core)
             }
