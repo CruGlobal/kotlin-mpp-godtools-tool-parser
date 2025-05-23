@@ -14,6 +14,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
@@ -22,7 +23,6 @@ import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Compan
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-import org.cru.godtools.shared.tool.state.State
 
 private const val XML_STATE = "state"
 private const val XML_COLUMNS = "columns"

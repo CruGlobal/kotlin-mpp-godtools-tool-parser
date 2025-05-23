@@ -20,6 +20,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":module:parser-base"))
+                api(project(":module:renderer-state"))
                 implementation(project(":module:common"))
                 implementation(project(":module:parser-expressions"))
 
