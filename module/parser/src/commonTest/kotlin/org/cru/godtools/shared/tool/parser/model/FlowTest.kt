@@ -9,11 +9,11 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
-import org.cru.godtools.shared.tool.state.State
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FlowTest : UsesResources() {

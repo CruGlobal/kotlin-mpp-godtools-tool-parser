@@ -11,13 +11,13 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.shared.tool.parser.model.Button.Type.Companion.toButtonTypeOrNull
-import org.cru.godtools.shared.tool.state.State
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ButtonTest : UsesResources() {

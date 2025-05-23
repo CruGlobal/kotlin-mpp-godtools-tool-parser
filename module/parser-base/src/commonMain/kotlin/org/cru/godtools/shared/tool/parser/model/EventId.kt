@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
-import org.cru.godtools.shared.tool.state.State
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
@@ -15,11 +14,6 @@ class EventId(val namespace: String? = null, val name: String) {
         const val NAMESPACE_STATE = "state"
 
         val FOLLOWUP = EventId(NAMESPACE_FOLLOWUP, "send")
-    }
-
-    fun resolve(state: State) = when (namespace) {
-        NAMESPACE_STATE -> state.getVar(name).map { EventId(name = it) }
-        else -> listOf(this)
     }
 
     override fun equals(other: Any?) = other is EventId &&
