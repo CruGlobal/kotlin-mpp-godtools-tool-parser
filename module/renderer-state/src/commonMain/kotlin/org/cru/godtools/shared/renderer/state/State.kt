@@ -7,6 +7,7 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
 import org.cru.godtools.shared.renderer.state.internal.Parcelize
+import org.cru.godtools.shared.tool.parser.model.EventId
 
 @JsExport
 @Parcelize
@@ -76,4 +78,18 @@ class State internal constructor(
         if (values.contains(value)) setVar(key, values.filterNot { it == value })
     }
     // endregion State vars
+
+    // region Content Events
+    private val _contentEvents = MutableSharedFlow<EventId>()
+    val contentEvents = _contentEvents.asSharedFlow()
+
+    internal fun resolveContentEvent(eventId: EventId) = when (eventId.namespace) {
+        EventId.NAMESPACE_STATE -> getVar(eventId.name).map { EventId(name = it) }
+        else -> listOf(eventId)
+    }
+
+    suspend fun triggerContentEvents(events: List<EventId>) {
+        events.flatMap { resolveContentEvent(it) }.forEach { _contentEvents.emit(it) }
+    }
+    // endregion Content Events
 }
