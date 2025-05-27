@@ -112,7 +112,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         text = parser.parseTextChild(defaultTextStyles, XMLNS_CONTENT, XML_BUTTON) {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
-                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                 }
             }
         } ?: Text(defaultTextStyles)

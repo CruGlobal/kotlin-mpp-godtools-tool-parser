@@ -32,16 +32,16 @@ private const val XML_ATTRIBUTE_VALUE = "value"
 
 @JsExport
 @OptIn(ExperimentalJsExport::class)
-class AnalyticsEvent : BaseModel {
+class AnalyticsEvent {
     internal companion object {
         internal const val XML_EVENTS = "events"
 
-        fun XmlPullParser.parseAnalyticsEvents(parent: Base) = buildList {
+        fun XmlPullParser.parseAnalyticsEvents() = buildList {
             require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, XML_EVENTS)
             parseChildren {
                 when (namespace) {
                     XMLNS_ANALYTICS -> when (name) {
-                        XML_EVENT -> add(AnalyticsEvent(parent, this@parseAnalyticsEvents))
+                        XML_EVENT -> add(AnalyticsEvent(this@parseAnalyticsEvents))
                     }
                 }
             }
@@ -57,7 +57,7 @@ class AnalyticsEvent : BaseModel {
     internal val limit: Int?
     val attributes: Map<String, String>
 
-    internal constructor(parent: Base, parser: XmlPullParser) : super(parent) {
+    internal constructor(parser: XmlPullParser) : super() {
         parser.require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, XML_EVENT)
 
         _id = parser.getAttributeValue(XML_ID)
@@ -83,7 +83,6 @@ class AnalyticsEvent : BaseModel {
     @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestAnalyticsEvent")
     constructor(
-        parent: Base = Manifest(),
         id: String? = null,
         action: String = "",
         trigger: Trigger = Trigger.DEFAULT,
@@ -91,7 +90,7 @@ class AnalyticsEvent : BaseModel {
         systems: Set<System> = emptySet(),
         limit: Int? = null,
         attributes: Map<String, String> = emptyMap()
-    ) : super(parent) {
+    ) : super() {
         _id = id
         this.action = action
         this.delay = delay

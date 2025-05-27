@@ -20,7 +20,7 @@ class AnalyticsEventTest : UsesResources() {
     // region Parsing
     @Test
     fun testParseAnalyticsEventDefaults() = runTest {
-        val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event_defaults.xml"))
+        val event = AnalyticsEvent(getTestXmlParser("analytics_event_defaults.xml"))
         assertEquals("", event.id)
         assertEquals("", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.USER))
@@ -35,7 +35,7 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEvent() = runTest {
-        val event = AnalyticsEvent(Manifest(), getTestXmlParser("analytics_event.xml"))
+        val event = AnalyticsEvent(getTestXmlParser("analytics_event.xml"))
         assertEquals("id", event.id)
         assertEquals("test", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.FIREBASE))
@@ -52,7 +52,7 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEvents() = runTest {
-        val events = getTestXmlParser("analytics_events.xml").parseAnalyticsEvents(Manifest())
+        val events = getTestXmlParser("analytics_events.xml").parseAnalyticsEvents()
         assertEquals(2, events.size)
         assertEquals("event1", events[0].id)
         assertEquals("event1", events[0].action)

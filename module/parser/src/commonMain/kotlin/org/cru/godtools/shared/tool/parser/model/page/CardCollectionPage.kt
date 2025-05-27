@@ -56,7 +56,7 @@ class CardCollectionPage : Page {
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
-                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                 }
 
                 XMLNS_PAGE -> when (parser.name) {
@@ -155,7 +155,7 @@ class CardCollectionPage : Page {
             parser.parseChildren {
                 when (parser.namespace) {
                     XMLNS_ANALYTICS -> when (parser.name) {
-                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                     }
 
                     XMLNS_PAGE -> when (parser.name) {

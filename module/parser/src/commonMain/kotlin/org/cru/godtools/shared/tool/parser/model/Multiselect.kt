@@ -160,7 +160,7 @@ class Multiselect : Content {
             content = parseContent(parser) {
                 when (parser.namespace) {
                     XMLNS_ANALYTICS -> when (parser.name) {
-                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                     }
                 }
             }

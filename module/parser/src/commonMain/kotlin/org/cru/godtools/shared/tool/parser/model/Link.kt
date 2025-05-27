@@ -33,7 +33,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
             when (parser.namespace) {
                 XMLNS_ANALYTICS ->
                     when (parser.name) {
-                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                     }
             }
         } ?: Text(defaultTextStyles)
