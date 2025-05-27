@@ -19,7 +19,6 @@ internal fun ColumnScope.RenderContent(content: Content) {
     when (content) {
         is Paragraph -> RenderParagraph(content)
         is Text -> RenderText(content)
-        is Spacer -> RenderSpacer(content)
         else -> Text(
             "Unsupported Content Element: ${content::class.simpleName}",
             color = Color.Red,
