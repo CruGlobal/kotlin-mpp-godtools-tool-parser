@@ -19,7 +19,7 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
     when (content) {
-        is Button -> RenderButton(content)
+        is Button -> RenderButton(content, state)
         is Paragraph -> RenderParagraph(content, state)
         is Text -> RenderText(content)
         is Spacer -> RenderSpacer(content)
