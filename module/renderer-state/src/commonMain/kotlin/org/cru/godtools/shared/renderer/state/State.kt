@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
+import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
 import org.cru.godtools.shared.renderer.state.internal.Parcelize
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -103,4 +104,18 @@ class State internal constructor(
         coroutineScope.launch { events.flatMap { resolveContentEvent(it) }.forEach { _contentEvents.emit(it) } }
     }
     // endregion Content Events
+
+    // region Events
+    sealed class Event {
+        data class OpenUrl(val url: Uri) : Event()
+    }
+
+    private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
+    val events = _events.asSharedFlow()
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun triggerOpenUrlEvent(url: Uri) = _events.tryEmit(Event.OpenUrl(url))
+    // endregion Events
 }

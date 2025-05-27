@@ -11,6 +11,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
+import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.model.EventId
 
 private const val KEY = "key"
@@ -185,4 +186,16 @@ class StateTest {
         state.triggerContentEvents(events)
     }
     // endregion Content Events
+
+    // region Events
+    @Test
+    fun `triggerOpenUrlEvent - Event emitted`() = runTest {
+        val url = "https://example.com".toUriOrNull()!!
+
+        state.events.test {
+            state.triggerOpenUrlEvent(url)
+            assertEquals(State.Event.OpenUrl(url), awaitItem())
+        }
+    }
+    // endregion Events
 }
