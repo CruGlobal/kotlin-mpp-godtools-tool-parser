@@ -12,8 +12,6 @@ import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companion.toTrigger
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class AnalyticsEventTest : UsesResources() {
@@ -62,17 +60,17 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEventSystem() {
-        assertEquals(setOf(AnalyticsEvent.System.FACEBOOK), "facebook".toAnalyticsSystems())
-        assertEquals(setOf(AnalyticsEvent.System.FIREBASE), "firebase".toAnalyticsSystems())
-        assertEquals(setOf(AnalyticsEvent.System.USER), "user".toAnalyticsSystems())
-        assertEquals(0, "jkalsdf".toAnalyticsSystems().size)
+        assertEquals(setOf(AnalyticsEvent.System.FACEBOOK), "facebook".toAnalyticsEventSystems())
+        assertEquals(setOf(AnalyticsEvent.System.FIREBASE), "firebase".toAnalyticsEventSystems())
+        assertEquals(setOf(AnalyticsEvent.System.USER), "user".toAnalyticsEventSystems())
+        assertEquals(0, "jkalsdf".toAnalyticsEventSystems().size)
     }
 
     @Test
     fun testParseAnalyticsEventTrigger() {
-        assertEquals(AnalyticsEvent.Trigger.VISIBLE, "visible".toTrigger())
-        assertEquals(AnalyticsEvent.Trigger.HIDDEN, "hidden".toTrigger())
-        assertEquals(AnalyticsEvent.Trigger.UNKNOWN, "jkalsdf".toTrigger())
+        assertEquals(AnalyticsEvent.Trigger.VISIBLE, "visible".toAnalyticsEventTrigger())
+        assertEquals(AnalyticsEvent.Trigger.HIDDEN, "hidden".toAnalyticsEventTrigger())
+        assertEquals(AnalyticsEvent.Trigger.UNKNOWN, "jkalsdf".toAnalyticsEventTrigger())
     }
     // endregion Parsing
 

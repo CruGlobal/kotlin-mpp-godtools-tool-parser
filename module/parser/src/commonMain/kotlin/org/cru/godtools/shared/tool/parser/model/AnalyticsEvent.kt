@@ -5,26 +5,15 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.System.Companion.toAnalyticsSystems
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger.Companion.toTrigger
-import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
-
-private const val TAG = "XmlAnalyticsEvent"
 
 private const val XML_EVENT = "event"
 private const val XML_ID = "id"
 private const val XML_ACTION = "action"
 private const val XML_DELAY = "delay"
 private const val XML_SYSTEM = "system"
-private const val XML_SYSTEM_FACEBOOK = "facebook"
-private const val XML_SYSTEM_FIREBASE = "firebase"
-private const val XML_SYSTEM_USER = "user"
 private const val XML_TRIGGER = "trigger"
-private const val XML_TRIGGER_CLICKED = "clicked"
-private const val XML_TRIGGER_VISIBLE = "visible"
-private const val XML_TRIGGER_HIDDEN = "hidden"
 private const val XML_LIMIT = "limit"
 private const val XML_ATTRIBUTE = "attribute"
 private const val XML_ATTRIBUTE_KEY = "key"
@@ -63,8 +52,8 @@ class AnalyticsEvent {
         _id = parser.getAttributeValue(XML_ID)
         action = parser.getAttributeValue(XML_ACTION).orEmpty()
         delay = parser.getAttributeValue(XML_DELAY)?.toIntOrNull() ?: 0
-        systems = parser.getAttributeValue(XML_SYSTEM)?.toAnalyticsSystems().orEmpty()
-        trigger = parser.getAttributeValue(XML_TRIGGER)?.toTrigger() ?: Trigger.DEFAULT
+        systems = parser.getAttributeValue(XML_SYSTEM)?.toAnalyticsEventSystems().orEmpty()
+        trigger = parser.getAttributeValue(XML_TRIGGER)?.toAnalyticsEventTrigger() ?: Trigger.DEFAULT
         limit = parser.getAttributeValue(XML_LIMIT)?.toIntOrNull()
         attributes = buildMap {
             parser.parseChildren {
@@ -106,37 +95,6 @@ class AnalyticsEvent {
     fun shouldTrigger(state: State) = limit == null || state.getTriggeredAnalyticsEventsCount(id) < limit
     fun recordTriggered(state: State) = state.recordTriggeredAnalyticsEvent(id)
 
-    enum class System {
-        FACEBOOK,
-        FIREBASE,
-        USER;
-
-        internal companion object {
-            fun String.toAnalyticsSystems() = REGEX_SEQUENCE_SEPARATOR.split(this).mapNotNullTo(mutableSetOf()) {
-                when (it) {
-                    XML_SYSTEM_FACEBOOK -> FACEBOOK
-                    XML_SYSTEM_FIREBASE -> FIREBASE
-                    XML_SYSTEM_USER -> USER
-                    else -> null
-                }
-            }
-        }
-    }
-
-    enum class Trigger {
-        VISIBLE,
-        HIDDEN,
-        CLICKED,
-        DEFAULT,
-        UNKNOWN;
-
-        internal companion object {
-            fun String.toTrigger() = when (this) {
-                XML_TRIGGER_CLICKED -> CLICKED
-                XML_TRIGGER_VISIBLE -> VISIBLE
-                XML_TRIGGER_HIDDEN -> HIDDEN
-                else -> UNKNOWN
-            }
-        }
-    }
+    enum class System { FACEBOOK, FIREBASE, USER }
+    enum class Trigger { VISIBLE, HIDDEN, CLICKED, DEFAULT, UNKNOWN }
 }
