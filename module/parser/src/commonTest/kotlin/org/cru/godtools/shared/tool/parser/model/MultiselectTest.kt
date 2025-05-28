@@ -42,7 +42,7 @@ class MultiselectTest : UsesResources() {
             assertEquals(Multiselect.Option.Style.CARD, style)
             assertEquals(TestColors.RED, backgroundColor)
             assertEquals(TestColors.BLUE, selectedColor)
-            assertTrue(AnalyticsEvent.System.FIREBASE in analyticsEvents.single().systems)
+            assertTrue(analyticsEvents.single().isForSystem(AnalyticsEvent.System.FIREBASE))
         }
         with(multiselect.options[1]) {
             assertEquals("answer2", value)

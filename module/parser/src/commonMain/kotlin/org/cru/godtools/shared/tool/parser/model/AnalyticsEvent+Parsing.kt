@@ -37,9 +37,10 @@ internal fun XmlPullParser.parseAnalyticsEvents() = buildList {
 internal fun XmlPullParser.parseAnalyticsEvent(): AnalyticsEvent {
     require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, XML_EVENT)
 
+    val action = getAttributeValue(XML_ACTION).orEmpty()
     return AnalyticsEvent(
-        id = getAttributeValue(XML_ID),
-        action = getAttributeValue(XML_ACTION).orEmpty(),
+        action = action,
+        id = getAttributeValue(XML_ID) ?: action,
         delay = getAttributeValue(XML_DELAY)?.toIntOrNull() ?: 0,
         systems = getAttributeValue(XML_SYSTEM)?.toAnalyticsEventSystems().orEmpty(),
         trigger = getAttributeValue(XML_TRIGGER)?.toAnalyticsEventTrigger() ?: AnalyticsEvent.Trigger.DEFAULT,

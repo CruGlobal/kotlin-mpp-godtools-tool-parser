@@ -76,8 +76,8 @@ class AnalyticsEventTest : UsesResources() {
     // region Property: id
     @Test
     fun testIdFallback() {
-        assertEquals("action", AnalyticsEvent(id = null, action = "action").id)
-        assertEquals("id", AnalyticsEvent(id = "id", action = "action").id)
+        assertEquals("action", AnalyticsEvent(action = "action").id)
+        assertEquals("id", AnalyticsEvent(action = "action", id = "id").id)
     }
     // endregion Property: id
 

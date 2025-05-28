@@ -53,14 +53,14 @@ class CardCollectionPageTest : UsesResources("model/page") {
                 with(getAnalyticsEvents(Trigger.VISIBLE)) {
                     assertEquals(2, size)
                     assertEquals("card2", this[0].action)
-                    assertEquals(Trigger.DEFAULT, this[0].trigger)
+                    assertTrue(this[0].isTriggerType(Trigger.DEFAULT))
                     assertEquals("visible", this[1].action)
-                    assertEquals(Trigger.VISIBLE, this[1].trigger)
+                    assertTrue(this[1].isTriggerType(Trigger.VISIBLE))
                 }
                 with(getAnalyticsEvents(Trigger.HIDDEN)) {
                     assertEquals(1, size)
                     assertEquals("hidden", this[0].action)
-                    assertEquals(Trigger.HIDDEN, this[0].trigger)
+                    assertTrue(this[0].isTriggerType(Trigger.HIDDEN))
                 }
                 assertEquals(TestColors.GREEN, backgroundColor)
                 assertTrue(content.isEmpty())
