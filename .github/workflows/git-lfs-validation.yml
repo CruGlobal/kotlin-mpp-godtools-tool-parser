@@ -2,9 +2,9 @@ name: "Validate Git LFS"
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/*]
   pull_request:
-    branches: [main]
+    branches: [main, feature/*]
 
 jobs:
   validate-lfs-pointers:
