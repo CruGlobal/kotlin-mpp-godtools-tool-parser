@@ -112,7 +112,10 @@ class State internal constructor(
         triggeredAnalyticsEvents[event.id] = (triggeredAnalyticsEvents[event.id] ?: 0) + 1
     }
     @Suppress("NullableBooleanElvis")
-    internal fun shouldTriggerAnalyticsEvent(event: AnalyticsEvent) =
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun shouldTriggerAnalyticsEvent(event: AnalyticsEvent) =
         event.limit?.let { (triggeredAnalyticsEvents[event.id] ?: 0) < it } ?: true
 
     @HiddenFromObjC
