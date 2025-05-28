@@ -9,11 +9,10 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-class AnalyticsEventTest : UsesResources() {
+class AnalyticsEventParsingTest : UsesResources() {
     // region Parsing
     @Test
     fun testParseAnalyticsEventDefaults() = runTest {
@@ -72,40 +71,4 @@ class AnalyticsEventTest : UsesResources() {
         assertEquals(AnalyticsEvent.Trigger.UNKNOWN, "jkalsdf".toAnalyticsEventTrigger())
     }
     // endregion Parsing
-
-    // region Property: id
-    @Test
-    fun testIdFallback() {
-        assertEquals("action", AnalyticsEvent(action = "action").id)
-        assertEquals("id", AnalyticsEvent(action = "action", id = "id").id)
-    }
-    // endregion Property: id
-
-    // region Record Triggered Events
-    private val state = State()
-
-    @Test
-    fun testShouldTrigger() {
-        val event = AnalyticsEvent(
-            id = "id",
-            limit = 2
-        )
-        assertTrue(event.shouldTrigger(state))
-
-        event.recordTriggered(state)
-        assertTrue(event.shouldTrigger(state))
-
-        event.recordTriggered(state)
-        assertFalse(event.shouldTrigger(state))
-    }
-
-    @Test
-    fun testShouldTriggerNoLimit() {
-        val event = AnalyticsEvent(id = "id")
-        assertTrue(event.shouldTrigger(state))
-
-        repeat(50) { event.recordTriggered(state) }
-        assertTrue(event.shouldTrigger(state))
-    }
-    // endregion Record Triggered Events
 }

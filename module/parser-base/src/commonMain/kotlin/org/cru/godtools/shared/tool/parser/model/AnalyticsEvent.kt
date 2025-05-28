@@ -5,7 +5,6 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.native.HiddenFromObjC
-import org.cru.godtools.shared.renderer.state.State
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
@@ -14,21 +13,28 @@ data class AnalyticsEvent(
     val attributes: Map<String, String> = emptyMap(),
     private val trigger: Trigger = Trigger.DEFAULT,
     val delay: Int = 0,
-    private val systems: Set<System> = emptySet(),
-    internal val id: String = action,
-    internal val limit: Int? = null,
-) {
     @JsExport.Ignore
+    val systems: Set<System> = emptySet(),
     @HiddenFromObjC
+    @JsExport.Ignore
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    val id: String = action,
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    val limit: Int? = null,
+) {
+    enum class System { FACEBOOK, FIREBASE, USER }
+    enum class Trigger { VISIBLE, HIDDEN, CLICKED, DEFAULT, UNKNOWN }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     companion object;
 
-    internal fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
     fun isForSystem(system: System) = systems.contains(system)
-
-    fun shouldTrigger(state: State) = limit == null || state.getTriggeredAnalyticsEventsCount(id) < limit
-    fun recordTriggered(state: State) = state.recordTriggeredAnalyticsEvent(id)
-
-    enum class System { FACEBOOK, FIREBASE, USER }
-    enum class Trigger { VISIBLE, HIDDEN, CLICKED, DEFAULT, UNKNOWN }
 }
