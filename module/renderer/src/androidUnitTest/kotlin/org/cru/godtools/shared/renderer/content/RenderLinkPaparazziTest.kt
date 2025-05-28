@@ -9,6 +9,18 @@ import org.cru.godtools.shared.tool.parser.model.Text
 class RenderLinkPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
     @Test
     fun `RenderLink() - Simple`() = contentSnapshot {
-        RenderContentStack(listOf(Link(text = Text(text = "Simple Text"))))
+        RenderContentStack(
+            listOf(
+                Link(
+                    text = { Text(it, "Link 1") }
+                ),
+                Link(
+                    text = { Text(it, "Link 2") }
+                ),
+                Link(
+                    text = { Text(it, "Link 3") }
+                )
+            )
+        )
     }
 }
