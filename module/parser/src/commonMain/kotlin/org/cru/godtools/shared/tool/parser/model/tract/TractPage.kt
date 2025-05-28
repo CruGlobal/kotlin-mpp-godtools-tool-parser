@@ -11,7 +11,6 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
@@ -40,6 +39,7 @@ import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.getResource
 import org.cru.godtools.shared.tool.parser.model.page.Page
+import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride

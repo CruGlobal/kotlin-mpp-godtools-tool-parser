@@ -11,14 +11,13 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class AnalyticsEventTest : UsesResources() {
     // region Parsing
     @Test
     fun testParseAnalyticsEventDefaults() = runTest {
-        val event = AnalyticsEvent(getTestXmlParser("analytics_event_defaults.xml"))
+        val event = getTestXmlParser("analytics_event_defaults.xml").parseAnalyticsEvent()
         assertEquals("", event.id)
         assertEquals("", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.USER))
@@ -33,7 +32,7 @@ class AnalyticsEventTest : UsesResources() {
 
     @Test
     fun testParseAnalyticsEvent() = runTest {
-        val event = AnalyticsEvent(getTestXmlParser("analytics_event.xml"))
+        val event = getTestXmlParser("analytics_event.xml").parseAnalyticsEvent()
         assertEquals("id", event.id)
         assertEquals("test", event.action)
         assertTrue(event.isForSystem(AnalyticsEvent.System.FIREBASE))

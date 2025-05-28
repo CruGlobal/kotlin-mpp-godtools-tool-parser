@@ -8,9 +8,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.util.setOnce
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren

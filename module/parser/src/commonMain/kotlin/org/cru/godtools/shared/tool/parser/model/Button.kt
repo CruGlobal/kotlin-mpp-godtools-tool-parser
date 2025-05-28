@@ -15,7 +15,6 @@ import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
 import org.cru.godtools.shared.tool.parser.model.Button.Type.Companion.toButtonTypeOrNull

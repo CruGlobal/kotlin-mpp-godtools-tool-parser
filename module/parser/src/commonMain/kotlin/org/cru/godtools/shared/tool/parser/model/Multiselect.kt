@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.Companion.toMultiselectOptionStyleOrNull
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
