@@ -10,7 +10,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Auto Spacer On Top`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(),
@@ -22,7 +21,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Auto Spacer In Middle`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Text(text = "Text On Top"),
@@ -34,7 +32,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Auto Spacer On Bottom`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Text(text = "Text On Top"),
@@ -46,7 +43,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Fixed Spacer On Top`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(mode = Spacer.Mode.FIXED, height = 30),
@@ -58,7 +54,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Fixed Spacer In Middle`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Text(text = "Text On Top"),
@@ -70,7 +65,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Fixed Spacer On Bottom`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Text(text = "Text On Top"),
@@ -82,7 +76,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Multiple Auto Spacers`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(),
@@ -96,7 +89,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Multiple Fixed Spacers`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(mode = Spacer.Mode.FIXED, height = 30),
@@ -110,7 +102,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Multiple Fixed Spacers With Auto Spacer On Bottom`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(mode = Spacer.Mode.FIXED, height = 30),
@@ -124,7 +115,6 @@ class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMod
 
     @Test
     fun `RenderSpacer() - Multiple Fixed Spacers With Auto Spacer On Top`() = contentSnapshot {
-
         RenderContentStack(
             listOf(
                 Spacer(),
