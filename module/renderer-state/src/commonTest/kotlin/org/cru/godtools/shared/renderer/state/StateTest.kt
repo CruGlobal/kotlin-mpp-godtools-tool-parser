@@ -3,6 +3,7 @@ package org.cru.godtools.shared.renderer.state
 import app.cash.turbine.test
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.take
@@ -12,6 +13,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
 import org.cru.godtools.shared.common.model.toUriOrNull
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.EventId
 
 private const val KEY = "key"
@@ -20,23 +22,23 @@ private const val KEY2 = "key2"
 class StateTest {
     private val state = State()
 
-    // region Analytics Events Tracking
+    // region Analytics Events
     @Test
     fun testAnalyticsEventsTracking() {
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY))
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
+        val event = AnalyticsEvent(id = KEY)
+        val event2 = AnalyticsEvent(id = KEY2, limit = 1)
 
-        state.recordTriggeredAnalyticsEvent(KEY)
-        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY))
+        assertTrue(state.shouldTriggerAnalyticsEvent(event))
+        assertTrue(state.shouldTriggerAnalyticsEvent(event2))
 
-        state.recordTriggeredAnalyticsEvent(KEY)
-        assertEquals(2, state.getTriggeredAnalyticsEventsCount(KEY))
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
-
-        state.recordTriggeredAnalyticsEvent(KEY2)
-        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY2))
+        repeat(50) {
+            state.triggerAnalyticsEvent(event)
+            state.triggerAnalyticsEvent(event2)
+            assertTrue(state.shouldTriggerAnalyticsEvent(event))
+            assertFalse(state.shouldTriggerAnalyticsEvent(event2))
+        }
     }
-    // endregion Analytics Events Tracking
+    // endregion Analytics Events
 
     // region State Vars
     @Test

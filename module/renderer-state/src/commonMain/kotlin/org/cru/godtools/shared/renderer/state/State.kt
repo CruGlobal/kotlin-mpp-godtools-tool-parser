@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
 import org.cru.godtools.shared.renderer.state.internal.Parcelize
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.EventId
 
 @JsExport
@@ -38,19 +39,6 @@ class State internal constructor(
     fun setTestCoroutineScope(scope: CoroutineScope) {
         coroutineScope = scope
     }
-
-    // region Analytics Events Tracking
-    @HiddenFromObjC
-    @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun getTriggeredAnalyticsEventsCount(id: String) = triggeredAnalyticsEvents[id] ?: 0
-    @HiddenFromObjC
-    @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun recordTriggeredAnalyticsEvent(id: String) {
-        triggeredAnalyticsEvents[id] = (triggeredAnalyticsEvents[id] ?: 0) + 1
-    }
-    // endregion Analytics Events Tracking
 
     // region State vars
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
@@ -108,6 +96,7 @@ class State internal constructor(
     // region Events
     sealed class Event {
         data class OpenUrl(val url: Uri) : Event()
+        data class AnalyticsEventTriggered(val event: AnalyticsEvent) : Event()
     }
 
     private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
@@ -117,5 +106,23 @@ class State internal constructor(
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun triggerOpenUrlEvent(url: Uri) = _events.tryEmit(Event.OpenUrl(url))
+
+    // region Analytics Events
+    internal fun recordTriggeredAnalyticsEvent(event: AnalyticsEvent) {
+        triggeredAnalyticsEvents[event.id] = (triggeredAnalyticsEvents[event.id] ?: 0) + 1
+    }
+    @Suppress("NullableBooleanElvis")
+    internal fun shouldTriggerAnalyticsEvent(event: AnalyticsEvent) =
+        event.limit?.let { (triggeredAnalyticsEvents[event.id] ?: 0) < it } ?: true
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun triggerAnalyticsEvent(event: AnalyticsEvent) {
+        if (!shouldTriggerAnalyticsEvent(event)) return
+        recordTriggeredAnalyticsEvent(event)
+        _events.tryEmit(Event.AnalyticsEventTriggered(event))
+    }
+    // endregion Analytics Events
     // endregion Events
 }
