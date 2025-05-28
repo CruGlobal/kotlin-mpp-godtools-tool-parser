@@ -39,7 +39,7 @@ class LessonPageTest : UsesResources("model/lesson") {
         assertEquals(TestColors.GREEN, page.controlColor)
         assertEquals(1.2345, page.textScale, 0.00001)
         assertEquals(1, page.content.size)
-        assertEquals(AnalyticsEvent.System.FIREBASE, page.analyticsEvents.single().systems.single())
+        assertTrue(page.analyticsEvents.single().isForSystem(AnalyticsEvent.System.FIREBASE))
         assertIs<Text>(page.content[0])
         assertNotNull(page.backgroundImage) { assertEquals(manifest.getResource("background.png"), it) }
         assertEquals(TestColors.RED, page.multiselectOptionBackgroundColor)
