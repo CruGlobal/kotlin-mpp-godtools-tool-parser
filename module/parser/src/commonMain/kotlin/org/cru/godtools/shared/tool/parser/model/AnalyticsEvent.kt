@@ -1,11 +1,14 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.renderer.state.State
 
 @JsExport
-@OptIn(ExperimentalJsExport::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 data class AnalyticsEvent(
     val action: String = "",
     val attributes: Map<String, String> = emptyMap(),
@@ -15,9 +18,10 @@ data class AnalyticsEvent(
     internal val id: String = action,
     internal val limit: Int? = null,
 ) {
-    internal companion object {
-        internal const val XML_EVENTS = "events"
-    }
+    @JsExport.Ignore
+    @HiddenFromObjC
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    companion object;
 
     internal fun isTriggerType(vararg types: Trigger) = types.contains(trigger)
     fun isForSystem(system: System) = systems.contains(system)

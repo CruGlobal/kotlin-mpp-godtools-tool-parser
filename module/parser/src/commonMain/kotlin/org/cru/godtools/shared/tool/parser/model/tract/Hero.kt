@@ -14,6 +14,7 @@ import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild

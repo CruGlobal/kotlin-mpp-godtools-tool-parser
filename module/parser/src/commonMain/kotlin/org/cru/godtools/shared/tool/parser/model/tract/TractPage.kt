@@ -33,6 +33,7 @@ import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.shared.tool.parser.model.XML_DISMISS_LISTENERS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.XML_LISTENERS
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.backgroundColor

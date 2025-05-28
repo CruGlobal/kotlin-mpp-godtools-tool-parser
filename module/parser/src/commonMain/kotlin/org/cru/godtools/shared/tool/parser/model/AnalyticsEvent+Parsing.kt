@@ -23,8 +23,10 @@ private const val XML_ATTRIBUTE = "attribute"
 private const val XML_ATTRIBUTE_KEY = "key"
 private const val XML_ATTRIBUTE_VALUE = "value"
 
+internal val AnalyticsEvent.Companion.XML_EVENTS get() = "events"
+
 internal fun XmlPullParser.parseAnalyticsEvents() = buildList {
-    require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, AnalyticsEvent.Companion.XML_EVENTS)
+    require(XmlPullParser.START_TAG, XMLNS_ANALYTICS, AnalyticsEvent.XML_EVENTS)
     parseChildren {
         when (namespace) {
             XMLNS_ANALYTICS -> when (name) {

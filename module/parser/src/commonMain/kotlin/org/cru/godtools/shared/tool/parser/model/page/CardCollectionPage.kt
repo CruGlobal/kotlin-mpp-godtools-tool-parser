@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.Styles
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_COLOR
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card.Companion.XML_CARD
 import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents

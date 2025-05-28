@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.page.Page
 import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent

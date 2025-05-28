@@ -8,6 +8,7 @@ import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
