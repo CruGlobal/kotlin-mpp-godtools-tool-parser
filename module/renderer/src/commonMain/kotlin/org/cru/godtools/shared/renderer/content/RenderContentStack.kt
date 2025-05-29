@@ -2,19 +2,21 @@ package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.Content
 
 @Composable
-fun RenderContentStack(content: List<Content>, modifier: Modifier = Modifier) {
+fun RenderContentStack(content: List<Content>, modifier: Modifier = Modifier, state: State = remember { State() }) {
     ProvideLayoutDirectionFromLocale(
         locale = content.asSequence()
             .mapNotNull { it.manifest.locale }
             .firstOrNull(),
     ) {
         Column(modifier) {
-            RenderContent(content)
+            RenderContent(content, state)
         }
     }
 }

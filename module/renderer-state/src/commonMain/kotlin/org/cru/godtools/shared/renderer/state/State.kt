@@ -1,19 +1,26 @@
 package org.cru.godtools.shared.renderer.state
 
 import androidx.annotation.RestrictTo
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.launch
+import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
 import org.cru.godtools.shared.renderer.state.internal.Parcelize
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.EventId
 
 @JsExport
 @Parcelize
@@ -25,18 +32,13 @@ class State internal constructor(
     @JsName("createState")
     constructor() : this(vars = mutableMapOf())
 
-    // region Analytics Events Tracking
+    private var coroutineScope = CoroutineScope(EmptyCoroutineContext)
     @HiddenFromObjC
     @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun getTriggeredAnalyticsEventsCount(id: String) = triggeredAnalyticsEvents[id] ?: 0
-    @HiddenFromObjC
-    @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun recordTriggeredAnalyticsEvent(id: String) {
-        triggeredAnalyticsEvents[id] = (triggeredAnalyticsEvents[id] ?: 0) + 1
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun setTestCoroutineScope(scope: CoroutineScope) {
+        coroutineScope = scope
     }
-    // endregion Analytics Events Tracking
 
     // region State vars
     private val varsChangeFlow = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
@@ -76,4 +78,54 @@ class State internal constructor(
         if (values.contains(value)) setVar(key, values.filterNot { it == value })
     }
     // endregion State vars
+
+    // region Content Events
+    private val _contentEvents = MutableSharedFlow<EventId>()
+    val contentEvents = _contentEvents.asSharedFlow()
+
+    internal fun resolveContentEvent(eventId: EventId) = when (eventId.namespace) {
+        EventId.NAMESPACE_STATE -> getVar(eventId.name).map { EventId(name = it) }
+        else -> listOf(eventId)
+    }
+
+    fun triggerContentEvents(events: List<EventId>) {
+        coroutineScope.launch { events.flatMap { resolveContentEvent(it) }.forEach { _contentEvents.emit(it) } }
+    }
+    // endregion Content Events
+
+    // region Events
+    sealed class Event {
+        data class OpenUrl(val url: Uri) : Event()
+        data class AnalyticsEventTriggered(val event: AnalyticsEvent) : Event()
+    }
+
+    private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
+    val events = _events.asSharedFlow()
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun triggerOpenUrlEvent(url: Uri) = _events.tryEmit(Event.OpenUrl(url))
+
+    // region Analytics Events
+    internal fun recordTriggeredAnalyticsEvent(event: AnalyticsEvent) {
+        triggeredAnalyticsEvents[event.id] = (triggeredAnalyticsEvents[event.id] ?: 0) + 1
+    }
+    @Suppress("NullableBooleanElvis")
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun shouldTriggerAnalyticsEvent(event: AnalyticsEvent) =
+        event.limit?.let { (triggeredAnalyticsEvents[event.id] ?: 0) < it } ?: true
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun triggerAnalyticsEvent(event: AnalyticsEvent) {
+        if (!shouldTriggerAnalyticsEvent(event)) return
+        recordTriggeredAnalyticsEvent(event)
+        _events.tryEmit(Event.AnalyticsEventTriggered(event))
+    }
+    // endregion Analytics Events
+    // endregion Events
 }
