@@ -23,7 +23,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is Button -> RenderButton(content, state)
         is Paragraph -> RenderParagraph(content, state)
         is Text -> RenderText(content)
-        is Link -> RenderLink(content)
+        is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content)
         else -> Text(
             "Unsupported Content Element: ${content::class.simpleName}",
