@@ -1,3 +1,5 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     id("godtools-shared.module-conventions")
     alias(libs.plugins.compose)
@@ -7,6 +9,8 @@ plugins {
 
 android {
     namespace = "org.cru.godtools.shared.renderer"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 kotlin {
@@ -19,6 +23,20 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.colormath.jetpack.compose)
+            }
+        }
+        commonTest {
+            dependencies {
+                @OptIn(ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
+
+                implementation(libs.gtoSupport.androidx.test.junit)
+                implementation(libs.turbine)
+            }
+        }
+        androidUnitTest {
+            dependencies {
+                implementation(libs.androidx.compose.ui.test.manifest)
             }
         }
     }

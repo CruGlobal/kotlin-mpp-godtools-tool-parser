@@ -6,7 +6,6 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.common.model.Uri
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
@@ -34,7 +33,7 @@ class Link : Content, HasAnalyticsEvents, Clickable {
             when (parser.namespace) {
                 XMLNS_ANALYTICS ->
                     when (parser.name) {
-                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                     }
             }
         } ?: Text(defaultTextStyles)

@@ -4,11 +4,12 @@ import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.Parent
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
+import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -38,7 +39,7 @@ class ContentPage : Page, Parent {
         parser.parseChildren {
             when (parser.namespace) {
                 XMLNS_ANALYTICS -> when (parser.name) {
-                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                    AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                 }
 
                 XMLNS_PAGE -> when (parser.name) {

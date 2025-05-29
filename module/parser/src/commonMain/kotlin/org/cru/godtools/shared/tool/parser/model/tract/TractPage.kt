@@ -11,7 +11,6 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Companion.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
@@ -34,12 +33,14 @@ import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.XML_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.shared.tool.parser.model.XML_DISMISS_LISTENERS
+import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.XML_LISTENERS
 import org.cru.godtools.shared.tool.parser.model.XML_TEXT_COLOR
 import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.contentTips
 import org.cru.godtools.shared.tool.parser.model.getResource
 import org.cru.godtools.shared.tool.parser.model.page.Page
+import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
@@ -213,7 +214,7 @@ class TractPage : Page {
             content = parseContent(parser) {
                 when (parser.namespace) {
                     XMLNS_ANALYTICS -> when (parser.name) {
-                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents(this)
+                        AnalyticsEvent.XML_EVENTS -> analyticsEvents += parser.parseAnalyticsEvents()
                     }
 
                     XMLNS_TRACT -> when (parser.name) {
