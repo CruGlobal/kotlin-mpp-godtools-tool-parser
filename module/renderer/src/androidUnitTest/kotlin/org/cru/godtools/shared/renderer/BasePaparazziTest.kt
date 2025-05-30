@@ -10,7 +10,12 @@ import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import org.junit.Rule
 
-abstract class BasePaparazziTest(renderingMode: RenderingMode = RenderingMode.NORMAL) {
+abstract class BasePaparazziTest(
+    protected val accessibilityMode: AccessibilityMode = AccessibilityMode.NO_ACCESSIBILITY,
+    renderingMode: RenderingMode = RenderingMode.NORMAL
+) {
+    enum class AccessibilityMode { ACCESSIBILITY, NO_ACCESSIBILITY }
+
     @get:Rule
     val paparazzi = Paparazzi(
         renderingMode = renderingMode,
