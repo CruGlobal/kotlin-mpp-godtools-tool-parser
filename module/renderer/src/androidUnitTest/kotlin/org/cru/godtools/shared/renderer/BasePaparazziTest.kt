@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import app.cash.paparazzi.Paparazzi
+import app.cash.paparazzi.accessibility.AccessibilityRenderExtension
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import org.junit.Rule
 
@@ -20,6 +21,9 @@ abstract class BasePaparazziTest(
     val paparazzi = Paparazzi(
         renderingMode = renderingMode,
         maxPercentDifference = 0.0,
+        renderExtensions = buildSet {
+            if (accessibilityMode == AccessibilityMode.ACCESSIBILITY) add(AccessibilityRenderExtension())
+        }
     )
 
     protected fun contentSnapshot(content: @Composable BoxScope.() -> Unit) {
