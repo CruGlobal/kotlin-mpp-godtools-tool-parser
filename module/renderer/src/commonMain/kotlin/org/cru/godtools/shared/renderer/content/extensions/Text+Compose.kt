@@ -16,5 +16,4 @@ internal val Text.Align.alignment get() = when (this) {
     Text.Align.START -> Alignment.Start
     Text.Align.CENTER -> Alignment.CenterHorizontally
     Text.Align.END -> Alignment.End
-    else -> Alignment.Start
 }
