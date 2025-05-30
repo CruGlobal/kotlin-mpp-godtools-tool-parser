@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,20 +15,15 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Link
 
 @Composable
-fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier) {
+fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier.fillMaxWidth()) {
     val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
+    RenderTextNode(
+        link.text,
+        modifier = modifier
+            .padding(horizontal = Horizontal_Padding)
             .minimumInteractiveComponentSize()
-    ) {
-        RenderTextNode(
-            link.text,
-            modifier = modifier
-                .padding(horizontal = Horizontal_Padding)
-                .align(link.text.textAlign.textAlign.alignment)
-                .clickable { link.handleClickable(state, scope) }
-        )
-    }
+            .align(link.text.textAlign.textAlign.alignment)
+            .clickable { link.handleClickable(state, scope) }
+    )
 }
