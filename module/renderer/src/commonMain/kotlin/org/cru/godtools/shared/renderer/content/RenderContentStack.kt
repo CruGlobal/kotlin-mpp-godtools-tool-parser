@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -15,7 +16,7 @@ fun RenderContentStack(content: List<Content>, modifier: Modifier = Modifier, st
             .mapNotNull { it.manifest.locale }
             .firstOrNull(),
     ) {
-        Column(modifier) {
+        Column(modifier.fillMaxSize()) {
             RenderContent(content, state)
         }
     }

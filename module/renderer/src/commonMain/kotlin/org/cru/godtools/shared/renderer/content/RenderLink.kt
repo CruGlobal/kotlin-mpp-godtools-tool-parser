@@ -2,7 +2,6 @@ package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
@@ -15,7 +14,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Link
 
 @Composable
-fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier.fillMaxWidth()) {
+fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
 
     RenderTextNode(
