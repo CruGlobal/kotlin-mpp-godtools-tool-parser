@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.Link
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -22,6 +23,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is Button -> RenderButton(content, state)
         is Paragraph -> RenderParagraph(content, state)
         is Text -> RenderText(content)
+        is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content)
         else -> Text(
             "Unsupported Content Element: ${content::class.simpleName}",
