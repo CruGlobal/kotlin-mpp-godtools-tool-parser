@@ -9,7 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
-import org.cru.godtools.shared.renderer.content.extensions.textAlign
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Link
 
@@ -22,7 +21,7 @@ fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifi
         modifier = modifier
             .padding(horizontal = Horizontal_Padding)
             .minimumInteractiveComponentSize()
-            .align(link.text.textAlign.textAlign.alignment)
+            .align(link.text.textAlign.alignment)
             .clickable { link.handleClickable(state, scope) }
     )
 }
