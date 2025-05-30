@@ -1,12 +1,11 @@
 package org.cru.godtools.shared.renderer.content
 
-import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderSpacerPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
+class RenderSpacerPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderSpacer() - Auto Spacer On Top`() = contentSnapshot {

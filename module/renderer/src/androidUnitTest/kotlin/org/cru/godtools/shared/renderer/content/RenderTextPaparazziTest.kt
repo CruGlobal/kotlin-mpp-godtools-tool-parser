@@ -1,12 +1,11 @@
 package org.cru.godtools.shared.renderer.content
 
-import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderTextPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
+class RenderTextPaparazziTest : BasePaparazziTest() {
     @Test
     fun `RenderText() - Simple`() = contentSnapshot {
         RenderContentStack(listOf(Text(text = "Simple Text")))

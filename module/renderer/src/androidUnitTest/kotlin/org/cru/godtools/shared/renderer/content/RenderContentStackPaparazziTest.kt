@@ -1,6 +1,5 @@
 package org.cru.godtools.shared.renderer.content
 
-import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import io.fluidsonic.locale.Locale
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
@@ -10,7 +9,7 @@ import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderContentStackPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
+class RenderContentStackPaparazziTest : BasePaparazziTest() {
     @Test
     fun `RenderContentStack() - RTL`() {
         val manifest = Manifest(locale = Locale.forLanguageTag("ar"))

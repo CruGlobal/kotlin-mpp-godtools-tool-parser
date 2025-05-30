@@ -2,7 +2,6 @@ package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
-import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
@@ -11,7 +10,7 @@ import org.cru.godtools.shared.tool.parser.model.Dimension
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderButtonPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.SHRINK) {
+class RenderButtonPaparazziTest : BasePaparazziTest() {
     @Test
     fun `RenderButton() - Defaults`() = contentSnapshot {
         RenderContentStack(
