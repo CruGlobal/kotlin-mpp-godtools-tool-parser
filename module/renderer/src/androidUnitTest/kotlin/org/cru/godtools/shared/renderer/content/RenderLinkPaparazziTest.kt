@@ -23,4 +23,21 @@ class RenderLinkPaparazziTest : BasePaparazziTest(renderingMode = RenderingMode.
             )
         )
     }
+
+    @Test
+    fun `RenderLink() - TextAlign`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Link(
+                    text = { Text(it, "Align Start", textAlign = Text.Align.START) }
+                ),
+                Link(
+                    text = { Text(it, "Align Center", textAlign = Text.Align.CENTER) }
+                ),
+                Link(
+                    text = { Text(it, "Align End", textAlign = Text.Align.END) }
+                )
+            )
+        )
+    }
 }
