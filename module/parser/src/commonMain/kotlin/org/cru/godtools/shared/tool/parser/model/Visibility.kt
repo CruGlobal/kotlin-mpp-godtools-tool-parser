@@ -30,8 +30,7 @@ interface Visibility {
     fun getVisibility(state: State): VisibilityEnum {
         if (isInvisible(state = state)) {
             return VisibilityEnum.INVISIBLE
-        }
-        else if (isGone(state = state)) {
+        } else if (isGone(state = state)) {
             return VisibilityEnum.GONE
         }
         return VisibilityEnum.VISIBLE
@@ -45,7 +44,9 @@ interface Visibility {
 }
 
 enum class VisibilityEnum {
-    GONE, INVISIBLE, VISIBLE
+    GONE,
+    INVISIBLE,
+    VISIBLE
 }
 
 @OptIn(ExperimentalContracts::class)
