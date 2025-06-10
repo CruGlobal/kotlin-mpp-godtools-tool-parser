@@ -6,6 +6,10 @@
     "dependencies"
   ],
   "dependencyDashboard": true,
+  "baseBranches": [
+    "$default",
+    "/^feature\\/.*/"
+  ],
   "lockFileMaintenance": {
     "enabled": true
   },
