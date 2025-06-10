@@ -22,9 +22,9 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
 
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
-    val visible by remember(content, state) { content.isGoneFlow(state) }.collectAsState(false)
+    val isGone by remember(content, state) { content.isGoneFlow(state) }.collectAsState(false)
 
-    if (!visible) return
+    if (isGone) return
 
     when (content) {
         is Button -> RenderButton(content, state)
