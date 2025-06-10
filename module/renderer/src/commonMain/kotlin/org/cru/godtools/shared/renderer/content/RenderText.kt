@@ -10,13 +10,16 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Text
 
 @Composable
-internal fun ColumnScope.RenderText(text: Text) = RenderTextNode(
+internal fun ColumnScope.RenderText(text: Text, state: State) = RenderTextNode(
     text,
     Modifier
+        .invisibleIf(content = text, state = state)
         .padding(horizontal = Horizontal_Padding)
         .fillMaxWidth(),
 )
