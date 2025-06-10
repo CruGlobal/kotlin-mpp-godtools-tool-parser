@@ -3,6 +3,7 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import org.cru.godtools.shared.renderer.content.extensions.content
@@ -14,23 +15,14 @@ import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.Visibility
-import org.cru.godtools.shared.tool.parser.model.VisibilityEnum
 
 @Composable
 internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
     content.forEach {
 
-        val visibility: VisibilityEnum = (content as? Visibility)?.let { it
-            it.getVisibility(state = state)
-        } ?: run {
-            VisibilityEnum.VISIBLE
-        }
+        if ((content as? Visibility)?.isGoneFlow(state = state)?.collectAsState(false)?.value == true) return
 
-        val isRenderable: Boolean = visibility != VisibilityEnum.GONE
-
-        if (isRenderable) {
-            RenderContent(it, state)
-        }
+        RenderContent(it, state)
     }
 }
 
