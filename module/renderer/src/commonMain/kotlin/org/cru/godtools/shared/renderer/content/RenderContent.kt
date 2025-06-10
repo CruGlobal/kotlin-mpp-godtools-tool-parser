@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import org.cru.godtools.shared.renderer.content.extensions.contentModel
+import org.cru.godtools.shared.renderer.content.extensions.content
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -29,15 +29,15 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
         val isRenderable: Boolean = visibility != VisibilityEnum.GONE
 
         if (isRenderable) {
-            RenderContent(it, state, visibility)
+            RenderContent(it, state)
         }
     }
 }
 
 @Composable
-internal fun ColumnScope.RenderContent(content: Content, state: State, visibility: VisibilityEnum) {
+internal fun ColumnScope.RenderContent(content: Content, state: State) {
 
-    val modifier = Modifier.contentModel(model = content, visibility = visibility)
+    val modifier = Modifier.content(content = content, state = state)
 
     when (content) {
         is Button -> RenderButton(content, state)
