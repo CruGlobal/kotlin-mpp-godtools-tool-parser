@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import org.cru.godtools.shared.renderer.content.extensions.content
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -14,20 +14,17 @@ import org.cru.godtools.shared.tool.parser.model.Link
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
-import org.cru.godtools.shared.tool.parser.model.Visibility
 
 @Composable
 internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
-    content.forEach {
-        if ((content as? Visibility)?.isGoneFlow(state = state)?.collectAsState(false)?.value == true) return
-
-        RenderContent(it, state)
-    }
+    content.forEach { RenderContent(it, state) }
 }
 
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
-    val modifier = Modifier.content(content = content, state = state)
+    val visible by remember(content, state) { content.isGoneFlow(state) }.collectAsState(false)
+
+    if (!visible) return
 
     when (content) {
         is Button -> RenderButton(content, state)
