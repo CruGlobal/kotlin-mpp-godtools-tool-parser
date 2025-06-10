@@ -19,7 +19,6 @@ import org.cru.godtools.shared.tool.parser.model.Visibility
 @Composable
 internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
     content.forEach {
-
         if ((content as? Visibility)?.isGoneFlow(state = state)?.collectAsState(false)?.value == true) return
 
         RenderContent(it, state)
@@ -28,7 +27,6 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
 
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
-
     val modifier = Modifier.content(content = content, state = state)
 
     when (content) {
