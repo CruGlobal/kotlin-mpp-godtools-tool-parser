@@ -12,8 +12,16 @@ import org.cru.godtools.shared.tool.parser.model.Spacer
 
 @Composable
 internal fun ColumnScope.RenderSpacer(spacer: Spacer, state: State) {
-    val modifier: Modifier = Modifier
-        .invisibleIf(content = spacer, state = state)
+    Spacer(
+        Modifier
+            .invisibleIf(spacer, state)
+            .then(
+                when (spacer.mode) {
+                    Spacer.Mode.FIXED -> Modifier.height(spacer.height.dp)
+                    Spacer.Mode.AUTO -> Modifier.weight(1.0f)
+                }
+            )
+    )
 
     when (spacer.mode) {
         Spacer.Mode.FIXED -> Spacer(modifier.height(spacer.height.dp))
