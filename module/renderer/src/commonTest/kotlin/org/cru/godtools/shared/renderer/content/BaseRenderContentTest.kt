@@ -10,6 +10,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
@@ -82,6 +83,39 @@ abstract class BaseRenderContentTest {
                 listOf(testModel),
                 state = state,
             )
+        }
+
+        testScope.runTest {
+            turbineScope {
+                assertFalse(testModel.isInvisible(state = state))
+                // assertTrue(testModel.isGone(state = state))
+            }
+        }
+    }
+
+    @Test fun `IsInvisible - Not Clickable`() = runComposeUiTest {
+        // short-circuit if we don't have a clickableModel to test
+        val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
+
+        setContent {
+            RenderContentStack(
+                listOf(clickableModel),
+                state = state,
+            )
+        }
+
+        testScope.runTest {
+            turbineScope {
+                val urlEvents = state.events.filterIsInstance<State.Event.OpenUrl>().testIn(this)
+                val contentEvents = state.contentEvents.testIn(this)
+
+                onModelNode().assertExists().performClick()
+                clickableEvents.forEach { assertEquals(it, contentEvents.awaitItem()) }
+                assertEquals(clickableUrl, urlEvents.awaitItem().url)
+
+                urlEvents.cancel()
+                contentEvents.cancel()
+            }
         }
     }
 }
