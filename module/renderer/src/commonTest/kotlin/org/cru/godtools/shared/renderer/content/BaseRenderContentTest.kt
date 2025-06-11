@@ -94,15 +94,11 @@ abstract class BaseRenderContentTest {
             )
         }
 
-        testScope.runTest {
-            turbineScope {
-                onModelNode().assertExists()
-                state.setVar("$GONE", listOf("value"))
-                onModelNode().assertDoesNotExist()
-                state.setVar("$GONE", null)
-                onModelNode().assertExists()
-            }
-        }
+        onModelNode().assertExists()
+        state.setVar("$GONE", listOf("value"))
+        onModelNode().assertDoesNotExist()
+        state.setVar("$GONE", null)
+        onModelNode().assertExists()
     }
 
     @Test fun `IsInvisible - Not Clickable`() = runComposeUiTest {
