@@ -6,8 +6,6 @@ import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.tool.parser.expressions.Expression
-import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Dimension
 import org.cru.godtools.shared.tool.parser.model.Gravity
@@ -119,20 +117,26 @@ class RenderButtonPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
-    fun `RenderButton() - IsInvisible`() = contentSnapshot {
-        RenderContentStack(
-            listOf(
-                Text(text = "Before"),
-                Button(
-                    style = Button.Style.CONTAINED,
-                    width = Dimension.Percent(0.5f),
-                    gravity = Gravity.Horizontal.CENTER,
-                    text = { Text(it, "IsInvisible Button") },
-                    goneIf = "isSet(a)"
+    fun `RenderButton() - IsInvisible`() {
+        val state: State = State()
+        state.setVar("a", listOf("value"))
+
+        contentSnapshot {
+            RenderContentStack(
+                listOf(
+                    Text(text = "Before"),
+                    Button(
+                        style = Button.Style.CONTAINED,
+                        width = Dimension.Percent(0.5f),
+                        gravity = Gravity.Horizontal.CENTER,
+                        text = { Text(it, "Invisible Button") },
+                        invisibleIf = "isSet(a)"
+                    ),
+                    Text(text = "After")
                 ),
-                Text(text = "Before")
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
+                modifier = Modifier.fillMaxWidth(),
+                state = state
+            )
+        }
     }
 }

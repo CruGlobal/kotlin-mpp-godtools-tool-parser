@@ -133,7 +133,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         text: ((Base) -> Text?)? = null,
         invisibleIf: String? = null,
         goneIf: String? = null,
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.events = events
         this.url = url
 
