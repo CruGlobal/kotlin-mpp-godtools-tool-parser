@@ -23,6 +23,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Clickable
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.EventId
+import org.cru.godtools.shared.tool.parser.model.Visibility
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalTestApi::class)
 abstract class BaseRenderContentTest {
@@ -75,4 +76,13 @@ abstract class BaseRenderContentTest {
         }
     }
     // endregion Clickable
+
+    @Test fun `IsGone`() = runComposeUiTest {
+        setContent {
+            RenderContentStack(
+                listOf(testModel),
+                state = state,
+            )
+        }
+    }
 }
