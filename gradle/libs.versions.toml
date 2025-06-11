@@ -32,6 +32,7 @@ goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref =
 gtoSupport-androidx-test-junit = { module = "org.ccci.gto.android:gto-support-androidx-test-junit", version.ref = "gtoSupport" }
 gtoSupport-compose = { module = "org.ccci.gto.android:gto-support-compose", version.ref = "gtoSupport" }
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
+gtoSupport-okio = { module = "org.ccci.gto.android:gto-support-okio", version.ref = "gtoSupport" }
 kermit = "co.touchlab:kermit:2.0.5"
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
