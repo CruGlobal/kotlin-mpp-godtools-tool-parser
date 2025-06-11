@@ -94,9 +94,28 @@ abstract class BaseRenderContentTest {
         }
     }
 
+    @Test fun `IsInvisible`() = runComposeUiTest {
+        state.setVar("invisible", listOf("value"))
+
+        setContent {
+            RenderContentStack(
+                listOf(testModel),
+                state = state,
+            )
+        }
+
+        testScope.runTest {
+            turbineScope {
+                assertTrue(testModel.isInvisible(state = state))
+            }
+        }
+    }
+
     @Test fun `IsInvisible - Not Clickable`() = runComposeUiTest {
         // short-circuit if we don't have a clickableModel to test
         val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
+
+        state.setVar("invisible", listOf("value"))
 
         setContent {
             RenderContentStack(
