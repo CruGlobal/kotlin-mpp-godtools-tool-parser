@@ -15,7 +15,9 @@ class RenderButtonTest : BaseRenderContentTest() {
     override val testModel = Button(
         text = { Text(text = "Test") },
         events = clickableEvents,
-        url = clickableUrl
+        url = clickableUrl,
+        invisibleIf = "isSet(invisible)",
+        goneIf = "isSet(gone)"
     )
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithText("Test")
 }

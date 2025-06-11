@@ -10,7 +10,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
@@ -78,6 +78,8 @@ abstract class BaseRenderContentTest {
     // endregion Clickable
 
     @Test fun `IsGone`() = runComposeUiTest {
+        state.setVar("gone", listOf("value"))
+
         setContent {
             RenderContentStack(
                 listOf(testModel),
@@ -87,8 +89,7 @@ abstract class BaseRenderContentTest {
 
         testScope.runTest {
             turbineScope {
-                assertFalse(testModel.isInvisible(state = state))
-                // assertTrue(testModel.isGone(state = state))
+                assertTrue(testModel.isGone(state = state))
             }
         }
     }
