@@ -13,7 +13,9 @@ import org.cru.godtools.shared.tool.parser.model.Content
 
 @Composable
 fun Modifier.invisibleIf(content: Content, state: State): Modifier {
-    val invisible by remember(content, state) { content.isInvisibleFlow(state) }.collectAsState(content.isInvisible(state))
+    val invisible by remember(content, state) {
+        content.isInvisibleFlow(state)
+    }.collectAsState(content.isInvisible(state))
 
     return drawWithContent { if (!invisible) drawContent() }
 }
