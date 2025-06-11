@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,8 +26,13 @@ import org.cru.godtools.shared.tool.parser.model.Dimension
 internal fun ColumnScope.RenderButton(button: Button, state: State) {
     val scope = rememberCoroutineScope()
 
+    val invisible by remember(button, state) {
+        button.isInvisibleFlow(state)
+    }.collectAsState(button.isInvisible(state))
+
     Button(
         onClick = { button.handleClickable(state, scope) },
+        enabled = !invisible,
         colors = when (button.style) {
             Button.Style.OUTLINED -> ButtonDefaults.outlinedButtonColors(
                 containerColor = button.backgroundColor.toComposeColor()

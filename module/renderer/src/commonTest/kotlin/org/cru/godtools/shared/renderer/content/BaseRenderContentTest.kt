@@ -3,6 +3,8 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import app.cash.turbine.turbineScope
@@ -99,8 +101,6 @@ abstract class BaseRenderContentTest {
         // short-circuit if we don't have a clickableModel to test
         val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
 
-        state.setVar("invisible", listOf("value"))
-
         setContent {
             RenderContentStack(
                 listOf(clickableModel),
@@ -110,15 +110,11 @@ abstract class BaseRenderContentTest {
 
         testScope.runTest {
             turbineScope {
-                val urlEvents = state.events.filterIsInstance<State.Event.OpenUrl>().testIn(this)
-                val contentEvents = state.contentEvents.testIn(this)
-
-                onModelNode().assertExists().performClick()
-                clickableEvents.forEach { assertEquals(it, contentEvents.awaitItem()) }
-                assertEquals(clickableUrl, urlEvents.awaitItem().url)
-
-                urlEvents.cancel()
-                contentEvents.cancel()
+                onModelNode().assertHasClickAction()
+                state.setVar("invisible", listOf("value"))
+                onModelNode().assertHasNoClickAction()
+                state.setVar("invisible", null)
+                onModelNode().assertHasClickAction()
             }
         }
     }
