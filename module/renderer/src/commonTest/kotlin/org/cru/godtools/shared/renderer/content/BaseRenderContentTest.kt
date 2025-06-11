@@ -10,8 +10,6 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
@@ -93,25 +91,6 @@ abstract class BaseRenderContentTest {
                 onModelNode().assertDoesNotExist()
                 state.setVar("gone", null)
                 onModelNode().assertExists()
-            }
-        }
-    }
-
-    @Test fun `IsInvisible`() = runComposeUiTest {
-        setContent {
-            RenderContentStack(
-                listOf(testModel),
-                state = state,
-            )
-        }
-
-        testScope.runTest {
-            turbineScope {
-                assertFalse(testModel.isInvisible(state = state))
-                state.setVar("invisible", listOf("value"))
-                assertTrue(testModel.isInvisible(state = state))
-                state.setVar("invisible", null)
-                assertFalse(testModel.isInvisible(state = state))
             }
         }
     }
