@@ -22,6 +22,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.material3)
 
+                implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
