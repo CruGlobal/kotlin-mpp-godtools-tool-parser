@@ -22,9 +22,4 @@ internal fun ColumnScope.RenderSpacer(spacer: Spacer, state: State) {
                 }
             )
     )
-
-    when (spacer.mode) {
-        Spacer.Mode.FIXED -> Spacer(modifier.height(spacer.height.dp))
-        Spacer.Mode.AUTO -> Spacer(modifier.weight(1.0f))
-    }
 }
