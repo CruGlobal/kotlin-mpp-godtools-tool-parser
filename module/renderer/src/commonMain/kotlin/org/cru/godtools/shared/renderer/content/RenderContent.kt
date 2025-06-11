@@ -22,7 +22,7 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
 
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
-    val isGone by remember(content, state) { content.isGoneFlow(state) }.collectAsState(false)
+    val isGone by remember(content, state) { content.isGoneFlow(state) }.collectAsState(content.isGone(state))
 
     if (isGone) return
 
