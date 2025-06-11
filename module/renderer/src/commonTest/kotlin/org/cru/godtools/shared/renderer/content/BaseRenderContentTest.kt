@@ -10,6 +10,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -78,8 +79,6 @@ abstract class BaseRenderContentTest {
     // endregion Clickable
 
     @Test fun `IsGone`() = runComposeUiTest {
-        state.setVar("gone", listOf("value"))
-
         setContent {
             RenderContentStack(
                 listOf(testModel),
@@ -89,14 +88,16 @@ abstract class BaseRenderContentTest {
 
         testScope.runTest {
             turbineScope {
-                assertTrue(testModel.isGone(state = state))
+                onModelNode().assertExists()
+                state.setVar("gone", listOf("value"))
+                onModelNode().assertDoesNotExist()
+                state.setVar("gone", null)
+                onModelNode().assertExists()
             }
         }
     }
 
     @Test fun `IsInvisible`() = runComposeUiTest {
-        state.setVar("invisible", listOf("value"))
-
         setContent {
             RenderContentStack(
                 listOf(testModel),
@@ -106,7 +107,11 @@ abstract class BaseRenderContentTest {
 
         testScope.runTest {
             turbineScope {
+                assertFalse(testModel.isInvisible(state = state))
+                state.setVar("invisible", listOf("value"))
                 assertTrue(testModel.isInvisible(state = state))
+                state.setVar("invisible", null)
+                assertFalse(testModel.isInvisible(state = state))
             }
         }
     }
