@@ -15,7 +15,7 @@ android {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(project(":module:parser"))
 
@@ -24,6 +24,7 @@ kotlin {
 
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.gtoSupport.compose)
+                implementation(libs.gtoSupport.okio)
             }
         }
         commonTest {
