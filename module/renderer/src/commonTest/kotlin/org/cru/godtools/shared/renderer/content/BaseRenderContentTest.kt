@@ -5,6 +5,8 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertHasNoClickAction
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import app.cash.turbine.turbineScope
@@ -114,11 +116,11 @@ abstract class BaseRenderContentTest {
 
         testScope.runTest {
             turbineScope {
-                onModelNode().assertHasClickAction()
+                onModelNode().assertIsEnabled()
                 state.setVar("$INVISIBLE", listOf("value"))
-                onModelNode().assertHasNoClickAction()
+                onModelNode().assertIsNotEnabled()
                 state.setVar("$INVISIBLE", null)
-                onModelNode().assertHasClickAction()
+                onModelNode().assertIsEnabled()
             }
         }
     }
