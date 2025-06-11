@@ -2,9 +2,7 @@ package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -18,9 +16,9 @@ import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
 import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
+import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
-import org.cru.godtools.shared.tool.parser.model.Dimension
 
 @Composable
 internal fun ColumnScope.RenderButton(button: Button, state: State) {
@@ -52,13 +50,8 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
         modifier = Modifier
             .invisibleIf(content = button, state = state)
             .padding(horizontal = Horizontal_Padding)
+            .width(button.width)
             .align(button.gravity.alignment)
-            .then(
-                when (val width = button.width) {
-                    is Dimension.Percent -> Modifier.fillMaxWidth(width.value)
-                    is Dimension.Pixels -> Modifier.width(width.value.dp)
-                }
-            )
     ) {
         RenderTextNode(button.text)
     }
