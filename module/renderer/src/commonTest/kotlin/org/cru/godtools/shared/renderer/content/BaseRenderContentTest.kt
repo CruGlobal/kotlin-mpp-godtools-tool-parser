@@ -28,6 +28,11 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalTestApi::class)
 abstract class BaseRenderContentTest {
+    internal companion object {
+        internal const val GONE = "gone"
+        internal const val INVISIBLE = "invisible"
+    }
+
     protected val state = State()
 
     protected val testScope = TestScope()
@@ -49,6 +54,9 @@ abstract class BaseRenderContentTest {
     // region Clickable
     protected val clickableEvents = listOf(EventId(name = "test"), EventId(name = "test2"))
     protected val clickableUrl = TestConstants.TEST_URL
+
+    protected val goneIf: String? = "isSet($GONE)"
+    protected val invisibleIf: String? = "isSet($INVISIBLE)"
 
     @Test
     fun `Action - Click - Triggers Clickable`() = runComposeUiTest {
@@ -89,9 +97,9 @@ abstract class BaseRenderContentTest {
         testScope.runTest {
             turbineScope {
                 onModelNode().assertExists()
-                state.setVar("gone", listOf("value"))
+                state.setVar("$GONE", listOf("value"))
                 onModelNode().assertDoesNotExist()
-                state.setVar("gone", null)
+                state.setVar("$GONE", null)
                 onModelNode().assertExists()
             }
         }
@@ -111,9 +119,9 @@ abstract class BaseRenderContentTest {
         testScope.runTest {
             turbineScope {
                 onModelNode().assertHasClickAction()
-                state.setVar("invisible", listOf("value"))
+                state.setVar("$INVISIBLE", listOf("value"))
                 onModelNode().assertHasNoClickAction()
-                state.setVar("invisible", null)
+                state.setVar("$INVISIBLE", null)
                 onModelNode().assertHasClickAction()
             }
         }

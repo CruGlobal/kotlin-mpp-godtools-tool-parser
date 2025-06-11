@@ -16,8 +16,8 @@ class RenderLinkTest : BaseRenderContentTest() {
         text = { Text(text = "Test") },
         events = clickableEvents,
         url = clickableUrl,
-        invisibleIf = "isSet(invisible)",
-        goneIf = "isSet(gone)"
+        invisibleIf = invisibleIf,
+        goneIf = goneIf
     )
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithText("Test")
 }
