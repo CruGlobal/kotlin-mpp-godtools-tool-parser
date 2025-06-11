@@ -130,7 +130,9 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
-        text: ((Base) -> Text?)? = null
+        text: ((Base) -> Text?)? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
     ) : super(parent) {
         this.events = events
         this.url = url
