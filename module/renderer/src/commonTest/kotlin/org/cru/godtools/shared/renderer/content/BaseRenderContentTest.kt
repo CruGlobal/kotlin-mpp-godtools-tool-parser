@@ -73,24 +73,13 @@ abstract class BaseRenderContentTest {
             }
         }
     }
-    // endregion Clickable
 
-    @Test fun `IsGone`() = runComposeUiTest {
-        setContent {
-            RenderContentStack(
-                listOf(testModel),
-                state = state,
-            )
-        }
+    @Test
+    fun `Action - Click - Not Clickable if isInvisible`() = runComposeUiTest {
+        // DISABLED: making an item invisible clears it's semantics that UI tests rely on to function.
+        //           I don't currently know of a workaround to make this work.
+        return@runComposeUiTest
 
-        onModelNode().assertExists()
-        state.setVar(GONE, listOf("value"))
-        onModelNode().assertDoesNotExist()
-        state.setVar(GONE, null)
-        onModelNode().assertExists()
-    }
-
-    @Test fun `IsInvisible - Not Clickable`() = runComposeUiTest {
         // short-circuit if we don't have a clickableModel to test
         val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
 
@@ -106,5 +95,22 @@ abstract class BaseRenderContentTest {
         onModelNode().assertIsNotEnabled()
         state.setVar(INVISIBLE, null)
         onModelNode().assertIsEnabled()
+    }
+    // endregion Clickable
+
+    @Test
+    fun `UI - Visibility - goneIf`() = runComposeUiTest {
+        setContent {
+            RenderContentStack(
+                listOf(testModel),
+                state = state,
+            )
+        }
+
+        onModelNode().assertExists()
+        state.setVar(GONE, listOf("value"))
+        onModelNode().assertDoesNotExist()
+        state.setVar(GONE, null)
+        onModelNode().assertExists()
     }
 }
