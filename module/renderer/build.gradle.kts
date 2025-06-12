@@ -23,6 +23,7 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.colormath.jetpack.compose)
+                implementation(libs.gtoSupport.compose)
             }
         }
         commonTest {

@@ -7,7 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
+import org.ccci.gto.android.common.compose.ui.draw.invisibleIf
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Content
 
@@ -17,5 +17,5 @@ fun Modifier.invisibleIf(content: Content, state: State): Modifier {
         content.isInvisibleFlow(state)
     }.collectAsState(content.isInvisible(state))
 
-    return drawWithContent { if (!invisible) drawContent() }
+    return invisibleIf(invisible)
 }

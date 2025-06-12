@@ -4,7 +4,7 @@ androidx-test-junit = "1.2.1"
 antlr-kotlin = "1.0.5"
 colormath = "3.6.1"
 fluidLocale = "0.13.0"
-gtoSupport = "4.3.2"
+gtoSupport = "4.4.2-SNAPSHOT"
 jvm = "21"
 kotlin = "2.1.21"
 kotlinCoroutines = "1.9.0"
@@ -30,6 +30,7 @@ colormath-jetpack-compose = { module = "com.github.ajalt.colormath:colormath-ext
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref = "goncalossilvaResources" }
 gtoSupport-androidx-test-junit = { module = "org.ccci.gto.android:gto-support-androidx-test-junit", version.ref = "gtoSupport" }
+gtoSupport-compose = { module = "org.ccci.gto.android:gto-support-compose", version.ref = "gtoSupport" }
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
 kermit = "co.touchlab:kermit:2.0.5"
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
