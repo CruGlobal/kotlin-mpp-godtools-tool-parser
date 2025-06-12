@@ -3,8 +3,6 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.assertHasClickAction
-import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.performClick
@@ -97,9 +95,9 @@ abstract class BaseRenderContentTest {
         }
 
         onModelNode().assertExists()
-        state.setVar("$GONE", listOf("value"))
+        state.setVar(GONE, listOf("value"))
         onModelNode().assertDoesNotExist()
-        state.setVar("$GONE", null)
+        state.setVar(GONE, null)
         onModelNode().assertExists()
     }
 
@@ -114,14 +112,10 @@ abstract class BaseRenderContentTest {
             )
         }
 
-        testScope.runTest {
-            turbineScope {
-                onModelNode().assertIsEnabled()
-                state.setVar("$INVISIBLE", listOf("value"))
-                onModelNode().assertIsNotEnabled()
-                state.setVar("$INVISIBLE", null)
-                onModelNode().assertIsEnabled()
-            }
-        }
+        onModelNode().assertIsEnabled()
+        state.setVar(INVISIBLE, listOf("value"))
+        onModelNode().assertIsNotEnabled()
+        state.setVar(INVISIBLE, null)
+        onModelNode().assertIsEnabled()
     }
 }
