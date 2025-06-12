@@ -6,18 +6,13 @@ import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import app.cash.turbine.turbineScope
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.cru.godtools.shared.renderer.TestConstants
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Clickable
@@ -32,13 +27,7 @@ abstract class BaseRenderContentTest {
 
     @BeforeTest
     fun setup() {
-        Dispatchers.setMain(UnconfinedTestDispatcher(testScope.testScheduler))
         state.setTestCoroutineScope(testScope.backgroundScope)
-    }
-
-    @AfterTest
-    fun cleanup() {
-        Dispatchers.resetMain()
     }
 
     protected abstract val testModel: Content
