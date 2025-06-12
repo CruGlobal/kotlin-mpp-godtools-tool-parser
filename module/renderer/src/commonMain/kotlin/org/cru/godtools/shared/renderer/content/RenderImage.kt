@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
@@ -26,6 +27,7 @@ internal fun ColumnScope.RenderImage(image: Image, state: State) {
             .data(image.resource?.toPath())
             .build(),
         contentDescription = null,
+        contentScale = ContentScale.FillWidth,
         modifier = Modifier
             .padding(horizontal = Horizontal_Padding)
             .width(image.width)

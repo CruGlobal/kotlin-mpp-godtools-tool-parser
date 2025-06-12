@@ -33,6 +33,7 @@ kotlin {
                 @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
 
+                implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
             }
