@@ -3,6 +3,7 @@ package org.cru.godtools.shared.user.activity.model
 import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.model.RGB
 
+@ConsistentCopyVisibility
 data class Badge internal constructor(
     val type: BadgeType,
     val variant: Int,
