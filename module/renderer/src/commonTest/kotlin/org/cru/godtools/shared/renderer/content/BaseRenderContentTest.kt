@@ -3,6 +3,8 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import app.cash.turbine.turbineScope
@@ -21,6 +23,11 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalTestApi::class)
 abstract class BaseRenderContentTest {
+    internal companion object {
+        internal const val GONE = "gone"
+        internal const val INVISIBLE = "invisible"
+    }
+
     protected val state = State()
 
     protected val testScope = TestScope()
@@ -36,6 +43,9 @@ abstract class BaseRenderContentTest {
     // region Clickable
     protected val clickableEvents = listOf(EventId(name = "test"), EventId(name = "test2"))
     protected val clickableUrl = TestConstants.TEST_URL
+
+    protected val goneIf: String? = "isSet($GONE)"
+    protected val invisibleIf: String? = "isSet($INVISIBLE)"
 
     @Test
     fun `Action - Click - Triggers Clickable`() = runComposeUiTest {
@@ -63,5 +73,44 @@ abstract class BaseRenderContentTest {
             }
         }
     }
+
+    @Test
+    fun `Action - Click - Not Clickable if isInvisible`() = runComposeUiTest {
+        // DISABLED: making an item invisible clears it's semantics that UI tests rely on to function.
+        //           I don't currently know of a workaround to make this work.
+        return@runComposeUiTest
+
+        // short-circuit if we don't have a clickableModel to test
+        val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
+
+        setContent {
+            RenderContentStack(
+                listOf(clickableModel),
+                state = state,
+            )
+        }
+
+        onModelNode().assertIsEnabled()
+        state.setVar(INVISIBLE, listOf("value"))
+        onModelNode().assertIsNotEnabled()
+        state.setVar(INVISIBLE, null)
+        onModelNode().assertIsEnabled()
+    }
     // endregion Clickable
+
+    @Test
+    fun `UI - Visibility - goneIf`() = runComposeUiTest {
+        setContent {
+            RenderContentStack(
+                listOf(testModel),
+                state = state,
+            )
+        }
+
+        onModelNode().assertExists()
+        state.setVar(GONE, listOf("value"))
+        onModelNode().assertDoesNotExist()
+        state.setVar(GONE, null)
+        onModelNode().assertExists()
+    }
 }

@@ -15,7 +15,9 @@ class RenderLinkTest : BaseRenderContentTest() {
     override val testModel = Link(
         text = { Text(text = "Test") },
         events = clickableEvents,
-        url = clickableUrl
+        url = clickableUrl,
+        invisibleIf = invisibleIf,
+        goneIf = goneIf
     )
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithText("Test")
 }

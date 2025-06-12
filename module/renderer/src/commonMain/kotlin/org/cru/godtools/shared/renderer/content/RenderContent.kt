@@ -3,6 +3,9 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
@@ -19,12 +22,16 @@ internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
 
 @Composable
 internal fun ColumnScope.RenderContent(content: Content, state: State) {
+    val isGone by remember(content, state) { content.isGoneFlow(state) }.collectAsState(content.isGone(state))
+
+    if (isGone) return
+
     when (content) {
         is Button -> RenderButton(content, state)
         is Paragraph -> RenderParagraph(content, state)
-        is Text -> RenderText(content)
+        is Text -> RenderText(content, state)
         is Link -> RenderLink(content, state)
-        is Spacer -> RenderSpacer(content)
+        is Spacer -> RenderSpacer(content, state)
         else -> Text(
             "Unsupported Content Element: ${content::class.simpleName}",
             color = Color.Red,

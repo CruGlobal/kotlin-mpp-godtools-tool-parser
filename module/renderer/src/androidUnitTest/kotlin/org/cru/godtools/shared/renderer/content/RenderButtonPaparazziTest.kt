@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Dimension
 import org.cru.godtools.shared.tool.parser.model.Gravity
@@ -113,5 +114,29 @@ class RenderButtonPaparazziTest : BasePaparazziTest() {
             ),
             modifier = Modifier.fillMaxWidth()
         )
+    }
+
+    @Test
+    fun `RenderButton() - IsInvisible`() {
+        val state: State = State()
+        state.setVar("a", listOf("value"))
+
+        contentSnapshot {
+            RenderContentStack(
+                listOf(
+                    Text(text = "Before"),
+                    Button(
+                        style = Button.Style.CONTAINED,
+                        width = Dimension.Percent(0.5f),
+                        gravity = Gravity.Horizontal.CENTER,
+                        text = { Text(it, "Invisible Button") },
+                        invisibleIf = "isSet(a)"
+                    ),
+                    Text(text = "After")
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                state = state
+            )
+        }
     }
 }
