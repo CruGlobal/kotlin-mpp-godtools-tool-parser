@@ -1,9 +1,10 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,33 +43,33 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
 }
 
 @Composable
-private fun RowScope.RenderTextWithImages(
-    text: Text,
-    state: State
-) = Row(modifier = Modifier.fillMaxWidth()) {
+private fun RowScope.RenderTextWithImages(text: Text, state: State) = Row(
+    modifier = Modifier
+        .fillMaxWidth(),
+    horizontalArrangement = Arrangement.Center
+) {
+    val imagePaddingToText: Int = 10
 
     text.startImage?.let {
         RenderTextImage(
             resource = it,
-            imageSize = text.startImageSize
+            imageSize = text.startImageSize,
+            endPadding = imagePaddingToText
         )
-
-        //Spacer(modifier = Modifier.weight(1.0f))
     }
 
     RenderTextNode(
         text = text,
         modifier = Modifier
             .align(Alignment.CenterVertically)
+            .weight(1.0f, fill = false)
     )
 
     text.endImage?.let {
-
-        //Spacer(modifier = Modifier.weight(1.0f))
-
         RenderTextImage(
             resource = it,
-            imageSize = text.endImageSize
+            imageSize = text.endImageSize,
+            startPadding = imagePaddingToText
         )
     }
 }
@@ -87,7 +88,7 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RenderTextImage(resource: Resource, imageSize: Int) {
+private fun RowScope.RenderTextImage(resource: Resource, imageSize: Int, startPadding: Int = 0, endPadding: Int = 0) {
     AsyncImage(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .fileSystem(LocalResourceFileSystem.current)
@@ -96,7 +97,8 @@ private fun RenderTextImage(resource: Resource, imageSize: Int) {
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         modifier = Modifier
+            .align(Alignment.CenterVertically)
+            .padding(paddingValues = PaddingValues(start = startPadding.dp, end = endPadding.dp))
             .size(width = imageSize.dp, height = imageSize.dp)
     )
 }
-

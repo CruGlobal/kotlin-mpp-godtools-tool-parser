@@ -69,7 +69,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             listOf(
                 Text(
                     manifest,
-                    text = "Center Align",
+                    text = "Start Image",
                     textAlign = Text.Align.CENTER,
                     startImage = "bruce"
                 )
@@ -83,7 +83,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             listOf(
                 Text(
                     manifest,
-                    text = "Center Align",
+                    text = "Start And End Image",
                     textAlign = Text.Align.CENTER,
                     startImage = "bruce",
                     endImage = "bruce"
@@ -98,8 +98,29 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             listOf(
                 Text(
                     manifest,
-                    text = "Center Align",
+                    text = "End Image",
                     textAlign = Text.Align.CENTER,
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Multiline Text With Start And End Image`() = contentSnapshot {
+        val multilineString = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. """
+
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = multilineString,
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce",
                     endImage = "bruce"
                 )
             ),
