@@ -9,13 +9,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.ccci.gto.android.common.compose.ui.draw.invisibleIf
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.Visibility
 
 @Composable
-fun Modifier.invisibleIf(content: Content, state: State): Modifier {
-    val invisible by remember(content, state) {
-        content.isInvisibleFlow(state)
-    }.collectAsState(content.isInvisible(state))
+fun Modifier.visibility(model: Visibility, state: State): Modifier {
+    val isInvisible by remember(model, state) {
+        model.isInvisibleFlow(state)
+    }.collectAsState(model.isInvisible(state))
 
-    return invisibleIf(invisible)
+    return invisibleIf(isInvisible)
 }

@@ -11,7 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
-import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Link
 
@@ -26,7 +26,7 @@ fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifi
     RenderTextNode(
         link.text,
         modifier = modifier
-            .invisibleIf(content = link, state = state)
+            .visibility(link, state)
             .padding(horizontal = Horizontal_Padding)
             .align(link.text.textAlign.alignment)
             .clickable(enabled = !invisible) { link.handleClickable(state, scope) }
