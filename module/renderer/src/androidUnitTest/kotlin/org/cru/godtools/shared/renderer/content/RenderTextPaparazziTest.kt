@@ -62,4 +62,68 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             ),
         )
     }
+
+    @Test
+    fun `RenderText() - With Start Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Start Image",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - With Start And End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Start And End Image",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce",
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - With End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "End Image",
+                    textAlign = Text.Align.CENTER,
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Multiline Text With Start And End Image`() = contentSnapshot {
+        val multilineString = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. """
+
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = multilineString,
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce",
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
 }
