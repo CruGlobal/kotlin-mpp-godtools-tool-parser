@@ -10,7 +10,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import org.cru.godtools.shared.renderer.content.extensions.alignment
-import org.cru.godtools.shared.renderer.content.extensions.optionalClickable
+import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.toPath
 import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
@@ -32,6 +32,6 @@ internal fun ColumnScope.RenderImage(image: Image, state: State) {
             .padding(horizontal = Horizontal_Padding)
             .width(image.width)
             .align(image.gravity.alignment)
-            .optionalClickable(image, state, scope)
+            .clickable(image, state, scope)
     )
 }
