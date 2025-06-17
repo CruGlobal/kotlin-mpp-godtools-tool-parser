@@ -3,7 +3,6 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +28,6 @@ fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifi
         modifier = modifier
             .invisibleIf(content = link, state = state)
             .padding(horizontal = Horizontal_Padding)
-            .minimumInteractiveComponentSize()
             .align(link.text.textAlign.alignment)
             .clickable(enabled = !invisible) { link.handleClickable(state, scope) }
     )
