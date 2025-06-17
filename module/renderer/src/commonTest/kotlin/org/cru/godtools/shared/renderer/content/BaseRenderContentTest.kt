@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.shared.renderer.TestConstants
+import org.cru.godtools.shared.renderer.TestResources
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Clickable
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -50,13 +52,15 @@ abstract class BaseRenderContentTest {
     @Test
     fun `Action - Click - Triggers Clickable`() = runComposeUiTest {
         // short-circuit if we don't have a clickableModel to test
-        val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
+        if (testModel !is Clickable) return@runComposeUiTest
 
         setContent {
-            RenderContentStack(
-                listOf(clickableModel),
-                state = state,
-            )
+            ProvideRendererServices(TestResources.fileSystem) {
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
+            }
         }
 
         testScope.runTest {
@@ -81,13 +85,15 @@ abstract class BaseRenderContentTest {
         return@runComposeUiTest
 
         // short-circuit if we don't have a clickableModel to test
-        val clickableModel = testModel.takeIf { it is Clickable } ?: return@runComposeUiTest
+        if (testModel !is Clickable) return@runComposeUiTest
 
         setContent {
-            RenderContentStack(
-                listOf(clickableModel),
-                state = state,
-            )
+            ProvideRendererServices(TestResources.fileSystem) {
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
+            }
         }
 
         onModelNode().assertIsEnabled()
@@ -101,10 +107,12 @@ abstract class BaseRenderContentTest {
     @Test
     fun `UI - Visibility - goneIf`() = runComposeUiTest {
         setContent {
-            RenderContentStack(
-                listOf(testModel),
-                state = state,
-            )
+            ProvideRendererServices(TestResources.fileSystem) {
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
+            }
         }
 
         onModelNode().assertExists()

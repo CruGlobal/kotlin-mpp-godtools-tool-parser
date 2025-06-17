@@ -15,15 +15,17 @@ android {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(project(":module:parser"))
 
                 implementation(compose.runtime)
                 implementation(compose.material3)
 
+                implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.gtoSupport.compose)
+                implementation(libs.gtoSupport.okio)
             }
         }
         commonTest {
@@ -31,6 +33,7 @@ kotlin {
                 @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
 
+                implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
             }
