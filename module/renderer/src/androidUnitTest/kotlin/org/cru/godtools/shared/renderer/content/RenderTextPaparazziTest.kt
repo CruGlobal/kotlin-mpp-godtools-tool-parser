@@ -62,4 +62,47 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             ),
         )
     }
+
+    @Test
+    fun `RenderText() - With Start Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Center Align",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - With Start And End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Center Align",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "bruce",
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - With End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Center Align",
+                    textAlign = Text.Align.CENTER,
+                    endImage = "bruce"
+                )
+            ),
+        )
+    }
 }
