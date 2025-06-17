@@ -41,12 +41,13 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     RenderTextWithImages(
         text = text,
         state = state,
+        hasImage = hasImage,
         horizontalArrangement = horizontalArrangement
     )
 }
 
 @Composable
-private fun RowScope.RenderTextWithImages(text: Text, state: State, horizontalArrangement: Arrangement.Horizontal) = Row(
+private fun RowScope.RenderTextWithImages(text: Text, state: State, hasImage: Boolean, horizontalArrangement: Arrangement.Horizontal) = Row(
     modifier = Modifier
         .fillMaxWidth(),
     horizontalArrangement = horizontalArrangement
@@ -72,7 +73,16 @@ private fun RowScope.RenderTextWithImages(text: Text, state: State, horizontalAr
         text = text,
         modifier = Modifier
             .align(Alignment.CenterVertically)
-            .weight(1.0f, fill = false)
+            .then(
+                if (hasImage) {
+                    Modifier
+                        .weight(1.0f, fill = false)
+                }
+                else {
+                    Modifier
+                        .fillMaxWidth()
+                }
+            )
     )
 
     text.endImage?.let {
