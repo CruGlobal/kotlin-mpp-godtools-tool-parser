@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Spacer
 
@@ -14,7 +14,7 @@ import org.cru.godtools.shared.tool.parser.model.Spacer
 internal fun ColumnScope.RenderSpacer(spacer: Spacer, state: State) {
     Spacer(
         Modifier
-            .invisibleIf(spacer, state)
+            .visibility(spacer, state)
             .then(
                 when (spacer.mode) {
                     Spacer.Mode.FIXED -> Modifier.height(spacer.height.dp)
