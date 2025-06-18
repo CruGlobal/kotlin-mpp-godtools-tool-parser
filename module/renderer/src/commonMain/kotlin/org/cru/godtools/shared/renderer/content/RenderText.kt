@@ -97,8 +97,8 @@ private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifi
             .sizeIn(maxWidth = imageSize.dp, maxHeight = imageSize.dp)
             .then(
                 when {
-                    !aspectRatio.isNaN() -> Modifier
-                        .aspectRatio(aspectRatio, matchHeightConstraintsFirst = aspectRatio < 1f)
+                    !aspectRatio.isNaN() ->
+                        Modifier.aspectRatio(aspectRatio, matchHeightConstraintsFirst = aspectRatio < 1f)
                     else -> Modifier
                 },
             ),
