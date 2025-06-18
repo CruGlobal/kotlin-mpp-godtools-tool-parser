@@ -3,7 +3,6 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,17 +34,6 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
         .padding(horizontal = Horizontal_Padding)
         .fillMaxWidth()
 ) {
-    RenderTextWithImages(
-        text = text,
-        state = state
-    )
-}
-
-@Composable
-private fun RowScope.RenderTextWithImages(text: Text, state: State) = Row(
-    modifier = Modifier
-        .fillMaxWidth()
-) {
     val imagePaddingToText: Int = 10
 
     text.startImage?.let {
@@ -53,8 +41,8 @@ private fun RowScope.RenderTextWithImages(text: Text, state: State) = Row(
             resource = it,
             imageSize = text.startImageSize,
             modifier = Modifier
-                .align(Alignment.CenterVertically),
-            endPadding = imagePaddingToText
+                .align(Alignment.CenterVertically)
+                .padding(paddingValues = PaddingValues(end = imagePaddingToText.dp))
         )
     }
 
@@ -70,8 +58,8 @@ private fun RowScope.RenderTextWithImages(text: Text, state: State) = Row(
             resource = it,
             imageSize = text.endImageSize,
             modifier = Modifier
-                .align(Alignment.CenterVertically),
-            startPadding = imagePaddingToText
+                .align(Alignment.CenterVertically)
+                .padding(paddingValues = PaddingValues(start = imagePaddingToText.dp))
         )
     }
 }
@@ -90,13 +78,7 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RenderImageNode(
-    resource: Resource,
-    imageSize: Int,
-    modifier: Modifier = Modifier,
-    startPadding: Int = 0,
-    endPadding: Int = 0
-) {
+private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .fileSystem(LocalResourceFileSystem.current)
@@ -105,7 +87,6 @@ private fun RenderImageNode(
         contentDescription = null,
         contentScale = ContentScale.Fit,
         modifier = modifier
-            .padding(paddingValues = PaddingValues(start = startPadding.dp, end = endPadding.dp))
             .size(width = imageSize.dp, height = imageSize.dp)
     )
 }
