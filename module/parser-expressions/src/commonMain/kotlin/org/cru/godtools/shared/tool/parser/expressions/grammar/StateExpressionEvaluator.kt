@@ -1,12 +1,12 @@
 package org.cru.godtools.shared.tool.parser.expressions.grammar
 
 import org.antlr.v4.kotlinruntime.Token
-import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.state.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionBaseVisitor
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser.Tokens
 
-internal class StateExpressionEvaluator(private val state: State) {
+internal class StateExpressionEvaluator(private val context: ExpressionContext) {
     val booleanExpr = object : StateExpressionBaseVisitor<Boolean>() {
         override fun visitParExpr(ctx: StateExpressionParser.ParExprContext) = ctx.expr!!.accept(this)
         override fun visitNotExpr(ctx: StateExpressionParser.NotExprContext) = !ctx.expr!!.accept(this)
@@ -26,8 +26,8 @@ internal class StateExpressionEvaluator(private val state: State) {
             val varName = ctx.varName!!.text!!
             val value = ctx.value!!.text!!.run { substring(1, length - 1) }
             return when (ctx.op!!.type) {
-                Tokens.EQ -> state.getVar(varName).contains(value)
-                Tokens.NEQ -> !state.getVar(varName).contains(value)
+                Tokens.EQ -> context.getVar(varName).contains(value)
+                Tokens.NEQ -> !context.getVar(varName).contains(value)
                 else -> unexpectedToken(ctx.op!!)
             }
         }
@@ -47,7 +47,7 @@ internal class StateExpressionEvaluator(private val state: State) {
         }
 
         override fun visitIsSetFunc(ctx: StateExpressionParser.IsSetFuncContext) =
-            state.getVar(ctx.varName!!.text!!).isNotEmpty()
+            context.getVar(ctx.varName!!.text!!).isNotEmpty()
 
         override fun defaultResult() = false
     }
@@ -56,7 +56,7 @@ internal class StateExpressionEvaluator(private val state: State) {
         override fun visitIntAtom(ctx: StateExpressionParser.IntAtomContext) = ctx.value!!.text!!.toInt()
 
         override fun visitValuesFunc(ctx: StateExpressionParser.ValuesFuncContext) =
-            state.getVar(ctx.varName!!.text!!).size
+            context.getVar(ctx.varName!!.text!!).size
 
         override fun defaultResult() = 0
     }

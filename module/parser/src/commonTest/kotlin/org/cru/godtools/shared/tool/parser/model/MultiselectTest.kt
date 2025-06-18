@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.state.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
@@ -28,7 +28,7 @@ import org.cru.godtools.shared.tool.util.assertEquals
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class MultiselectTest : UsesResources() {
-    private val state by lazy { State() }
+    private val expressionCtx by lazy { SimpleExpressionContext() }
 
     // region parse Multiselect
     @Test
@@ -123,27 +123,27 @@ class MultiselectTest : UsesResources() {
     fun testOptionIsSelected() {
         val multiselect = Multiselect { it.options(2) }
 
-        multiselect.options[0].toggleSelected(state)
-        assertTrue(multiselect.options[0].isSelected(state))
-        assertFalse(multiselect.options[1].isSelected(state))
+        multiselect.options[0].toggleSelected(expressionCtx)
+        assertTrue(multiselect.options[0].isSelected(expressionCtx))
+        assertFalse(multiselect.options[1].isSelected(expressionCtx))
     }
 
     @Test
     fun testOptionIsSelectedFlow() = runTest {
         val multiselect = Multiselect { it.options(2) }
-        multiselect.options[0].isSelectedFlow(state).test {
+        multiselect.options[0].isSelectedFlow(expressionCtx).test {
             assertFalse(awaitItem(), "Initially not selected")
 
-            multiselect.options[0].toggleSelected(state)
+            multiselect.options[0].toggleSelected(expressionCtx)
             assertTrue(awaitItem(), "Toggled this option to true")
 
-            multiselect.options[1].toggleSelected(state)
+            multiselect.options[1].toggleSelected(expressionCtx)
             assertFalse(awaitItem(), "Toggled other option to true")
 
-            multiselect.options[1].toggleSelected(state)
+            multiselect.options[1].toggleSelected(expressionCtx)
             expectNoEvents() // Toggled other option to false
 
-            state.setVar("other", listOf("test"))
+            expressionCtx.setVar("other", listOf("test"))
             expectNoEvents() // Set unrelated state value
         }
     }
@@ -155,23 +155,23 @@ class MultiselectTest : UsesResources() {
         val multiselect = Multiselect { it.options(2) }
         val option = multiselect.options[0]
 
-        val watcher = option.watchIsSelected(state) { selected = it }
+        val watcher = option.watchIsSelected(expressionCtx) { selected = it }
         assertFalse(selected, "Initially not selected")
 
-        multiselect.options[0].toggleSelected(state)
+        multiselect.options[0].toggleSelected(expressionCtx)
         assertTrue(selected, "Toggled this option to true")
 
-        multiselect.options[1].toggleSelected(state)
+        multiselect.options[1].toggleSelected(expressionCtx)
         assertFalse(selected, "Toggled other option to true")
 
-        multiselect.options[1].toggleSelected(state)
+        multiselect.options[1].toggleSelected(expressionCtx)
         assertFalse(selected, "Toggled other option to false")
 
-        state.setVar("other", listOf("test"))
+        expressionCtx.setVar("other", listOf("test"))
         assertFalse(selected, "Set unrelated state value")
 
         watcher.close()
-        multiselect.options[0].toggleSelected(state)
+        multiselect.options[0].toggleSelected(expressionCtx)
         assertFalse(selected, "Watcher was already closed")
     }
     // endregion *isSelected*()
@@ -181,23 +181,23 @@ class MultiselectTest : UsesResources() {
     fun testOptionToggleSelectedSingleSelection() {
         with(Multiselect(selectionLimit = 1) { it.options(2) }) {
             // initial state
-            assertFalse(options[0].isSelected(state))
-            assertFalse(options[1].isSelected(state))
+            assertFalse(options[0].isSelected(expressionCtx))
+            assertFalse(options[1].isSelected(expressionCtx))
 
             // select first
-            assertTrue(options[0].toggleSelected(state))
-            assertTrue(options[0].isSelected(state))
-            assertFalse(options[1].isSelected(state))
+            assertTrue(options[0].toggleSelected(expressionCtx))
+            assertTrue(options[0].isSelected(expressionCtx))
+            assertFalse(options[1].isSelected(expressionCtx))
 
             // select second
-            assertTrue(options[1].toggleSelected(state))
-            assertFalse(options[0].isSelected(state))
-            assertTrue(options[1].isSelected(state))
+            assertTrue(options[1].toggleSelected(expressionCtx))
+            assertFalse(options[0].isSelected(expressionCtx))
+            assertTrue(options[1].isSelected(expressionCtx))
 
             // unselect second
-            assertTrue(options[1].toggleSelected(state))
-            assertFalse(options[0].isSelected(state))
-            assertFalse(options[1].isSelected(state))
+            assertTrue(options[1].toggleSelected(expressionCtx))
+            assertFalse(options[0].isSelected(expressionCtx))
+            assertFalse(options[1].isSelected(expressionCtx))
         }
     }
 
@@ -205,52 +205,52 @@ class MultiselectTest : UsesResources() {
     fun testOptionToggleSelectedMultipleSelections() {
         with(Multiselect(selectionLimit = 2) { it.options(3) }) {
             // initial state
-            assertFalse(options[0].isSelected(state))
-            assertFalse(options[1].isSelected(state))
-            assertFalse(options[2].isSelected(state))
+            assertFalse(options[0].isSelected(expressionCtx))
+            assertFalse(options[1].isSelected(expressionCtx))
+            assertFalse(options[2].isSelected(expressionCtx))
 
             // select first
-            assertTrue(options[0].toggleSelected(state))
-            assertTrue(options[0].isSelected(state))
-            assertFalse(options[1].isSelected(state))
-            assertFalse(options[2].isSelected(state))
+            assertTrue(options[0].toggleSelected(expressionCtx))
+            assertTrue(options[0].isSelected(expressionCtx))
+            assertFalse(options[1].isSelected(expressionCtx))
+            assertFalse(options[2].isSelected(expressionCtx))
 
             // select second
-            assertTrue(options[1].toggleSelected(state))
-            assertTrue(options[0].isSelected(state))
-            assertTrue(options[1].isSelected(state))
-            assertFalse(options[2].isSelected(state))
+            assertTrue(options[1].toggleSelected(expressionCtx))
+            assertTrue(options[0].isSelected(expressionCtx))
+            assertTrue(options[1].isSelected(expressionCtx))
+            assertFalse(options[2].isSelected(expressionCtx))
 
             // try to select third
-            assertFalse(options[2].toggleSelected(state))
-            assertTrue(options[0].isSelected(state))
-            assertTrue(options[1].isSelected(state))
-            assertFalse(options[2].isSelected(state))
+            assertFalse(options[2].toggleSelected(expressionCtx))
+            assertTrue(options[0].isSelected(expressionCtx))
+            assertTrue(options[1].isSelected(expressionCtx))
+            assertFalse(options[2].isSelected(expressionCtx))
 
             // unselect first
-            assertTrue(options[0].toggleSelected(state))
-            assertFalse(options[0].isSelected(state))
-            assertTrue(options[1].isSelected(state))
-            assertFalse(options[2].isSelected(state))
+            assertTrue(options[0].toggleSelected(expressionCtx))
+            assertFalse(options[0].isSelected(expressionCtx))
+            assertTrue(options[1].isSelected(expressionCtx))
+            assertFalse(options[2].isSelected(expressionCtx))
         }
     }
 
     @Test
     fun `Option - toggleSelected - sets ExpressionContext var`() {
         val multiselect = Multiselect(stateName = "varName", selectionLimit = 2) { it.options(3) }
-        assertEquals(emptyList(), state.getVar("varName"))
+        assertEquals(emptyList(), expressionCtx.getVar("varName"))
 
-        multiselect.options[2].toggleSelected(state)
-        assertEquals(setOf("2"), state.getVar("varName").toSet())
+        multiselect.options[2].toggleSelected(expressionCtx)
+        assertEquals(setOf("2"), expressionCtx.getVar("varName").toSet())
 
-        multiselect.options[0].toggleSelected(state)
-        assertEquals(setOf("2", "0"), state.getVar("varName").toSet())
+        multiselect.options[0].toggleSelected(expressionCtx)
+        assertEquals(setOf("2", "0"), expressionCtx.getVar("varName").toSet())
 
-        multiselect.options[1].toggleSelected(state)
-        assertEquals(setOf("2", "0"), state.getVar("varName").toSet())
+        multiselect.options[1].toggleSelected(expressionCtx)
+        assertEquals(setOf("2", "0"), expressionCtx.getVar("varName").toSet())
 
-        multiselect.options[2].toggleSelected(state)
-        assertEquals(setOf("0"), state.getVar("varName").toSet())
+        multiselect.options[2].toggleSelected(expressionCtx)
+        assertEquals(setOf("0"), expressionCtx.getVar("varName").toSet())
     }
     // endregion Option.toggleSelected()
 

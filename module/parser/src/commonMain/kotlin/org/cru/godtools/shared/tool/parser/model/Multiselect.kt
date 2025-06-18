@@ -14,7 +14,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.flow.distinctUntilChanged
-import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.state.ExpressionContext
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
@@ -189,16 +189,17 @@ class Multiselect : Content {
             else -> error("The $type trigger type is currently unsupported on Multiselect Options")
         }
 
-        fun isSelected(state: State) = value in state.getVar(multiselect.stateName)
-        fun isSelectedFlow(state: State) =
-            state.varsChangeFlow(setOf(multiselect.stateName)) { isSelected(it) }.distinctUntilChanged()
-        fun watchIsSelected(state: State, block: (isSelected: Boolean) -> Unit) = isSelectedFlow(state).watch(block)
-        fun toggleSelected(state: State): Boolean {
-            val current = state.getVar(multiselect.stateName)
+        fun isSelected(ctx: ExpressionContext) = value in ctx.getVar(multiselect.stateName)
+        fun isSelectedFlow(ctx: ExpressionContext) =
+            ctx.varsChangeFlow(setOf(multiselect.stateName)) { isSelected(it) }.distinctUntilChanged()
+        fun watchIsSelected(ctx: ExpressionContext, block: (isSelected: Boolean) -> Unit) =
+            isSelectedFlow(ctx).watch(block)
+        fun toggleSelected(ctx: ExpressionContext): Boolean {
+            val current = ctx.getVar(multiselect.stateName)
             when {
-                value in current -> state.removeVarValue(multiselect.stateName, value)
-                current.size < multiselect.selectionLimit -> state.addVarValue(multiselect.stateName, value)
-                multiselect.selectionLimit == 1 -> state.setVar(multiselect.stateName, listOf(value))
+                value in current -> ctx.removeVarValue(multiselect.stateName, value)
+                current.size < multiselect.selectionLimit -> ctx.addVarValue(multiselect.stateName, value)
+                multiselect.selectionLimit == 1 -> ctx.setVar(multiselect.stateName, listOf(value))
                 else -> return false
             }
             return true
