@@ -1,11 +1,24 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.background
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
+import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 
 class RenderTextPaparazziTest : BasePaparazziTest() {
+    private val multilineString = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    """.trimIndent().replace("\n", " ")
+
     @Test
     fun `RenderText() - Simple`() = contentSnapshot {
         RenderContentStack(listOf(Text(text = "Simple Text")))
@@ -64,7 +77,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
-    fun `RenderText() - With Start Image`() = contentSnapshot {
+    fun `RenderText() - Start & End Images`() = contentSnapshot {
         RenderContentStack(
             listOf(
                 Text(
@@ -72,30 +85,14 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                     text = "Start Image",
                     textAlign = Text.Align.START,
                     startImage = "bruce"
-                )
-            ),
-        )
-    }
-
-    @Test
-    fun `RenderText() - With Start And End Image`() = contentSnapshot {
-        RenderContentStack(
-            listOf(
+                ),
                 Text(
                     manifest,
                     text = "Start And End Image",
                     textAlign = Text.Align.START,
                     startImage = "bruce",
                     endImage = "bruce"
-                )
-            ),
-        )
-    }
-
-    @Test
-    fun `RenderText() - With End Image`() = contentSnapshot {
-        RenderContentStack(
-            listOf(
+                ),
                 Text(
                     manifest,
                     text = "End Image",
@@ -107,17 +104,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
-    fun `RenderText() - Multiline Text With Start And End Image`() = contentSnapshot {
-        val multilineString = """
-            |Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            |sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            |Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-            |Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-            |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            """
-            .trimMargin()
-            .replace("\n", "")
-
+    fun `RenderText() - Start & End Images - Multiline Text`() = contentSnapshot {
         RenderContentStack(
             listOf(
                 Text(
@@ -132,7 +119,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
-    fun `RenderText() - Tall Start And End Image`() = contentSnapshot {
+    fun `RenderText() - Start & End Images - Aspect Ratio`() = contentSnapshot {
         RenderContentStack(
             listOf(
                 Text(
@@ -141,15 +128,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                     textAlign = Text.Align.START,
                     startImage = "tall",
                     endImage = "tall"
-                )
-            ),
-        )
-    }
-
-    @Test
-    fun `RenderText() - Wide Start And End Image`() = contentSnapshot {
-        RenderContentStack(
-            listOf(
+                ),
                 Text(
                     manifest,
                     text = "Wide",
@@ -162,7 +141,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
-    fun `RenderText() - Image Sizes`() = contentSnapshot {
+    fun `RenderText() - Start & End Images - Image Sizes`() = contentSnapshot {
         RenderContentStack(
             listOf(
                 Text(
@@ -184,6 +163,40 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                     endImageSize = 80,
                 )
             ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Start & End Images - Transparency`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Spacer(mode = Spacer.Mode.AUTO),
+                Text(
+                    manifest,
+                    text = "Black Panther",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "black_panther",
+                    endImage = "black_panther",
+                ),
+                Spacer(mode = Spacer.Mode.AUTO),
+                Text(
+                    manifest,
+                    text = "Black Panther",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "black_panther",
+                    endImage = "black_panther",
+                ),
+                Spacer(mode = Spacer.Mode.AUTO),
+                Text(
+                    manifest,
+                    text = "Black Panther",
+                    textAlign = Text.Align.CENTER,
+                    startImage = "black_panther",
+                    endImage = "black_panther",
+                ),
+                Spacer(mode = Spacer.Mode.AUTO),
+            ),
+            modifier = Modifier.background(Brush.verticalGradient(listOf(Color.Green, Color.Blue)))
         )
     }
 }

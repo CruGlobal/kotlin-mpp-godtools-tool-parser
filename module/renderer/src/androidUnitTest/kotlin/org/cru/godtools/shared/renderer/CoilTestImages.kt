@@ -5,4 +5,7 @@ import coil3.asImage
 
 object CoilTestImages {
     val bruce = Drawable.createFromStream(this.javaClass.getResourceAsStream("bruce.jpg"), "bruce.jpg")!!.asImage()
+    val blackPanther =
+        Drawable.createFromStream(this.javaClass.getResourceAsStream("black_panther.png"), "black_panther.png")!!
+            .asImage()
 }
