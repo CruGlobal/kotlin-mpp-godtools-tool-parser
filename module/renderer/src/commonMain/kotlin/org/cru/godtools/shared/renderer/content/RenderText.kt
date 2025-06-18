@@ -26,6 +26,8 @@ import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Text
 
+private val IMAGE_PADDING_TO_TEXT = 8.dp
+
 @Composable
 internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     modifier = Modifier
@@ -33,15 +35,13 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
         .padding(horizontal = Horizontal_Padding)
         .fillMaxWidth()
 ) {
-    val imagePaddingToText: Int = 10
-
     text.startImage?.let {
         RenderImageNode(
             resource = it,
             imageSize = text.startImageSize,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(end = imagePaddingToText.dp)
+                .padding(end = IMAGE_PADDING_TO_TEXT)
         )
     }
 
@@ -58,7 +58,7 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
             imageSize = text.endImageSize,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(start = imagePaddingToText.dp)
+                .padding(start = IMAGE_PADDING_TO_TEXT)
         )
     }
 }
