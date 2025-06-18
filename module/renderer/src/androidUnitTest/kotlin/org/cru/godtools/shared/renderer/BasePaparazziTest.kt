@@ -37,7 +37,12 @@ abstract class BasePaparazziTest(
     )
 
     protected val manifest = Manifest(
-        resources = { TestResources.resources + Resource(name = "bruce", localName = "bruce.jpg") },
+        resources = {
+            listOf(
+                Resource(name = "bruce", localName = "bruce.jpg"),
+                Resource(name = "black_panther", localName = "black_panther.png")
+            ) + TestResources.resources
+        },
     )
 
     @BeforeTest
@@ -45,6 +50,7 @@ abstract class BasePaparazziTest(
     fun setupCoil() {
         val engine = TestResources.coilEngine.newBuilder()
             .intercept("bruce.jpg".toPath(), CoilTestImages.bruce)
+            .intercept("black_panther.png".toPath(), CoilTestImages.blackPanther)
             .build()
 
         SingletonImageLoader.setUnsafe(
