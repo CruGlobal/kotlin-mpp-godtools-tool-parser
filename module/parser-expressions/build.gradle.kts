@@ -19,6 +19,11 @@ kotlin {
                 implementation(libs.kotlin.coroutines.core)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(libs.turbine)
+            }
+        }
     }
 }
 
