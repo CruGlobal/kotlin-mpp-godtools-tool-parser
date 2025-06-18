@@ -176,6 +176,7 @@ class MultiselectTest : UsesResources() {
     }
     // endregion *isSelected*()
 
+    // region Option.toggleSelected()
     @Test
     fun testOptionToggleSelectedSingleSelection() {
         with(Multiselect(selectionLimit = 1) { it.options(2) }) {
@@ -235,14 +236,23 @@ class MultiselectTest : UsesResources() {
     }
 
     @Test
-    fun testMultiselectAffectsEventIdResolution() {
-        val eventId = EventId(EventId.NAMESPACE_STATE, "test")
-        val multiselect = Multiselect(stateName = eventId.name, selectionLimit = 2) { it.options(3) }
+    fun `Option - toggleSelected - sets ExpressionContext var`() {
+        val multiselect = Multiselect(stateName = "varName", selectionLimit = 2) { it.options(3) }
+        assertEquals(emptyList(), state.getVar("varName"))
 
         multiselect.options[2].toggleSelected(state)
+        assertEquals(setOf("2"), state.getVar("varName").toSet())
+
         multiselect.options[0].toggleSelected(state)
-        assertEquals(listOf(EventId(name = "2"), EventId(name = "0")), eventId.resolve(state))
+        assertEquals(setOf("2", "0"), state.getVar("varName").toSet())
+
+        multiselect.options[1].toggleSelected(state)
+        assertEquals(setOf("2", "0"), state.getVar("varName").toSet())
+
+        multiselect.options[2].toggleSelected(state)
+        assertEquals(setOf("0"), state.getVar("varName").toSet())
     }
+    // endregion Option.toggleSelected()
 
     @Test
     fun testOptionBackgroundColorFallback() {
