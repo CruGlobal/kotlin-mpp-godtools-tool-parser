@@ -48,7 +48,7 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     RenderTextNode(
         text = text,
         modifier = Modifier
-            .align(Alignment.CenterVertically)
+            .align(Alignment.Top)
             .weight(1.0f, fill = true)
     )
 
