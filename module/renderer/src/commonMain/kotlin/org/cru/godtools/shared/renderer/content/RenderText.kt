@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -42,7 +41,7 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
             imageSize = text.startImageSize,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(paddingValues = PaddingValues(end = imagePaddingToText.dp))
+                .padding(end = imagePaddingToText.dp)
         )
     }
 
@@ -59,7 +58,7 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
             imageSize = text.endImageSize,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(paddingValues = PaddingValues(start = imagePaddingToText.dp))
+                .padding(start = imagePaddingToText.dp)
         )
     }
 }
