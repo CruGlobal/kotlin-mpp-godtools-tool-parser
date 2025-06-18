@@ -70,7 +70,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                 Text(
                     manifest,
                     text = "Start Image",
-                    textAlign = Text.Align.CENTER,
+                    textAlign = Text.Align.START,
                     startImage = "bruce"
                 )
             ),
@@ -84,7 +84,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                 Text(
                     manifest,
                     text = "Start And End Image",
-                    textAlign = Text.Align.CENTER,
+                    textAlign = Text.Align.START,
                     startImage = "bruce",
                     endImage = "bruce"
                 )
@@ -99,7 +99,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                 Text(
                     manifest,
                     text = "End Image",
-                    textAlign = Text.Align.CENTER,
+                    textAlign = Text.Align.START,
                     endImage = "bruce"
                 )
             ),
@@ -119,7 +119,7 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                 Text(
                     manifest,
                     text = multilineString,
-                    textAlign = Text.Align.CENTER,
+                    textAlign = Text.Align.START,
                     startImage = "bruce",
                     endImage = "bruce"
                 )

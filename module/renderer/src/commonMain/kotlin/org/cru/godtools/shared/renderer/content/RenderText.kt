@@ -1,6 +1,5 @@
 package org.cru.godtools.shared.renderer.content
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,6 +25,7 @@ import org.cru.godtools.shared.renderer.content.extensions.textAlign
 import org.cru.godtools.shared.renderer.content.extensions.toPath
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
+import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Text
 
 @Composable
@@ -35,37 +35,26 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
         .padding(horizontal = Horizontal_Padding)
         .fillMaxWidth()
 ) {
-    val hasImage: Boolean = text.startImage != null || text.endImage != null
-    val horizontalArrangement: Arrangement.Horizontal = if (hasImage) Arrangement.Center else Arrangement.Start
-
     RenderTextWithImages(
         text = text,
-        state = state,
-        hasImage = hasImage,
-        horizontalArrangement = horizontalArrangement
+        state = state
     )
 }
 
 @Composable
-private fun RowScope.RenderTextWithImages(text: Text, state: State, hasImage: Boolean, horizontalArrangement: Arrangement.Horizontal) = Row(
+private fun RowScope.RenderTextWithImages(text: Text, state: State) = Row(
     modifier = Modifier
-        .fillMaxWidth(),
-    horizontalArrangement = horizontalArrangement
+        .fillMaxWidth()
 ) {
     val imagePaddingToText: Int = 10
 
     text.startImage?.let {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalPlatformContext.current)
-                .fileSystem(LocalResourceFileSystem.current)
-                .data(it.toPath())
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
+        RenderImageNode(
+            resource = it,
+            imageSize = text.startImageSize,
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(paddingValues = PaddingValues(end = imagePaddingToText.dp))
-                .size(width = text.startImageSize.dp, height = text.startImageSize.dp)
+                .align(Alignment.CenterVertically),
+            endPadding = imagePaddingToText
         )
     }
 
@@ -73,30 +62,16 @@ private fun RowScope.RenderTextWithImages(text: Text, state: State, hasImage: Bo
         text = text,
         modifier = Modifier
             .align(Alignment.CenterVertically)
-            .then(
-                if (hasImage) {
-                    Modifier
-                        .weight(1.0f, fill = false)
-                }
-                else {
-                    Modifier
-                        .fillMaxWidth()
-                }
-            )
+            .weight(1.0f, fill = true)
     )
 
     text.endImage?.let {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalPlatformContext.current)
-                .fileSystem(LocalResourceFileSystem.current)
-                .data(it.toPath())
-                .build(),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
+        RenderImageNode(
+            resource = it,
+            imageSize = text.endImageSize,
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(paddingValues = PaddingValues(start = imagePaddingToText.dp))
-                .size(width = text.endImageSize.dp, height = text.endImageSize.dp)
+                .align(Alignment.CenterVertically),
+            startPadding = imagePaddingToText
         )
     }
 }
@@ -111,5 +86,26 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
         textAlign = text.textAlign.textAlign,
         modifier = modifier
+    )
+}
+
+@Composable
+private fun RenderImageNode(
+    resource: Resource,
+    imageSize: Int,
+    modifier: Modifier = Modifier,
+    startPadding: Int = 0,
+    endPadding: Int = 0
+) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalPlatformContext.current)
+            .fileSystem(LocalResourceFileSystem.current)
+            .data(resource.toPath())
+            .build(),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = modifier
+            .padding(paddingValues = PaddingValues(start = startPadding.dp, end = endPadding.dp))
+            .size(width = imageSize.dp, height = imageSize.dp)
     )
 }
