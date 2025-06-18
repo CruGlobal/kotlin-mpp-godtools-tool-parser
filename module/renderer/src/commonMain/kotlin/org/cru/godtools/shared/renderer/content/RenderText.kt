@@ -1,21 +1,24 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
@@ -78,14 +81,28 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
 
 @Composable
 private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifier = Modifier) {
-    AsyncImage(
+    val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .fileSystem(LocalResourceFileSystem.current)
             .data(resource.toPath())
             .build(),
+    )
+    val aspectRatio = painter.intrinsicSize.aspectRatio
+
+    Image(
+        painter = painter,
         contentDescription = null,
         contentScale = ContentScale.Fit,
         modifier = modifier
-            .size(width = imageSize.dp, height = imageSize.dp)
+            .sizeIn(maxWidth = imageSize.dp, maxHeight = imageSize.dp)
+            .then(
+                when {
+                    !aspectRatio.isNaN() -> Modifier
+                        .aspectRatio(aspectRatio, matchHeightConstraintsFirst = aspectRatio < 1f)
+                    else -> Modifier
+                },
+            ),
     )
 }
+
+private val Size.aspectRatio get() = width / height
