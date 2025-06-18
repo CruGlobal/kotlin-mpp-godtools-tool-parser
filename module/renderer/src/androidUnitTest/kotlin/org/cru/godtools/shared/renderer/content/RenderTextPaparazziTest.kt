@@ -160,4 +160,30 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             ),
         )
     }
+
+    @Test
+    fun `RenderText() - Image Sizes`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "<- Large, Small ->",
+                    textAlign = Text.Align.START,
+                    startImage = "bruce",
+                    startImageSize = 80,
+                    endImage = "bruce",
+                    endImageSize = 20,
+                ),
+                Text(
+                    manifest,
+                    text = "<- Small, Large ->",
+                    textAlign = Text.Align.START,
+                    startImage = "bruce",
+                    startImageSize = 20,
+                    endImage = "bruce",
+                    endImageSize = 80,
+                )
+            ),
+        )
+    }
 }
