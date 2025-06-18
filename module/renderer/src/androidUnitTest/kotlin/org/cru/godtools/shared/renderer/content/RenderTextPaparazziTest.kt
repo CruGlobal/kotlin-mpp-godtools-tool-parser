@@ -126,4 +126,34 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
             ),
         )
     }
+
+    @Test
+    fun `RenderText() - Tall Start And End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Tall",
+                    textAlign = Text.Align.START,
+                    startImage = "tall",
+                    endImage = "tall"
+                )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Wide Start And End Image`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Wide",
+                    textAlign = Text.Align.START,
+                    startImage = "wide",
+                    endImage = "wide"
+                )
+            ),
+        )
+    }
 }
