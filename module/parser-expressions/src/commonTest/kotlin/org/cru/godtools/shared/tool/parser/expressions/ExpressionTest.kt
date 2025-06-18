@@ -9,8 +9,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
-import org.cru.godtools.shared.renderer.state.ExpressionContext
-import org.cru.godtools.shared.renderer.state.SimpleExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 
 class ExpressionTest {
     private val ctx = SimpleExpressionContext()

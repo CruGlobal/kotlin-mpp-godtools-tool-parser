@@ -1,6 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import org.cru.godtools.shared.renderer.state.ExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 

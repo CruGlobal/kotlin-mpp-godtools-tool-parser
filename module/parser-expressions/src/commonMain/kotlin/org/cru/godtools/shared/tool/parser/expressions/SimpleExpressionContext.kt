@@ -1,6 +1,6 @@
-package org.cru.godtools.shared.renderer.state
+package org.cru.godtools.shared.tool.parser.expressions
 
-import androidx.annotation.VisibleForTesting
+import androidx.annotation.RestrictTo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filter
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 
-@VisibleForTesting
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 class SimpleExpressionContext(
     private val vars: MutableMap<String, List<String>?> = mutableMapOf()
 ) : ExpressionContext {

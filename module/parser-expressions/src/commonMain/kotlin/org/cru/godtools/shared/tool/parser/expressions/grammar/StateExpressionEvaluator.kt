@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.tool.parser.expressions.grammar
 
 import org.antlr.v4.kotlinruntime.Token
-import org.cru.godtools.shared.renderer.state.ExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionBaseVisitor
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser.Tokens

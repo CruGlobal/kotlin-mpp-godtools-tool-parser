@@ -12,8 +12,8 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.cru.godtools.shared.renderer.state.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 
 @OptIn(ExperimentalCoroutinesApi::class)

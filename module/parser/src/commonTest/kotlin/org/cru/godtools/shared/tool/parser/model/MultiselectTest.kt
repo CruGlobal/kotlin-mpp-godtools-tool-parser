@@ -15,9 +15,9 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.renderer.state.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger

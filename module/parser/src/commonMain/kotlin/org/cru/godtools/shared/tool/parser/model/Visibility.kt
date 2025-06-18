@@ -7,8 +7,8 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import org.cru.godtools.shared.renderer.state.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser

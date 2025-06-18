@@ -8,6 +8,8 @@ import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
 import org.cru.godtools.shared.renderer.state.internal.Parcelize
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 
 @JsExport
 @Parcelize
