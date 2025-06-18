@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
-import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
@@ -48,7 +48,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
             Button.Style.CONTAINED, Button.Style.UNKNOWN -> null
         },
         modifier = Modifier
-            .invisibleIf(content = button, state = state)
+            .visibility(button, state)
             .padding(horizontal = Horizontal_Padding)
             .width(button.width)
             .align(button.gravity.alignment)

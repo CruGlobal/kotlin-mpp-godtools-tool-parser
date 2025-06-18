@@ -20,9 +20,9 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
-import org.cru.godtools.shared.renderer.content.extensions.invisibleIf
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
 import org.cru.godtools.shared.renderer.content.extensions.toPath
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Resource
@@ -31,7 +31,7 @@ import org.cru.godtools.shared.tool.parser.model.Text
 @Composable
 internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     modifier = Modifier
-        .invisibleIf(content = text, state = state)
+        .visibility(text, state)
         .padding(horizontal = Horizontal_Padding)
         .fillMaxWidth()
 ) {
@@ -103,7 +103,7 @@ private fun RenderImageNode(
             .data(resource.toPath())
             .build(),
         contentDescription = null,
-        contentScale = ContentScale.FillBounds,
+        contentScale = ContentScale.Fit,
         modifier = modifier
             .padding(paddingValues = PaddingValues(start = startPadding.dp, end = endPadding.dp))
             .size(width = imageSize.dp, height = imageSize.dp)
