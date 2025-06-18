@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
+import coil3.compose.rememberConstraintsSizeResolver
 import coil3.request.ImageRequest
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
@@ -81,10 +82,12 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
 
 @Composable
 private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifier = Modifier) {
+    val sizeResolver = rememberConstraintsSizeResolver()
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalPlatformContext.current)
             .fileSystem(LocalResourceFileSystem.current)
             .data(resource.toPath())
+            .size(sizeResolver)
             .build(),
     )
     val aspectRatio = painter.intrinsicSize.aspectRatio
@@ -95,6 +98,7 @@ private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifi
         contentScale = ContentScale.Fit,
         modifier = modifier
             .sizeIn(maxWidth = imageSize.dp, maxHeight = imageSize.dp)
+            .then(sizeResolver)
             .then(
                 when {
                     !aspectRatio.isNaN() ->
