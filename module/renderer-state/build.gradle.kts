@@ -25,6 +25,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":module:common"))
+                api(project(":module:parser-expressions"))
                 implementation(project(":module:parser-base"))
 
                 implementation(libs.androidx.annotation)

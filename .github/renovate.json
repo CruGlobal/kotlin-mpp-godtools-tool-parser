@@ -6,6 +6,10 @@
     "dependencies"
   ],
   "dependencyDashboard": true,
+  "baseBranches": [
+    "$default",
+    "/^feature\\/.*/"
+  ],
   "lockFileMaintenance": {
     "enabled": true
   },
@@ -26,6 +30,10 @@
       "matchPackageNames": [
         "org.jetbrains.kotlinx:kotlinx-coroutines-{/,}**"
       ]
+    },
+    {
+      "matchBaseBranches": [ "/^feature\\/.*/" ],
+      "dependencyDashboardApproval": true
     }
   ]
 }

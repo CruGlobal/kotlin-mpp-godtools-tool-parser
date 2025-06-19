@@ -13,10 +13,15 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":module:renderer-state"))
-
                 implementation(kotlin("stdlib-common"))
+                implementation(libs.androidx.annotation)
                 implementation(libs.antlr.kotlin.runtime)
+                implementation(libs.kotlin.coroutines.core)
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation(libs.turbine)
             }
         }
     }

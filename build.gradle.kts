@@ -32,6 +32,7 @@ kotlin {
                 api(project(":module:parser"))
                 api(project(":module:parser-base"))
                 api(project(":module:renderer"))
+                api(project(":module:renderer-state"))
                 api(project(":module:user-activity"))
             }
         }

@@ -18,6 +18,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":module:parser"))
+                api(project(":module:renderer-state"))
 
                 implementation(compose.runtime)
                 implementation(compose.material3)
