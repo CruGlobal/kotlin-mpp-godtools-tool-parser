@@ -7,7 +7,6 @@ import org.antlr.v4.kotlinruntime.ParserRuleContext
 import org.antlr.v4.kotlinruntime.Token
 import org.antlr.v4.kotlinruntime.misc.ParseCancellationException
 import org.antlr.v4.kotlinruntime.tree.TerminalNode
-import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.expressions.grammar.StateExpressionEvaluator
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionLexer
 import org.cru.godtools.shared.tool.parser.expressions.grammar.generated.StateExpressionParser
@@ -17,7 +16,7 @@ class Expression internal constructor(
     private val raw: String,
 ) {
     fun isValid() = expr != null
-    fun evaluate(state: State) = checkNotNull(expr).accept(StateExpressionEvaluator(state).booleanExpr)
+    fun evaluate(ctx: ExpressionContext) = checkNotNull(expr).accept(StateExpressionEvaluator(ctx).booleanExpr)
     fun vars() = expr?.vars()?.toSet().orEmpty()
 
     override fun equals(other: Any?) = when {

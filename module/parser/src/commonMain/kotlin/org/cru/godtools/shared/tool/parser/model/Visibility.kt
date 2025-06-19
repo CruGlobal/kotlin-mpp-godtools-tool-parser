@@ -7,8 +7,8 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.expressions.Expression
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.toExpressionOrNull
 import org.cru.godtools.shared.tool.parser.util.FlowWatcher.Companion.watch
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -22,16 +22,16 @@ interface Visibility {
     val invisibleIf: Expression?
     val goneIf: Expression?
 
-    fun isInvisible(state: State) = invisibleIf?.evaluate(state) == true
-    fun isInvisibleFlow(state: State) =
-        state.varsChangeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
-    fun isGone(state: State) = goneIf?.evaluate(state) == true
-    fun isGoneFlow(state: State) = state.varsChangeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
+    fun isInvisible(ctx: ExpressionContext) = invisibleIf?.evaluate(ctx) == true
+    fun isInvisibleFlow(ctx: ExpressionContext) =
+        ctx.varsChangeFlow(invisibleIf?.vars()) { isInvisible(it) }.distinctUntilChanged()
+    fun isGone(ctx: ExpressionContext) = goneIf?.evaluate(ctx) == true
+    fun isGoneFlow(ctx: ExpressionContext) = ctx.varsChangeFlow(goneIf?.vars()) { isGone(it) }.distinctUntilChanged()
 
-    fun watchIsGone(state: State, block: (Boolean) -> Unit) = isGoneFlow(state).watch(block)
-    fun watchIsInvisible(state: State, block: (Boolean) -> Unit) = isInvisibleFlow(state).watch(block)
-    fun watchVisibility(state: State, block: (isInvisible: Boolean, isGone: Boolean) -> Unit) =
-        isInvisibleFlow(state).combine(isGoneFlow(state)) { invisible, gone -> Pair(invisible, gone) }
+    fun watchIsGone(ctx: ExpressionContext, block: (Boolean) -> Unit) = isGoneFlow(ctx).watch(block)
+    fun watchIsInvisible(ctx: ExpressionContext, block: (Boolean) -> Unit) = isInvisibleFlow(ctx).watch(block)
+    fun watchVisibility(ctx: ExpressionContext, block: (isInvisible: Boolean, isGone: Boolean) -> Unit) =
+        isInvisibleFlow(ctx).combine(isGoneFlow(ctx)) { invisible, gone -> Pair(invisible, gone) }
             .watch { block(it.first, it.second) }
 }
 

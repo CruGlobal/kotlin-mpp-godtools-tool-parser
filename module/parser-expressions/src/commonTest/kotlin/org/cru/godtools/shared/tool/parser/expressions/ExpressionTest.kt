@@ -9,10 +9,11 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
-import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 
 class ExpressionTest {
-    private val state = State()
+    private val ctx = SimpleExpressionContext()
 
     @Test
     fun testParseNullOrEmptyExpression() {
@@ -58,7 +59,7 @@ class ExpressionTest {
     @Test
     fun testEvaluateInvalidExpression() {
         try {
-            assertNotNull("asdf".toExpressionOrNull()).evaluate(state)
+            assertNotNull("asdf".toExpressionOrNull()).evaluate(ctx)
             fail("Invalid expressions should throw an IllegalStateException when evaluated")
         } catch (_: IllegalStateException) {
         }
@@ -81,13 +82,13 @@ class ExpressionTest {
     fun testEvaluateEquals() {
         assertExpression("a==\"test\"", false)
 
-        state.setVar("a", listOf("test"))
+        ctx.setVar("a", listOf("test"))
         assertExpression("a==\"test\"", true)
 
-        state.setVar("a", listOf("other", "test", "something"))
+        ctx.setVar("a", listOf("other", "test", "something"))
         assertExpression("a==\"test\"", true)
 
-        state.removeVarValue("a", "test")
+        ctx.removeVarValue("a", "test")
         assertExpression("a==\"test\"", false)
     }
 
@@ -95,13 +96,13 @@ class ExpressionTest {
     fun testEvaluateNotEquals() {
         assertExpression("a!=\"test\"", true)
 
-        state.setVar("a", listOf("test"))
+        ctx.setVar("a", listOf("test"))
         assertExpression("a!=\"test\"", false)
 
-        state.setVar("a", listOf("other", "test", "something"))
+        ctx.setVar("a", listOf("other", "test", "something"))
         assertExpression("a!=\"test\"", false)
 
-        state.removeVarValue("a", "test")
+        ctx.removeVarValue("a", "test")
         assertExpression("a!=\"test\"", true)
     }
 
@@ -159,16 +160,16 @@ class ExpressionTest {
 
     @Test
     fun testEvaluateFunctionIsSet() {
-        state.setVar("a", listOf("test"))
+        ctx.setVar("a", listOf("test"))
         assertExpression("isSet(a)", true)
         assertExpression("isSet(b)", false)
     }
 
     @Test
     fun testEvaluateFunctionValues() {
-        state.setVar("a", listOf("test"))
+        ctx.setVar("a", listOf("test"))
         assertExpression("values(a) == 1", true)
-        state.setVar("a", listOf("test", "test2"))
+        ctx.setVar("a", listOf("test", "test2"))
         assertExpression("values(a) == 2", true)
     }
 
@@ -194,9 +195,9 @@ class ExpressionTest {
         assertEquals(setOf("a", "b"), "(true && (a=='' && isSet(b)))".toExpressionOrNull()!!.vars())
     }
 
-    private fun assertExpression(expr: String, expected: Boolean, state: State = this.state) {
+    private fun assertExpression(expr: String, expected: Boolean, ctx: ExpressionContext = this.ctx) {
         val compiled = assertNotNull(expr.toExpressionOrNull())
         assertTrue(compiled.isValid(), "'$expr' should be a valid expression")
-        assertEquals(expected, compiled.evaluate(state), "'$expr` evaluated incorrectly")
+        assertEquals(expected, compiled.evaluate(ctx), "'$expr` evaluated incorrectly")
     }
 }

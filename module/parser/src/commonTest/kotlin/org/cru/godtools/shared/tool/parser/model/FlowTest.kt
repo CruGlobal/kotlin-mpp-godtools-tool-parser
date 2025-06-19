@@ -9,7 +9,7 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WIDTH
 import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY
@@ -17,7 +17,7 @@ import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class FlowTest : UsesResources() {
-    private val state = State()
+    private val expressionCtx = SimpleExpressionContext()
 
     @Test
     fun testParseFlowDefaults() = runTest {
@@ -51,13 +51,13 @@ class FlowTest : UsesResources() {
         val flow = Flow(Manifest(), getTestXmlParser("flow_visibility.xml"))
         assertEquals(1, flow.items.size)
         with(flow.items[0]) {
-            assertFalse(isInvisible(state))
-            state.setVar("invisible", listOf("true"))
-            assertTrue(isInvisible(state))
+            assertFalse(isInvisible(expressionCtx))
+            expressionCtx.setVar("invisible", listOf("true"))
+            assertTrue(isInvisible(expressionCtx))
 
-            assertFalse(isGone(state))
-            state.setVar("hidden", listOf("true"))
-            assertTrue(isGone(state))
+            assertFalse(isGone(expressionCtx))
+            expressionCtx.setVar("hidden", listOf("true"))
+            assertTrue(isGone(expressionCtx))
         }
     }
 
@@ -67,10 +67,10 @@ class FlowTest : UsesResources() {
         assertEquals(1, flow.items.size)
         with(flow.items[0]) {
             assertNull(invisibleIf)
-            assertFalse(isInvisible(state))
+            assertFalse(isInvisible(expressionCtx))
 
             assertNull(goneIf)
-            assertFalse(isGone(state))
+            assertFalse(isGone(expressionCtx))
         }
     }
 

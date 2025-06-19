@@ -14,6 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":module:parser"))
+                implementation(project(":module:renderer-state"))
             }
         }
     }

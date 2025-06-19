@@ -11,9 +11,9 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
+import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Button.Style.Companion.toButtonStyle
@@ -27,7 +27,7 @@ class ButtonTest : UsesResources() {
         override var primaryTextColor = TestColors.BLACK
         override var textAlign = Text.Align.START
     }
-    private val state = State()
+    private val expressionCtx = SimpleExpressionContext()
 
     // region Parse Button
     @Test
@@ -35,8 +35,8 @@ class ButtonTest : UsesResources() {
         val manifest = Manifest()
         with(Button(manifest, getTestXmlParser("button_event.xml"))) {
             assertFalse(isIgnored)
-            assertFalse(isGone(state))
-            assertFalse(isInvisible(state))
+            assertFalse(isGone(expressionCtx))
+            assertFalse(isInvisible(expressionCtx))
             assertEquals(manifest.buttonStyle, style)
             assertEquals(listOf(EventId(name = "event1"), EventId(name = "event2")), events)
             assertEquals("event button", text.text)
@@ -110,13 +110,13 @@ class ButtonTest : UsesResources() {
         with(Button(Manifest(), getTestXmlParser("button_visibility.xml"))) {
             assertFalse(isIgnored)
 
-            assertFalse(isInvisible(state))
-            state.setVar("invisible", listOf("true"))
-            assertTrue(isInvisible(state))
+            assertFalse(isInvisible(expressionCtx))
+            expressionCtx.setVar("invisible", listOf("true"))
+            assertTrue(isInvisible(expressionCtx))
 
-            assertFalse(isGone(state))
-            state.setVar("hidden", listOf("true"))
-            assertTrue(isGone(state))
+            assertFalse(isGone(expressionCtx))
+            expressionCtx.setVar("hidden", listOf("true"))
+            assertTrue(isGone(expressionCtx))
         }
     }
     // endregion Parse Button
