@@ -3,8 +3,10 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.hasNoClickAction
+import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import app.cash.turbine.turbineScope
@@ -80,10 +82,6 @@ abstract class BaseRenderContentTest {
 
     @Test
     fun `Action - Click - Not Clickable if isInvisible`() = runComposeUiTest {
-        // DISABLED: making an item invisible clears it's semantics that UI tests rely on to function.
-        //           I don't currently know of a workaround to make this work.
-        return@runComposeUiTest
-
         // short-circuit if we don't have a clickableModel to test
         if (testModel !is Clickable) return@runComposeUiTest
 
@@ -96,11 +94,11 @@ abstract class BaseRenderContentTest {
             }
         }
 
-        onModelNode().assertIsEnabled()
+        onModelNode().assertHasClickAction()
         state.setVar(INVISIBLE, listOf("value"))
-        onModelNode().assertIsNotEnabled()
+        onModelNode().assert(hasNoClickAction() or isNotEnabled())
         state.setVar(INVISIBLE, null)
-        onModelNode().assertIsEnabled()
+        onModelNode().assertHasClickAction()
     }
     // endregion Clickable
 
