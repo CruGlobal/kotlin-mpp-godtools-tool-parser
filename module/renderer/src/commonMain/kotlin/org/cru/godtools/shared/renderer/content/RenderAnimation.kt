@@ -14,6 +14,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
@@ -34,6 +37,7 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
 
     val coroutineScope = rememberCoroutineScope()
     val fileSystem = LocalResourceFileSystem.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     val composition by rememberLottieComposition { LottieCompositionSpec.Resource(fileSystem, resource) }
     var isPlaying by remember { mutableStateOf(animation.autoPlay) }
@@ -49,6 +53,7 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     LaunchedEffect(animation, state) {
         // handle play/stop listeners
         state.contentEvents
+            .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
             .collect {
                 when {
                     it in animation.playListeners && !animationState.isPlaying -> {

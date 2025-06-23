@@ -29,6 +29,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.material3)
 
+                implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.compottie)
@@ -42,6 +43,7 @@ kotlin {
                 @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
 
+                implementation(libs.androidx.lifecycle.testing)
                 implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)

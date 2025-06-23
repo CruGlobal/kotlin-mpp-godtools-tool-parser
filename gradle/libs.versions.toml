@@ -1,5 +1,6 @@
 [versions]
 androidx-annotation = "1.9.1"
+androidx-lifecycle = "2.9.1"
 androidx-test-junit = "1.2.1"
 antlr-kotlin = "1.0.5"
 coil = "3.2.0"
@@ -23,6 +24,8 @@ robolectric = "4.14.1"
 android-gradle = "com.android.tools.build:gradle:8.10.1"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.8.3"
+androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidx-lifecycle" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 antlr-kotlin-gradle = { module = "com.strumenta:antlr-kotlin-gradle-plugin", version.ref = "antlr-kotlin" }
 antlr-kotlin-runtime = { module = "com.strumenta:antlr-kotlin-runtime", version.ref = "antlr-kotlin" }

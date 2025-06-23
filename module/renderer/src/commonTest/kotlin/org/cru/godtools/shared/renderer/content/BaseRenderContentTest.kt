@@ -1,5 +1,7 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
@@ -9,6 +11,9 @@ import androidx.compose.ui.test.hasNoClickAction
 import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.turbineScope
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -34,7 +39,13 @@ abstract class BaseRenderContentTest {
 
     protected val state = State()
 
+    protected val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.RESUMED)
     protected val testScope = TestScope()
+
+    @Composable
+    protected fun ProvideTestCompositionLocals(content: @Composable () -> Unit) {
+        CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner, content = content)
+    }
 
     @BeforeTest
     fun setup() {
@@ -57,11 +68,13 @@ abstract class BaseRenderContentTest {
         if (testModel !is Clickable) return@runComposeUiTest
 
         setContent {
-            ProvideRendererServices(TestResources.fileSystem) {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
+            ProvideTestCompositionLocals {
+                ProvideRendererServices(TestResources.fileSystem) {
+                    RenderContentStack(
+                        listOf(testModel),
+                        state = state,
+                    )
+                }
             }
         }
 
@@ -86,11 +99,13 @@ abstract class BaseRenderContentTest {
         if (testModel !is Clickable) return@runComposeUiTest
 
         setContent {
-            ProvideRendererServices(TestResources.fileSystem) {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
+            ProvideTestCompositionLocals {
+                ProvideRendererServices(TestResources.fileSystem) {
+                    RenderContentStack(
+                        listOf(testModel),
+                        state = state,
+                    )
+                }
             }
         }
 
@@ -105,11 +120,13 @@ abstract class BaseRenderContentTest {
     @Test
     fun `UI - Visibility - goneIf`() = runComposeUiTest {
         setContent {
-            ProvideRendererServices(TestResources.fileSystem) {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
+            ProvideTestCompositionLocals {
+                ProvideRendererServices(TestResources.fileSystem) {
+                    RenderContentStack(
+                        listOf(testModel),
+                        state = state,
+                    )
+                }
             }
         }
 
