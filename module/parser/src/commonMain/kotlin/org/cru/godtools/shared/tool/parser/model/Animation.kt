@@ -60,9 +60,10 @@ class Animation : Content, Clickable {
         parser.skipTag()
     }
 
+    @JsName("createTestAnimation")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest()) : super(parent) {
-        resourceName = null
+    constructor(parent: Base = Manifest(), resource: String? = null) : super(parent) {
+        resourceName = resource
         loop = true
         autoPlay = true
         events = emptyList()

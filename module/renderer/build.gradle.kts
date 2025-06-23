@@ -11,6 +11,12 @@ android {
     namespace = "org.cru.godtools.shared.renderer"
 
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    sourceSets {
+        getByName("test") {
+            resources.srcDir("src/commonTest/resources")
+        }
+    }
 }
 
 kotlin {
@@ -44,6 +50,8 @@ kotlin {
         androidUnitTest {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
+
+                implementation(libs.mockk)
             }
         }
     }
