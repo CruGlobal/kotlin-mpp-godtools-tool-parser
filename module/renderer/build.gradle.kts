@@ -25,6 +25,8 @@ kotlin {
 
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
+                implementation(libs.compottie)
+                implementation(libs.compottie.dot)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
             }
