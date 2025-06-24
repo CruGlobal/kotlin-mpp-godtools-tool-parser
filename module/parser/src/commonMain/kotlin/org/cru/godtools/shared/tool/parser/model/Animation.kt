@@ -65,6 +65,7 @@ class Animation : Content, Clickable {
     constructor(
         parent: Base = Manifest(),
         resource: String? = null,
+        autoPlay: Boolean = true,
         events: List<EventId> = emptyList(),
         url: Uri? = null,
         invisibleIf: String? = null,
@@ -72,7 +73,7 @@ class Animation : Content, Clickable {
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         resourceName = resource
         loop = true
-        autoPlay = true
+        this.autoPlay = autoPlay
         this.events = events
         this.url = url
         playListeners = emptySet()

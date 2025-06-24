@@ -14,6 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -30,6 +32,13 @@ import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Animation
 
 internal const val TEST_TAG_ANIMATION = "animation"
+internal val ANIMATION_IS_PLAYING = SemanticsPropertyKey<Boolean>(
+    name = "AnimationIsPlaying",
+    mergePolicy = { parentValue, _ ->
+        // Never merge TestTags, to avoid leaking internal test tags to parents.
+        parentValue
+    }
+)
 
 @Composable
 internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
@@ -76,5 +85,6 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
             .fillMaxWidth()
             .clickable(animation, state, coroutineScope)
             .testTag(TEST_TAG_ANIMATION)
+            .semantics { set(ANIMATION_IS_PLAYING, animationState.isPlaying) },
     )
 }
