@@ -62,12 +62,19 @@ class Animation : Content, Clickable {
 
     @JsName("createTestAnimation")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    constructor(parent: Base = Manifest(), resource: String? = null) : super(parent) {
+    constructor(
+        parent: Base = Manifest(),
+        resource: String? = null,
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         resourceName = resource
         loop = true
         autoPlay = true
-        events = emptyList()
-        url = null
+        this.events = events
+        this.url = url
         playListeners = emptySet()
         stopListeners = emptySet()
     }

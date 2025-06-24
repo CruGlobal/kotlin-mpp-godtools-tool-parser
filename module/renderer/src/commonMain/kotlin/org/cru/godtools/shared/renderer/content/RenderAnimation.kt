@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
@@ -24,6 +25,8 @@ import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Animation
+
+internal const val TEST_TAG_ANIMATION = "animation"
 
 @Composable
 internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
@@ -67,5 +70,6 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
             .padding(horizontal = Horizontal_Padding)
             .fillMaxWidth()
             .clickable(animation, state, coroutineScope)
+            .testTag(TEST_TAG_ANIMATION)
     )
 }
