@@ -83,7 +83,7 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
             .visibility(animation, state)
             .padding(horizontal = Horizontal_Padding)
             .fillMaxWidth()
-            .clickable(animation, state, coroutineScope)
+            .clickable(animation, state, coroutineScope, indication = null)
             .testTag(TEST_TAG_ANIMATION)
             .semantics { set(ANIMATION_IS_PLAYING, animationState.isPlaying) },
     )
