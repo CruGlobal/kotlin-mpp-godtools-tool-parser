@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.Animation
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Image
@@ -28,6 +29,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
     if (isGone) return
 
     when (content) {
+        is Animation -> RenderAnimation(content, state)
         is Button -> RenderButton(content, state)
         is Image -> RenderImage(content, state)
         is Paragraph -> RenderParagraph(content, state)

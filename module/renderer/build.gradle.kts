@@ -11,6 +11,12 @@ android {
     namespace = "org.cru.godtools.shared.renderer"
 
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    sourceSets {
+        getByName("test") {
+            resources.srcDir("src/commonTest/resources")
+        }
+    }
 }
 
 kotlin {
@@ -23,8 +29,11 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.material3)
 
+                implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
+                implementation(libs.compottie)
+                implementation(libs.compottie.dot)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
             }
@@ -34,6 +43,7 @@ kotlin {
                 @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
 
+                implementation(libs.androidx.lifecycle.testing)
                 implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
@@ -42,6 +52,8 @@ kotlin {
         androidUnitTest {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
+
+                implementation(libs.mockk)
             }
         }
     }

@@ -161,7 +161,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-unit-test-results
-          path: "**/build/reports/tests/"
+          path: |
+            **/build/paparazzi/failures/
+            **/build/reports/tests/
       - name: Archive kover results
         if: always()
         uses: actions/upload-artifact@v4

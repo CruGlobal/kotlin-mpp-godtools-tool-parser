@@ -32,6 +32,16 @@
       ]
     },
     {
+      "matchManagers": [
+        "gradle"
+      ],
+      "groupName": "Jetpack Lifecycle",
+      "matchPackageNames": [
+        "androidx.lifecycle:lifecycle{/,}**",
+        "org.jetbrains.androidx.lifecycle:lifecycle{/,}**"
+      ]
+    },
+    {
       "matchBaseBranches": [ "/^feature\\/.*/" ],
       "dependencyDashboardApproval": true
     }

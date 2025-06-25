@@ -1,11 +1,13 @@
 package org.cru.godtools.shared.renderer
 
+import android.view.ViewGroup.LayoutParams
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import app.cash.paparazzi.Paparazzi
 import app.cash.paparazzi.accessibility.AccessibilityRenderExtension
 import coil3.ImageLoader
@@ -39,8 +41,8 @@ abstract class BasePaparazziTest(
     protected val manifest = Manifest(
         resources = {
             listOf(
+                Resource(name = "black_panther", localName = "black_panther.png"),
                 Resource(name = "bruce", localName = "bruce.jpg"),
-                Resource(name = "black_panther", localName = "black_panther.png")
             ) + TestResources.resources
         },
     )
@@ -67,4 +69,31 @@ abstract class BasePaparazziTest(
             }
         }
     }
+
+    protected fun animatedContentSnapshot(
+        start: Long = 0L,
+        end: Long = 500L,
+        content: @Composable BoxScope.() -> Unit,
+    ) {
+        paparazzi.gif(start = start, end = end) {
+            ProvideRendererServices(TestResources.fileSystem) {
+                Box(modifier = Modifier.background(Color.White), content = content)
+            }
+        }
+    }
+}
+
+private fun Paparazzi.gif(
+    name: String? = null,
+    start: Long = 0L,
+    end: Long = 500L,
+    fps: Int = 30,
+    composable: @Composable () -> Unit,
+) {
+    val hostView = ComposeView(context).apply {
+        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+    }
+    hostView.setContent(composable)
+
+    gif(hostView, name, start, end, fps)
 }
