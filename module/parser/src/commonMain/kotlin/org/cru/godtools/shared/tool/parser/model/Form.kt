@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 
 @JsExport
@@ -20,8 +21,9 @@ class Form : Content, Parent {
         content = parseContent(parser)
     }
 
+    @JsName("createTestForm")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base, content: (Form) -> List<Content>) : super(parent) {
+    constructor(parent: Base, content: (Form) -> List<Content>) : super(parent) {
         this.content = content(this)
     }
 }
