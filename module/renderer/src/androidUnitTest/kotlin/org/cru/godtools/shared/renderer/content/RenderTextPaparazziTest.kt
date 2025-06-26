@@ -48,6 +48,17 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderText() - Text Scale`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Default Scale", textScale = 1.0),
+                Text(text = "Half Scale", textScale = 0.5),
+                Text(text = "Double Scale", textScale = 2.0),
+            )
+        )
+    }
+
+    @Test
     fun `RenderText() - Font Weight`() = contentSnapshot {
         RenderContentStack(
             listOf(
@@ -73,6 +84,21 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                 Text(text = "Center Align", textAlign = Text.Align.CENTER),
                 Text(text = "End Align", textAlign = Text.Align.END),
             ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Minimum Lines`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Minimum lines 1", minimumLines = 1),
+                Text(text = "Minimum lines 5", minimumLines = 5),
+                Text(text = "Minimum lines 10", minimumLines = 10),
+                Text(text = "Minimum lines 0", minimumLines = 0),
+                Text(text = "Minimum lines 5", minimumLines = 5),
+                Text(text = "Minimum lines 10", minimumLines = 10),
+                Text(text = "Minimum lines 1", minimumLines = 1)
+            )
         )
     }
 
