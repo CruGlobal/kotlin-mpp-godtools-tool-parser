@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
@@ -74,7 +75,7 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
     Text(
         text.text,
         color = text.textColor.toComposeColor(),
-        fontSize = LocalTextStyle.current.fontSize.times(text.textScale),
+        fontSize = TextUnit(LocalTextStyle.current.fontSize.value * text.textScale.toFloat(), LocalTextStyle.current.fontSize.type),
         fontWeight = text.fontWeight?.let { FontWeight(it) },
         fontStyle = FontStyle.Italic.takeIf { Text.Style.ITALIC in text.textStyles },
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
