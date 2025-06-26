@@ -14,10 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.resolveDefaults
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
@@ -75,12 +76,12 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
     Text(
         text.text,
         color = text.textColor.toComposeColor(),
-        fontSize = TextUnit(LocalTextStyle.current.fontSize.value * text.textScale.toFloat(), LocalTextStyle.current.fontSize.type),
+        fontSize = resolveDefaults(LocalTextStyle.current, LocalLayoutDirection.current).fontSize * text.textScale,
         fontWeight = text.fontWeight?.let { FontWeight(it) },
         fontStyle = FontStyle.Italic.takeIf { Text.Style.ITALIC in text.textStyles },
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
         textAlign = text.textAlign.textAlign,
-        minLines = if (text.minimumLines > DEFAULT_MIN_LINES) text.minimumLines else DEFAULT_MIN_LINES,
+        minLines = text.minimumLines.coerceAtLeast(DEFAULT_MIN_LINES),
         modifier = modifier
     )
 }
