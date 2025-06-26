@@ -32,6 +32,7 @@ import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Text
 
 private val FONT_SIZE = 18.sp
+private val DEFAULT_MIN_LINES = 1
 private val IMAGE_PADDING_TO_TEXT = 8.dp
 
 @Composable
@@ -79,6 +80,7 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
         fontStyle = FontStyle.Italic.takeIf { Text.Style.ITALIC in text.textStyles },
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
         textAlign = text.textAlign.textAlign,
+        minLines = if (text.minimumLines > DEFAULT_MIN_LINES) text.minimumLines else DEFAULT_MIN_LINES,
         modifier = modifier
     )
 }

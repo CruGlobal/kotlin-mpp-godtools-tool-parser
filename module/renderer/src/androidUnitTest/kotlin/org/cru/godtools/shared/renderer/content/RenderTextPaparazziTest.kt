@@ -88,6 +88,21 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderText() - Minimum Lines`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Minimum lines 1", minimumLines = 1),
+                Text(text = "Minimum lines 5", minimumLines = 5),
+                Text(text = "Minimum lines 10", minimumLines = 10),
+                Text(text = "Minimum lines 0", minimumLines = 0),
+                Text(text = "Minimum lines 5", minimumLines = 5),
+                Text(text = "Minimum lines 10", minimumLines = 10),
+                Text(text = "Minimum lines 1", minimumLines = 1)
+            )
+        )
+    }
+
+    @Test
     fun `RenderText() - Start & End Images`() = contentSnapshot {
         RenderContentStack(
             listOf(
