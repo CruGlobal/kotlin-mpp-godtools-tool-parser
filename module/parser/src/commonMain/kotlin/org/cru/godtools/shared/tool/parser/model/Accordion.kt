@@ -23,6 +23,7 @@ class Accordion : Content {
     @JsName("_sections")
     @JsExport.Ignore
     val sections: List<Section>
+    override val children get() = sections
     override val tips get() = sections.flatMap { it.contentTips }
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {

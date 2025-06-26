@@ -59,6 +59,8 @@ class Multiselect : Content {
     @JsExport.Ignore
     @JsName("_options")
     val options: List<Option>
+
+    override val children get() = options
     override val tips get() = options.flatMap { it.contentTips }
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {

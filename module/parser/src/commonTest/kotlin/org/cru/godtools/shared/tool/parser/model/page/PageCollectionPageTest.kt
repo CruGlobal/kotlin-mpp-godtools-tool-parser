@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Manifest
+import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParserException
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -59,4 +60,17 @@ class PageCollectionPageTest : UsesResources("model/page") {
         }
     }
     // endregion Parse XML
+
+    @Test
+    fun `Property - children`() {
+        val page = PageCollectionPage {
+            listOf(
+                ContentPage(it) { listOf(Text(it, "text")) },
+                ContentPage(it) { listOf(Text(it, "text")) },
+            )
+        }
+
+        assertEquals(2, page.children.size)
+        assertEquals(page.pages, page.children)
+    }
 }

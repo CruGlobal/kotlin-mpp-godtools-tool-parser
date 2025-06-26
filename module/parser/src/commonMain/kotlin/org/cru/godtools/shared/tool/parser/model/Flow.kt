@@ -44,6 +44,8 @@ class Flow : Content {
     @JsName("_items")
     val items: List<Item>
 
+    override val children get() = items
+
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
@@ -62,10 +64,16 @@ class Flow : Content {
 
             // we haven't handled this tag yet, if it's a content element wrap it in an Item.
             if (parser.eventType == XmlPullParser.START_TAG) {
-                val item = Item(this) { parser.parseContentElement(it)?.takeUnless { it.isIgnored } }
+                val item = Item(this) { listOfNotNull(parser.parseContentElement(it)?.takeUnless { it.isIgnored }) }
                 if (item.content.isNotEmpty()) items += item
             }
         }
+    }
+
+    internal constructor(parent: Base = Manifest(), items: ((Flow) -> List<Item>)? = null) : super(parent) {
+        itemWidth = DEFAULT_ITEM_WIDTH
+        rowGravity = DEFAULT_ROW_GRAVITY
+        this.items = items?.invoke(this).orEmpty()
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_FLOW) || super.isIgnored
@@ -106,12 +114,12 @@ class Flow : Content {
             content = parseContent(parser)
         }
 
-        internal constructor(flow: Flow, content: (Item) -> Content?) : super(flow) {
+        internal constructor(flow: Flow = Flow(), items: ((Flow) -> List<Content>)? = null) : super(flow) {
             this.flow = flow
             _width = null
             invisibleIf = null
             goneIf = null
-            this.content = listOfNotNull(content(this))
+            this.content = items?.invoke(flow).orEmpty()
         }
     }
 }

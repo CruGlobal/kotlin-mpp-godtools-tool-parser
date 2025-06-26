@@ -95,4 +95,17 @@ class FlowTest : UsesResources() {
         assertEquals(Dimension.Percent(.5f), flow.items[0].width)
         assertEquals(Dimension.Pixels(50), flow.items[1].width)
     }
+
+    @Test
+    fun `Property - children`() {
+        val flow = Flow {
+            listOf(
+                Flow.Item(it) { listOf(Text(it, "item1")) },
+                Flow.Item(it) { listOf(Text(it, "item2")) },
+            )
+        }
+
+        assertEquals(2, flow.children.size)
+        assertEquals(flow.items, flow.children)
+    }
 }

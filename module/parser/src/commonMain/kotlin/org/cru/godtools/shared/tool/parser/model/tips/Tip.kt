@@ -26,6 +26,7 @@ class Tip : BaseModel, Styles {
     override val textColor get() = Manifest.DEFAULT_TEXT_COLOR
 
     val pages: List<TipPage>
+    override val children get() = pages
 
     internal constructor(manifest: Manifest, id: String, parser: XmlPullParser) : super(manifest) {
         parser.require(XmlPullParser.START_TAG, XMLNS_TRAINING, XML_TIP)
@@ -44,10 +45,15 @@ class Tip : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    constructor(manifest: Manifest? = null, id: String = "", type: Type = Type.DEFAULT) : super(manifest) {
+    constructor(
+        manifest: Manifest = Manifest(),
+        id: String = "",
+        type: Type = Type.DEFAULT,
+        pages: ((Tip) -> List<TipPage>)? = null,
+    ) : super(manifest) {
         this.id = id
         this.type = type
-        pages = emptyList()
+        this.pages = pages?.invoke(this).orEmpty()
     }
 
     private fun XmlPullParser.parsePages() = buildList {

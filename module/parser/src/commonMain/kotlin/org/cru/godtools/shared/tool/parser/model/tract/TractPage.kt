@@ -67,6 +67,8 @@ class TractPage : Page {
     val modals: List<Modal>
     val callToAction: CallToAction
 
+    override val children by lazy { listOfNotNull(hero) + modals + cards }
+
     internal constructor(
         container: HasPages,
         fileName: String?,
@@ -101,7 +103,7 @@ class TractPage : Page {
     @JsName("createTestTractPage")
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
-        manifest: Manifest = Manifest(),
+        container: HasPages = Manifest(),
         fileName: String? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -112,10 +114,12 @@ class TractPage : Page {
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
         cardTextColor: Color? = null,
+        hero: ((TractPage) -> Hero?)? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
-        callToAction: ((TractPage) -> CallToAction?)? = null
+        modals: ((TractPage) -> List<Modal>?)? = null,
+        callToAction: ((TractPage) -> CallToAction?)? = null,
     ) : super(
-        manifest,
+        container,
         fileName = fileName,
         primaryColor = primaryColor,
         backgroundColor = backgroundColor,
@@ -129,9 +133,9 @@ class TractPage : Page {
         _cardTextColor = cardTextColor
 
         header = null
-        hero = null
+        this.hero = hero?.invoke(this)
         this.cards = cards?.invoke(this).orEmpty()
-        modals = emptyList()
+        this.modals = modals?.invoke(this).orEmpty()
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
 

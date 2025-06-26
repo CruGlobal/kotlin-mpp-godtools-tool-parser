@@ -57,6 +57,19 @@ class TipTest : UsesResources("model/tips") {
         assertEquals(Manifest.DEFAULT_TEXT_COLOR, (null as Tip?).textColor)
     }
 
+    @Test
+    fun `Property - children`() {
+        val tip = Tip {
+            listOf(
+                TipPage { listOf(Text(it, "text")) },
+                TipPage { listOf(Text(it, "text")) },
+            )
+        }
+
+        assertEquals(2, tip.children.size)
+        assertEquals(tip.pages, tip.children)
+    }
+
     // region Tip.Type
     @Test
     fun testParseTipType() {
