@@ -10,6 +10,9 @@ import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.renderer.state.internal.Parcelable
@@ -25,6 +28,7 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 class State internal constructor(
     private val triggeredAnalyticsEvents: MutableMap<String, Int> = mutableMapOf(),
     private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
+    private val formValues: MutableMap<String?, String?> = mutableMapOf(),
 ) : Parcelable, ExpressionContext by SimpleExpressionContext(vars) {
     @JsName("createState")
     constructor() : this(vars = mutableMapOf())
@@ -86,4 +90,25 @@ class State internal constructor(
     }
     // endregion Analytics Events
     // endregion Events
+
+    // region Form State
+    private val formFieldChange = MutableSharedFlow<String?>(extraBufferCapacity = Int.MAX_VALUE)
+    private fun formFieldChangeFlow(id: String?) = formFieldChange.onSubscription { emit(id) }.filter { it == id }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun formFieldValue(id: String?) = formValues[id]
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun formFieldValueFlow(id: String?) = formFieldChangeFlow(id).map { formValues[id] }
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun updateFormFieldValue(id: String?, value: String) {
+        formValues[id] = value
+        formFieldChange.tryEmit(id)
+    }
+    // endregion Form State
 }

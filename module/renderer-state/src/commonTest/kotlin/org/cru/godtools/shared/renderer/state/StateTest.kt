@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.take
@@ -200,4 +201,35 @@ class StateTest {
         }
     }
     // endregion Events
+
+    // region Form Fields
+    @Test
+    fun `formFieldValue - returns value stored for the field`() {
+        assertNull(state.formFieldValue("field"))
+
+        state.updateFormFieldValue("field", "value")
+        state.updateFormFieldValue("field2", "value2")
+        assertEquals("value", state.formFieldValue("field"))
+        assertEquals("value2", state.formFieldValue("field2"))
+        assertNull(state.formFieldValue("field3"))
+
+        state.updateFormFieldValue("field", "value2")
+        assertEquals("value2", state.formFieldValue("field"))
+    }
+
+    @Test
+    fun `formFieldValueFlow - Updates to the field value are emitted`() = runTest {
+        val field = "field"
+
+        state.formFieldValueFlow(field).test {
+            assertNull(awaitItem())
+
+            state.updateFormFieldValue(field, "value1")
+            assertEquals("value1", awaitItem())
+
+            state.updateFormFieldValue(field + "2", "invalid")
+            expectNoEvents()
+        }
+    }
+    // endregion Form Fields
 }
