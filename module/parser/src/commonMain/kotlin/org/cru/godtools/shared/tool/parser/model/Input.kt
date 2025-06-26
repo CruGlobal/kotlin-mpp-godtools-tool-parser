@@ -1,7 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.Input.Type.Companion.toTypeOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
@@ -26,6 +28,7 @@ class Input : Content {
         internal const val XML_INPUT = "input"
     }
 
+    val id: String? get() = name
     val type: Type
     val name: String?
     val value: String?
@@ -54,6 +57,25 @@ class Input : Content {
         }
         this.label = label
         this.placeholder = placeholder
+    }
+
+    @JsName("createTestInput")
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        parent: Base = Manifest(),
+        type: Type = Type.DEFAULT,
+        name: String? = null,
+        label: ((Input) -> Text?)? = null,
+        placeholder: ((Input) -> Text?)? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
+        this.type = type
+        this.name = name
+        value = null
+        isRequired = false
+        this.label = label?.invoke(this)
+        this.placeholder = placeholder?.invoke(this)
     }
 
     fun validateValue(raw: String?) = when {
