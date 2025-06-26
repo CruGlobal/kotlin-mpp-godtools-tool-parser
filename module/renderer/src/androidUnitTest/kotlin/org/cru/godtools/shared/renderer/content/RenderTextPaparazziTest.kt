@@ -48,6 +48,17 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderText() - Text Scale`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(text = "Default Scale", textScale = 1.0),
+                Text(text = "Half Scale", textScale = 0.5),
+                Text(text = "Double Scale", textScale = 2.0),
+            )
+        )
+    }
+
+    @Test
     fun `RenderText() - Font Weight`() = contentSnapshot {
         RenderContentStack(
             listOf(
