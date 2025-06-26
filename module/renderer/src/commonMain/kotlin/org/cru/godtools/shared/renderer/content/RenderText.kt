@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +18,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.compose.rememberConstraintsSizeResolver
@@ -31,7 +31,6 @@ import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Text
 
-private val FONT_SIZE = 18.sp
 private val DEFAULT_MIN_LINES = 1
 private val IMAGE_PADDING_TO_TEXT = 8.dp
 
@@ -75,7 +74,7 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
     Text(
         text.text,
         color = text.textColor.toComposeColor(),
-        fontSize = FONT_SIZE * text.textScale,
+        fontSize = LocalTextStyle.current.fontSize.times(text.textScale),
         fontWeight = text.fontWeight?.let { FontWeight(it) },
         fontStyle = FontStyle.Italic.takeIf { Text.Style.ITALIC in text.textStyles },
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
