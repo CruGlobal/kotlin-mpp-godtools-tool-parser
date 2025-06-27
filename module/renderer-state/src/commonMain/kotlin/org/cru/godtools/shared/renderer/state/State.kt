@@ -59,10 +59,16 @@ class State internal constructor(
     sealed class Event {
         data class OpenUrl(val url: Uri) : Event()
         data class AnalyticsEventTriggered(val event: AnalyticsEvent) : Event()
+        data class SubmitForm(val fields: Map<String, String>) : Event()
     }
 
     private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
     val events = _events.asSharedFlow()
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun triggerEvent(event: Event) = _events.tryEmit(event)
 
     @HiddenFromObjC
     @JsExport.Ignore

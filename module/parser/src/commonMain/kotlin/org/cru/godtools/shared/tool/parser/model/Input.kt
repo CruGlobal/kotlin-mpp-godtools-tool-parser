@@ -67,12 +67,13 @@ class Input : Content {
         name: String? = null,
         label: ((Input) -> Text?)? = null,
         placeholder: ((Input) -> Text?)? = null,
+        value: String? = null,
         invisibleIf: String? = null,
         goneIf: String? = null,
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.type = type
         this.name = name
-        value = null
+        this.value = value
         isRequired = false
         this.label = label?.invoke(this)
         this.placeholder = placeholder?.invoke(this)
