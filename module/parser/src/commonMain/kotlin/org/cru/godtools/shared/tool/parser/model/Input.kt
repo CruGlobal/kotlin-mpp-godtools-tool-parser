@@ -67,6 +67,7 @@ class Input : Content {
         name: String? = null,
         label: ((Input) -> Text?)? = null,
         placeholder: ((Input) -> Text?)? = null,
+        isRequired: Boolean = false,
         value: String? = null,
         invisibleIf: String? = null,
         goneIf: String? = null,
@@ -74,7 +75,7 @@ class Input : Content {
         this.type = type
         this.name = name
         this.value = value
-        isRequired = false
+        this.isRequired = isRequired
         this.label = label?.invoke(this)
         this.placeholder = placeholder?.invoke(this)
     }

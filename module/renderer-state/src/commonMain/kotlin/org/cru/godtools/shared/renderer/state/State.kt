@@ -10,6 +10,7 @@ import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
@@ -28,7 +29,8 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 class State internal constructor(
     private val triggeredAnalyticsEvents: MutableMap<String, Int> = mutableMapOf(),
     private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
-    private val formValues: MutableMap<String?, String?> = mutableMapOf(),
+    private val formFieldValues: MutableMap<String?, String?> = mutableMapOf(),
+    private val formFieldValidation: MutableMap<String?, Boolean> = mutableMapOf(),
 ) : Parcelable, ExpressionContext by SimpleExpressionContext(vars) {
     @JsName("createState")
     constructor() : this(vars = mutableMapOf())
@@ -104,16 +106,33 @@ class State internal constructor(
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun formFieldValue(id: String?) = formValues[id]
+    fun isFormFieldValidationEnabled(id: String?) = formFieldValidation[id] ?: false
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun formFieldValueFlow(id: String?) = formFieldChangeFlow(id).map { formValues[id] }
+    fun isFormFieldValidationEnabledFlow(id: String?) =
+        formFieldChangeFlow(id).map { isFormFieldValidationEnabled(id) }.distinctUntilChanged()
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun toggleFormFieldValidation(id: String?, validate: Boolean) {
+        formFieldValidation[id] = validate
+        formFieldChange.tryEmit(id)
+    }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun formFieldValue(id: String?) = formFieldValues[id]
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun formFieldValueFlow(id: String?) = formFieldChangeFlow(id).map { formFieldValues[id] }.distinctUntilChanged()
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun updateFormFieldValue(id: String?, value: String) {
-        formValues[id] = value
+        formFieldValues[id] = value
         formFieldChange.tryEmit(id)
     }
     // endregion Form State

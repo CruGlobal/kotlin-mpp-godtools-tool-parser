@@ -3,6 +3,8 @@ package org.cru.godtools.shared.renderer.content.extensions
 import app.cash.turbine.test
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Form
@@ -25,7 +27,7 @@ class FormTest {
         }
 
         state.events.test {
-            form.submitForm(state)
+            assertTrue(form.submitForm(state))
             assertEquals(
                 State.Event.SubmitForm(mapOf("name" to "John", "email" to "john.doe@example.com")),
                 awaitItem(),
@@ -47,7 +49,7 @@ class FormTest {
         }
 
         state.events.test {
-            form.submitForm(state)
+            assertTrue(form.submitForm(state))
             assertEquals(
                 State.Event.SubmitForm(mapOf("name" to "John", "email" to "john.doe@example.com")),
                 awaitItem(),
@@ -70,7 +72,7 @@ class FormTest {
         val form = paragraph.content.filterIsInstance<Form>().first()
 
         state.events.test {
-            form.submitForm(state)
+            assertTrue(form.submitForm(state))
             assertEquals(
                 State.Event.SubmitForm(mapOf("email" to "john.doe@example.com")),
                 awaitItem(),
@@ -89,11 +91,56 @@ class FormTest {
         }
 
         state.events.test {
-            form.submitForm(state)
+            assertTrue(form.submitForm(state))
             assertEquals(
                 State.Event.SubmitForm(mapOf("name" to "John", "email" to "john.doe@example.com", "hidden" to "value")),
                 awaitItem(),
             )
         }
+    }
+
+    @Test
+    fun `submitForm - Validation - Passed`() = runTest {
+        val form = Form {
+            listOf(
+                Input(it, name = "name", isRequired = true),
+                Input(it, name = "email", isRequired = true),
+            )
+        }
+
+        assertFalse(state.isFormFieldValidationEnabled("name"))
+        assertFalse(state.isFormFieldValidationEnabled("email"))
+
+        state.events.test {
+            assertTrue(form.submitForm(state))
+            assertEquals(
+                State.Event.SubmitForm(mapOf("name" to "John", "email" to "john.doe@example.com")),
+                awaitItem(),
+            )
+        }
+
+        assertFalse(state.isFormFieldValidationEnabled("name"))
+        assertFalse(state.isFormFieldValidationEnabled("email"))
+    }
+
+    @Test
+    fun `submitForm - Validation - Failed`() = runTest {
+        val form = Form {
+            listOf(
+                Input(it, name = "name_missing", isRequired = true),
+                Input(it, name = "email", isRequired = true),
+            )
+        }
+
+        assertFalse(state.isFormFieldValidationEnabled("name_missing"))
+        assertFalse(state.isFormFieldValidationEnabled("email"))
+
+        state.events.test {
+            assertFalse(form.submitForm(state))
+            expectNoEvents()
+        }
+
+        assertTrue(state.isFormFieldValidationEnabled("name_missing"))
+        assertTrue(state.isFormFieldValidationEnabled("email"))
     }
 }

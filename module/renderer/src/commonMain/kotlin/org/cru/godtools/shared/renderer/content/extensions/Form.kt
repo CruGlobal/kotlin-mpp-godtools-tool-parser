@@ -6,25 +6,25 @@ import org.cru.godtools.shared.tool.parser.model.Input
 import org.cru.godtools.shared.tool.parser.model.descendants
 
 internal fun Form.submitForm(state: State): Boolean {
-    val inputs = descendants.filterIsInstance<Input>()
+    val fields = mutableMapOf<String, String>()
 
-    // TODO: validate inputs
+    // validate all inputs
+    val inputs = descendants.filterIsInstance<Input>()
+    inputs.forEach {
+        val value = when (it.type) {
+            Input.Type.HIDDEN -> it.value
+            else -> state.formFieldValue(it.id)
+        }
+        if (it.validateValue(value) != null) {
+            inputs.forEach { state.toggleFormFieldValidation(it.id, true) }
+            return false
+        }
+
+        val name = it.name
+        if (name != null && value != null) fields[name] = value
+    }
 
     // trigger the SubmitForm event
-    state.triggerEvent(
-        State.Event.SubmitForm(
-            fields = buildMap {
-                inputs.forEach {
-                    val name = it.name
-                    val value = when (it.type) {
-                        Input.Type.HIDDEN -> it.value
-                        else -> state.formFieldValue(it.id)
-                    }
-                    if (name != null && value != null) put(name, value)
-                }
-            },
-        ),
-    )
-
+    state.triggerEvent(State.Event.SubmitForm(fields = fields))
     return true
 }
