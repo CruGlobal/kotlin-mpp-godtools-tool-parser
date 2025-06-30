@@ -26,8 +26,9 @@ kotlin {
                 api(project(":module:parser"))
                 api(project(":module:renderer-state"))
 
-                implementation(compose.runtime)
+                implementation(compose.components.resources)
                 implementation(compose.material3)
+                implementation(compose.runtime)
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
