@@ -105,6 +105,19 @@ class MultiselectTest : UsesResources() {
     }
 
     @Test
+    fun `Property - children`() {
+        val multiselect = Multiselect {
+            listOf(
+                Multiselect.Option(it) { listOf(Text(it, "text1")) },
+                Multiselect.Option(it) { listOf(Text(it, "text2")) },
+            )
+        }
+
+        assertEquals(2, multiselect.children.size)
+        assertEquals(multiselect.options, multiselect.children)
+    }
+
+    @Test
     fun testOptionGetAnalyticsEvents() {
         val defaultEvent = AnalyticsEvent(trigger = Trigger.DEFAULT)
         val clickedEvent = AnalyticsEvent(trigger = Trigger.CLICKED)
@@ -306,6 +319,19 @@ class MultiselectTest : UsesResources() {
         with(Multiselect.Option(multiselect, selectedColor = optionSelectedColor)) {
             assertEquals(optionSelectedColor, selectedColor)
         }
+    }
+
+    @Test
+    fun `Option - Property - children`() {
+        val option = Multiselect.Option {
+            listOf(
+                Text(it, "text1"),
+                Text(it, "text2"),
+            )
+        }
+
+        assertEquals(2, option.children.size)
+        assertEquals(option.content, option.children)
     }
 
     private fun Multiselect.options(count: Int = 2) = List(count) { Multiselect.Option(this, value = "$it") }

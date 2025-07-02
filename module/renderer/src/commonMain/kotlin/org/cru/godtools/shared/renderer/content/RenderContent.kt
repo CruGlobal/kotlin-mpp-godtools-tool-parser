@@ -11,6 +11,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Animation
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.Form
 import org.cru.godtools.shared.tool.parser.model.Image
 import org.cru.godtools.shared.tool.parser.model.Input
 import org.cru.godtools.shared.tool.parser.model.Link
@@ -32,6 +33,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
     when (content) {
         is Animation -> RenderAnimation(content, state)
         is Button -> RenderButton(content, state)
+        is Form -> RenderForm(content, state)
         is Image -> RenderImage(content, state)
         is Input -> RenderInput(content, state)
         is Paragraph -> RenderParagraph(content, state)

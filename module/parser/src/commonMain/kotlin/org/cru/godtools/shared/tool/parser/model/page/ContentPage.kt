@@ -53,9 +53,10 @@ class ContentPage : Page, Parent {
     internal constructor(
         container: HasPages,
         id: String? = null,
-        parentPage: String? = null
+        parentPage: String? = null,
+        content: ((ContentPage) -> List<Content>)? = null,
     ) : super(container, id = id, parentPage = parentPage) {
         analyticsEvents = emptyList()
-        content = emptyList()
+        this.content = content?.invoke(this).orEmpty()
     }
 }
