@@ -50,9 +50,14 @@ class Card : Content, Parent, Clickable {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest(), backgroundColor: Color? = null) : super(parent) {
+    @JsName("createTestCard")
+    constructor(
+        parent: Base = Manifest(),
+        backgroundColor: Color? = null,
+        content: List<Content> = emptyList()
+    ) : super(parent) {
         _backgroundColor = backgroundColor
-        content = emptyList()
+        this.content = content
         events = emptyList()
         url = null
     }
