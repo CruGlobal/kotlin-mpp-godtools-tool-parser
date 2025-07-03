@@ -1,16 +1,19 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import androidx.annotation.VisibleForTesting
+import androidx.annotation.RestrictTo
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.native.HiddenFromObjC
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class EventId(val namespace: String? = null, val name: String) {
     companion object {
         private const val NAMESPACE_FOLLOWUP = "followup"
-        @VisibleForTesting
+        @HiddenFromObjC
+        @JsExport.Ignore
+        @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
         const val NAMESPACE_STATE = "state"
 
         val FOLLOWUP = EventId(NAMESPACE_FOLLOWUP, "send")
