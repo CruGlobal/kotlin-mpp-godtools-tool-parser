@@ -32,7 +32,7 @@ internal fun RenderContentCard(
             .padding(contentPadding)
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
         ) {
             RenderContent(card.content, state)
         }
