@@ -13,7 +13,23 @@ interface Base {
     @get:RestrictTo(RestrictTo.Scope.LIBRARY)
     val parent: Base? get() = null
     val manifest: Manifest get() = checkNotNull(parent?.manifest) { "No manifest found in model ancestors" }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    val children: List<Base> get() = emptyList()
 }
+
+@HiddenFromObjC
+@get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@OptIn(ExperimentalObjCRefinement::class)
+val Base.descendants: List<Base>
+    get() = buildList {
+        children.forEach {
+            add(it)
+            addAll(it.descendants)
+        }
+    }
 
 val Base?.stylesParent: Styles? get() = this?.parent?.let { it as? Styles ?: it.stylesParent }
 

@@ -3,6 +3,7 @@ package org.cru.godtools.shared.tool.parser.model
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -34,5 +35,14 @@ class FormTest : UsesResources() {
         val manifest = Manifest(tips = { listOf(Tip(it, "tip2"), Tip(it, "tip1")) })
         val form = Form(manifest) { listOf(InlineTip(it, "tip1"), InlineTip(it, "tip2")) }
         assertEquals(listOf(manifest.findTip("tip1")!!, manifest.findTip("tip2")!!), form.tips)
+    }
+
+    @Test
+    fun `Base - Property - formParent`() {
+        val form = Form()
+
+        assertNull(Input().formParent)
+        assertEquals(form, Input(form).formParent)
+        assertEquals(form, Input(Paragraph(form)).formParent)
     }
 }

@@ -43,6 +43,13 @@ class CardCollectionPage : Page {
     @JsName("_cards")
     val cards: List<Card>
 
+    override val children by lazy {
+        buildList {
+            header?.let { add(it) }
+            addAll(cards)
+        }
+    }
+
     internal constructor(
         container: HasPages,
         fileName: String?,
@@ -82,10 +89,12 @@ class CardCollectionPage : Page {
         manifest: Manifest = Manifest(),
         id: String? = null,
         parentPage: String? = null,
+        header: ((CardCollectionPage) -> Header?)? = null,
+        cards: ((CardCollectionPage) -> List<Card>)? = null
     ) : super(manifest, id = id, parentPage = parentPage) {
         analyticsEvents = emptyList()
-        header = null
-        cards = emptyList()
+        this.header = header?.invoke(this)
+        this.cards = cards?.invoke(this).orEmpty()
     }
 
     // region Kotlin/JS interop
@@ -168,8 +177,9 @@ class CardCollectionPage : Page {
 
         @RestrictTo(RestrictTo.Scope.TESTS)
         internal constructor(
-            page: CardCollectionPage,
-            id: String?,
+            page: CardCollectionPage = CardCollectionPage(),
+            id: String? = null,
+            content: ((Card) -> List<Content>)? = null
         ) : super(page) {
             this.page = page
 
@@ -177,7 +187,7 @@ class CardCollectionPage : Page {
             _backgroundColor = null
 
             analyticsEvents = emptyList()
-            content = emptyList()
+            this.content = content?.invoke(this).orEmpty()
         }
 
         override fun getAnalyticsEvents(type: Trigger) = when (type) {

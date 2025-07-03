@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalInspectionMode
 import app.cash.paparazzi.Paparazzi
 import app.cash.paparazzi.accessibility.AccessibilityRenderExtension
 import coil3.ImageLoader
@@ -20,6 +22,7 @@ import okio.Path.Companion.toPath
 import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Resource
+import org.jetbrains.compose.resources.PreviewContextConfigurationEffect
 import org.junit.Rule
 
 @OptIn(ExperimentalUuidApi::class)
@@ -64,6 +67,9 @@ abstract class BasePaparazziTest(
 
     protected fun contentSnapshot(content: @Composable BoxScope.() -> Unit) {
         paparazzi.snapshot {
+            CompositionLocalProvider(LocalInspectionMode provides true) {
+                PreviewContextConfigurationEffect()
+            }
             ProvideRendererServices(TestResources.fileSystem) {
                 Box(modifier = Modifier.background(Color.White), content = content)
             }
@@ -76,6 +82,9 @@ abstract class BasePaparazziTest(
         content: @Composable BoxScope.() -> Unit,
     ) {
         paparazzi.gif(start = start, end = end) {
+            CompositionLocalProvider(LocalInspectionMode provides true) {
+                PreviewContextConfigurationEffect()
+            }
             ProvideRendererServices(TestResources.fileSystem) {
                 Box(modifier = Modifier.background(Color.White), content = content)
             }

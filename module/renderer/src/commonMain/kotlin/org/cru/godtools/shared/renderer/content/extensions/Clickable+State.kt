@@ -13,8 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Clickable
+import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.Visibility
+import org.cru.godtools.shared.tool.parser.model.formParent
 
 @Composable
 internal fun Modifier.clickable(model: Clickable, state: State, scope: CoroutineScope) = when {
@@ -48,7 +50,10 @@ private fun Clickable.isClickableModifierNeeded(state: State): Boolean {
 }
 
 internal fun Clickable.handleClickable(state: State, scope: CoroutineScope) {
-    url?.let { state.triggerOpenUrlEvent(it) }
-    state.triggerContentEvents(events)
+    // short-circuit the click if we are submitting a form, but form validation fails
+    if (EventId.FOLLOWUP in events && formParent?.submitForm(state) == false) return
+
+    url?.let { state.triggerEvent(State.Event.OpenUrl(it)) }
+    state.triggerContentEvents(events.filterNot { it == EventId.FOLLOWUP })
     if (this is HasAnalyticsEvents) triggerAnalyticsEvents(AnalyticsEvent.Trigger.CLICKED, state, scope)
 }
