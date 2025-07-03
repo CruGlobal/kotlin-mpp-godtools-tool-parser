@@ -13,15 +13,36 @@ class RenderContentCardPaparazziTest: BasePaparazziTest() {
         RenderContentStack(
             listOf(
                 Card(
-                    backgroundColor = RGB("#34ebde"),
+                    backgroundColor = RGB("#dadada"),
                     content = listOf(
                         Text(text = "Text 1"),
                         Text(text = "Text 2"),
-                        Text(text = "Text 3")
+                        Text(text = "Text 3"),
+                        Text(text = "Text 4"),
+                        Text(text = "Text 5"),
+                        Text(text = "Text 6")
                     )
                 ),
-                Card(backgroundColor = RGB("#ff23cc")),
-                Card(backgroundColor = RGB("#c6eb34"))
+                Card(backgroundColor = RGB("#c0c0c0"),
+                    content = listOf(
+                        Text(text = "Text 1"),
+                        Text(text = "Text 2"),
+                        Text(text = "Text 3"),
+                        Text(text = "Text 4"),
+                        Text(text = "Text 5"),
+                        Text(text = "Text 6")
+                    )
+                ),
+                Card(backgroundColor = RGB("#a7a7a7"),
+                    content = listOf(
+                        Text(text = "Text 1"),
+                        Text(text = "Text 2"),
+                        Text(text = "Text 3"),
+                        Text(text = "Text 4"),
+                        Text(text = "Text 5"),
+                        Text(text = "Text 6")
+                    )
+                )
             )
         )
     }

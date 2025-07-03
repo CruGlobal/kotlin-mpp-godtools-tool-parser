@@ -1,11 +1,11 @@
 package org.cru.godtools.shared.renderer.content
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
@@ -14,18 +14,27 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
 
 @Composable
-internal fun ColumnScope.RenderContentCard(
+internal fun RenderContentCard(
     card: Card,
     state: State,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(10.dp)
 ) {
-    Column(
-        modifier
-            .background(card.backgroundColor.toComposeColor())
+    ElevatedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = card.backgroundColor.toComposeColor(),
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        modifier = modifier
             .fillMaxWidth()
             .padding(contentPadding)
     ) {
-        RenderContent(card.content, state)
+        Column(
+            modifier = modifier
+        ) {
+            RenderContent(card.content, state)
+        }
     }
 }
