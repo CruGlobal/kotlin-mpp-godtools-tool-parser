@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.content.extensions.clickable
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
 
@@ -20,6 +23,8 @@ internal fun RenderContentCard(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(10.dp)
 ) {
+    val scope = rememberCoroutineScope()
+
     ElevatedCard(
         colors = CardDefaults.cardColors(
             containerColor = card.backgroundColor.toComposeColor(),
@@ -28,8 +33,10 @@ internal fun RenderContentCard(
             defaultElevation = 6.dp
         ),
         modifier = modifier
+            .visibility(card, state)
             .fillMaxWidth()
             .padding(contentPadding)
+            .clickable(card, state, scope)
     ) {
         Column(
             modifier = Modifier

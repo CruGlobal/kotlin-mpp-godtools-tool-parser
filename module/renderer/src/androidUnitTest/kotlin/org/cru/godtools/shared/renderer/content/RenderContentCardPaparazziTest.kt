@@ -1,8 +1,11 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Modifier
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.Text
 
@@ -45,5 +48,31 @@ class RenderContentCardPaparazziTest: BasePaparazziTest() {
                 )
             )
         )
+    }
+
+    @Test
+    fun `RenderContentCard() - IsInvisible`() {
+        val state: State = State()
+        state.setVar("a", listOf("value"))
+
+        contentSnapshot {
+            RenderContentStack(
+                listOf(
+                    Text(text = "Before"),
+                    Card(backgroundColor = RGB("#a7a7a7"),
+                        invisibleIf = "isSet(a)",
+                        content = listOf(
+                            Text(text = "Card", textAlign = Text.Align.CENTER),
+                            Text(text = "Should", textAlign = Text.Align.CENTER),
+                            Text(text = "Be", textAlign = Text.Align.CENTER),
+                            Text(text = "Invisible", textAlign = Text.Align.CENTER)
+                        )
+                    ),
+                    Text(text = "After")
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                state = state
+            )
+        }
     }
 }

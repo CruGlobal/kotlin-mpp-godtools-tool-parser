@@ -54,8 +54,10 @@ class Card : Content, Parent, Clickable {
     constructor(
         parent: Base = Manifest(),
         backgroundColor: Color? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
         content: List<Content> = emptyList()
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         _backgroundColor = backgroundColor
         this.content = content
         events = emptyList()
