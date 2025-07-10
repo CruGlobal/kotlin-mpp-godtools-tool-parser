@@ -9,7 +9,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderContentCardPaparazziTest: BasePaparazziTest() {
+class RenderContentCardPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderContentCard() - Background Color`() = contentSnapshot {
@@ -26,7 +26,8 @@ class RenderContentCardPaparazziTest: BasePaparazziTest() {
                         Text(text = "Text 6")
                     )
                 ),
-                Card(backgroundColor = RGB("#c0c0c0"),
+                Card(
+                    backgroundColor = RGB("#c0c0c0"),
                     content = listOf(
                         Text(text = "Text 1"),
                         Text(text = "Text 2"),
@@ -36,7 +37,8 @@ class RenderContentCardPaparazziTest: BasePaparazziTest() {
                         Text(text = "Text 6")
                     )
                 ),
-                Card(backgroundColor = RGB("#a7a7a7"),
+                Card(
+                    backgroundColor = RGB("#a7a7a7"),
                     content = listOf(
                         Text(text = "Text 1"),
                         Text(text = "Text 2"),
@@ -59,7 +61,8 @@ class RenderContentCardPaparazziTest: BasePaparazziTest() {
             RenderContentStack(
                 listOf(
                     Text(text = "Before"),
-                    Card(backgroundColor = RGB("#a7a7a7"),
+                    Card(
+                        backgroundColor = RGB("#a7a7a7"),
                         invisibleIf = "isSet(a)",
                         content = listOf(
                             Text(text = "Card", textAlign = Text.Align.CENTER),

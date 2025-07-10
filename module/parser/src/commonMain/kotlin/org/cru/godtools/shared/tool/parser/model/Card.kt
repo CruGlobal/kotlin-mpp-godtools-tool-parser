@@ -54,14 +54,16 @@ class Card : Content, Parent, Clickable {
     constructor(
         parent: Base = Manifest(),
         backgroundColor: Color? = null,
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
         invisibleIf: String? = null,
         goneIf: String? = null,
         content: List<Content> = emptyList()
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         _backgroundColor = backgroundColor
         this.content = content
-        events = emptyList()
-        url = null
+        this.events = events
+        this.url = url
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_CONTENT_CARD) || super.isIgnored
