@@ -50,11 +50,20 @@ class Card : Content, Parent, Clickable {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest(), backgroundColor: Color? = null) : super(parent) {
+    @JsName("createTestCard")
+    constructor(
+        parent: Base = Manifest(),
+        backgroundColor: Color? = null,
+        events: List<EventId> = emptyList(),
+        url: Uri? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+        content: List<Content> = emptyList()
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         _backgroundColor = backgroundColor
-        content = emptyList()
-        events = emptyList()
-        url = null
+        this.content = content
+        this.events = events
+        this.url = url
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_CONTENT_CARD) || super.isIgnored
