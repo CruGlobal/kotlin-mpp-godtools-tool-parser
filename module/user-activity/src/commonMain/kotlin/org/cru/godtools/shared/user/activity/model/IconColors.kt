@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
 import org.cru.godtools.shared.common.model.ThemeType
 
+@ConsistentCopyVisibility
 data class IconColors internal constructor(
     @VisibleForTesting
     internal val light: Color,
