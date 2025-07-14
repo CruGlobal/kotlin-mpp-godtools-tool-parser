@@ -71,9 +71,13 @@ class Flow : Content {
 
     @JsName("createTestFlow")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    constructor(parent: Base = Manifest(), items: ((Flow) -> List<Item>)? = null) : super(parent) {
+    constructor(
+        parent: Base = Manifest(),
+        rowGravity: Gravity.Horizontal = DEFAULT_ROW_GRAVITY,
+        items: ((Flow) -> List<Item>)? = null
+    ) : super(parent) {
         itemWidth = DEFAULT_ITEM_WIDTH
-        rowGravity = DEFAULT_ROW_GRAVITY
+        this.rowGravity = rowGravity
         this.items = items?.invoke(this).orEmpty()
     }
 
