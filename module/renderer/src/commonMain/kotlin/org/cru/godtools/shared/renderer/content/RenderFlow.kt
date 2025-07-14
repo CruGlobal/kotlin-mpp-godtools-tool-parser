@@ -9,17 +9,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import org.cru.godtools.shared.renderer.content.extensions.arrangement
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Flow
 
+internal const val TEST_TAG_FLOW = "flow"
+
 @Composable
 internal fun RenderFlow(flow: Flow, state: State) {
     FlowRow(
         horizontalArrangement = flow.rowGravity.arrangement,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .testTag(TEST_TAG_FLOW)
+            .fillMaxWidth()
     ) {
         flow.items.forEachIndexed { pos, item ->
             key(pos) {

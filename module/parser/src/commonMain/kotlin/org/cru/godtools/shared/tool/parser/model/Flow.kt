@@ -74,8 +74,10 @@ class Flow : Content {
     constructor(
         parent: Base = Manifest(),
         rowGravity: Gravity.Horizontal = DEFAULT_ROW_GRAVITY,
+        goneIf: String? = null,
+        invisibleIf: String? = null,
         items: ((Flow) -> List<Item>)? = null
-    ) : super(parent) {
+    ) : super(parent, goneIf = goneIf, invisibleIf = invisibleIf) {
         itemWidth = DEFAULT_ITEM_WIDTH
         this.rowGravity = rowGravity
         this.items = items?.invoke(this).orEmpty()

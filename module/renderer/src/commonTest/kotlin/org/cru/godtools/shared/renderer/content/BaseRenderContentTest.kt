@@ -33,8 +33,8 @@ import org.cru.godtools.shared.tool.parser.model.EventId
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalTestApi::class)
 abstract class BaseRenderContentTest {
     internal companion object {
-        internal const val GONE = "gone"
-        internal const val INVISIBLE = "invisible"
+        private const val GONE = "gone"
+        private const val INVISIBLE = "invisible"
     }
 
     protected val state = State()
@@ -58,9 +58,6 @@ abstract class BaseRenderContentTest {
     // region Clickable
     protected val clickableEvents = listOf(EventId(name = "test"), EventId(name = "test2"))
     protected val clickableUrl = TestConstants.TEST_URL
-
-    protected val goneIf: String? = "isSet($GONE)"
-    protected val invisibleIf: String? = "isSet($INVISIBLE)"
 
     @Test
     fun `Action - Click - Triggers Clickable`() = runComposeUiTest {
@@ -117,6 +114,10 @@ abstract class BaseRenderContentTest {
     }
     // endregion Clickable
 
+    // region Visibility
+    protected val goneIf = "isSet($GONE)"
+    protected val invisibleIf = "isSet($INVISIBLE)"
+
     @Test
     fun `UI - Visibility - goneIf`() = runComposeUiTest {
         setContent {
@@ -136,4 +137,5 @@ abstract class BaseRenderContentTest {
         state.setVar(GONE, null)
         onModelNode().assertExists()
     }
+    // endregion Visibility
 }
