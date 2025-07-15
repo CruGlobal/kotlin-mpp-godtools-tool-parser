@@ -9,6 +9,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Dimension
 import org.cru.godtools.shared.tool.parser.model.Gravity
+import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Text
 
 class RenderButtonPaparazziTest : BasePaparazziTest() {
@@ -117,8 +118,40 @@ class RenderButtonPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderButton() - Large Text`() {
+        val manifest = Manifest(textScale = 3.0)
+
+        contentSnapshot {
+            RenderContentStack(
+                listOf(
+                    Button(
+                        parent = manifest,
+                        style = Button.Style.CONTAINED,
+                        text = { Text(it, "Large Text") }
+                    ),
+                    Button(
+                        parent = manifest,
+                        style = Button.Style.CONTAINED,
+                        text = { Text(it, "Large Text") }
+                    ),
+                    Button(
+                        parent = manifest,
+                        style = Button.Style.OUTLINED,
+                        text = { Text(it, "Large Text") }
+                    ),
+                    Button(
+                        parent = manifest,
+                        style = Button.Style.OUTLINED,
+                        text = { Text(it, "Large Text") }
+                    ),
+                )
+            )
+        }
+    }
+
+    @Test
     fun `RenderButton() - IsInvisible`() {
-        val state: State = State()
+        val state = State()
         state.setVar("a", listOf("value"))
 
         contentSnapshot {
