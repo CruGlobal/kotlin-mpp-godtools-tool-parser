@@ -1,7 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -20,8 +19,7 @@ import org.cru.godtools.shared.tool.parser.model.Card
 internal fun RenderContentCard(
     card: Card,
     state: State,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(10.dp)
+    modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
 
@@ -35,7 +33,7 @@ internal fun RenderContentCard(
         modifier = modifier
             .visibility(card, state)
             .fillMaxWidth()
-            .padding(contentPadding)
+            .padding(8.dp)
             .clickable(card, state, scope)
     ) {
         Column(
