@@ -16,11 +16,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
 
 @Composable
-internal fun RenderContentCard(
-    card: Card,
-    state: State,
-    modifier: Modifier = Modifier
-) {
+internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
 
     ElevatedCard(
