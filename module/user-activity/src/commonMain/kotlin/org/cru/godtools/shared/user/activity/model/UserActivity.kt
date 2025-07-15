@@ -16,6 +16,7 @@ import org.cru.godtools.shared.user.activity.util.Counters
 import org.cru.godtools.shared.user.activity.util.count
 import org.cru.godtools.shared.user.activity.util.sum
 
+@ConsistentCopyVisibility
 data class UserActivity private constructor(
     val toolOpens: Int = 0,
     val lessonCompletions: Int = 0,

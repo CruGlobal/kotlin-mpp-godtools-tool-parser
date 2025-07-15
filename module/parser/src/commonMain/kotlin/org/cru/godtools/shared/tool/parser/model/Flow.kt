@@ -3,6 +3,7 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
@@ -14,8 +15,6 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_FLOW
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
-import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WIDTH
-import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.getDeviceAttributeValue
@@ -70,9 +69,17 @@ class Flow : Content {
         }
     }
 
-    internal constructor(parent: Base = Manifest(), items: ((Flow) -> List<Item>)? = null) : super(parent) {
+    @JsName("createTestFlow")
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        parent: Base = Manifest(),
+        rowGravity: Gravity.Horizontal = DEFAULT_ROW_GRAVITY,
+        goneIf: String? = null,
+        invisibleIf: String? = null,
+        items: ((Flow) -> List<Item>)? = null
+    ) : super(parent, goneIf = goneIf, invisibleIf = invisibleIf) {
         itemWidth = DEFAULT_ITEM_WIDTH
-        rowGravity = DEFAULT_ROW_GRAVITY
+        this.rowGravity = rowGravity
         this.items = items?.invoke(this).orEmpty()
     }
 
@@ -114,12 +121,18 @@ class Flow : Content {
             content = parseContent(parser)
         }
 
-        internal constructor(flow: Flow = Flow(), items: ((Flow) -> List<Content>)? = null) : super(flow) {
+        @JsName("createFlowItem")
+        @VisibleForTesting
+        constructor(
+            flow: Flow = Flow(),
+            width: Dimension? = null,
+            content: ((Flow) -> List<Content>)? = null
+        ) : super(flow) {
             this.flow = flow
-            _width = null
+            _width = width
             invisibleIf = null
             goneIf = null
-            this.content = items?.invoke(flow).orEmpty()
+            this.content = content?.invoke(flow).orEmpty()
         }
     }
 }

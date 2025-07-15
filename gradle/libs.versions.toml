@@ -9,19 +9,19 @@ compottie = "2.0.0-rc04"
 fluidLocale = "0.13.0"
 gtoSupport = "4.4.2-SNAPSHOT"
 jvm = "21"
-kotlin = "2.1.21"
-kotlinCoroutines = "1.9.0"
+kotlin = "2.2.0"
+kotlinCoroutines = "1.10.2"
 kustomExport = "0.8.2"
 goncalossilvaResources = "0.10.0"
 ktlint = "1.6.0"
-ktlintGradle = "12.3.0"
+ktlintGradle = "13.0.0"
 napier = "2.6.1"
 npmPublish = "3.5.3"
-okio = "3.13.0"
-robolectric = "4.14.1"
+okio = "3.15.0"
+robolectric = "4.15.1"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:8.10.1"
+android-gradle = "com.android.tools.build:gradle:8.11.1"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.8.3"
 androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -53,10 +53,10 @@ kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
-mockk = "io.mockk:mockk:1.14.2"
+mockk = "io.mockk:mockk:1.14.4"
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-turbine = "app.cash.turbine:turbine:1.2.0"
+turbine = "app.cash.turbine:turbine:1.2.1"
 
 # HACK: dependencies used to trigger renovate upgrades
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
@@ -71,7 +71,7 @@ compose = { id = "org.jetbrains.compose", version = "1.8.2" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.2" }
-ksp = { id = "com.google.devtools.ksp", version = "2.1.21-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.0-2.0.2" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
 paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha02" }

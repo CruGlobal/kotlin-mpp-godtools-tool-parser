@@ -46,13 +46,15 @@ private fun KotlinNativeTarget.copyTestResources() {
     binaries
         .matching { it is TestExecutable }
         .configureEach {
-            (this as TestExecutable).linkTask.doLast {
-                project.file("src/commonTest/resources")
-                    .takeIf { it.exists() && it.isDirectory }
-                    ?.copyRecursively(
-                        target = outputDirectory,
-                        overwrite = true
-                    )
+            linkTaskProvider.configure {
+                doLast {
+                    project.file("src/commonTest/resources")
+                        .takeIf { it.exists() && it.isDirectory }
+                        ?.copyRecursively(
+                            target = outputDirectory,
+                            overwrite = true
+                        )
+                }
             }
         }
 }
