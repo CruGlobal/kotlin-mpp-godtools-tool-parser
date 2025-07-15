@@ -24,11 +24,8 @@ internal fun RenderContentCard(
     val scope = rememberCoroutineScope()
 
     ElevatedCard(
-        colors = CardDefaults.cardColors(
+        colors = CardDefaults.elevatedCardColors(
             containerColor = card.backgroundColor.toComposeColor(),
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
         ),
         modifier = modifier
             .visibility(card, state)
@@ -38,6 +35,8 @@ internal fun RenderContentCard(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             RenderContent(card.content, state)
         }
