@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.clickable
+import org.cru.godtools.shared.renderer.content.extensions.handleClickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
@@ -23,11 +24,11 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
         colors = CardDefaults.elevatedCardColors(
             containerColor = card.backgroundColor.toComposeColor(),
         ),
+        onClick = { card.handleClickable(state, scope) },
         modifier = modifier
             .visibility(card, state)
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable(card, state, scope)
     ) {
         Column(
             modifier = Modifier
