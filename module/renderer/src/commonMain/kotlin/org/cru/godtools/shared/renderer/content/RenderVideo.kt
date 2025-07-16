@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
@@ -22,6 +23,7 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
         val playerHost = remember { MediaPlayerHost(mediaUrl = model.videoId.orEmpty()) }
             .apply { loadUrl(model.videoId.orEmpty()) }
 
+        LaunchedEffect(model, state) { model.isInvisibleFlow(state).collect { if (it) playerHost.pause() } }
         LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { playerHost.pause() }
 
         YouTubePlayerComposable(
