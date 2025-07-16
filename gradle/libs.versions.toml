@@ -34,6 +34,7 @@ coil-test = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 colormath-android-colorint = { module = "com.github.ajalt.colormath:colormath-ext-android-colorint", version.ref = "colormath" }
 colormath-jetpack-compose = { module = "com.github.ajalt.colormath:colormath-ext-jetpack-compose", version.ref = "colormath" }
+compose-media-player = "network.chaintech:compose-multiplatform-media-player:1.0.42"
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }

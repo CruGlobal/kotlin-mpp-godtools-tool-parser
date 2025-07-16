@@ -1,0 +1,34 @@
+package org.cru.godtools.shared.renderer.content
+
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import chaintech.videoplayer.host.MediaPlayerHost
+import chaintech.videoplayer.ui.youtube.YouTubePlayerComposable
+import org.cru.godtools.shared.renderer.content.extensions.alignment
+import org.cru.godtools.shared.renderer.content.extensions.visibility
+import org.cru.godtools.shared.renderer.content.extensions.width
+import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.Video
+
+@Composable
+internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.provider) {
+    Video.Provider.YOUTUBE -> {
+        val playerHost = remember { MediaPlayerHost(mediaUrl = model.videoId.orEmpty()) }
+            .apply { loadUrl(model.videoId.orEmpty()) }
+
+        YouTubePlayerComposable(
+            playerHost = playerHost,
+            modifier = Modifier
+                .visibility(model, state)
+                .padding(horizontal = Horizontal_Padding)
+                .width(model.width)
+                .align(model.gravity.alignment)
+                .aspectRatio(model.aspectRatio.ratio.toFloat())
+        )
+    }
+    Video.Provider.UNKNOWN -> Unit
+}
