@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import chaintech.videoplayer.host.MediaPlayerHost
@@ -17,6 +19,8 @@ import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Video
 
+internal const val TEST_TAG_VIDEO = "video"
+
 @Composable
 internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.provider) {
     Video.Provider.YOUTUBE -> {
@@ -26,15 +30,21 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
         LaunchedEffect(model, state) { model.isInvisibleFlow(state).collect { if (it) playerHost.pause() } }
         LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { playerHost.pause() }
 
-        YouTubePlayerComposable(
-            playerHost = playerHost,
+        Box(
+            propagateMinConstraints = true,
+            // HACK: YouTubePlayerComposable re-uses the Modifier in multiple nested Composables, this has the effect of
+            //       compounding any padding and may cause other unexpected behaviour.
+            //       For now we apply the appropriate modifiers to a containing Box
             modifier = Modifier
+                .testTag(TEST_TAG_VIDEO)
                 .visibility(model, state)
                 .padding(horizontal = Horizontal_Padding)
                 .width(model.width)
                 .align(model.gravity.alignment)
                 .aspectRatio(model.aspectRatio.ratio.toFloat())
-        )
+        ) {
+            YouTubePlayerComposable(playerHost = playerHost)
+        }
     }
     Video.Provider.UNKNOWN -> Unit
 }
