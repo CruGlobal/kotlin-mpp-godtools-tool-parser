@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import chaintech.videoplayer.host.MediaPlayerHost
 import chaintech.videoplayer.ui.youtube.YouTubePlayerComposable
 import org.cru.godtools.shared.renderer.content.extensions.alignment
@@ -19,6 +21,8 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
     Video.Provider.YOUTUBE -> {
         val playerHost = remember { MediaPlayerHost(mediaUrl = model.videoId.orEmpty()) }
             .apply { loadUrl(model.videoId.orEmpty()) }
+
+        LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { playerHost.pause() }
 
         YouTubePlayerComposable(
             playerHost = playerHost,
