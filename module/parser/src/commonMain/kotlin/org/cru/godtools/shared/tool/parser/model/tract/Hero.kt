@@ -61,11 +61,12 @@ class Hero : BaseModel, Parent, HasAnalyticsEvents {
     constructor(
         page: TractPage = TractPage(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
-        heading: ((Base) -> Text?)? = null
+        heading: ((Base) -> Text?)? = null,
+        content: ((Base) -> List<Content>)? = null,
     ) : super(page) {
         this.analyticsEvents = analyticsEvents
         this.heading = heading?.invoke(headingParent)
-        content = emptyList()
+        this.content = content?.invoke(this).orEmpty()
     }
 
     // region HasAnalyticsEvents
