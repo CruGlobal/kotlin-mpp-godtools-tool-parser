@@ -33,6 +33,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
+                implementation(libs.compose.media.player)
                 implementation(libs.compottie)
                 implementation(libs.compottie.dot)
                 implementation(libs.gtoSupport.compose)

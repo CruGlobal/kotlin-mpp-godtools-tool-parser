@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.model.Link
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
+import org.cru.godtools.shared.tool.parser.model.Video
 
 @Composable
 internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
@@ -44,6 +45,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is Text -> RenderText(content, state)
         is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content, state)
+        is Video -> RenderVideo(content, state)
         else -> Text(
             "Unsupported Content Element: ${content::class.simpleName}",
             color = Color.Red,

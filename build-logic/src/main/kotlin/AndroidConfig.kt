@@ -11,7 +11,7 @@ internal fun LibraryExtension.baseConfiguration(project: Project) {
 private fun BaseExtension.configureSdk() {
     compileSdkVersion(35)
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
     }
 }

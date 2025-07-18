@@ -1,7 +1,9 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.AspectRatio.Companion.toAspectRatioOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
@@ -61,5 +63,21 @@ class Video : Content {
         width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
 
         parser.skipTag()
+    }
+
+    @JsName("createTestVideo")
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        parent: Base = Manifest(),
+        provider: Provider = Provider.DEFAULT,
+        videoId: String? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
+        this.provider = provider
+        this.videoId = videoId
+        aspectRatio = DEFAULT_ASPECT_RATIO
+        gravity = DEFAULT_GRAVITY
+        width = DEFAULT_WIDTH
     }
 }
