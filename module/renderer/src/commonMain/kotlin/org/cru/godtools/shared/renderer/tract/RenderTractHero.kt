@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.HorizontalPadding
@@ -22,6 +23,11 @@ import org.cru.godtools.shared.renderer.content.RenderTextNode
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.backgroundColor
+
+internal const val TestTagHeader = "header"
+internal const val TestTagHeaderNumber = "header_number"
+internal const val TestTagHeaderTitle = "header_title"
+internal const val TestTagHeroHeading = "hero_heading"
 
 @Composable
 fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State = remember { State() }) {
@@ -34,10 +40,11 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                     modifier = Modifier
                         .background(header.backgroundColor.toComposeColor())
                         .padding(horizontal = HorizontalPadding)
+                        .testTag(TestTagHeader)
                 ) {
                     header.number?.let { number ->
                         ProvideTextStyle(LocalTextStyle.current.copy(fontSize = LocalTextStyle.current.fontSize * 3)) {
-                            RenderTextNode(number)
+                            RenderTextNode(number, Modifier.testTag(TestTagHeaderNumber))
                         }
                     }
                     header.title?.let { title ->
@@ -46,6 +53,7 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(vertical = 16.dp)
+                                .testTag(TestTagHeaderTitle)
                         )
                     }
                 }
@@ -60,6 +68,7 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                         modifier = Modifier
                             .padding(top = 24.dp)
                             .padding(horizontal = HorizontalPadding)
+                            .testTag(TestTagHeroHeading)
                     )
                 }
             }
