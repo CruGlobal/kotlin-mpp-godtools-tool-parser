@@ -31,8 +31,8 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Animation
 
-internal const val TEST_TAG_ANIMATION = "animation"
-internal val ANIMATION_IS_PLAYING = SemanticsPropertyKey<Boolean>(
+internal const val TestTagAnimation = "animation"
+internal val AnimationIsPlaying = SemanticsPropertyKey<Boolean>(
     name = "AnimationIsPlaying",
     mergePolicy = { parentValue, _ ->
         // Never merge TestTags, to avoid leaking internal test tags to parents.
@@ -81,10 +81,10 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
         contentDescription = null,
         modifier = Modifier
             .visibility(animation, state)
-            .padding(horizontal = Horizontal_Padding)
+            .padding(horizontal = HorizontalPadding)
             .fillMaxWidth()
             .clickable(animation, state, coroutineScope, indication = null)
-            .testTag(TEST_TAG_ANIMATION)
-            .semantics { set(ANIMATION_IS_PLAYING, animationState.isPlaying) },
+            .testTag(TestTagAnimation)
+            .semantics { set(AnimationIsPlaying, animationState.isPlaying) },
     )
 }

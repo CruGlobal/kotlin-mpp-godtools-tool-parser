@@ -1,0 +1,2 @@
+[src/commonMain/**.kt]
+ktlint_property_naming_constant_naming = pascal_case

@@ -16,14 +16,14 @@ import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Flow
 
-internal const val TEST_TAG_FLOW = "flow"
+internal const val TestTagFlow = "flow"
 
 @Composable
 internal fun RenderFlow(flow: Flow, state: State) {
     FlowRow(
         horizontalArrangement = flow.rowGravity.arrangement,
         modifier = Modifier
-            .testTag(TEST_TAG_FLOW)
+            .testTag(TestTagFlow)
             .fillMaxWidth()
     ) {
         flow.items.forEachIndexed { pos, item ->

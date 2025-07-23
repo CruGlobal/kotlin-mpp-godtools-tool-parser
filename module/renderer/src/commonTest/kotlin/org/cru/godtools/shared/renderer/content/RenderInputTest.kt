@@ -25,7 +25,7 @@ class RenderInputTest : BaseRenderContentTest() {
         goneIf = goneIf,
     )
 
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TEST_TAG_INPUT)
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagInput)
 
     @Test
     fun `Action - Text Input`() = runComposeUiTest {

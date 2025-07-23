@@ -24,7 +24,7 @@ import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.jetbrains.compose.resources.stringResource
 
-internal const val TEST_TAG_INPUT = "input"
+internal const val TestTagInput = "input"
 
 @Composable
 internal fun RenderInput(model: Input, state: State) {
@@ -58,8 +58,8 @@ internal fun RenderInput(model: Input, state: State) {
             focusedBorderColor = model.stylesParent.primaryColor.toComposeColor(),
         ),
         modifier = Modifier
-            .testTag(TEST_TAG_INPUT)
-            .padding(horizontal = Horizontal_Padding)
+            .testTag(TestTagInput)
+            .padding(horizontal = HorizontalPadding)
             .fillMaxWidth()
     )
 }

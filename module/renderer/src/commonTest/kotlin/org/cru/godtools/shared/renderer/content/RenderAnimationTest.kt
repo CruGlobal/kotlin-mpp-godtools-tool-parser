@@ -18,7 +18,7 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 @OptIn(ExperimentalTestApi::class)
 class RenderAnimationTest : BaseRenderContentTest() {
     private companion object {
-        val MATCHER_IS_PLAYING = expectValue(ANIMATION_IS_PLAYING, true)
+        val MATCHER_IS_PLAYING = expectValue(AnimationIsPlaying, true)
     }
 
     private val manifest = Manifest(resources = { TestResources.resources })
@@ -32,7 +32,7 @@ class RenderAnimationTest : BaseRenderContentTest() {
         url = clickableUrl,
     )
 
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TEST_TAG_ANIMATION)
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagAnimation)
 
     @Test
     fun `UI - AutoPlay - True`() = runComposeUiTest {

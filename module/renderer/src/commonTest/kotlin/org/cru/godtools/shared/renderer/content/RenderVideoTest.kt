@@ -17,5 +17,5 @@ class RenderVideoTest : BaseRenderContentTest() {
         invisibleIf = invisibleIf,
         goneIf = goneIf
     )
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TEST_TAG_VIDEO)
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagVideo)
 }

@@ -40,7 +40,7 @@ private val IMAGE_PADDING_TO_TEXT = 8.dp
 internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     modifier = Modifier
         .visibility(text, state)
-        .padding(horizontal = Horizontal_Padding)
+        .padding(horizontal = HorizontalPadding)
         .fillMaxWidth()
 ) {
     text.startImage?.let {

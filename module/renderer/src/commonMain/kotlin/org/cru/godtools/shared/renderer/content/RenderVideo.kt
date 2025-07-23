@@ -19,7 +19,7 @@ import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Video
 
-internal const val TEST_TAG_VIDEO = "video"
+internal const val TestTagVideo = "video"
 
 @Composable
 internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.provider) {
@@ -36,9 +36,9 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
             //       compounding any padding and may cause other unexpected behaviour.
             //       For now we apply the appropriate modifiers to a containing Box
             modifier = Modifier
-                .testTag(TEST_TAG_VIDEO)
+                .testTag(TestTagVideo)
                 .visibility(model, state)
-                .padding(horizontal = Horizontal_Padding)
+                .padding(horizontal = HorizontalPadding)
                 .width(model.width)
                 .align(model.gravity.alignment)
                 .aspectRatio(model.aspectRatio.ratio.toFloat())
