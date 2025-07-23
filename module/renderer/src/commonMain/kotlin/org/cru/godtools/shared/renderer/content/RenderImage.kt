@@ -19,7 +19,7 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Image
 
-internal const val TEST_TAG_IMAGE = "image"
+internal const val TestTagImage = "image"
 
 @Composable
 internal fun ColumnScope.RenderImage(image: Image, state: State) {
@@ -33,9 +33,9 @@ internal fun ColumnScope.RenderImage(image: Image, state: State) {
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
-            .testTag(TEST_TAG_IMAGE)
+            .testTag(TestTagImage)
             .visibility(image, state)
-            .padding(horizontal = Horizontal_Padding)
+            .padding(horizontal = HorizontalPadding)
             .width(image.width)
             .align(image.gravity.alignment)
             .clickable(image, state, scope)

@@ -24,7 +24,7 @@ class RenderImageTest : BaseRenderContentTest() {
         goneIf = goneIf,
     )
 
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TEST_TAG_IMAGE)
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagImage)
 
     @BeforeTest
     @OptIn(DelicateCoilApi::class)

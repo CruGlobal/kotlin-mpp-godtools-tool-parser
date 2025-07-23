@@ -19,5 +19,5 @@ class RenderFlowTest : BaseRenderContentTest() {
         )
     }
 
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TEST_TAG_FLOW)
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagFlow)
 }

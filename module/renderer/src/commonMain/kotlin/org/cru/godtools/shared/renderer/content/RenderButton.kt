@@ -22,7 +22,7 @@ import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
 
-private val Button_Vertical_Padding = 4.dp
+private val ButtonVerticalPadding = 4.dp
 
 @Composable
 internal fun ColumnScope.RenderButton(button: Button, state: State) {
@@ -36,7 +36,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
     CompositionLocalProvider(
         // We decrease the minimum size to account for the additional vertical padding
         // we are adding before the minimum size modifier
-        LocalMinimumInteractiveComponentSize provides minSize - (Button_Vertical_Padding * 2)
+        LocalMinimumInteractiveComponentSize provides minSize - (ButtonVerticalPadding * 2)
     ) {
         Button(
             onClick = { button.handleClickable(state, scope) },
@@ -59,7 +59,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
             },
             modifier = Modifier
                 .visibility(button, state)
-                .padding(horizontal = Horizontal_Padding, vertical = Button_Vertical_Padding)
+                .padding(horizontal = HorizontalPadding, vertical = ButtonVerticalPadding)
                 .width(button.width)
                 .align(button.gravity.alignment)
         ) {

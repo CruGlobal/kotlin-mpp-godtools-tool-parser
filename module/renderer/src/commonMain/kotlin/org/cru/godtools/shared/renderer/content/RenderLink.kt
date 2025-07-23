@@ -19,7 +19,7 @@ fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifi
         link.text,
         modifier = modifier
             .visibility(link, state)
-            .padding(horizontal = Horizontal_Padding)
+            .padding(horizontal = HorizontalPadding)
             .align(link.text.textAlign.alignment)
             .clickable(link, state, scope)
     )
