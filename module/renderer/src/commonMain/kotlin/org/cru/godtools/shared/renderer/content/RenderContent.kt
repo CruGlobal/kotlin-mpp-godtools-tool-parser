@@ -21,6 +21,7 @@ import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.Video
+import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 
 @Composable
 internal fun ColumnScope.RenderContent(content: List<Content>, state: State) {
@@ -40,6 +41,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is Flow -> RenderFlow(content, state)
         is Form -> RenderForm(content, state)
         is Image -> RenderImage(content, state)
+        is InlineTip -> RenderInlineTip(content, state)
         is Input -> RenderInput(content, state)
         is Paragraph -> RenderParagraph(content, state)
         is Text -> RenderText(content, state)

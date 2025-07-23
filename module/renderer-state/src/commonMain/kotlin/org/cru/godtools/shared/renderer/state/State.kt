@@ -9,6 +9,7 @@ import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -136,4 +137,18 @@ class State internal constructor(
         formFieldChange.tryEmit(id)
     }
     // endregion Form State
+
+    // region Tips
+    val showTips = MutableStateFlow(false)
+    val completedTips = MutableStateFlow(emptySet<String>())
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun isTipComplete(tip: String?) = tip in completedTips.value
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun isTipCompleteFlow(tip: String?) = completedTips.map { tip in it }.distinctUntilChanged()
+    // endregion Tips
 }
