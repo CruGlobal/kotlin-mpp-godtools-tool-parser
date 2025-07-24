@@ -6,6 +6,7 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
 
@@ -33,7 +34,12 @@ class InlineTip : Content {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     @JsName("createTestInlineTip")
-    constructor(parent: Base, id: String? = null) : super(parent) {
+    constructor(
+        parent: Base = Manifest(),
+        id: String? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.id = id
     }
 }

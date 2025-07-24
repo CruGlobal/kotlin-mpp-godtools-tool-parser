@@ -63,6 +63,7 @@ class State internal constructor(
         data class OpenUrl(val url: Uri) : Event()
         data class AnalyticsEventTriggered(val event: AnalyticsEvent) : Event()
         data class SubmitForm(val fields: Map<String, String>) : Event()
+        data class OpenTip(val tipId: String) : Event()
     }
 
     private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)

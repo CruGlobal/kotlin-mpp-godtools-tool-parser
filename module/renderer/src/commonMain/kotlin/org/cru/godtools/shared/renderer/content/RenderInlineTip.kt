@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
@@ -24,21 +25,28 @@ private val InlineTipElevation = 4.dp
 private val InlineTipSize = 40.dp
 private val InlineTipIconSize = 24.dp
 
+internal const val TestTagInlineTip = "inline_tip"
+
 @Composable
 internal fun RenderInlineTip(model: InlineTip, state: State) {
     if (!state.showTips.collectAsState().value) return
 
     val tip = model.tip
     val tipId = tip?.id
-    val isComplete by remember(tipId) { state.isTipCompleteFlow(tipId) }.collectAsState(state.isTipComplete(tipId))
+    val isComplete by remember(state, tipId) { state.isTipCompleteFlow(tipId) }
+        .collectAsState(state.isTipComplete(tipId))
+    val isInvisible by remember(state, model) { model.isInvisibleFlow(state) }.collectAsState(model.isInvisible(state))
 
     Surface(
+        onClick = { tipId?.let { state.triggerEvent(State.Event.OpenTip(it)) } },
+        enabled = tipId != null && !isInvisible,
         shape = InlineTipShape,
         shadowElevation = InlineTipElevation,
         modifier = Modifier
             .visibility(model, state)
             .padding(horizontal = HorizontalPadding, vertical = 4.dp)
             .size(InlineTipSize)
+            .testTag(TestTagInlineTip)
     ) {
         Image(
             painterTip(tip, isComplete = isComplete),
