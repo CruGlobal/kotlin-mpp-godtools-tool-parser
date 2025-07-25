@@ -232,4 +232,26 @@ class StateTest {
         }
     }
     // endregion Form Fields
+
+    // region Tips
+    @Test
+    fun `isTipComplete - Returns if tip is completed`() {
+        assertFalse(state.isTipComplete("tip"))
+        state.completedTips.value = setOf("tip")
+        assertTrue(state.isTipComplete("tip"))
+    }
+
+    @Test
+    fun `isTipCompleteFlow - Emits whether a tip is completed or not`() = runTest {
+        state.isTipCompleteFlow("tip").test {
+            assertFalse(awaitItem())
+
+            state.completedTips.value = setOf("tip")
+            assertTrue(awaitItem())
+
+            state.completedTips.value = emptySet()
+            assertFalse(awaitItem())
+        }
+    }
+    // endregion Tips
 }

@@ -22,6 +22,7 @@ import okio.Path.Companion.toPath
 import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Resource
+import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.PreviewContextConfigurationEffect
 import org.junit.Rule
 
@@ -41,14 +42,18 @@ abstract class BasePaparazziTest(
         }
     )
 
-    protected val manifest = Manifest(
-        resources = {
-            listOf(
-                Resource(name = "black_panther", localName = "black_panther.png"),
-                Resource(name = "bruce", localName = "bruce.jpg"),
-            ) + TestResources.resources
-        },
-    )
+    protected val manifest by lazy {
+        Manifest(
+            resources = {
+                listOf(
+                    Resource(name = "black_panther", localName = "black_panther.png"),
+                    Resource(name = "bruce", localName = "bruce.jpg"),
+                ) + TestResources.resources
+            },
+            tips = { tips },
+        )
+    }
+    protected open val tips: List<Tip> = emptyList()
 
     @BeforeTest
     @OptIn(DelicateCoilApi::class)

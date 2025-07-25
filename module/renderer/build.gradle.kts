@@ -19,6 +19,10 @@ android {
     }
 }
 
+compose.resources {
+    packageOfResClass = "org.cru.godtools.shared.renderer.generated.resources"
+}
+
 kotlin {
     sourceSets {
         commonMain {
