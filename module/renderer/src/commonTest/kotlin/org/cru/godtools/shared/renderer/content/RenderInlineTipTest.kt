@@ -54,6 +54,20 @@ class RenderInlineTipTest : BaseRenderContentTest() {
     }
 
     @Test
+    fun `UI - Visibility - Missing or Invalid Tip`() = runComposeUiTest {
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderContentStack(
+                    listOf(InlineTip(manifest, id = "missing")),
+                    state = state,
+                )
+            }
+        }
+
+        onModelNode().assertDoesNotExist()
+    }
+
+    @Test
     fun `UI - Visibility - showTips`() = runComposeUiTest {
         setContent {
             ProvideTestCompositionLocals {

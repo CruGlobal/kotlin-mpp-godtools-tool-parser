@@ -22,13 +22,13 @@ import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun painterTip(tip: Tip?, isComplete: Boolean) = painterResource(
-    when (tip?.type) {
+internal fun painterTip(tip: Tip, isComplete: Boolean) = painterResource(
+    when (tip.type) {
         Tip.Type.ASK -> if (isComplete) Res.drawable.ic_tips_ask_done else Res.drawable.ic_tips_ask
         Tip.Type.CONSIDER -> if (isComplete) Res.drawable.ic_tips_consider_done else Res.drawable.ic_tips_consider
         Tip.Type.QUOTE -> if (isComplete) Res.drawable.ic_tips_quote_done else Res.drawable.ic_tips_quote
         Tip.Type.PREPARE -> if (isComplete) Res.drawable.ic_tips_prepare_done else Res.drawable.ic_tips_prepare
-        Tip.Type.TIP, null -> if (isComplete) Res.drawable.ic_tips_tip_done else Res.drawable.ic_tips_tip
+        Tip.Type.TIP -> if (isComplete) Res.drawable.ic_tips_tip_done else Res.drawable.ic_tips_tip
     }
 )
 

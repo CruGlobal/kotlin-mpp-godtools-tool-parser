@@ -31,15 +31,15 @@ internal const val TestTagInlineTip = "inline_tip"
 internal fun RenderInlineTip(model: InlineTip, state: State) {
     if (!state.showTips.collectAsState().value) return
 
-    val tip = model.tip
-    val tipId = tip?.id
+    val tip = model.tip ?: return
+    val tipId = tip.id
     val isComplete by remember(state, tipId) { state.isTipCompleteFlow(tipId) }
         .collectAsState(state.isTipComplete(tipId))
     val isInvisible by remember(state, model) { model.isInvisibleFlow(state) }.collectAsState(model.isInvisible(state))
 
     Surface(
-        onClick = { tipId?.let { state.triggerEvent(State.Event.OpenTip(it)) } },
-        enabled = tipId != null && !isInvisible,
+        onClick = { state.triggerEvent(State.Event.OpenTip(tipId)) },
+        enabled = !isInvisible,
         shape = InlineTipShape,
         shadowElevation = InlineTipElevation,
         modifier = Modifier

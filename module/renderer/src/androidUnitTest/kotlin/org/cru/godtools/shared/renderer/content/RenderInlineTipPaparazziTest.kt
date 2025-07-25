@@ -22,7 +22,7 @@ class RenderInlineTipPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderInlineTip() - Completed`() {
-        state.completedTips.value = setOf("ask", "consider", "prepare", "quote", "tip")
+        state.completedTips.value = setOf("ask", "consider", "prepare", "quote", "tip", "missing")
         allTipsSnapshot()
     }
 
@@ -48,6 +48,8 @@ class RenderInlineTipPaparazziTest : BasePaparazziTest() {
                 InlineTip(manifest, "quote"),
                 Text(text = "Tip:"),
                 InlineTip(manifest, "tip"),
+                Text(text = "Invalid/Missing Tip:"),
+                InlineTip(manifest, "missing"),
             ),
             state = state,
         )
