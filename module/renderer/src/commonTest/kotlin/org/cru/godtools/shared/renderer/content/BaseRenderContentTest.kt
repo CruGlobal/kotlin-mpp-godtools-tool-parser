@@ -1,7 +1,5 @@
 package org.cru.godtools.shared.renderer.content
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
@@ -11,45 +9,24 @@ import androidx.compose.ui.test.hasNoClickAction
 import androidx.compose.ui.test.isNotEnabled
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.testing.TestLifecycleOwner
 import app.cash.turbine.turbineScope
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.cru.godtools.shared.renderer.BaseRendererTest
 import org.cru.godtools.shared.renderer.TestConstants
-import org.cru.godtools.shared.renderer.TestResources
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Clickable
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.EventId
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalTestApi::class)
-abstract class BaseRenderContentTest {
+abstract class BaseRenderContentTest : BaseRendererTest() {
     internal companion object {
         private const val GONE = "gone"
         private const val INVISIBLE = "invisible"
-    }
-
-    protected val state = State()
-
-    protected val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.RESUMED)
-    protected val testScope = TestScope()
-
-    @Composable
-    protected fun ProvideTestCompositionLocals(content: @Composable () -> Unit) {
-        CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner, content = content)
-    }
-
-    @BeforeTest
-    fun setup() {
-        state.setTestCoroutineScope(testScope.backgroundScope)
     }
 
     protected abstract val testModel: Content
@@ -66,12 +43,10 @@ abstract class BaseRenderContentTest {
 
         setContent {
             ProvideTestCompositionLocals {
-                ProvideRendererServices(TestResources.fileSystem) {
-                    RenderContentStack(
-                        listOf(testModel),
-                        state = state,
-                    )
-                }
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
             }
         }
 
@@ -97,12 +72,10 @@ abstract class BaseRenderContentTest {
 
         setContent {
             ProvideTestCompositionLocals {
-                ProvideRendererServices(TestResources.fileSystem) {
-                    RenderContentStack(
-                        listOf(testModel),
-                        state = state,
-                    )
-                }
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
             }
         }
 
@@ -122,12 +95,10 @@ abstract class BaseRenderContentTest {
     fun `UI - Visibility - goneIf`() = runComposeUiTest {
         setContent {
             ProvideTestCompositionLocals {
-                ProvideRendererServices(TestResources.fileSystem) {
-                    RenderContentStack(
-                        listOf(testModel),
-                        state = state,
-                    )
-                }
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state,
+                )
             }
         }
 

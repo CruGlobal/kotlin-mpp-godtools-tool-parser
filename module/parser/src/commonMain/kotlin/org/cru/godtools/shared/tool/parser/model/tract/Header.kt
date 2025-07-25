@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Styles
@@ -61,16 +62,19 @@ class Header : BaseModel, Styles {
         this.title = title
     }
 
+    @JsName("createTestHeader")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         page: TractPage = TractPage(),
         backgroundColor: Color? = null,
-        tip: String? = null
+        tip: String? = null,
+        number: ((Header) -> Text?)? = null,
+        title: ((Header) -> Text?)? = null,
     ) : super(page) {
         _backgroundColor = backgroundColor
 
-        number = null
-        title = null
+        this.number = number?.invoke(this)
+        this.title = title?.invoke(this)
 
         tipId = tip
     }

@@ -145,7 +145,7 @@ class TractPageTest : UsesResources("model/tract") {
     @Test
     fun `Property - children`() {
         val page = TractPage(
-            hero = { Hero(it) { Text(it, "text") } },
+            hero = { Hero(it) { listOf(Text(it, text = "text")) } },
             cards = {
                 listOf(
                     TractPage.Card(it) { listOf(Text(it, "text")) },

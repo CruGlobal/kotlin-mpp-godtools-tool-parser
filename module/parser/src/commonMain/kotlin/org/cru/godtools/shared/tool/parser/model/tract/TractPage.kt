@@ -114,6 +114,7 @@ class TractPage : Page {
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
         cardTextColor: Color? = null,
+        header: ((TractPage) -> Header?)? = null,
         hero: ((TractPage) -> Hero?)? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
         modals: ((TractPage) -> List<Modal>?)? = null,
@@ -132,7 +133,7 @@ class TractPage : Page {
     ) {
         _cardTextColor = cardTextColor
 
-        header = null
+        this.header = header?.invoke(this)
         this.hero = hero?.invoke(this)
         this.cards = cards?.invoke(this).orEmpty()
         this.modals = modals?.invoke(this).orEmpty()
