@@ -6,7 +6,7 @@
     "dependencies"
   ],
   "dependencyDashboard": true,
-  "baseBranches": [
+  "baseBranchPatterns": [
     "$default",
     "/^feature\\/.*/"
   ],
@@ -42,7 +42,9 @@
       ]
     },
     {
-      "matchBaseBranches": [ "/^feature\\/.*/" ],
+      "matchBaseBranches": [
+        "/^feature\\/.*/"
+      ],
       "dependencyDashboardApproval": true
     }
   ]

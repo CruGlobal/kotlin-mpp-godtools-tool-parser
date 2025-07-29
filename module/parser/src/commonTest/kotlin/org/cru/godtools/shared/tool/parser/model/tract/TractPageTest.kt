@@ -16,12 +16,6 @@ import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_S
 import org.cru.godtools.shared.tool.parser.model.TEST_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
-import org.cru.godtools.shared.tool.parser.model.page.backgroundColor
-import org.cru.godtools.shared.tool.parser.model.page.backgroundImageGravity
-import org.cru.godtools.shared.tool.parser.model.page.backgroundImageScaleType
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 
@@ -87,16 +81,6 @@ class TractPageTest : UsesResources("model/tract") {
         )
         val resource = manifest.getResource("background.png")
 
-        with(null as TractPage?) {
-            assertEquals(DEFAULT_BACKGROUND_COLOR, backgroundColor)
-            assertEquals(DEFAULT_BACKGROUND_IMAGE_GRAVITY, backgroundImageGravity)
-            assertEquals(DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, backgroundImageScaleType)
-        }
-        with(page as TractPage?) {
-            assertEquals(TestColors.GREEN, backgroundColor)
-            assertEquals(TEST_GRAVITY, backgroundImageGravity)
-            assertEquals(ImageScaleType.FILL_Y, backgroundImageScaleType)
-        }
         with(page) {
             assertEquals(TestColors.GREEN, backgroundColor)
             assertEquals(resource, backgroundImage)
