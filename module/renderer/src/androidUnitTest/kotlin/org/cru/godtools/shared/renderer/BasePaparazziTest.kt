@@ -37,6 +37,11 @@ abstract class BasePaparazziTest(
     protected val accessibilityMode: AccessibilityMode = AccessibilityMode.NO_ACCESSIBILITY,
     renderingMode: RenderingMode = RenderingMode.NORMAL
 ) {
+    protected companion object {
+        val resourceBlackPanther = Resource(name = "black_panther", localName = "black_panther.png")
+        val resourceBruce = Resource(name = "bruce", localName = "bruce.jpg")
+        val resourceWaterfall = Resource(name = "waterfall", localName = "waterfall.jpg")
+    }
     enum class AccessibilityMode { ACCESSIBILITY, NO_ACCESSIBILITY }
 
     @get:Rule
@@ -61,8 +66,9 @@ abstract class BasePaparazziTest(
             locale = Locale.forLanguage("en"),
             resources = {
                 listOf(
-                    Resource(name = "black_panther", localName = "black_panther.png"),
-                    Resource(name = "bruce", localName = "bruce.jpg"),
+                    resourceBlackPanther,
+                    resourceBruce,
+                    resourceWaterfall,
                 ) + TestResources.resources
             },
             tips = {
@@ -83,6 +89,7 @@ abstract class BasePaparazziTest(
         val engine = TestResources.coilEngine.newBuilder()
             .intercept("bruce.jpg".toPath(), CoilTestImages.bruce)
             .intercept("black_panther.png".toPath(), CoilTestImages.blackPanther)
+            .intercept("waterfall.jpg".toPath(), CoilTestImages.waterfall)
             .build()
 
         SingletonImageLoader.setUnsafe(
