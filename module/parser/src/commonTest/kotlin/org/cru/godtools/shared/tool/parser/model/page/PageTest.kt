@@ -15,7 +15,9 @@ import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.HasPages
+import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
@@ -397,6 +399,9 @@ class PageTest : UsesResources("model/page") {
         parent: HasPages = Manifest(),
         id: String? = null,
         parentPage: String? = null,
+        backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         cardBackgroundColor: Color? = null,
         controlColor: Color? = null,
         multiselectOptionBackgroundColor: Color? = null,
@@ -408,6 +413,9 @@ class PageTest : UsesResources("model/page") {
             container = parent,
             id = id,
             parentPage = parentPage,
+            backgroundColor = backgroundColor,
+            backgroundImageGravity = backgroundImageGravity,
+            backgroundImageScaleType = backgroundImageScaleType,
             cardBackgroundColor = cardBackgroundColor,
             controlColor = controlColor,
             multiselectOptionBackgroundColor = multiselectOptionBackgroundColor,

@@ -175,12 +175,12 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
 
-    internal val backgroundColor: Color
+    val backgroundColor: Color
 
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
-    internal val backgroundImageGravity: Gravity
-    internal val backgroundImageScaleType: ImageScaleType
+    val backgroundImageGravity: Gravity
+    val backgroundImageScaleType: ImageScaleType
 
     private val _controlColor: Color?
     @JsName("_controlColor")
@@ -312,7 +312,3 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     val platformControlColor get() = controlColor.toPlatformColor()
     // endregion Kotlin/JS interop
 }
-
-val Page?.backgroundColor get() = this?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR
-val Page?.backgroundImageGravity get() = this?.backgroundImageGravity ?: DEFAULT_BACKGROUND_IMAGE_GRAVITY
-val Page?.backgroundImageScaleType get() = this?.backgroundImageScaleType ?: DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
