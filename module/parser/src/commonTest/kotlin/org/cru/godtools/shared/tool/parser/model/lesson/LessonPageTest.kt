@@ -20,12 +20,6 @@ import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_S
 import org.cru.godtools.shared.tool.parser.model.TEST_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
-import org.cru.godtools.shared.tool.parser.model.page.backgroundColor
-import org.cru.godtools.shared.tool.parser.model.page.backgroundImageGravity
-import org.cru.godtools.shared.tool.parser.model.page.backgroundImageScaleType
 import org.cru.godtools.shared.tool.parser.model.toEventIds
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -76,19 +70,11 @@ class LessonPageTest : UsesResources("model/lesson") {
     // region Attribute Behavior
     @Test
     fun testBackgroundColor() {
-        assertEquals(DEFAULT_BACKGROUND_COLOR, (null as LessonPage?).backgroundColor)
-
-        val page = LessonPage(Manifest(), backgroundColor = TestColors.GREEN)
-        assertEquals(TestColors.GREEN, page.backgroundColor)
-        assertEquals(TestColors.GREEN, (page as LessonPage?).backgroundColor)
+        assertEquals(TestColors.GREEN, LessonPage(backgroundColor = TestColors.GREEN).backgroundColor)
     }
 
     @Test
     fun testBackgroundImageAttrs() {
-        val nullPage = null as LessonPage?
-        assertEquals(DEFAULT_BACKGROUND_IMAGE_GRAVITY, nullPage.backgroundImageGravity)
-        assertEquals(DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE, nullPage.backgroundImageScaleType)
-
         val manifest = Manifest(resources = { listOf(Resource(it, "test.png")) })
         val resource = manifest.getResource("test.png")
         val page = LessonPage(
@@ -98,8 +84,8 @@ class LessonPageTest : UsesResources("model/lesson") {
             backgroundImageScaleType = ImageScaleType.FIT
         )
         assertSame(resource, page.backgroundImage)
-        assertEquals(TEST_GRAVITY, (page as LessonPage?).backgroundImageGravity)
-        assertEquals(ImageScaleType.FIT, (page as LessonPage?).backgroundImageScaleType)
+        assertEquals(TEST_GRAVITY, page.backgroundImageGravity)
+        assertEquals(ImageScaleType.FIT, page.backgroundImageScaleType)
     }
 
     @Test
