@@ -58,6 +58,8 @@ kotlin {
         androidUnitTest {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
+
+                implementation(libs.testparameterinjector)
             }
         }
     }

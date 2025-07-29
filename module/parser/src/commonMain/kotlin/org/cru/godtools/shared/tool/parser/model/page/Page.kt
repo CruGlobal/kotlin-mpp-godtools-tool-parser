@@ -19,6 +19,7 @@ import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.Background
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -174,6 +175,15 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
+
+    val background by lazy {
+        Background(
+            backgroundColor,
+            backgroundImage,
+            backgroundImageGravity,
+            backgroundImageScaleType,
+        )
+    }
 
     val backgroundColor: Color
 
