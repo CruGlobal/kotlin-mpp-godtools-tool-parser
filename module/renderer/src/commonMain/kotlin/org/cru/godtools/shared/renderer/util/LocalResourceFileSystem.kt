@@ -2,9 +2,9 @@
 
 package org.cru.godtools.shared.renderer.util
 
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import okio.FileSystem
 
-internal val LocalResourceFileSystem: ProvidableCompositionLocal<FileSystem> =
-    staticCompositionLocalOf { error("CompositionLocal LocalResourceFileSystem not present") }
+internal val LocalResourceFileSystem = staticCompositionLocalOf<FileSystem> {
+    error("CompositionLocal LocalResourceFileSystem not present")
+}
