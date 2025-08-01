@@ -16,9 +16,11 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
+import io.fluidsonic.locale.Locale
 import kotlin.test.BeforeTest
 import kotlin.uuid.ExperimentalUuidApi
 import okio.Path.Companion.toPath
+import org.cru.godtools.shared.renderer.tips.InMemoryTipsRepository
 import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Resource
@@ -42,18 +44,29 @@ abstract class BasePaparazziTest(
         }
     )
 
+    protected val tipsRepository = InMemoryTipsRepository()
+
     protected val manifest by lazy {
         Manifest(
+            code = "tool",
+            locale = Locale.forLanguage("en"),
             resources = {
                 listOf(
                     Resource(name = "black_panther", localName = "black_panther.png"),
                     Resource(name = "bruce", localName = "bruce.jpg"),
                 ) + TestResources.resources
             },
-            tips = { tips },
+            tips = {
+                listOf(
+                    Tip(it, id = "ask", type = Tip.Type.ASK),
+                    Tip(it, id = "consider", type = Tip.Type.CONSIDER),
+                    Tip(it, id = "prepare", type = Tip.Type.PREPARE),
+                    Tip(it, id = "quote", type = Tip.Type.QUOTE),
+                    Tip(it, id = "tip", type = Tip.Type.TIP),
+                )
+            },
         )
     }
-    protected open val tips: List<Tip> = emptyList()
 
     @BeforeTest
     @OptIn(DelicateCoilApi::class)
@@ -75,7 +88,10 @@ abstract class BasePaparazziTest(
             CompositionLocalProvider(LocalInspectionMode provides true) {
                 PreviewContextConfigurationEffect()
             }
-            ProvideRendererServices(TestResources.fileSystem) {
+            ProvideRendererServices(
+                resources = TestResources.fileSystem,
+                tipsRepository = tipsRepository,
+            ) {
                 Box(modifier = Modifier.background(Color.White), content = content)
             }
         }

@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.flowOf
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.tips.LocalTipsRepository
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 
 private val InlineTipShape = RoundedCornerShape(6.dp)
@@ -32,10 +34,18 @@ internal fun RenderInlineTip(model: InlineTip, state: State) {
     if (!state.showTips.collectAsState().value) return
 
     val tip = model.tip ?: return
-    val tipId = tip.id
-    val isComplete by remember(state, tipId) { state.isTipCompleteFlow(tipId) }
-        .collectAsState(state.isTipComplete(tipId))
     val isInvisible by remember(state, model) { model.isInvisibleFlow(state) }.collectAsState(model.isInvisible(state))
+
+    val tipsRepository = LocalTipsRepository.current
+    val tool = tip.manifest.code
+    val locale = tip.manifest.locale
+    val tipId = tip.id
+    val isComplete by remember(tipsRepository, tool, locale, tipId) {
+        when {
+            tool == null || locale == null -> flowOf(false)
+            else -> tipsRepository.isTipCompleteFlow(tool, locale, tipId)
+        }
+    }.collectAsState(false)
 
     Surface(
         onClick = { state.triggerEvent(State.Event.OpenTip(tipId)) },
