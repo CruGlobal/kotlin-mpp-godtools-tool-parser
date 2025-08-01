@@ -141,15 +141,5 @@ class State internal constructor(
 
     // region Tips
     val showTips = MutableStateFlow(false)
-    val completedTips = MutableStateFlow(emptySet<String>())
-
-    @HiddenFromObjC
-    @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun isTipComplete(tip: String?) = tip in completedTips.value
-    @HiddenFromObjC
-    @JsExport.Ignore
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun isTipCompleteFlow(tip: String?) = completedTips.map { tip in it }.distinctUntilChanged()
     // endregion Tips
 }
