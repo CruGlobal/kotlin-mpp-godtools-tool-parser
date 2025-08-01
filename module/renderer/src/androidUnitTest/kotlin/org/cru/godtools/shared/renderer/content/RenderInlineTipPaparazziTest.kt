@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.renderer.content
 
 import kotlin.test.Test
+import kotlinx.coroutines.runBlocking
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Text
@@ -12,17 +13,15 @@ class RenderInlineTipPaparazziTest : BasePaparazziTest() {
         showTips.value = true
     }
 
-    override val tips = listOf(
-        Tip(id = "ask", type = Tip.Type.ASK),
-        Tip(id = "consider", type = Tip.Type.CONSIDER),
-        Tip(id = "prepare", type = Tip.Type.PREPARE),
-        Tip(id = "quote", type = Tip.Type.QUOTE),
-        Tip(id = "tip", type = Tip.Type.TIP),
-    )
-
     @Test
     fun `RenderInlineTip() - Completed`() {
-        state.completedTips.value = setOf("ask", "consider", "prepare", "quote", "tip", "missing")
+        runBlocking {
+            tipsRepository.markTipComplete(manifest.code!!, manifest.locale!!, "ask")
+            tipsRepository.markTipComplete(manifest.code!!, manifest.locale!!, "consider")
+            tipsRepository.markTipComplete(manifest.code!!, manifest.locale!!, "prepare")
+            tipsRepository.markTipComplete(manifest.code!!, manifest.locale!!, "quote")
+            tipsRepository.markTipComplete(manifest.code!!, manifest.locale!!, "tip")
+        }
         allTipsSnapshot()
     }
 
