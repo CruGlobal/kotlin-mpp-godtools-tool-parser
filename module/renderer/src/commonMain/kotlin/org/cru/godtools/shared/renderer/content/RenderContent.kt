@@ -19,6 +19,7 @@ import org.cru.godtools.shared.tool.parser.model.Input
 import org.cru.godtools.shared.tool.parser.model.Link
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
+import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.Video
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
@@ -44,6 +45,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is InlineTip -> RenderInlineTip(content, state)
         is Input -> RenderInput(content, state)
         is Paragraph -> RenderParagraph(content, state)
+        is Tabs -> RenderTabs(tabs = content, state)
         is Text -> RenderText(content, state)
         is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content, state)
