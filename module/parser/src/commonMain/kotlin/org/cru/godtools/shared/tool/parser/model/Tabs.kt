@@ -41,8 +41,12 @@ class Tabs : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest()) : super(parent) {
-        tabs = emptyList()
+    @JsName("createTestTabs")
+    constructor(
+        parent: Base = Manifest(),
+        tabs: List<Tabs.Tab> = emptyList<Tabs.Tab>()
+    ) : super(parent) {
+        this.tabs = tabs
     }
 
     // region Kotlin/JS interop
@@ -84,14 +88,16 @@ class Tabs : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        @JsName("createTestTabsTab")
+        constructor(
             parent: Tabs = Tabs(),
-            analyticsEvents: List<AnalyticsEvent> = emptyList()
+            analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            label: Text?
         ) : super(parent) {
             tabs = parent
             this.analyticsEvents = analyticsEvents
             listeners = emptySet()
-            label = null
+            this.label = label
             content = emptyList()
         }
 
