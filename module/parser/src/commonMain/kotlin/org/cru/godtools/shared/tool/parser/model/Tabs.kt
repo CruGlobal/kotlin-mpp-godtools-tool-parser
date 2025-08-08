@@ -88,7 +88,7 @@ class Tabs : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        @JsName("createTestTabsTab")
+        @JsName("createTestTab")
         constructor(
             parent: Tabs = Tabs(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
