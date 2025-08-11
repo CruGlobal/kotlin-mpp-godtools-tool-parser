@@ -44,8 +44,10 @@ class Tabs : Content {
     @JsName("createTestTabs")
     constructor(
         parent: Base = Manifest(),
-        tabs: List<Tabs.Tab> = emptyList<Tabs.Tab>()
-    ) : super(parent) {
+        tabs: List<Tabs.Tab> = emptyList<Tabs.Tab>(),
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.tabs = tabs
     }
 
