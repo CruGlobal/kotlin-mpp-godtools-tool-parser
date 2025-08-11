@@ -4,9 +4,7 @@ import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.onNodeWithText
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
-import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Tabs
-import org.cru.godtools.shared.tool.parser.model.Text
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class RenderTabsTest : BaseRenderContentTest() {

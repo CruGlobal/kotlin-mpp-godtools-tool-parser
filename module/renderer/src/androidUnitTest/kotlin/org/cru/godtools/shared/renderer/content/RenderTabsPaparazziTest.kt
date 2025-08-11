@@ -6,7 +6,7 @@ import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.Text
 
-class RenderTabsPaparazziTest: BasePaparazziTest() {
+class RenderTabsPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderTabs() - Tabs`() = contentSnapshot {
