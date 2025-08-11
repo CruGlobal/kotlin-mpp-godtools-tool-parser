@@ -11,6 +11,8 @@ import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Tabs
 
@@ -25,6 +28,10 @@ private val CORNER_RADIUS = 10.dp
 
 @Composable
 internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
+    val invisible by remember(tabs, state) {
+        tabs.isInvisibleFlow(state)
+    }.collectAsState(tabs.isInvisible(state))
+
     val selectedIndex = remember { mutableStateOf(0) }
 
     var firstTab: Tabs.Tab? = tabs.tabs.firstOrNull()
@@ -33,6 +40,7 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
     SecondaryTabRow(
         selectedTabIndex = selectedIndex.value,
         modifier = modifier
+            .visibility(model = tabs, state = state)
             .border(
                 BorderStroke(width = 2.dp, borderColor), // Define border width and color
                 RoundedCornerShape(CORNER_RADIUS) // Define the rounded corners
@@ -69,7 +77,7 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
                             )
                         }
                     },
-                    enabled = true,
+                    enabled = !invisible,
                     selectedContentColor = unselectedColor,
                     unselectedContentColor = selectedColor
                 )
