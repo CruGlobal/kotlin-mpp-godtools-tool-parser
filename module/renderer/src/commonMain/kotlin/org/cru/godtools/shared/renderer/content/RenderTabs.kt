@@ -2,7 +2,10 @@
 
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
@@ -11,22 +14,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Tabs
 
-private val TAB_SELECTED_COLOR = Color.DarkGray
-private val TAB_UNSELECTED_COLOR = Color.LightGray
-private val TAB_SELECTED_CONTENT_COLOR = Color.White
-private val TAB_UNSELECTED_CONTENT_COLOR = Color.DarkGray
+private val CORNER_RADIUS = 10.dp
 
 @Composable
 internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
     val selectedIndex = remember { mutableStateOf(0) }
 
+    var firstTab: Tabs.Tab? = tabs.tabs.firstOrNull()
+    val borderColor: Color = firstTab?.manifest?.primaryColor?.toComposeColor() ?: Color.Black
+
     SecondaryTabRow(
         selectedTabIndex = selectedIndex.value,
-        modifier = modifier,
+        modifier = modifier
+            .border(
+                BorderStroke(width = 2.dp, borderColor), // Define border width and color
+                RoundedCornerShape(CORNER_RADIUS) // Define the rounded corners
+            )
+            .clip(RoundedCornerShape(CORNER_RADIUS)),
         containerColor = Color.White,
         contentColor = Color.White,
         indicator = @Composable {
@@ -39,7 +50,9 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
             tabs.tabs.forEachIndexed { index, tab ->
 
                 val isSelected: Boolean = index == selectedIndex.value
-                val backgroundColor: Color = if (isSelected) TAB_SELECTED_COLOR else TAB_UNSELECTED_COLOR
+                val selectedColor: Color = tab.manifest.primaryColor.toComposeColor()
+                val unselectedColor: Color = tab.manifest.primaryTextColor.toComposeColor()
+                val backgroundColor: Color = if (isSelected) selectedColor else unselectedColor
 
                 Tab(
                     selected = isSelected,
@@ -57,8 +70,8 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
                         }
                     },
                     enabled = true,
-                    selectedContentColor = TAB_SELECTED_CONTENT_COLOR,
-                    unselectedContentColor = TAB_UNSELECTED_CONTENT_COLOR
+                    selectedContentColor = unselectedColor,
+                    unselectedContentColor = selectedColor
                 )
             }
         }
