@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,14 +42,14 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
     val lifecycleOwner = LocalLifecycleOwner.current
     val borderColor: Color = tabs.stylesParent?.primaryColor?.toComposeColor() ?: DEFAULT_SELECTED_COLOR
 
-    var selectedIndex = remember { mutableStateOf(0) }
+    var selectedIndex = remember { mutableIntStateOf(0) }
 
     LaunchedEffect(tabs, state) {
         // handle play/stop listeners
         state.contentEvents
             .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
             .collect {
-                for (tabIndex in 0 ..< tabs.tabs.count()) {
+                for (tabIndex in 0..<tabs.tabs.count()) {
                     val isSelectedTab: Boolean = it in tabs.tabs[tabIndex].listeners
                     if (isSelectedTab) {
                         selectedIndex.value = tabIndex
@@ -67,21 +67,22 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
                 BorderStroke(width = 2.dp, borderColor),
                 RoundedCornerShape(CORNER_RADIUS)
             )
-            .clip(RoundedCornerShape(CORNER_RADIUS)), // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
+            // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
+            .clip(RoundedCornerShape(CORNER_RADIUS)),
         containerColor = Color.White,
         contentColor = Color.White,
         indicator = @Composable {
-
         },
         divider = @Composable {
-
         },
         tabs = @Composable {
             tabs.tabs.forEachIndexed { index, tab ->
 
                 val isSelected: Boolean = index == selectedIndex.value
-                val selectedColor: Color = tab.stylesParent?.primaryColor?.toComposeColor() ?: DEFAULT_SELECTED_COLOR
-                val unselectedColor: Color = tab.stylesParent?.primaryTextColor?.toComposeColor() ?: DEFAULT_UNSELECTED_COLOR
+                val selectedColor: Color = tab.stylesParent?.primaryColor?.toComposeColor()
+                    ?: DEFAULT_SELECTED_COLOR
+                val unselectedColor: Color = tab.stylesParent?.primaryTextColor?.toComposeColor()
+                    ?: DEFAULT_UNSELECTED_COLOR
                 val backgroundColor: Color = if (isSelected) selectedColor else unselectedColor
 
                 Tab(
@@ -93,7 +94,6 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
                         .background(backgroundColor),
                     text = {
                         tab.label?.let {
-
                             Text(
                                 text = it.text
                             )
