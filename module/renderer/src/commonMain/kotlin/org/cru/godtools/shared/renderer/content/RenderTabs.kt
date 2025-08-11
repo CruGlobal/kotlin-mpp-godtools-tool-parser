@@ -5,6 +5,7 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
@@ -63,6 +64,7 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
         selectedTabIndex = selectedIndex.value,
         modifier = modifier
             .visibility(model = tabs, state = state)
+            .padding(horizontal = HorizontalPadding)
             .border(
                 BorderStroke(width = 2.dp, borderColor),
                 RoundedCornerShape(CORNER_RADIUS)
