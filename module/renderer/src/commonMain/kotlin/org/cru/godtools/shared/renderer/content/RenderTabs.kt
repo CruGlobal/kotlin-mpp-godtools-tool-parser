@@ -40,7 +40,6 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
 
                 val isSelected: Boolean = index == selectedIndex.value
                 val backgroundColor: Color = if (isSelected) TAB_SELECTED_COLOR else TAB_UNSELECTED_COLOR
-                val textColor: Color = if (isSelected) TAB_SELECTED_CONTENT_COLOR else TAB_UNSELECTED_CONTENT_COLOR
 
                 Tab(
                     selected = isSelected,
@@ -55,11 +54,6 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
                             Text(
                                 text = it.text
                             )
-
-//                            RenderTextNode(
-//                                it,
-//                                modifier = Modifier
-//                            )
                         }
                     },
                     enabled = true,
