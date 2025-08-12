@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -34,6 +35,8 @@ import org.cru.godtools.shared.tool.parser.model.stylesParent
 private val CORNER_RADIUS = 10.dp
 private val DEFAULT_SELECTED_COLOR = Color.DarkGray
 private val DEFAULT_UNSELECTED_COLOR = Color.White
+
+internal const val TestTagTabs = "tabs"
 
 @Composable
 internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
@@ -60,6 +63,7 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
     SecondaryTabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier
+            .testTag(tag = TestTagTabs)
             .visibility(model = tabs, state = state)
             .padding(horizontal = HorizontalPadding)
             .border(

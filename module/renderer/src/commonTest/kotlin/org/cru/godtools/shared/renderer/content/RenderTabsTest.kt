@@ -1,7 +1,7 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.model.Tabs
@@ -16,5 +16,5 @@ class RenderTabsTest : BaseRenderContentTest() {
         invisibleIf = invisibleIf,
         goneIf = goneIf
     )
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithText("Test")
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagTabs)
 }
