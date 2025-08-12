@@ -94,13 +94,14 @@ class Tabs : Content {
         constructor(
             parent: Tabs = Tabs(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
-            label: Text?
+            label: Text? = null,
+            content: List<Content> = emptyList()
         ) : super(parent) {
             tabs = parent
             this.analyticsEvents = analyticsEvents
             listeners = emptySet()
             this.label = label
-            content = emptyList()
+            this.content = content
         }
 
         // region HasAnalyticsEvents
