@@ -30,7 +30,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 
