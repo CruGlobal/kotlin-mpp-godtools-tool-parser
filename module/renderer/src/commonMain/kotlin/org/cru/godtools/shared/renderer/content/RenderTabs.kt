@@ -50,13 +50,9 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
         // handle play/stop listeners
         state.contentEvents
             .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
-            .collect {
-                for (tabIndex in 0..<tabs.tabs.count()) {
-                    val isSelectedTab: Boolean = it in tabs.tabs[tabIndex].listeners
-                    if (isSelectedTab) {
-                        selectedIndex = tabIndex
-                        break
-                    }
+            .collect { event ->
+                tabs.tabs.firstOrNull { event in it.listeners }?.let {
+                    selectedIndex = it.position
                 }
             }
     }
