@@ -5,7 +5,7 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,7 +40,7 @@ private val DEFAULT_UNSELECTED_COLOR = Color.White
 internal const val TestTagTabs = "tabs"
 
 @Composable
-internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
+internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
     val invisible by remember(tabs, state) {
         tabs.isInvisibleFlow(state)
     }.collectAsState(tabs.isInvisible(state))
@@ -62,64 +62,62 @@ internal fun RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier)
             }
     }
 
-    Column(modifier = modifier) {
-        SecondaryTabRow(
-            selectedTabIndex = selectedIndex,
-            modifier = Modifier
-                .testTag(tag = TestTagTabs)
-                .visibility(model = tabs, state = state)
-                .padding(horizontal = HorizontalPadding)
-                .border(
-                    BorderStroke(width = 2.dp, borderColor),
-                    RoundedCornerShape(CORNER_RADIUS)
-                )
-                // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
-                .clip(RoundedCornerShape(CORNER_RADIUS)),
-            containerColor = Color.White,
-            contentColor = Color.White,
-            indicator = @Composable {
-            },
-            divider = @Composable {
-            },
-            tabs = @Composable {
-                tabs.tabs.forEachIndexed { index, tab ->
+    SecondaryTabRow(
+        selectedTabIndex = selectedIndex,
+        modifier = modifier
+            .testTag(tag = TestTagTabs)
+            .visibility(model = tabs, state = state)
+            .padding(horizontal = HorizontalPadding)
+            .border(
+                BorderStroke(width = 2.dp, borderColor),
+                RoundedCornerShape(CORNER_RADIUS)
+            )
+            // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
+            .clip(RoundedCornerShape(CORNER_RADIUS)),
+        containerColor = Color.White,
+        contentColor = Color.White,
+        indicator = @Composable {
+        },
+        divider = @Composable {
+        },
+        tabs = @Composable {
+            tabs.tabs.forEachIndexed { index, tab ->
 
-                    val isSelected: Boolean = index == selectedIndex
-                    val selectedColor: Color = tab.stylesParent?.primaryColor?.toComposeColor()
-                        ?: DEFAULT_SELECTED_COLOR
-                    val unselectedColor: Color = tab.stylesParent?.primaryTextColor?.toComposeColor()
-                        ?: DEFAULT_UNSELECTED_COLOR
-                    val backgroundColor: Color = if (isSelected) selectedColor else unselectedColor
+                val isSelected: Boolean = index == selectedIndex
+                val selectedColor: Color = tab.stylesParent?.primaryColor?.toComposeColor()
+                    ?: DEFAULT_SELECTED_COLOR
+                val unselectedColor: Color = tab.stylesParent?.primaryTextColor?.toComposeColor()
+                    ?: DEFAULT_UNSELECTED_COLOR
+                val backgroundColor: Color = if (isSelected) selectedColor else unselectedColor
 
-                    Tab(
-                        selected = isSelected,
-                        onClick = {
-                            selectedIndex = index
-                        },
-                        modifier = Modifier
-                            .background(backgroundColor),
-                        text = {
-                            tab.label?.let {
-                                Text(
-                                    text = it.text
-                                )
-                            }
-                        },
-                        enabled = !invisible,
-                        selectedContentColor = unselectedColor,
-                        unselectedContentColor = selectedColor
-                    )
-                }
-            }
-        )
-
-        selectedTab?.content
-            ?.takeIf { it.count() > 0 }
-            ?.let {
-                RenderContent(
-                    content = it,
-                    state = state
+                Tab(
+                    selected = isSelected,
+                    onClick = {
+                        selectedIndex = index
+                    },
+                    modifier = Modifier
+                        .background(backgroundColor),
+                    text = {
+                        tab.label?.let {
+                            Text(
+                                text = it.text
+                            )
+                        }
+                    },
+                    enabled = !invisible,
+                    selectedContentColor = unselectedColor,
+                    unselectedContentColor = selectedColor
                 )
             }
-    }
+        }
+    )
+
+    selectedTab?.content
+        ?.takeIf { it.count() > 0 }
+        ?.let {
+            RenderContent(
+                content = it,
+                state = state
+            )
+        }
 }
