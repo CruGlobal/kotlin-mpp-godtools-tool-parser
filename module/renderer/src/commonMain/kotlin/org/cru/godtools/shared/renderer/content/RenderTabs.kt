@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -38,6 +40,18 @@ import org.cru.godtools.shared.tool.parser.model.stylesParent
 private val CORNER_RADIUS = 10.dp
 
 internal const val TestTagTabs = "tabs"
+
+internal object RenderTabs {
+    fun getTabTestTag(index: Int) = "tabs.tab-$index"
+}
+
+internal val TabIsSelected = SemanticsPropertyKey<Boolean>(
+    name = "TabIsSelected",
+    mergePolicy = { parentValue, _ ->
+        // Never merge TestTags, to avoid leaking internal test tags to parents.
+        parentValue
+    }
+)
 
 @Composable
 internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
@@ -94,6 +108,8 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
                         selectedIndex = index
                     },
                     modifier = Modifier
+                        .testTag(RenderTabs.getTabTestTag(index))
+                        .semantics { set(TabIsSelected, isSelected) }
                         .background(backgroundColor),
                     text = {
                         tab.label?.let {
