@@ -112,12 +112,8 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         }
     )
 
-    selectedTab?.content
-        ?.takeIf { it.count() > 0 }
-        ?.let {
-            RenderContent(
-                content = it,
-                state = state
-            )
-        }
+    RenderContent(
+        content = selectedTab?.content.orEmpty(),
+        state = state
+    )
 }
