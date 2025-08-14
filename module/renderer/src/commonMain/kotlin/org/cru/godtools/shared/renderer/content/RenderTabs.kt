@@ -31,11 +31,11 @@ import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Tabs
+import org.cru.godtools.shared.tool.parser.model.primaryColor
+import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 
 private val CORNER_RADIUS = 10.dp
-private val DEFAULT_SELECTED_COLOR = Color.DarkGray
-private val DEFAULT_UNSELECTED_COLOR = Color.White
 
 internal const val TestTagTabs = "tabs"
 
@@ -48,7 +48,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    val borderColor: Color = tabs.stylesParent?.primaryColor?.toComposeColor() ?: DEFAULT_SELECTED_COLOR
+    val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
     val selectedTab: Tabs.Tab? = tabs.tabs.getOrNull(index = selectedIndex)
 
     LaunchedEffect(tabs, state) {
@@ -84,11 +84,9 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
             tabs.tabs.forEachIndexed { index, tab ->
 
                 val isSelected: Boolean = index == selectedIndex
-                val selectedColor: Color = tab.stylesParent?.primaryColor?.toComposeColor()
-                    ?: DEFAULT_SELECTED_COLOR
-                val unselectedColor: Color = tab.stylesParent?.primaryTextColor?.toComposeColor()
-                    ?: DEFAULT_UNSELECTED_COLOR
-                val backgroundColor: Color = if (isSelected) selectedColor else unselectedColor
+                val selectedColor = tab.stylesParent.primaryColor.toComposeColor()
+                val unselectedColor = tab.stylesParent.primaryTextColor.toComposeColor()
+                val backgroundColor = if (isSelected) selectedColor else unselectedColor
 
                 Tab(
                     selected = isSelected,
