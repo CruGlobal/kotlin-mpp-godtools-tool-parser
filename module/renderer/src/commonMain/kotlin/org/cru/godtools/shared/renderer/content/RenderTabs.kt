@@ -49,7 +49,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
-    val selectedTab: Tabs.Tab? = tabs.tabs.getOrNull(index = selectedIndex)
+    val selectedTab: Tabs.Tab? = tabs.tabs.getOrNull(selectedIndex)
 
     LaunchedEffect(tabs, state) {
         // handle play/stop listeners
