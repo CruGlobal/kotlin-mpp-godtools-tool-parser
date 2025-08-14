@@ -22,7 +22,6 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                         Tabs.Tab(
                             label = Text(text = "1"),
                             content = listOf(
-                                Spacer(),
                                 Text(
                                     text = "Tab 1 Content",
                                     textAlign = Text.Align.CENTER
@@ -32,14 +31,12 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                                     resource = "bruce",
                                     width = Dimension.Percent(0.5f),
                                     gravity = Gravity.Horizontal.CENTER,
-                                ),
-                                Spacer()
+                                )
                             )
                         ),
                         Tabs.Tab(
                             label = Text(text = "2"),
                             content = listOf(
-                                Spacer(),
                                 Text(
                                     text = "Tab 2 Content",
                                     textAlign = Text.Align.CENTER
@@ -49,8 +46,7 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                                     resource = "bruce",
                                     width = Dimension.Percent(0.5f),
                                     gravity = Gravity.Horizontal.CENTER,
-                                ),
-                                Spacer()
+                                )
                             )
                         )
                     )
