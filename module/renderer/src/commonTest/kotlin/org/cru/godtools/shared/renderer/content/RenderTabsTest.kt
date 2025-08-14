@@ -9,10 +9,12 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 @RunOnAndroidWith(AndroidJUnit4::class)
 class RenderTabsTest : BaseRenderContentTest() {
     override val testModel = Tabs(
-        tabs = listOf(
-            Tabs.Tab(label = null),
-            Tabs.Tab(label = null)
-        ),
+        tabs = {
+            listOf(
+                Tabs.Tab(parent = it, label = null),
+                Tabs.Tab(parent = it, label = null)
+            )
+        },
         invisibleIf = invisibleIf,
         goneIf = goneIf
     )

@@ -18,38 +18,49 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                 Text(text = "Render Tabs"),
                 Spacer(),
                 Tabs(
-                    tabs = listOf(
-                        Tabs.Tab(
-                            label = Text(text = "1"),
-                            content = listOf(
-                                Text(
-                                    text = "Tab 1 Content",
-                                    textAlign = Text.Align.CENTER
-                                ),
-                                Image(
-                                    manifest,
-                                    resource = "bruce",
-                                    width = Dimension.Percent(0.5f),
-                                    gravity = Gravity.Horizontal.CENTER,
-                                )
-                            )
-                        ),
-                        Tabs.Tab(
-                            label = Text(text = "2"),
-                            content = listOf(
-                                Text(
-                                    text = "Tab 2 Content",
-                                    textAlign = Text.Align.CENTER
-                                ),
-                                Image(
-                                    manifest,
-                                    resource = "bruce",
-                                    width = Dimension.Percent(0.5f),
-                                    gravity = Gravity.Horizontal.CENTER,
-                                )
+                    parent = manifest,
+                    tabs = {
+                        listOf(
+                            Tabs.Tab(
+                                parent = it,
+                                label = Text(text = "1"),
+                                content = {
+                                    listOf(
+                                        Text(
+                                            parent = it,
+                                            text = "Tab 1 Content",
+                                            textAlign = Text.Align.CENTER
+                                        ),
+                                        Image(
+                                            parent = it,
+                                            resource = "bruce",
+                                            width = Dimension.Percent(0.5f),
+                                            gravity = Gravity.Horizontal.CENTER,
+                                        )
+                                    )
+                                }
+                            ),
+                            Tabs.Tab(
+                                parent = it,
+                                label = Text(text = "2"),
+                                content = {
+                                    listOf(
+                                        Text(
+                                            parent = it,
+                                            text = "Tab 2 Content",
+                                            textAlign = Text.Align.CENTER
+                                        ),
+                                        Image(
+                                            parent = it,
+                                            resource = "bruce",
+                                            width = Dimension.Percent(0.5f),
+                                            gravity = Gravity.Horizontal.CENTER,
+                                        )
+                                    )
+                                }
                             )
                         )
-                    )
+                    }
                 ),
                 Spacer(),
                 Text(text = "Render Tabs")
