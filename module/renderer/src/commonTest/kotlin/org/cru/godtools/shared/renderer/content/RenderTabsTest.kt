@@ -8,8 +8,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.Text
 
@@ -19,6 +22,8 @@ class RenderTabsTest : BaseRenderContentTest() {
     private companion object {
         val MATCHER_TAB_IS_SELECTED = expectValue(TabIsSelected, true)
         val MATCHER_TAB_IS_NOT_SELECTED = expectValue(TabIsSelected, false)
+        val TAB_1_EVENT_LISTENER = EventId(name = "tab_1_listener")
+        val TAB_2_EVENT_LISTENER = EventId(name = "tab_2_listener")
     }
 
     override val testModel = Tabs(
@@ -26,11 +31,13 @@ class RenderTabsTest : BaseRenderContentTest() {
             listOf(
                 Tabs.Tab(
                     parent = it,
-                    label = Text(text = "1")
+                    label = Text(text = "1"),
+                    listeners = setOf(TAB_1_EVENT_LISTENER)
                 ),
                 Tabs.Tab(
                     parent = it,
-                    label = Text(text = "2")
+                    label = Text(text = "2"),
+                    listeners = setOf(TAB_2_EVENT_LISTENER)
                 )
             )
         },
@@ -55,8 +62,36 @@ class RenderTabsTest : BaseRenderContentTest() {
         onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_SELECTED)
         onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
 
-        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).performClick()
+        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assertExists().performClick()
+
         onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
         onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_SELECTED)
+    }
+
+    @Test
+    fun `Action - Second Tab Is Selected On Content Event`() = runComposeUiTest {
+        setContent {
+            RenderContentStack(
+                listOf(testModel),
+                state = state
+            )
+        }
+
+        val firstTab = 0
+        val secondTab = 1
+
+        onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_SELECTED)
+        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
+
+        runTest {
+            state.setTestCoroutineScope(this)
+
+            state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
+
+            advanceUntilIdle()
+
+            onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
+            onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_SELECTED)
+        }
     }
 }
