@@ -25,24 +25,20 @@ class RenderTabsTest : BaseRenderContentTest() {
         val TAB_2_EVENT_LISTENER = EventId(name = "tab_2_listener")
     }
 
-    override val testModel = Tabs(
-        tabs = {
-            listOf(
-                Tabs.Tab(
-                    parent = it,
-                    label = Text(text = "1"),
-                    listeners = setOf(TAB_1_EVENT_LISTENER)
-                ),
-                Tabs.Tab(
-                    parent = it,
-                    label = Text(text = "2"),
-                    listeners = setOf(TAB_2_EVENT_LISTENER)
-                )
+    override val testModel = Tabs(invisibleIf = invisibleIf, goneIf = goneIf) {
+        listOf(
+            Tabs.Tab(
+                parent = it,
+                label = Text(text = "1"),
+                listeners = setOf(TAB_1_EVENT_LISTENER)
+            ),
+            Tabs.Tab(
+                parent = it,
+                label = Text(text = "2"),
+                listeners = setOf(TAB_2_EVENT_LISTENER)
             )
-        },
-        invisibleIf = invisibleIf,
-        goneIf = goneIf
-    )
+        )
+    }
 
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagTabs)
 
