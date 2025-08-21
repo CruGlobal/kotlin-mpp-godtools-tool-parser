@@ -7,8 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -37,8 +37,6 @@ import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 
-private val CORNER_RADIUS = 10.dp
-
 internal const val TestTagTabs = "tabs"
 internal const val TestTagTab = "tab"
 internal val TabIsSelected = SemanticsPropertyKey<Boolean>(
@@ -59,6 +57,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
+    val borderShape = MaterialTheme.shapes.small
     val selectedTab: Tabs.Tab? = tabs.tabs.getOrNull(selectedIndex)
 
     LaunchedEffect(tabs, state) {
@@ -80,10 +79,10 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
             .padding(horizontal = HorizontalPadding)
             .border(
                 BorderStroke(width = 2.dp, borderColor),
-                RoundedCornerShape(CORNER_RADIUS)
+                borderShape
             )
             // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
-            .clip(RoundedCornerShape(CORNER_RADIUS)),
+            .clip(borderShape),
         containerColor = Color.White,
         contentColor = Color.White,
         indicator = @Composable {
