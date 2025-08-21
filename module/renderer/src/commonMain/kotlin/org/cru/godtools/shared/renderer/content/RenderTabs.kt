@@ -93,9 +93,9 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
             tabs.tabs.forEachIndexed { index, tab ->
 
                 val isSelected: Boolean = index == selectedIndex
-                val selectedColor = tab.stylesParent.primaryColor.toComposeColor()
-                val unselectedColor = tab.stylesParent.primaryTextColor.toComposeColor()
-                val backgroundColor = if (isSelected) selectedColor else unselectedColor
+                val primaryColor = tab.stylesParent.primaryColor.toComposeColor()
+                val primaryTextColor = tab.stylesParent.primaryTextColor.toComposeColor()
+                val backgroundColor = if (isSelected) primaryColor else primaryTextColor
 
                 Tab(
                     selected = isSelected,
@@ -114,8 +114,8 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
                         }
                     },
                     enabled = !invisible,
-                    selectedContentColor = unselectedColor,
-                    unselectedContentColor = selectedColor
+                    selectedContentColor = primaryTextColor,
+                    unselectedContentColor = primaryColor
                 )
             }
         }
