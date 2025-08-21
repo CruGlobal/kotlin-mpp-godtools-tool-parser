@@ -4,6 +4,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
@@ -59,13 +60,13 @@ class RenderTabsTest : BaseRenderContentTest() {
         val firstTab = 0
         val secondTab = 1
 
-        onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_SELECTED)
-        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_SELECTED)
+        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
 
-        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assertExists().performClick()
+        onAllNodesWithTag(TestTagTab)[secondTab].assertExists().performClick()
 
-        onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
-        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
+        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_SELECTED)
     }
 
     @Test
@@ -80,8 +81,8 @@ class RenderTabsTest : BaseRenderContentTest() {
         val firstTab = 0
         val secondTab = 1
 
-        onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_SELECTED)
-        onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_SELECTED)
+        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
 
         testScope.runTest {
             state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
@@ -90,8 +91,8 @@ class RenderTabsTest : BaseRenderContentTest() {
 
             advanceUntilIdle()
 
-            onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
-            onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_SELECTED)
+            onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
+            onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_SELECTED)
         }
     }
 }

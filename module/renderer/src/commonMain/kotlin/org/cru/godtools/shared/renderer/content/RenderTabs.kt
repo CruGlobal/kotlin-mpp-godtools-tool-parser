@@ -40,11 +40,7 @@ import org.cru.godtools.shared.tool.parser.model.stylesParent
 private val CORNER_RADIUS = 10.dp
 
 internal const val TestTagTabs = "tabs"
-
-internal object RenderTabs {
-    fun getTabTestTag(index: Int) = "tabs.tab-$index"
-}
-
+internal const val TestTagTab = "tab"
 internal val TabIsSelected = SemanticsPropertyKey<Boolean>(
     name = "TabIsSelected",
     mergePolicy = { parentValue, _ ->
@@ -108,7 +104,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
                         selectedIndex = index
                     },
                     modifier = Modifier
-                        .testTag(RenderTabs.getTabTestTag(index))
+                        .testTag(TestTagTab)
                         .semantics { set(TabIsSelected, isSelected) }
                         .background(backgroundColor),
                     text = {
