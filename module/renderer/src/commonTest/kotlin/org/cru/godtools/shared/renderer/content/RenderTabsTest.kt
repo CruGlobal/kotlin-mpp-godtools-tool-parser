@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -84,7 +85,7 @@ class RenderTabsTest : BaseRenderContentTest() {
         testScope.runTest {
             state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
 
-            testScope.testScheduler.runCurrent()
+            runCurrent()
 
             onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
             onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
