@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -88,8 +87,6 @@ class RenderTabsTest : BaseRenderContentTest() {
             state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
 
             testScope.testScheduler.runCurrent()
-
-            advanceUntilIdle()
 
             onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
             onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_SELECTED)
