@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -20,8 +20,6 @@ import org.cru.godtools.shared.tool.parser.model.Text
 @OptIn(ExperimentalTestApi::class)
 class RenderTabsTest : BaseRenderContentTest() {
     private companion object {
-        val MATCHER_TAB_IS_SELECTED = expectValue(TabIsSelected, true)
-        val MATCHER_TAB_IS_NOT_SELECTED = expectValue(TabIsSelected, false)
         val TAB_1_EVENT_LISTENER = EventId(name = "tab_1_listener")
         val TAB_2_EVENT_LISTENER = EventId(name = "tab_2_listener")
     }
@@ -59,13 +57,13 @@ class RenderTabsTest : BaseRenderContentTest() {
         val firstTab = 0
         val secondTab = 1
 
-        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_SELECTED)
-        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assertIsSelected()
+        onAllNodesWithTag(TestTagTab)[secondTab].assertIsNotSelected()
 
         onAllNodesWithTag(TestTagTab)[secondTab].assertExists().performClick()
 
-        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
-        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
+        onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
     }
 
     @Test
@@ -80,16 +78,16 @@ class RenderTabsTest : BaseRenderContentTest() {
         val firstTab = 0
         val secondTab = 1
 
-        onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_SELECTED)
-        onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
+        onAllNodesWithTag(TestTagTab)[firstTab].assertIsSelected()
+        onAllNodesWithTag(TestTagTab)[secondTab].assertIsNotSelected()
 
         testScope.runTest {
             state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
 
             testScope.testScheduler.runCurrent()
 
-            onAllNodesWithTag(TestTagTab)[firstTab].assert(MATCHER_TAB_IS_NOT_SELECTED)
-            onAllNodesWithTag(TestTagTab)[secondTab].assert(MATCHER_TAB_IS_SELECTED)
+            onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
+            onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
         }
     }
 }
