@@ -83,10 +83,10 @@ class RenderTabsTest : BaseRenderContentTest() {
         onNodeWithTag(RenderTabs.getTabTestTag(firstTab)).assert(MATCHER_TAB_IS_SELECTED)
         onNodeWithTag(RenderTabs.getTabTestTag(secondTab)).assert(MATCHER_TAB_IS_NOT_SELECTED)
 
-        runTest {
-            state.setTestCoroutineScope(this)
-
+        testScope.runTest {
             state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
+
+            testScope.testScheduler.runCurrent()
 
             advanceUntilIdle()
 
