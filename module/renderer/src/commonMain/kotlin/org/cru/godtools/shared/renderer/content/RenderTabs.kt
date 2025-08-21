@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +50,11 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
     val lifecycleOwner = LocalLifecycleOwner.current
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
     val borderShape = MaterialTheme.shapes.small
-    val selectedTab: Tabs.Tab? = tabs.tabs.getOrNull(selectedIndex)
+    val selectedTab by remember(tabs) {
+        derivedStateOf {
+            tabs.tabs.getOrNull(selectedIndex)
+        }
+    }
 
     LaunchedEffect(tabs, state) {
         // handle play/stop listeners
