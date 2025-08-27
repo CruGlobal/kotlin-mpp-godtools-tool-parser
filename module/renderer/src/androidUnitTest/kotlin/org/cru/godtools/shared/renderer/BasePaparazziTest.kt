@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -19,7 +20,9 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import io.fluidsonic.locale.Locale
 import kotlin.test.BeforeTest
 import kotlin.uuid.ExperimentalUuidApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import okio.Path.Companion.toPath
+import org.cru.godtools.shared.renderer.content.LocalCompottieCoroutineContext
 import org.cru.godtools.shared.renderer.tips.InMemoryTipsRepository
 import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 import org.cru.godtools.shared.tool.parser.model.Manifest
@@ -85,14 +88,18 @@ abstract class BasePaparazziTest(
 
     protected fun contentSnapshot(content: @Composable BoxScope.() -> Unit) {
         paparazzi.snapshot {
+            val coroutineScope = rememberCoroutineScope()
+
             CompositionLocalProvider(LocalInspectionMode provides true) {
                 PreviewContextConfigurationEffect()
             }
-            ProvideRendererServices(
-                resources = TestResources.fileSystem,
-                tipsRepository = tipsRepository,
-            ) {
-                Box(modifier = Modifier.background(Color.White), content = content)
+            CompositionLocalProvider(LocalCompottieCoroutineContext provides coroutineScope.coroutineContext) {
+                ProvideRendererServices(
+                    resources = TestResources.fileSystem,
+                    tipsRepository = tipsRepository,
+                ) {
+                    Box(modifier = Modifier.background(Color.White), content = content)
+                }
             }
         }
     }
@@ -103,11 +110,15 @@ abstract class BasePaparazziTest(
         content: @Composable BoxScope.() -> Unit,
     ) {
         paparazzi.gif(start = start, end = end) {
+            val coroutineScope = rememberCoroutineScope()
+
             CompositionLocalProvider(LocalInspectionMode provides true) {
                 PreviewContextConfigurationEffect()
             }
-            ProvideRendererServices(TestResources.fileSystem) {
-                Box(modifier = Modifier.background(Color.White), content = content)
+            CompositionLocalProvider(LocalCompottieCoroutineContext provides coroutineScope.coroutineContext) {
+                ProvideRendererServices(TestResources.fileSystem) {
+                    Box(modifier = Modifier.background(Color.White), content = content)
+                }
             }
         }
     }

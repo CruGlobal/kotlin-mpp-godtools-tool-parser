@@ -5,7 +5,7 @@ androidx-test-junit = "1.3.0"
 antlr-kotlin = "1.0.5"
 coil = "3.3.0"
 colormath = "3.6.1"
-compottie = "2.0.0-rc04"
+compottie = "2.0.0-rc05"
 fluidLocale = "0.13.0"
 gtoSupport = "4.4.2-SNAPSHOT"
 jvm = "21"
@@ -54,7 +54,6 @@ kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport
 kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref = "kustomExport" }
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
-mockk = "io.mockk:mockk:1.14.5"
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 turbine = "app.cash.turbine:turbine:1.2.1"
