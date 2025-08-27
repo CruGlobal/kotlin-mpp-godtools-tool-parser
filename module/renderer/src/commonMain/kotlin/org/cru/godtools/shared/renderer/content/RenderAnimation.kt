@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:compose:compositionlocal-allowlist")
+
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.Image
@@ -12,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsPropertyKey
@@ -20,10 +23,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.InternalCompottieApi
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
+import io.github.alexzhirkevich.compottie.ioDispatcher
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
+import kotlin.coroutines.CoroutineContext
 import org.cru.godtools.shared.renderer.content.extensions.Resource
 import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -40,6 +46,9 @@ internal val AnimationIsPlaying = SemanticsPropertyKey<Boolean>(
     }
 )
 
+@OptIn(InternalCompottieApi::class)
+internal val LocalCompottieCoroutineContext = staticCompositionLocalOf<CoroutineContext> { Compottie.ioDispatcher() }
+
 @Composable
 internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     val resource = animation.resource?.takeUnless { it.localName == null } ?: return
@@ -48,7 +57,9 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     val fileSystem = LocalResourceFileSystem.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val composition by rememberLottieComposition { LottieCompositionSpec.Resource(fileSystem, resource) }
+    val composition by rememberLottieComposition(coroutineContext = LocalCompottieCoroutineContext.current) {
+        LottieCompositionSpec.Resource(fileSystem, resource)
+    }
     var isPlaying by remember { mutableStateOf(animation.autoPlay) }
     var iterations by remember { mutableIntStateOf(1) }
 
