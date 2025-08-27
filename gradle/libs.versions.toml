@@ -18,7 +18,7 @@ ktlintGradle = "13.1.0"
 napier = "2.6.1"
 npmPublish = "3.5.3"
 okio = "3.16.0"
-robolectric = "4.16"
+robolectric = "4.15.1"
 
 [libraries]
 android-gradle = "com.android.tools.build:gradle:8.12.1"
