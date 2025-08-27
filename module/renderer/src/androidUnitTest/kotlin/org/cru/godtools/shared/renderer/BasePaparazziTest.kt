@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalInspectionMode
 import app.cash.paparazzi.Paparazzi
 import app.cash.paparazzi.accessibility.AccessibilityRenderExtension
+import app.cash.paparazzi.detectEnvironment
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
@@ -40,6 +41,11 @@ abstract class BasePaparazziTest(
 
     @get:Rule
     val paparazzi = Paparazzi(
+        environment = detectEnvironment().copy(
+            // HACK: Override the compileSdkVersion to 35 to workaround Paparazzi not yet supporting SDK 36
+            //       https://github.com/cashapp/paparazzi/pull/2066 might solve the issue
+            compileSdkVersion = 35,
+        ),
         renderingMode = renderingMode,
         maxPercentDifference = 0.0,
         renderExtensions = buildSet {
