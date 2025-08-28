@@ -56,8 +56,6 @@ private const val XML_MODALS = "modals"
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class TractPage : Page {
-    val isLastPage get() = manifest.pages.lastOrNull() == this
-
     override val analyticsEvents = emptyList<AnalyticsEvent>()
 
     val header: Header?

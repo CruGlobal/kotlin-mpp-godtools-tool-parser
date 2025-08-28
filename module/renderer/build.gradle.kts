@@ -31,6 +31,7 @@ kotlin {
                 api(project(":module:renderer-state"))
 
                 implementation(compose.components.resources)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.material3)
                 implementation(compose.runtime)
 
