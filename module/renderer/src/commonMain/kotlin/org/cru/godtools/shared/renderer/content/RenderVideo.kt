@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import chaintech.videoplayer.host.MediaPlayerHost
+import chaintech.videoplayer.model.VideoPlayerConfig
 import chaintech.videoplayer.ui.youtube.YouTubePlayerComposable
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -24,8 +25,19 @@ internal const val TestTagVideo = "video"
 @Composable
 internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.provider) {
     Video.Provider.YOUTUBE -> {
-        val playerHost = remember { MediaPlayerHost(mediaUrl = model.videoId.orEmpty()) }
-            .apply { loadUrl(model.videoId.orEmpty()) }
+        val playerHost = remember {
+            MediaPlayerHost(
+                mediaUrl = model.videoId.orEmpty(),
+                isPaused = true,
+                isLooping = false
+            )
+        }.apply { loadUrl(model.videoId.orEmpty()) }
+        val playerConfig = remember {
+            VideoPlayerConfig(
+                isFullScreenEnabled = false,
+                autoPlayNextReel = false,
+            )
+        }
 
         LaunchedEffect(model, state) { model.isInvisibleFlow(state).collect { if (it) playerHost.pause() } }
         LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { playerHost.pause() }
@@ -43,7 +55,7 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
                 .align(model.gravity.alignment)
                 .aspectRatio(model.aspectRatio.ratio.toFloat())
         ) {
-            YouTubePlayerComposable(playerHost = playerHost)
+            YouTubePlayerComposable(playerHost = playerHost, playerConfig = playerConfig)
         }
     }
     Video.Provider.UNKNOWN -> Unit
