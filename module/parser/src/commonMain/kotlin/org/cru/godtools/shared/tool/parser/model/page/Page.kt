@@ -143,6 +143,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
     val position by lazy { parentPageContainer.pages.indexOf(this) }
+    val isFirstPage by lazy { parentPageContainer.pages.firstOrNull() == this }
+    val isLastPage by lazy { parentPageContainer.pages.lastOrNull() == this }
 
     private val _id: String?
     @VisibleForTesting
