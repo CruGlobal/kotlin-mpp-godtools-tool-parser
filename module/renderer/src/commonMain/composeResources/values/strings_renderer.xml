@@ -1,4 +1,7 @@
 <resources>
+    <string name="lesson_accessibility_page_previous">Previous Page</string>
+    <string name="lesson_accessibility_page_next">Next Page</string>
+
     <string name="tool_renderer_input_error_required">%1$s is required</string>
     <string name="tool_renderer_input_error_invalid_email">Please enter a valid email address</string>
 </resources>
