@@ -42,6 +42,7 @@ class RenderTabsTest : BaseRenderContentTest() {
     }
 
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagTabs)
+    private fun SemanticsNodeInteractionsProvider.onTabNode(index: Int) = onAllNodesWithTag(TestTagTab)[index]
 
     @Test
     fun `Action - Second Tab Is Selected When Clicked`() = runComposeUiTest {
@@ -54,16 +55,13 @@ class RenderTabsTest : BaseRenderContentTest() {
             }
         }
 
-        val firstTab = 0
-        val secondTab = 1
+        onTabNode(0).assertIsSelected()
+        onTabNode(1).assertIsNotSelected()
 
-        onAllNodesWithTag(TestTagTab)[firstTab].assertIsSelected()
-        onAllNodesWithTag(TestTagTab)[secondTab].assertIsNotSelected()
+        onTabNode(1).assertExists().performClick()
 
-        onAllNodesWithTag(TestTagTab)[secondTab].assertExists().performClick()
-
-        onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
-        onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
+        onTabNode(0).assertIsNotSelected()
+        onTabNode(1).assertIsSelected()
     }
 
     @Test
@@ -77,16 +75,13 @@ class RenderTabsTest : BaseRenderContentTest() {
             }
         }
 
-        val firstTab = 0
-        val secondTab = 1
-
-        onAllNodesWithTag(TestTagTab)[firstTab].assertIsSelected()
-        onAllNodesWithTag(TestTagTab)[secondTab].assertIsNotSelected()
+        onTabNode(0).assertIsSelected()
+        onTabNode(1).assertIsNotSelected()
 
         state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
         testScope.runCurrent()
 
-        onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
-        onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
+        onTabNode(0).assertIsNotSelected()
+        onTabNode(1).assertIsSelected()
     }
 }
