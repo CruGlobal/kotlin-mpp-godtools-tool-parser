@@ -23,8 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.content.RenderContent
+import org.cru.godtools.shared.renderer.generated.resources.Res
+import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
+import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RenderLessonPage(
@@ -52,7 +56,11 @@ fun RenderLessonPage(
                 onClick = { pageEvents(LessonPageEvent.PreviousPage) },
                 modifier = Modifier.align(Alignment.BottomStart)
             ) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, null, Modifier.size(24.dp))
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    stringResource(Res.string.lesson_accessibility_action_page_previous),
+                    Modifier.size(24.dp)
+                )
             }
         }
         if (!page.isLastPage) {
@@ -60,7 +68,11 @@ fun RenderLessonPage(
                 onClick = { pageEvents(LessonPageEvent.NextPage) },
                 modifier = Modifier.align(Alignment.BottomEnd)
             ) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, Modifier.size(24.dp))
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    stringResource(Res.string.lesson_accessibility_action_page_next),
+                    Modifier.size(24.dp)
+                )
             }
         }
     }

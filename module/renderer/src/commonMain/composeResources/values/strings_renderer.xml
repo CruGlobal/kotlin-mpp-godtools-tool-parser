@@ -1,4 +1,7 @@
 <resources>
+    <string name="lesson_accessibility_action_page_previous">Previous Page</string>
+    <string name="lesson_accessibility_action_page_next">Next Page</string>
+
     <string name="tool_renderer_accordion_section_action_collapse">Collapse</string>
     <string name="tool_renderer_accordion_section_action_expand">Expand</string>
     <string name="tool_renderer_input_error_required">%1$s is required</string>
