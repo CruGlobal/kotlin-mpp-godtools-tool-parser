@@ -191,7 +191,7 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run iOS Unit Tests
-        run: ./gradlew iosX64Test --scan
+        run: ./gradlew iosSimulatorArm64Test iosX64Test --scan
 
   js_tests:
     name: JS Unit Tests
