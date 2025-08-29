@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -18,7 +19,7 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.Text
 
 @RunOnAndroidWith(AndroidJUnit4::class)
-@OptIn(ExperimentalTestApi::class)
+@OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
 class RenderTabsTest : BaseRenderContentTest() {
     private companion object {
         val TAB_1_EVENT_LISTENER = EventId(name = "tab_1_listener")
@@ -82,13 +83,10 @@ class RenderTabsTest : BaseRenderContentTest() {
         onAllNodesWithTag(TestTagTab)[firstTab].assertIsSelected()
         onAllNodesWithTag(TestTagTab)[secondTab].assertIsNotSelected()
 
-        testScope.runTest {
-            state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
+        state.triggerContentEvents(listOf(TAB_2_EVENT_LISTENER))
+        testScope.runCurrent()
 
-            runCurrent()
-
-            onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
-            onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
-        }
+        onAllNodesWithTag(TestTagTab)[firstTab].assertIsNotSelected()
+        onAllNodesWithTag(TestTagTab)[secondTab].assertIsSelected()
     }
 }
