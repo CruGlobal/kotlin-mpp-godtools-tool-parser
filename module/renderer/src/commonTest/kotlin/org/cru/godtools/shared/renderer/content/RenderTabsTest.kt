@@ -45,10 +45,12 @@ class RenderTabsTest : BaseRenderContentTest() {
     @Test
     fun `Action - Second Tab Is Selected When Clicked`() = runComposeUiTest {
         setContent {
-            RenderContentStack(
-                listOf(testModel),
-                state = state
-            )
+            ProvideTestCompositionLocals {
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state
+                )
+            }
         }
 
         val firstTab = 0
@@ -66,10 +68,12 @@ class RenderTabsTest : BaseRenderContentTest() {
     @Test
     fun `Action - Second Tab Is Selected On Content Event`() = runComposeUiTest {
         setContent {
-            RenderContentStack(
-                listOf(testModel),
-                state = state
-            )
+            ProvideTestCompositionLocals {
+                RenderContentStack(
+                    listOf(testModel),
+                    state = state
+                )
+            }
         }
 
         val firstTab = 0
