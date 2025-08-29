@@ -99,8 +99,8 @@ abstract class BasePaparazziTest(
         )
     }
 
-    protected fun contentSnapshot(content: @Composable BoxScope.() -> Unit) {
-        paparazzi.snapshot {
+    protected fun contentSnapshot(name: String? = null, content: @Composable BoxScope.() -> Unit) {
+        paparazzi.snapshot(name) {
             val coroutineScope = rememberCoroutineScope()
 
             CompositionLocalProvider(LocalInspectionMode provides true) {

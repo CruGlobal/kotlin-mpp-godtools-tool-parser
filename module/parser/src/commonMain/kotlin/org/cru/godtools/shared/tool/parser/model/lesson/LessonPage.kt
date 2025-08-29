@@ -3,7 +3,9 @@ package org.cru.godtools.shared.tool.parser.model.lesson
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.HasPages
@@ -49,18 +51,21 @@ class LessonPage : Page, Parent {
         }
     }
 
+    @Suppress("VisibleForTests")
+    @JsName("createTestLessonPage")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
-        manifest: Manifest = Manifest(),
+    constructor(
+        container: HasPages = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: Color? = null,
-        textScale: Double = DEFAULT_TEXT_SCALE
+        textScale: Double = DEFAULT_TEXT_SCALE,
+        content: ((Base) -> List<Content>)? = null,
     ) : super(
-        manifest,
+        container,
         backgroundColor = backgroundColor,
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
@@ -69,7 +74,6 @@ class LessonPage : Page, Parent {
         textScale = textScale
     ) {
         this.analyticsEvents = analyticsEvents
-
-        content = emptyList()
+        this.content = content?.invoke(this).orEmpty()
     }
 }
