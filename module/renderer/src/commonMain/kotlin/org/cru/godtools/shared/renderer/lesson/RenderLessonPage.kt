@@ -17,16 +17,20 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.content.RenderContent
+import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.jetbrains.compose.resources.stringResource
 
@@ -37,42 +41,50 @@ fun RenderLessonPage(
     state: State = remember { State() },
     scrollState: ScrollState = rememberScrollState(),
     pageEvents: (LessonPageEvent) -> Unit = {},
-) = Box(modifier) {
-    RenderBackground(page.background, Modifier.matchParentSize())
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            // ensure there is always space to scroll above the navigation controls
-            .padding(bottom = 48.dp)
-    ) {
-        RenderContent(page.content, state = state)
+) {
+    val coroutineScope = rememberCoroutineScope()
+    LifecycleResumeEffect(page, state) {
+        val delayedEvents = page.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
+        onPauseOrDispose { delayedEvents.forEach { it.cancel() } }
     }
 
-    CompositionLocalProvider(LocalContentColor provides page.controlColor.toComposeColor()) {
-        if (!page.isFirstPage) {
-            IconButton(
-                onClick = { pageEvents(LessonPageEvent.PreviousPage) },
-                modifier = Modifier.align(Alignment.BottomStart)
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    stringResource(Res.string.lesson_accessibility_action_page_previous),
-                    Modifier.size(24.dp)
-                )
-            }
+    Box(modifier) {
+        RenderBackground(page.background, Modifier.matchParentSize())
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                // ensure there is always space to scroll above the navigation controls
+                .padding(bottom = 48.dp),
+        ) {
+            RenderContent(page.content, state = state)
         }
-        if (!page.isLastPage) {
-            IconButton(
-                onClick = { pageEvents(LessonPageEvent.NextPage) },
-                modifier = Modifier.align(Alignment.BottomEnd)
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    stringResource(Res.string.lesson_accessibility_action_page_next),
-                    Modifier.size(24.dp)
-                )
+
+        CompositionLocalProvider(LocalContentColor provides page.controlColor.toComposeColor()) {
+            if (!page.isFirstPage) {
+                IconButton(
+                    onClick = { pageEvents(LessonPageEvent.PreviousPage) },
+                    modifier = Modifier.align(Alignment.BottomStart),
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        stringResource(Res.string.lesson_accessibility_action_page_previous),
+                        Modifier.size(24.dp),
+                    )
+                }
+            }
+            if (!page.isLastPage) {
+                IconButton(
+                    onClick = { pageEvents(LessonPageEvent.NextPage) },
+                    modifier = Modifier.align(Alignment.BottomEnd),
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        stringResource(Res.string.lesson_accessibility_action_page_next),
+                        Modifier.size(24.dp),
+                    )
+                }
             }
         }
     }
