@@ -258,6 +258,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         container: HasPages = Manifest(),
         id: String? = null,
         fileName: String? = null,
+        isHidden: Boolean = false,
         parentPage: String? = null,
         primaryColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
@@ -275,7 +276,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         this.fileName = fileName
         _parentPage = parentPage
 
-        isHidden = false
+        this.isHidden = isHidden
 
         listeners = emptySet()
         dismissListeners = emptySet()

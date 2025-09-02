@@ -41,6 +41,7 @@ kotlin {
                 implementation(libs.compose.media.player)
                 implementation(libs.compottie)
                 implementation(libs.compottie.dot)
+                implementation(libs.gtoSupport.androidx.lifecycle)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
             }
