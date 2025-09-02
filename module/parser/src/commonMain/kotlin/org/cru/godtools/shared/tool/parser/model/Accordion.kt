@@ -41,7 +41,8 @@ class Accordion : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    @JsName("createAccordionTests")
+    constructor(
         parent: Base = Manifest(),
         sections: ((Accordion) -> List<Section>)? = null
     ) : super(parent) {
