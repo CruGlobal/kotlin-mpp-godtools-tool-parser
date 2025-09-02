@@ -50,6 +50,7 @@ fun RenderLesson(manifest: Manifest, modifier: Modifier = Modifier, state: State
     Scaffold(modifier = modifier) { paddingValues ->
         HorizontalPager(
             pagerState,
+            beyondViewportPageCount = 1,
             key = { pages[it].id },
             modifier = Modifier
                 .testTag(TestTagLessonPager)
