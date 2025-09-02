@@ -20,6 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
@@ -33,6 +36,15 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.jetbrains.compose.resources.stringResource
+
+internal const val TestTagLessonPage = "LessonPage"
+internal val LessonPageId = SemanticsPropertyKey<String>(
+    name = "LessonPageId",
+    mergePolicy = { parentValue, _ ->
+        // Never merge TestTags, to avoid leaking internal test tags to parents.
+        parentValue
+    }
+)
 
 @Composable
 fun RenderLessonPage(
@@ -48,7 +60,11 @@ fun RenderLessonPage(
         onPauseOrDispose { delayedEvents.forEach { it.cancel() } }
     }
 
-    Box(modifier) {
+    Box(
+        modifier
+            .testTag(TestTagLessonPage)
+            .semantics { this[LessonPageId] = page.id }
+    ) {
         RenderBackground(page.background, Modifier.matchParentSize())
 
         Column(
