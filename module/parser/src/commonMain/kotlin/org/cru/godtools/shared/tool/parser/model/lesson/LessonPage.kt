@@ -56,6 +56,8 @@ class LessonPage : Page, Parent {
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         container: HasPages = Manifest(),
+        id: String? = null,
+        isHidden: Boolean = false,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -66,6 +68,8 @@ class LessonPage : Page, Parent {
         content: ((Base) -> List<Content>)? = null,
     ) : super(
         container,
+        id = id,
+        isHidden = isHidden,
         backgroundColor = backgroundColor,
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
