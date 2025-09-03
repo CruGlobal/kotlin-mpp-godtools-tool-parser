@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.launch
 import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleOwner
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ContentEventListener
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 
@@ -46,6 +47,14 @@ fun RenderLesson(manifest: Manifest, modifier: Modifier = Modifier, state: State
     val pages by remember { derivedStateOf { allPages.filter { it.id in visiblePages || !it.isHidden } } }
 
     val pagerState = rememberPagerState(0) { pages.size }
+
+    // handle page listeners
+    ContentEventListener(state) { eventId ->
+        val page = allPages.firstOrNull { eventId in it.listeners } ?: return@ContentEventListener
+        visiblePages += page.id
+        val index = pages.indexOf(page).takeUnless { it == -1 } ?: return@ContentEventListener
+        pagerState.animateScrollToPage(index)
+    }
 
     Scaffold(modifier = modifier) { paddingValues ->
         HorizontalPager(
