@@ -13,7 +13,6 @@ import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -25,12 +24,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ContentEventListener
 import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.primaryTextColor
@@ -47,7 +44,6 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
 
     var selectedIndex by remember { mutableIntStateOf(0) }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
     val borderShape = MaterialTheme.shapes.small
     val selectedTab by remember(tabs) {
@@ -56,15 +52,10 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         }
     }
 
-    LaunchedEffect(tabs, state) {
-        // handle play/stop listeners
-        state.contentEvents
-            .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
-            .collect { event ->
-                tabs.tabs.firstOrNull { event in it.listeners }?.let {
-                    selectedIndex = it.position
-                }
-            }
+    ContentEventListener(state, tabs) { event ->
+        tabs.tabs.firstOrNull { event in it.listeners }?.let {
+            selectedIndex = it.position
+        }
     }
 
     SecondaryTabRow(
