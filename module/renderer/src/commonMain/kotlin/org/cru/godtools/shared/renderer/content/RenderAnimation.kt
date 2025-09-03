@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,9 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.semantics
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.InternalCompottieApi
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
@@ -34,6 +30,7 @@ import org.cru.godtools.shared.renderer.content.extensions.Resource
 import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ContentEventListener
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Animation
 
@@ -55,7 +52,6 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
 
     val coroutineScope = rememberCoroutineScope()
     val fileSystem = LocalResourceFileSystem.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     val composition by rememberLottieComposition(coroutineContext = LocalCompottieCoroutineContext.current) {
         LottieCompositionSpec.Resource(fileSystem, resource)
@@ -70,21 +66,16 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
         restartOnPlay = false,
     )
 
-    LaunchedEffect(animation, state) {
-        // handle play/stop listeners
-        state.contentEvents
-            .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
-            .collect {
-                when {
-                    it in animation.playListeners && !animationState.isPlaying -> {
-                        if (animationState.isAtEnd && animationState.progress > 0f) {
-                            iterations = animationState.iteration + 1
-                        }
-                        isPlaying = true
-                    }
-                    it in animation.stopListeners && animationState.isPlaying -> isPlaying = false
+    ContentEventListener(state, animation) {
+        when {
+            it in animation.playListeners && !animationState.isPlaying -> {
+                if (animationState.isAtEnd && animationState.progress > 0f) {
+                    iterations = animationState.iteration + 1
                 }
+                isPlaying = true
             }
+            it in animation.stopListeners && animationState.isPlaying -> isPlaying = false
+        }
     }
 
     Image(
