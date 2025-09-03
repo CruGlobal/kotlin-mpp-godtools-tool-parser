@@ -168,8 +168,7 @@ class RenderLessonTest : BaseRendererTest() {
         state.triggerContentEvents(listOf(event2))
         testScope.runCurrent()
 
-        // TODO: hidden pages should be hidden again after navigating away
-//        onPager().assert(hasPageCount(2) and hasCurrentPage(1))
+        onPager().assert(hasPageCount(2) and hasCurrentPage(1))
         onLessonPage("page3").assertIsDisplayed()
     }
 
