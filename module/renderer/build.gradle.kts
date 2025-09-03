@@ -31,6 +31,7 @@ kotlin {
                 api(project(":module:renderer-state"))
 
                 implementation(compose.components.resources)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.material3)
                 implementation(compose.runtime)
 
@@ -40,6 +41,7 @@ kotlin {
                 implementation(libs.compose.media.player)
                 implementation(libs.compottie)
                 implementation(libs.compottie.dot)
+                implementation(libs.gtoSupport.androidx.lifecycle)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
             }
@@ -58,6 +60,8 @@ kotlin {
         androidUnitTest {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
+
+                implementation(libs.testparameterinjector)
             }
         }
     }

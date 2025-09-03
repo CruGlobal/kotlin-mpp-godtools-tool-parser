@@ -7,7 +7,7 @@ coil = "3.3.0"
 colormath = "3.6.1"
 compottie = "2.0.0"
 fluidLocale = "0.13.0"
-gtoSupport = "4.4.2-SNAPSHOT"
+gtoSupport = "4.5.0-SNAPSHOT"
 jvm = "21"
 kotlin = "2.2.10"
 kotlinCoroutines = "1.10.2"
@@ -39,6 +39,7 @@ compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "comp
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
 fluidLocale = { module = "io.fluidsonic.locale:fluid-locale", version.ref = "fluidLocale" }
 goncalossilvaResources = { module = "com.goncalossilva:resources", version.ref = "goncalossilvaResources" }
+gtoSupport-androidx-lifecycle = { module = "org.ccci.gto.android:gto-support-androidx-lifecycle", version.ref = "gtoSupport" }
 gtoSupport-androidx-test-junit = { module = "org.ccci.gto.android:gto-support-androidx-test-junit", version.ref = "gtoSupport" }
 gtoSupport-compose = { module = "org.ccci.gto.android:gto-support-compose", version.ref = "gtoSupport" }
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
@@ -56,6 +57,7 @@ kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", versi
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.18"
 turbine = "app.cash.turbine:turbine:1.2.1"
 
 # HACK: dependencies used to trigger renovate upgrades
