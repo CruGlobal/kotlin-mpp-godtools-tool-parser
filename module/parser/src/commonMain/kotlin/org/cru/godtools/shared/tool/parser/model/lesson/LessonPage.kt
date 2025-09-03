@@ -7,6 +7,7 @@ import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
@@ -58,6 +59,7 @@ class LessonPage : Page, Parent {
         container: HasPages = Manifest(),
         id: String? = null,
         isHidden: Boolean = false,
+        listeners: Set<EventId> = emptySet(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -70,6 +72,7 @@ class LessonPage : Page, Parent {
         container,
         id = id,
         isHidden = isHidden,
+        listeners = listeners,
         backgroundColor = backgroundColor,
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
