@@ -47,7 +47,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is InlineTip -> RenderInlineTip(content, state)
         is Input -> RenderInput(content, state)
         is Paragraph -> RenderParagraph(content, state)
-        is Tabs -> RenderTabs(tabs = content, state)
+        is Tabs -> RenderTabs(content, state)
         is Text -> RenderText(content, state)
         is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content, state)
