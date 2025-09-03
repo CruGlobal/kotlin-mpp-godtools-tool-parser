@@ -7,10 +7,16 @@ import org.cru.godtools.shared.tool.parser.model.Accordion
 class RenderAccordionPaparazziTest : BasePaparazziTest() {
 
     @Test
-    fun `RenderAccordion() - Accordion With No Selections`() = contentSnapshot {
+    fun `RenderAccordion() - Accordion With 3 Sections`() = contentSnapshot {
         RenderContentStack(
             listOf(
-                Accordion()
+                Accordion {
+                    listOf(
+                        Accordion.Section(it),
+                        Accordion.Section(it),
+                        Accordion.Section(it)
+                    )
+                }
             )
         )
     }

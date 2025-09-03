@@ -85,7 +85,8 @@ class Accordion : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        @JsName("createTestAccordionSection")
+        constructor(
             accordion: Accordion = Accordion(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             content: ((Section) -> List<Content>)? = null
