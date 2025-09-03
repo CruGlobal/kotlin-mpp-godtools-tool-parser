@@ -259,6 +259,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         id: String? = null,
         fileName: String? = null,
         isHidden: Boolean = false,
+        listeners: Set<EventId> = emptySet(),
         parentPage: String? = null,
         primaryColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
@@ -278,7 +279,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
         this.isHidden = isHidden
 
-        listeners = emptySet()
+        this.listeners = listeners
         dismissListeners = emptySet()
 
         _primaryColor = primaryColor
