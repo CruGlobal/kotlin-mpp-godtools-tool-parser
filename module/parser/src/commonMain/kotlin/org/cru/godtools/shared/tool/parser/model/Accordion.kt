@@ -89,10 +89,11 @@ class Accordion : Content {
         constructor(
             accordion: Accordion = Accordion(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            header: Text? = null,
             content: ((Section) -> List<Content>)? = null
         ) : super(accordion) {
             this.accordion = accordion
-            header = null
+            this.header = header
             this.analyticsEvents = analyticsEvents
             this.content = content?.invoke(this).orEmpty()
         }
