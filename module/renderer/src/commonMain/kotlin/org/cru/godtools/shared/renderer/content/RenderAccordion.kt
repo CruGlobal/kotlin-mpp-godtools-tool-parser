@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -20,22 +22,39 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
 
 @Composable
-fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier) {
+fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier, supportsMultiSelection: Boolean = false) {
+    val selectedSections = remember { mutableStateListOf<Int>() }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         accordion.sections.forEachIndexed { index, section ->
-            RenderAccordionSection(section, state)
+            val isSelected = selectedSections.contains(index)
+
+            RenderAccordionSection(section, state, isSelected) {
+                if (isSelected) {
+                    selectedSections.remove(index)
+                }
+                else if (supportsMultiSelection) {
+                    selectedSections.add(index)
+                }
+                else {
+                    selectedSections.clear()
+                    selectedSections.add(index)
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun RenderAccordionSection(section: Accordion.Section, state: State, modifier: Modifier = Modifier) {
+private fun RenderAccordionSection(section: Accordion.Section, state: State, isSelected: Boolean, modifier: Modifier = Modifier, onClicked: () -> Unit) {
     val headerHeight = 50.dp
-    val isExpanded = false
 
     Card(
+        onClick = {
+            onClicked()
+        },
         modifier = Modifier
             .fillMaxWidth()
     ) {
@@ -51,10 +70,12 @@ private fun RenderAccordionSection(section: Accordion.Section, state: State, mod
                 Row(
                     modifier = Modifier
                 ) {
-                    Text(
-                        "Title Header",
-                        color = Color.Black
-                    )
+                    section.header?.let {
+                        Text(
+                            it.text,
+                            color = Color.Black
+                        )
+                    }
 
                     Spacer(
                         modifier = Modifier
@@ -69,7 +90,7 @@ private fun RenderAccordionSection(section: Accordion.Section, state: State, mod
                 }
             }
 
-            if (isExpanded) {
+            if (isSelected) {
                 Column(
                     modifier = Modifier
                         .padding(bottom = 20.dp)
