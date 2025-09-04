@@ -18,42 +18,54 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
 
 @Composable
-fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier, supportsMultiSelection: Boolean = false) {
+fun RenderAccordion(
+    accordion: Accordion,
+    state: State,
+    modifier: Modifier = Modifier,
+    supportsMultiSelection: Boolean = false
+) {
     val selectedSections = remember { mutableStateListOf<Int>() }
 
     Column(
+        modifier = modifier
+            .visibility(accordion, state),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         accordion.sections.forEachIndexed { index, section ->
             val isSelected = selectedSections.contains(index)
 
-            RenderAccordionSection(section, state, isSelected) {
+            RenderAccordionSection(section, state, isSelected, {
                 if (isSelected) {
                     selectedSections.remove(index)
-                }
-                else if (supportsMultiSelection) {
+                } else if (supportsMultiSelection) {
                     selectedSections.add(index)
-                }
-                else {
+                } else {
                     selectedSections.clear()
                     selectedSections.add(index)
                 }
-            }
+            })
         }
     }
 }
 
 @Composable
-private fun RenderAccordionSection(section: Accordion.Section, state: State, isSelected: Boolean, modifier: Modifier = Modifier, onClicked: () -> Unit) {
+private fun RenderAccordionSection(
+    section: Accordion.Section,
+    state: State,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val headerHeight = 50.dp
 
     Card(
         onClick = {
-            onClicked()
+            onClick()
         },
         modifier = Modifier
             .fillMaxWidth()

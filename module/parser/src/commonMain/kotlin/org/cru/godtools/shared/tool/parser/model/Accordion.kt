@@ -44,8 +44,10 @@ class Accordion : Content {
     @JsName("createAccordionTests")
     constructor(
         parent: Base = Manifest(),
+        invisibleIf: String? = null,
+        goneIf: String? = null,
         sections: ((Accordion) -> List<Section>)? = null
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.sections = sections?.invoke(this).orEmpty()
     }
 
