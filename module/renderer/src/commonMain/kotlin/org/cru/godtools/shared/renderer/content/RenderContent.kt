@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.Accordion
 import org.cru.godtools.shared.tool.parser.model.Animation
 import org.cru.godtools.shared.tool.parser.model.Button
 import org.cru.godtools.shared.tool.parser.model.Card
@@ -36,6 +37,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
     if (isGone) return
 
     when (content) {
+        is Accordion -> RenderAccordion(content, state)
         is Animation -> RenderAnimation(content, state)
         is Button -> RenderButton(content, state)
         is Card -> RenderContentCard(content, state)
@@ -45,7 +47,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is InlineTip -> RenderInlineTip(content, state)
         is Input -> RenderInput(content, state)
         is Paragraph -> RenderParagraph(content, state)
-        is Tabs -> RenderTabs(tabs = content, state)
+        is Tabs -> RenderTabs(content, state)
         is Text -> RenderText(content, state)
         is Link -> RenderLink(content, state)
         is Spacer -> RenderSpacer(content, state)
