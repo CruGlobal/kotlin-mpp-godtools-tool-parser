@@ -17,10 +17,22 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
+
+internal const val TestTagAccordionSection = "accordion section"
+internal val SectionIsSelected = SemanticsPropertyKey<Boolean>(
+    name = "SectionIsSelected",
+    mergePolicy = { parentValue, _ ->
+        // Never merge TestTags, to avoid leaking internal test tags to parents.
+        parentValue
+    }
+)
 
 @Composable
 fun RenderAccordion(
@@ -68,6 +80,8 @@ private fun RenderAccordionSection(
             onClick()
         },
         modifier = Modifier
+            .testTag(TestTagAccordionSection)
+            .semantics { set(SectionIsSelected, isSelected) }
             .fillMaxWidth()
     ) {
         Column(
