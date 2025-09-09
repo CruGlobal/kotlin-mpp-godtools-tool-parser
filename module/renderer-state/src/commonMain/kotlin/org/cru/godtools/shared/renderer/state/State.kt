@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
+import org.ccci.gto.android.common.parcelize.Parcelable
+import org.ccci.gto.android.common.parcelize.Parcelize
 import org.cru.godtools.shared.common.model.Uri
-import org.cru.godtools.shared.renderer.state.internal.Parcelable
-import org.cru.godtools.shared.renderer.state.internal.Parcelize
 import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
