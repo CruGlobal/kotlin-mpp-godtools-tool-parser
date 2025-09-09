@@ -29,6 +29,7 @@ androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-te
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 antlr-kotlin-gradle = { module = "com.strumenta:antlr-kotlin-gradle-plugin", version.ref = "antlr-kotlin" }
 antlr-kotlin-runtime = { module = "com.strumenta:antlr-kotlin-runtime", version.ref = "antlr-kotlin" }
+circuit-runtime = "com.slack.circuit:circuit-runtime:0.30.0"
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-test = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
