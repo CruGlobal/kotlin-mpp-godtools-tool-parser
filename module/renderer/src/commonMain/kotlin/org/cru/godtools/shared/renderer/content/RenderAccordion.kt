@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -73,16 +74,23 @@ private fun RenderAccordionSection(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val cardColor = Color.White
     val headerHeight = 50.dp
 
-    Card(
+    ElevatedCard(
         onClick = {
             onClick()
         },
         modifier = Modifier
             .testTag(TestTagAccordionSection)
             .semantics { set(SectionIsSelected, isSelected) }
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = cardColor
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        )
     ) {
         Column(
             modifier = Modifier
