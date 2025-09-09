@@ -36,6 +36,7 @@ kotlin {
                 implementation(compose.runtime)
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.circuit.runtime)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.compose.media.player)
