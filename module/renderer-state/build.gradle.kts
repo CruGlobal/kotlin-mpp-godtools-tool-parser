@@ -17,7 +17,7 @@ kotlin {
         compilerOptions.freeCompilerArgs.addAll(
             "-P",
             "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=" +
-                "org.cru.godtools.shared.renderer.state.internal.Parcelize",
+                "org.ccci.gto.android.common.parcelize.Parcelize",
         )
     }
 
@@ -28,6 +28,7 @@ kotlin {
                 implementation(project(":module:parser-base"))
 
                 implementation(libs.androidx.annotation)
+                implementation(libs.gtoSupport.parcelize)
                 implementation(libs.kotlin.coroutines.core)
             }
         }
