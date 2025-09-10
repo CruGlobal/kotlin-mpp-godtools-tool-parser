@@ -5,7 +5,7 @@ import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
@@ -33,7 +33,7 @@ class RenderAccordionTest : BaseRenderContentTest() {
         )
     }
 
-    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithText("Test")
+    override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagAccordion)
     private fun SemanticsNodeInteractionsProvider.onSectionNode(index: Int) = onAllNodesWithTag(
         TestTagAccordionSection
     )[index]

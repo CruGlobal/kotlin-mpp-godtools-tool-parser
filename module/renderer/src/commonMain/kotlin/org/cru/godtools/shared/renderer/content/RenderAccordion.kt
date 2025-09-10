@@ -25,6 +25,7 @@ import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
 
+internal const val TestTagAccordion = "accordion"
 internal const val TestTagAccordionSection = "accordion section"
 internal val SectionIsSelected = SemanticsPropertyKey<Boolean>(
     name = "SectionIsSelected",
@@ -45,6 +46,7 @@ fun RenderAccordion(
 
     Column(
         modifier = modifier
+            .testTag(TestTagAccordion)
             .visibility(accordion, state),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
