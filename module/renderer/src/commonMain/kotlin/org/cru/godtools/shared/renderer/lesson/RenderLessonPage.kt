@@ -3,7 +3,11 @@ package org.cru.godtools.shared.renderer.lesson
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -50,6 +54,7 @@ internal val LessonPageId = SemanticsPropertyKey<String>(
 fun RenderLessonPage(
     page: LessonPage,
     modifier: Modifier = Modifier,
+    contentInsets: PaddingValues = PaddingValues(0.dp),
     state: State = remember { State() },
     scrollState: ScrollState = rememberScrollState(),
     pageEvents: (LessonPageEvent) -> Unit = {},
@@ -71,35 +76,38 @@ fun RenderLessonPage(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
+                .padding(contentInsets)
                 // ensure there is always space to scroll above the navigation controls
-                .padding(bottom = 48.dp),
+                .padding(bottom = 48.dp)
         ) {
             RenderContent(page.content, state = state)
         }
 
         CompositionLocalProvider(LocalContentColor provides page.controlColor.toComposeColor()) {
-            if (!page.isFirstPage) {
-                IconButton(
-                    onClick = { pageEvents(LessonPageEvent.PreviousPage) },
-                    modifier = Modifier.align(Alignment.BottomStart),
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                        stringResource(Res.string.lesson_accessibility_action_page_previous),
-                        Modifier.size(24.dp),
-                    )
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(contentInsets)
+                    .fillMaxWidth()
+            ) {
+                if (!page.isFirstPage) {
+                    IconButton(onClick = { pageEvents(LessonPageEvent.PreviousPage) }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                            stringResource(Res.string.lesson_accessibility_action_page_previous),
+                            Modifier.size(24.dp),
+                        )
+                    }
                 }
-            }
-            if (!page.isLastPage) {
-                IconButton(
-                    onClick = { pageEvents(LessonPageEvent.NextPage) },
-                    modifier = Modifier.align(Alignment.BottomEnd),
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        stringResource(Res.string.lesson_accessibility_action_page_next),
-                        Modifier.size(24.dp),
-                    )
+                Spacer(Modifier.weight(1f))
+                if (!page.isLastPage) {
+                    IconButton(onClick = { pageEvents(LessonPageEvent.NextPage) }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            stringResource(Res.string.lesson_accessibility_action_page_next),
+                            Modifier.size(24.dp),
+                        )
+                    }
                 }
             }
         }
