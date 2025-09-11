@@ -1,5 +1,8 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -125,7 +128,11 @@ private fun RenderAccordionSection(
                 }
             }
 
-            if (isSelected) {
+            AnimatedVisibility(
+                visible = isSelected,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
                 Column(
                     modifier = Modifier
                         .padding(bottom = 20.dp)
