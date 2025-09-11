@@ -1,8 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,8 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -114,9 +116,10 @@ private fun RenderAccordionSection(
                             .weight(1f)
                     )
 
-                    Box(
+                    Icon(
+                        imageVector = if (isSelected) Icons.Filled.Remove else Icons.Filled.Add,
+                        contentDescription = if (isSelected) "Minimize" else "Maximize",
                         modifier = Modifier
-                            .background(Color.Blue)
                             .size(20.dp, 20.dp)
                     )
                 }
