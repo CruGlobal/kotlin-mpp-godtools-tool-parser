@@ -19,7 +19,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +48,7 @@ fun RenderAccordion(
     modifier: Modifier = Modifier,
     supportsMultiSelection: Boolean = false
 ) {
-    val selectedSections = remember { mutableStateListOf<String>() }
+    val selectedSections = remember { mutableStateSetOf<String>() }
 
     Column(
         modifier = modifier
