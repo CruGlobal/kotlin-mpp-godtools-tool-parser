@@ -47,7 +47,7 @@ fun RenderAccordion(
     modifier: Modifier = Modifier,
     supportsMultiSelection: Boolean = false
 ) {
-    val selectedSections = remember { mutableStateListOf<Int>() }
+    val selectedSections = remember { mutableStateListOf<String>() }
 
     Column(
         modifier = modifier
@@ -56,16 +56,16 @@ fun RenderAccordion(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         accordion.sections.forEachIndexed { index, section ->
-            val isSelected = selectedSections.contains(index)
+            val isSelected = selectedSections.contains(section.id)
 
             RenderAccordionSection(section, state, isSelected, {
                 if (isSelected) {
-                    selectedSections.remove(index)
+                    selectedSections.remove(section.id)
                 } else if (supportsMultiSelection) {
-                    selectedSections.add(index)
+                    selectedSections.add(section.id)
                 } else {
                     selectedSections.clear()
-                    selectedSections.add(index)
+                    selectedSections.add(section.id)
                 }
             })
         }
