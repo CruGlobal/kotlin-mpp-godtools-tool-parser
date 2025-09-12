@@ -53,6 +53,7 @@ kotlin {
                 implementation(compose.uiTest)
 
                 implementation(libs.androidx.lifecycle.testing)
+                implementation(libs.circuit.test)
                 implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)

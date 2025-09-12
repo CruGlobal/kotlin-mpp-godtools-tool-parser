@@ -3,7 +3,6 @@ package org.cru.godtools.shared.renderer.lesson
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
@@ -11,7 +10,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
+import com.slack.circuit.test.TestEventSink
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runCurrent
@@ -19,6 +20,7 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.renderer.BaseRendererTest
 import org.cru.godtools.shared.renderer.generated.resources.Res
+import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -31,14 +33,6 @@ import org.jetbrains.compose.resources.getString
 @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
 class RenderLessonTest : BaseRendererTest() {
     private companion object {
-        fun hasCurrentPage(index: Int) = SemanticsMatcher("currentPage == $index") {
-            it.config.getOrElseNullable(LessonPagerState) { null }?.currentPage == index
-        }
-
-        fun hasPageCount(count: Int) = SemanticsMatcher("pageCount == $count") {
-            it.config.getOrElseNullable(LessonPagerState) { null }?.pageCount == count
-        }
-
         fun hasPageId(id: String) = SemanticsMatcher("pageId == $id") {
             it.config.getOrElseNullable(LessonPageId) { null } == id
         }
@@ -48,22 +42,45 @@ class RenderLessonTest : BaseRendererTest() {
             onNode(hasTestTag(TestTagLessonPage) and hasPageId(id))
     }
 
+    private val eventSink = TestEventSink<LessonScreen.UiEvent>()
+    private val pagerState = LessonPagerState()
+
+    private val closeLesson by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_close) } }
     private val previousPage by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_page_previous) } }
     private val nextPage by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_page_next) } }
 
+    @Test
+    fun `UI - AppBar Close Button`() = runComposeUiTest {
+        val state = LessonScreen.UiState.Loaded(
+            manifest = Manifest(type = Type.LESSON),
+            state = state,
+            pagerState = pagerState,
+            eventSink = eventSink::invoke,
+        )
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderLesson(state)
+            }
+        }
+
+        onNodeWithContentDescription(closeLesson).assertExists().performClick()
+        eventSink.assertEvent(LessonScreen.UiEvent.CloseLesson)
+    }
+
+    // TODO: this should be the Missing State and not Loaded
     @Test
     fun `UI - Unsupported Type`() = runComposeUiTest {
         val manifest = Manifest(type = Type.TRACT)
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state))
             }
         }
         onPager().assertDoesNotExist()
     }
 
     @Test
-    fun `UI - HorizontalPager`() = runComposeUiTest {
+    fun `UI - Loaded - HorizontalPager`() = runComposeUiTest {
         val manifest = Manifest(
             type = Type.LESSON,
             pages = {
@@ -75,19 +92,20 @@ class RenderLessonTest : BaseRendererTest() {
         )
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
             }
         }
 
-        onPager()
-            .assert(hasPageCount(2))
-            .assert(hasCurrentPage(0))
+        onPager().assertExists()
+        assertEquals(2, pagerState.pageCount)
+        assertEquals(0, pagerState.currentPage)
+
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
     }
 
     @Test
-    fun `UI - HorizontalPager - Hide Hidden Pages`() = runComposeUiTest {
+    fun `UI - Loaded - HorizontalPager - Hide Hidden Pages`() = runComposeUiTest {
         val manifest = Manifest(
             type = Type.LESSON,
             pages = {
@@ -100,16 +118,18 @@ class RenderLessonTest : BaseRendererTest() {
         )
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
             }
         }
 
-        onPager().assert(hasPageCount(1) and hasCurrentPage(0))
+        onPager().assertExists()
+        assertEquals(1, pagerState.pageCount)
+        assertEquals(0, pagerState.currentPage)
         onLessonPage("page2").assertIsDisplayed()
     }
 
     @Test
-    fun `UI - HorizontalPager - Content Events`() = runComposeUiTest {
+    fun `UI - Loaded - HorizontalPager - Content Events`() = runComposeUiTest {
         val event = EventId(name = "content_event")
         val manifest = Manifest(
             type = Type.LESSON,
@@ -123,7 +143,7 @@ class RenderLessonTest : BaseRendererTest() {
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest, state = state)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
             }
         }
 
@@ -136,7 +156,7 @@ class RenderLessonTest : BaseRendererTest() {
     }
 
     @Test
-    fun `UI - HorizontalPager - Content Events - Hidden Page`() = runComposeUiTest {
+    fun `UI - Loaded - HorizontalPager - Content Events - Hidden Page`() = runComposeUiTest {
         val event1 = EventId(name = "content_event")
         val event2 = EventId(name = "content_event2")
         val manifest = Manifest(
@@ -152,28 +172,33 @@ class RenderLessonTest : BaseRendererTest() {
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest, state = state)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
             }
         }
 
-        onPager().assert(hasPageCount(2) and hasCurrentPage(0))
+        assertEquals(2, pagerState.pageCount)
+        assertEquals(0, pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
 
         state.triggerContentEvents(listOf(event1))
         testScope.runCurrent()
+        waitForIdle()
 
-        onPager().assert(hasPageCount(3) and hasCurrentPage(1))
+        assertEquals(3, pagerState.pageCount)
+        assertEquals(1, pagerState.currentPage)
         onLessonPage("page2").assertIsDisplayed()
 
         state.triggerContentEvents(listOf(event2))
         testScope.runCurrent()
+        waitForIdle()
 
-        onPager().assert(hasPageCount(2) and hasCurrentPage(1))
+        assertEquals(2, pagerState.pageCount)
+        assertEquals(1, pagerState.currentPage)
         onLessonPage("page3").assertIsDisplayed()
     }
 
     @Test
-    fun `UI - HorizontalPager - Page Navigation`() = runComposeUiTest {
+    fun `UI - Loaded - HorizontalPager - Page Navigation`() = runComposeUiTest {
         val manifest = Manifest(
             type = Type.LESSON,
             pages = {
@@ -185,23 +210,24 @@ class RenderLessonTest : BaseRendererTest() {
         )
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(manifest)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
             }
         }
 
-        onPager()
-            .assert(hasPageCount(2))
-            .assert(hasCurrentPage(0))
+        assertEquals(2, pagerState.pageCount)
+        assertEquals(0, pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
 
         onNodeWithContentDescription(nextPage).performClick()
-        onPager().assert(hasCurrentPage(1))
+        waitForIdle()
+        assertEquals(1, pagerState.currentPage)
         onLessonPage("page1").assertIsNotDisplayed()
         onLessonPage("page2").assertIsDisplayed()
 
         onNodeWithContentDescription(previousPage).performClick()
-        onPager().assert(hasCurrentPage(0))
+        waitForIdle()
+        assertEquals(0, pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
     }
