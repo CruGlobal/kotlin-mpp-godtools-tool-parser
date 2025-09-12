@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -24,7 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -33,13 +32,6 @@ import org.cru.godtools.shared.tool.parser.model.Accordion
 
 internal const val TestTagAccordion = "accordion"
 internal const val TestTagAccordionSection = "accordion section"
-internal val SectionIsSelected = SemanticsPropertyKey<Boolean>(
-    name = "SectionIsSelected",
-    mergePolicy = { parentValue, _ ->
-        // Never merge TestTags, to avoid leaking internal test tags to parents.
-        parentValue
-    }
-)
 
 @Composable
 fun RenderAccordion(
@@ -92,7 +84,7 @@ private fun RenderAccordionSection(
         },
         modifier = Modifier
             .testTag(TestTagAccordionSection)
-            .semantics { set(SectionIsSelected, isSelected) }
+            .semantics { selected = isSelected }
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = cardColor

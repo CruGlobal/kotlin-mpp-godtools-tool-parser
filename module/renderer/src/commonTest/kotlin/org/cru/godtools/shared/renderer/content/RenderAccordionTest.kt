@@ -1,9 +1,9 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
-import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -17,11 +17,6 @@ import org.cru.godtools.shared.tool.parser.model.Accordion
 @RunOnAndroidWith(AndroidJUnit4::class)
 @OptIn(ExperimentalTestApi::class, ExperimentalCoroutinesApi::class)
 class RenderAccordionTest : BaseRenderContentTest() {
-    private companion object {
-        val MATCHER_IS_NOT_SELECTED = expectValue(SectionIsSelected, false)
-        val MATCHER_IS_SELECTED = expectValue(SectionIsSelected, true)
-    }
-
     override val testModel = Accordion(
         invisibleIf = invisibleIf,
         goneIf = goneIf
@@ -48,14 +43,14 @@ class RenderAccordionTest : BaseRenderContentTest() {
             }
         }
 
-        onSectionNode(0).assert(MATCHER_IS_NOT_SELECTED)
-        onSectionNode(1).assert(MATCHER_IS_NOT_SELECTED)
-        onSectionNode(2).assert(MATCHER_IS_NOT_SELECTED)
+        onSectionNode(0).assertIsNotSelected()
+        onSectionNode(1).assertIsNotSelected()
+        onSectionNode(2).assertIsNotSelected()
 
         onSectionNode(0).assertExists().performClick()
 
-        onSectionNode(0).assert(MATCHER_IS_SELECTED)
-        onSectionNode(1).assert(MATCHER_IS_NOT_SELECTED)
-        onSectionNode(2).assert(MATCHER_IS_NOT_SELECTED)
+        onSectionNode(0).assertIsSelected()
+        onSectionNode(1).assertIsNotSelected()
+        onSectionNode(2).assertIsNotSelected()
     }
 }
