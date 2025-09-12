@@ -6,7 +6,7 @@ colormath = "3.6.1"
 fluidLocale = "0.13.0"
 gtoSupport = "4.5.0-SNAPSHOT"
 jvm = "21"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 kotlinCoroutines = "1.10.2"
 kustomExport = "0.8.2"
 goncalossilvaResources = "0.10.1"
@@ -56,6 +56,6 @@ ktlint-rulesets = []
 [plugins]
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.3" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
