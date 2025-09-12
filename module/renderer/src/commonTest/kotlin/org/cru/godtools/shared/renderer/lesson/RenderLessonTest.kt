@@ -8,6 +8,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import com.slack.circuit.test.TestEventSink
@@ -23,6 +24,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
+import org.cru.godtools.shared.renderer.generated.resources.tool_not_found
 import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Manifest.Type
@@ -67,16 +69,16 @@ class RenderLessonTest : BaseRendererTest() {
         eventSink.assertEvent(LessonScreen.UiEvent.CloseLesson)
     }
 
-    // TODO: this should be the Missing State and not Loaded
     @Test
-    fun `UI - Unsupported Type`() = runComposeUiTest {
-        val manifest = Manifest(type = Type.TRACT)
+    fun `UI - Missing`() = runComposeUiTest {
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state))
+                RenderLesson(LessonScreen.UiState.Missing())
             }
         }
+
         onPager().assertDoesNotExist()
+        onNodeWithText(runBlocking { getString(Res.string.tool_not_found) }).assertIsDisplayed()
     }
 
     @Test

@@ -3,8 +3,10 @@ package org.cru.godtools.shared.renderer.lesson
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,6 +42,7 @@ import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleO
 import org.cru.godtools.shared.renderer.ProgressBarGapSize
 import org.cru.godtools.shared.renderer.ProgressBarHeight
 import org.cru.godtools.shared.renderer.RenderBackground
+import org.cru.godtools.shared.renderer.common.ToolNotFound
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.util.ContentEventListener
@@ -54,15 +57,12 @@ internal const val TestTagLessonPager = "LessonPager"
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
-    val manifest = state.manifest
-    if (manifest != null && manifest.type != Manifest.Type.LESSON) return
-
     val eventSink by rememberUpdatedState(state.eventSink)
 
     Scaffold(
         topBar = {
-            val appBarColor = manifest.lessonNavBarColor.toComposeColor()
-            val appBarControlColor = manifest.lessonNavBarControlColor.toComposeColor()
+            val appBarColor = state.manifest.lessonNavBarColor.toComposeColor()
+            val appBarControlColor = state.manifest.lessonNavBarControlColor.toComposeColor()
 
             TopAppBar(
                 navigationIcon = {
@@ -114,6 +114,11 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                 RenderBackground(state.manifest.background, Modifier.matchParentSize())
                 RenderLessonPager(state, contentInsets = paddingValues)
             }
+            is LessonScreen.UiState.Missing -> ToolNotFound(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            )
             else -> Unit // TODO("Support the other renderer states")
         }
     }

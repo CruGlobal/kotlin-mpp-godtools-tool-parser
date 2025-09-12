@@ -89,4 +89,11 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
             )
         }
     }
+
+    @Test
+    fun `RenderLesson - Missing`() {
+        contentSnapshot {
+            RenderLesson(LessonScreen.UiState.Missing())
+        }
+    }
 }
