@@ -66,6 +66,7 @@ class LessonPage : Page, Parent {
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: Color? = null,
+        textColor: Color? = null,
         textScale: Double = DEFAULT_TEXT_SCALE,
         content: ((Base) -> List<Content>)? = null,
     ) : super(
@@ -78,7 +79,8 @@ class LessonPage : Page, Parent {
         backgroundImageGravity = backgroundImageGravity,
         backgroundImageScaleType = backgroundImageScaleType,
         controlColor = controlColor,
-        textScale = textScale
+        textColor = textColor,
+        textScale = textScale,
     ) {
         this.analyticsEvents = analyticsEvents
         this.content = content?.invoke(this).orEmpty()
