@@ -124,9 +124,7 @@ private fun RenderAccordionSection(
 
                     Icon(
                         imageVector = if (isSelected) Icons.Filled.Remove else Icons.Filled.Add,
-                        contentDescription = if (isSelected) "Minimize" else "Maximize",
-                        modifier = Modifier
-                            .size(20.dp, 20.dp)
+                        contentDescription = if (isSelected) "Minimize" else "Maximize"
                     )
                 }
             }
