@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateSetOf
@@ -84,25 +87,26 @@ private fun RenderAccordionSection(
     modifier: Modifier = Modifier
 ) {
     val cardColor = section.stylesParent?.cardBackgroundColor?.toComposeColor() ?: Color.White
-    val headerHeight = 48.dp
 
     ElevatedCard(
-        onClick = {
-        },
         modifier = Modifier
             .testTag(TestTagAccordionSection)
             .semantics { selected = isSelected }
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = cardColor
-        ),
+        shape = CardDefaults.elevatedShape,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = cardColor
         )
     ) {
+        val headerInteractions = remember { MutableInteractionSource() }
+        val headerHeight = 48.dp
+
         Row(
             modifier = Modifier
-                .clickable {
+                .clickable(interactionSource = headerInteractions, indication = null) {
                     onClick()
                 }
                 .heightIn(headerHeight)
@@ -133,6 +137,7 @@ private fun RenderAccordionSection(
                 modifier = Modifier
                     .padding(12.dp)
                     .align(Alignment.Top)
+                    .indication(headerInteractions, ripple(bounded = false, radius = 20.dp))
             )
         }
 
