@@ -1,4 +1,7 @@
 <resources>
+    <string name="accordion_section_action_maximize">Maximize</string>
+    <string name="accordion_section_action_minimize">Minimize</string>
+
     <string name="tool_renderer_input_error_required">%1$s is required</string>
     <string name="tool_renderer_input_error_invalid_email">Please enter a valid email address</string>
 </resources>
