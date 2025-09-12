@@ -102,14 +102,13 @@ private fun RenderAccordionSection(
         )
     ) {
         val headerInteractions = remember { MutableInteractionSource() }
-        val headerHeight = 48.dp
 
         Row(
             modifier = Modifier
                 .clickable(interactionSource = headerInteractions, indication = null) {
                     onClick()
                 }
-                .heightIn(headerHeight)
+                .heightIn(48.dp)
         ) {
             section.header?.let {
                 RenderTextNode(
