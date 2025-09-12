@@ -29,9 +29,8 @@ class RenderAccordionTest : BaseRenderContentTest() {
     }
 
     override fun SemanticsNodeInteractionsProvider.onModelNode() = onNodeWithTag(TestTagAccordion)
-    private fun SemanticsNodeInteractionsProvider.onSectionNode(index: Int) = onAllNodesWithTag(
-        TestTagAccordionSection
-    )[index]
+    private fun SemanticsNodeInteractionsProvider.onSectionNode(index: Int) =
+        onAllNodesWithTag(TestTagAccordionSection)[index]
     @Test
     fun `Action - First Section Is Selected When Clicked`() = runComposeUiTest {
         setContent {
