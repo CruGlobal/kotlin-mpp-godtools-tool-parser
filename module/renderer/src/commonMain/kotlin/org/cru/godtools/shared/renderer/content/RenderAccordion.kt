@@ -3,6 +3,7 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -87,7 +88,6 @@ private fun RenderAccordionSection(
 
     ElevatedCard(
         onClick = {
-            onClick()
         },
         modifier = Modifier
             .testTag(TestTagAccordionSection)
@@ -102,6 +102,9 @@ private fun RenderAccordionSection(
     ) {
         Row(
             modifier = Modifier
+                .clickable {
+                    onClick()
+                }
                 .heightIn(headerHeight)
         ) {
             section.header?.let {
