@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -82,7 +83,7 @@ private fun RenderAccordionSection(
     modifier: Modifier = Modifier
 ) {
     val cardColor = section.stylesParent?.cardBackgroundColor?.toComposeColor() ?: Color.White
-    val headerHeight = 50.dp
+    val headerHeight = 48.dp
 
     ElevatedCard(
         onClick = {
@@ -99,51 +100,49 @@ private fun RenderAccordionSection(
             defaultElevation = 6.dp
         )
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(horizontal = 20.dp)
+                .heightIn(headerHeight)
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .height(headerHeight)
-            ) {
-                Row(
+            section.header?.let {
+                RenderTextNode(
+                    it,
                     modifier = Modifier
-                ) {
-                    section.header?.let {
-                        RenderTextNode(it)
-                    }
-
-                    Spacer(
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                    Icon(
-                        imageVector = when {
-                            isSelected -> Icons.Filled.Remove
-                            else -> Icons.Filled.Add
-                        },
-                        contentDescription = when {
-                            isSelected -> stringResource(Res.string.accordion_section_action_collapse)
-                            else -> stringResource(Res.string.accordion_section_action_expand)
-                        }
-                    )
-                }
+                        .padding(start = HorizontalPadding)
+                        .align(alignment = Alignment.CenterVertically)
+                )
             }
 
-            AnimatedVisibility(
-                visible = isSelected,
-                enter = expandVertically(),
-                exit = shrinkVertically()
+            Spacer(
+                modifier = Modifier
+                    .weight(1f)
+            )
+
+            Icon(
+                imageVector = when {
+                    isSelected -> Icons.Filled.Remove
+                    else -> Icons.Filled.Add
+                },
+                contentDescription = when {
+                    isSelected -> stringResource(Res.string.accordion_section_action_collapse)
+                    else -> stringResource(Res.string.accordion_section_action_expand)
+                },
+                modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.Top)
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isSelected,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(bottom = 20.dp)
-                ) {
-                    RenderContent(section.content, state)
-                }
+                RenderContent(section.content, state)
             }
         }
     }
