@@ -28,8 +28,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.generated.resources.Res
-import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_maximize
-import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_minimize
+import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_collapse
+import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
 import org.jetbrains.compose.resources.stringResource
@@ -81,8 +81,6 @@ private fun RenderAccordionSection(
 ) {
     val cardColor = Color.White
     val headerHeight = 50.dp
-    val accessibilityMaximize = stringResource(Res.string.accordion_section_action_maximize)
-    val accessibilityMinimize = stringResource(Res.string.accordion_section_action_minimize)
 
     ElevatedCard(
         onClick = {
@@ -121,8 +119,14 @@ private fun RenderAccordionSection(
                     )
 
                     Icon(
-                        if (isSelected) Icons.Filled.Remove else Icons.Filled.Add,
-                        if (isSelected) accessibilityMinimize else accessibilityMaximize
+                        imageVector = when {
+                            isSelected -> Icons.Filled.Remove
+                            else -> Icons.Filled.Add
+                        },
+                        contentDescription = when {
+                            isSelected -> stringResource(Res.string.accordion_section_action_collapse)
+                            else -> stringResource(Res.string.accordion_section_action_expand)
+                        }
                     )
                 }
             }
