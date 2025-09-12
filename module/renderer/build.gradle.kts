@@ -31,15 +31,18 @@ kotlin {
                 api(project(":module:renderer-state"))
 
                 implementation(compose.components.resources)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.material3)
                 implementation(compose.runtime)
 
                 implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.circuit.runtime)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)
                 implementation(libs.compose.media.player)
                 implementation(libs.compottie)
                 implementation(libs.compottie.dot)
+                implementation(libs.gtoSupport.androidx.lifecycle)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
             }
@@ -50,6 +53,7 @@ kotlin {
                 implementation(compose.uiTest)
 
                 implementation(libs.androidx.lifecycle.testing)
+                implementation(libs.circuit.test)
                 implementation(libs.coil.test)
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
@@ -58,6 +62,8 @@ kotlin {
         androidUnitTest {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
+
+                implementation(libs.testparameterinjector)
             }
         }
     }
