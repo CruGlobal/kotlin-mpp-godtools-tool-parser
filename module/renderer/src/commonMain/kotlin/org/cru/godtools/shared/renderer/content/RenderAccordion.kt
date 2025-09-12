@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -56,18 +57,20 @@ fun RenderAccordion(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         accordion.sections.forEachIndexed { index, section ->
-            val isSelected = selectedSections.contains(section.id)
+            key(section.id) {
+                val isSelected = selectedSections.contains(section.id)
 
-            RenderAccordionSection(section, state, isSelected, {
-                if (isSelected) {
-                    selectedSections.remove(section.id)
-                } else if (supportsMultiSelection) {
-                    selectedSections.add(section.id)
-                } else {
-                    selectedSections.clear()
-                    selectedSections.add(section.id)
-                }
-            })
+                RenderAccordionSection(section, state, isSelected, {
+                    if (isSelected) {
+                        selectedSections.remove(section.id)
+                    } else if (supportsMultiSelection) {
+                        selectedSections.add(section.id)
+                    } else {
+                        selectedSections.clear()
+                        selectedSections.add(section.id)
+                    }
+                })
+            }
         }
     }
 }
