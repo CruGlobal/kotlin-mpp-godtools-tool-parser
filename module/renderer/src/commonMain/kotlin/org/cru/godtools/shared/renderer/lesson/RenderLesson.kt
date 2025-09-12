@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.renderer.lesson
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleOwner
+import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.util.ContentEventListener
@@ -106,7 +108,8 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
         modifier = modifier,
     ) { paddingValues ->
         when (state) {
-            is LessonScreen.UiState.Loaded -> {
+            is LessonScreen.UiState.Loaded -> Box {
+                RenderBackground(state.manifest.background, Modifier.matchParentSize())
                 RenderLessonPager(state, contentInsets = paddingValues)
             }
             else -> Unit // TODO("Support the other renderer states")
