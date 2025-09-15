@@ -42,6 +42,7 @@ import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleO
 import org.cru.godtools.shared.renderer.ProgressBarGapSize
 import org.cru.godtools.shared.renderer.ProgressBarHeight
 import org.cru.godtools.shared.renderer.RenderBackground
+import org.cru.godtools.shared.renderer.common.ToolLoading
 import org.cru.godtools.shared.renderer.common.ToolNotFound
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
@@ -114,6 +115,12 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                 RenderBackground(state.manifest.background, Modifier.matchParentSize())
                 RenderLessonPager(state, contentInsets = paddingValues)
             }
+            is LessonScreen.UiState.Loading -> ToolLoading(
+                progress = state.progress,
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            )
             is LessonScreen.UiState.Missing -> ToolNotFound(
                 modifier = Modifier
                     .padding(paddingValues)

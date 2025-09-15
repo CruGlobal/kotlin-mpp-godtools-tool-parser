@@ -24,6 +24,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
+import org.cru.godtools.shared.renderer.generated.resources.tool_loading
 import org.cru.godtools.shared.renderer.generated.resources.tool_not_found
 import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Manifest
@@ -79,6 +80,18 @@ class RenderLessonTest : BaseRendererTest() {
 
         onPager().assertDoesNotExist()
         onNodeWithText(runBlocking { getString(Res.string.tool_not_found) }).assertIsDisplayed()
+    }
+
+    @Test
+    fun `UI - Loading`() = runComposeUiTest {
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderLesson(LessonScreen.UiState.Loading())
+            }
+        }
+
+        onPager().assertDoesNotExist()
+        onNodeWithText(runBlocking { getString(Res.string.tool_loading) }).assertIsDisplayed()
     }
 
     @Test

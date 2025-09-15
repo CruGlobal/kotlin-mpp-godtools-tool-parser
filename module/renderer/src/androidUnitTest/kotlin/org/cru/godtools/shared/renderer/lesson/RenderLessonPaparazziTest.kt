@@ -91,6 +91,20 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderLesson - Loading`() {
+        contentSnapshot {
+            RenderLesson(LessonScreen.UiState.Loading(progress = 0.316f))
+        }
+    }
+
+    @Test
+    fun `RenderLesson - Loading - Indeterminate`() {
+        animatedContentSnapshot(end = 1_000) {
+            RenderLesson(LessonScreen.UiState.Loading(progress = null))
+        }
+    }
+
+    @Test
     fun `RenderLesson - Missing`() {
         contentSnapshot {
             RenderLesson(LessonScreen.UiState.Missing())
