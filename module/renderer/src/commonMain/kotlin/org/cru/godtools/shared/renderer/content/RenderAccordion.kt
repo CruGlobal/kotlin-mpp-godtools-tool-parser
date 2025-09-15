@@ -95,9 +95,8 @@ private fun RenderAccordionSection(
     val cardColor = section.stylesParent.cardBackgroundColor.toComposeColor()
 
     ElevatedCard(
-        shape = CardDefaults.elevatedShape,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = cardColor
