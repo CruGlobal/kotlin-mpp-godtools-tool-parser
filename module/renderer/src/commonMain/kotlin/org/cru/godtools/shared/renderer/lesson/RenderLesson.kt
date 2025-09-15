@@ -44,6 +44,7 @@ import org.cru.godtools.shared.renderer.ProgressBarHeight
 import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.common.ToolLoading
 import org.cru.godtools.shared.renderer.common.ToolNotFound
+import org.cru.godtools.shared.renderer.common.ToolOffline
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.util.ContentEventListener
@@ -126,7 +127,11 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                     .padding(paddingValues)
                     .fillMaxSize()
             )
-            else -> Unit // TODO("Support the other renderer states")
+            is LessonScreen.UiState.Offline -> ToolOffline(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            )
         }
     }
 }

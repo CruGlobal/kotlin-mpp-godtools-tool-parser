@@ -110,4 +110,11 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
             RenderLesson(LessonScreen.UiState.Missing())
         }
     }
+
+    @Test
+    fun `RenderLesson - Offline`() {
+        contentSnapshot {
+            RenderLesson(LessonScreen.UiState.Offline())
+        }
+    }
 }

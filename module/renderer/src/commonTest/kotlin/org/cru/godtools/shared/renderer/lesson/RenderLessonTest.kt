@@ -26,6 +26,7 @@ import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
 import org.cru.godtools.shared.renderer.generated.resources.tool_loading
 import org.cru.godtools.shared.renderer.generated.resources.tool_not_found
+import org.cru.godtools.shared.renderer.generated.resources.tool_offline
 import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Manifest.Type
@@ -80,6 +81,18 @@ class RenderLessonTest : BaseRendererTest() {
 
         onPager().assertDoesNotExist()
         onNodeWithText(runBlocking { getString(Res.string.tool_not_found) }).assertIsDisplayed()
+    }
+
+    @Test
+    fun `UI - Offline`() = runComposeUiTest {
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderLesson(LessonScreen.UiState.Offline())
+            }
+        }
+
+        onPager().assertDoesNotExist()
+        onNodeWithText(runBlocking { getString(Res.string.tool_offline) }).assertIsDisplayed()
     }
 
     @Test
