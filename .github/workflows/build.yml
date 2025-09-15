@@ -251,6 +251,9 @@ jobs:
         run: ./gradlew podspec
       - name: Lint podspec
         run: bundle exec pod spec lint *.podspec --allow-warnings --verbose
+        env:
+          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
+          GIT_LFS_SKIP_SMUDGE: 1
 
   check_version:
     name: Check Version is Unreleased
@@ -370,6 +373,9 @@ jobs:
         run: bundle exec pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Push podspec
         run: bundle exec pod repo push CruGlobal *.podspec --allow-warnings
+        env:
+          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
+          GIT_LFS_SKIP_SMUDGE: 1
 
   deploy_npm:
     name: Publish npm package
