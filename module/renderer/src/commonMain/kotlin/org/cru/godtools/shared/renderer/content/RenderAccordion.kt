@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -50,7 +51,7 @@ fun RenderAccordion(
     modifier: Modifier = Modifier,
     supportsMultiSelection: Boolean = false
 ) {
-    val selectedSections = remember { mutableStateSetOf<String>() }
+    val expandedSections = remember { mutableStateSetOf<String>() }
 
     Column(
         modifier = modifier
@@ -59,20 +60,18 @@ fun RenderAccordion(
     ) {
         accordion.sections.forEachIndexed { index, section ->
             key(section.id) {
-                val isSelected = selectedSections.contains(section.id)
+                val isExpanded = section.id in expandedSections
 
                 RenderAccordionSection(
                     section,
                     state = state,
-                    isSelected = isSelected,
+                    isExpanded = isExpanded,
                     onClick = {
-                        if (isSelected) {
-                            selectedSections.remove(section.id)
-                        } else if (supportsMultiSelection) {
-                            selectedSections.add(section.id)
+                        if (section.id in expandedSections) {
+                            expandedSections -= section.id
                         } else {
-                            selectedSections.clear()
-                            selectedSections.add(section.id)
+                            if (!supportsMultiSelection) expandedSections.clear()
+                            expandedSections += section.id
                         }
                     },
                     modifier = Modifier
@@ -88,7 +87,7 @@ fun RenderAccordion(
 private fun RenderAccordionSection(
     section: Accordion.Section,
     state: State,
-    isSelected: Boolean,
+    isExpanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -103,58 +102,50 @@ private fun RenderAccordionSection(
         ),
         modifier = modifier
             .testTag(TestTagAccordionSection)
-            .semantics { selected = isSelected }
+            .semantics { selected = isExpanded }
     ) {
         val headerInteractions = remember { MutableInteractionSource() }
 
         Row(
             modifier = Modifier
-                .clickable(interactionSource = headerInteractions, indication = null) {
-                    onClick()
-                }
-                .heightIn(48.dp)
+                .clickable(interactionSource = headerInteractions, indication = null, onClick = onClick)
+                .heightIn(min = 48.dp)
         ) {
             section.header?.let {
                 RenderTextNode(
                     it,
                     modifier = Modifier
                         .padding(start = HorizontalPadding)
+                        .padding(vertical = 4.dp)
                         .align(alignment = Alignment.CenterVertically)
                 )
             }
 
-            Spacer(
-                modifier = Modifier
-                    .weight(1f)
-            )
+            Spacer(Modifier.weight(1f))
 
             Icon(
                 imageVector = when {
-                    isSelected -> Icons.Filled.Remove
+                    isExpanded -> Icons.Filled.Remove
                     else -> Icons.Filled.Add
                 },
                 contentDescription = when {
-                    isSelected -> stringResource(Res.string.accordion_section_action_collapse)
+                    isExpanded -> stringResource(Res.string.accordion_section_action_collapse)
                     else -> stringResource(Res.string.accordion_section_action_expand)
                 },
                 modifier = Modifier
+                    .indication(headerInteractions, ripple(bounded = false, radius = 20.dp))
                     .padding(12.dp)
                     .align(Alignment.Top)
-                    .indication(headerInteractions, ripple(bounded = false, radius = 20.dp))
             )
         }
 
         AnimatedVisibility(
-            visible = isSelected,
+            visible = isExpanded,
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(bottom = 20.dp)
-            ) {
-                RenderContent(section.content, state)
-            }
+            RenderContent(section.content, state)
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
