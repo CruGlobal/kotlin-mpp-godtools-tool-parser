@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -37,6 +36,7 @@ import org.cru.godtools.shared.renderer.generated.resources.accordion_section_ac
 import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
+import org.cru.godtools.shared.tool.parser.model.cardBackgroundColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.jetbrains.compose.resources.stringResource
 
@@ -92,7 +92,7 @@ private fun RenderAccordionSection(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cardColor = section.stylesParent?.cardBackgroundColor?.toComposeColor() ?: Color.White
+    val cardColor = section.stylesParent.cardBackgroundColor.toComposeColor()
 
     ElevatedCard(
         shape = CardDefaults.elevatedShape,
