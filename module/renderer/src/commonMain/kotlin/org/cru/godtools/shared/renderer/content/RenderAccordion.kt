@@ -6,7 +6,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,23 +55,30 @@ fun RenderAccordion(
     Column(
         modifier = modifier
             .testTag(TestTagAccordion)
-            .visibility(accordion, state),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+            .visibility(accordion, state)
     ) {
         accordion.sections.forEachIndexed { index, section ->
             key(section.id) {
                 val isSelected = selectedSections.contains(section.id)
 
-                RenderAccordionSection(section, state, isSelected, {
-                    if (isSelected) {
-                        selectedSections.remove(section.id)
-                    } else if (supportsMultiSelection) {
-                        selectedSections.add(section.id)
-                    } else {
-                        selectedSections.clear()
-                        selectedSections.add(section.id)
-                    }
-                })
+                RenderAccordionSection(
+                    section,
+                    state = state,
+                    isSelected = isSelected,
+                    onClick = {
+                        if (isSelected) {
+                            selectedSections.remove(section.id)
+                        } else if (supportsMultiSelection) {
+                            selectedSections.add(section.id)
+                        } else {
+                            selectedSections.clear()
+                            selectedSections.add(section.id)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(CardPadding)
+                )
             }
         }
     }
@@ -84,22 +90,21 @@ private fun RenderAccordionSection(
     state: State,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val cardColor = section.stylesParent?.cardBackgroundColor?.toComposeColor() ?: Color.White
 
     ElevatedCard(
-        modifier = Modifier
-            .testTag(TestTagAccordionSection)
-            .semantics { selected = isSelected }
-            .fillMaxWidth(),
         shape = CardDefaults.elevatedShape,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = cardColor
-        )
+        ),
+        modifier = modifier
+            .testTag(TestTagAccordionSection)
+            .semantics { selected = isSelected }
     ) {
         val headerInteractions = remember { MutableInteractionSource() }
 

@@ -35,7 +35,7 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
         modifier = modifier
             .visibility(card, state)
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(CardPadding)
     ) {
         Column(
             modifier = Modifier
