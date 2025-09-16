@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -59,7 +60,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
             },
             modifier = Modifier
                 .visibility(button, state)
-                .padding(horizontal = HorizontalPadding, vertical = ButtonVerticalPadding)
+                .padding(horizontal = ContentHorizontalPadding, vertical = ButtonVerticalPadding)
                 .width(button.width)
                 .align(button.gravity.alignment)
         ) {

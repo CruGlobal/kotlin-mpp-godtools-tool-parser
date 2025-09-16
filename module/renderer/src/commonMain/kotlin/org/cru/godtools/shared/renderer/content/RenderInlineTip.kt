@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.flowOf
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -54,7 +55,7 @@ internal fun RenderInlineTip(model: InlineTip, state: State) {
         shadowElevation = InlineTipElevation,
         modifier = Modifier
             .visibility(model, state)
-            .padding(horizontal = HorizontalPadding, vertical = 4.dp)
+            .padding(horizontal = ContentHorizontalPadding, vertical = 4.dp)
             .size(InlineTipSize)
             .testTag(TestTagInlineTip)
     ) {

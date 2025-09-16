@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import coil3.compose.rememberConstraintsSizeResolver
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.extensions.toImageRequestBuilder
@@ -37,7 +38,7 @@ private val IMAGE_PADDING_TO_TEXT = 8.dp
 internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
     modifier = Modifier
         .visibility(text, state)
-        .padding(horizontal = HorizontalPadding)
+        .padding(horizontal = ContentHorizontalPadding)
         .fillMaxWidth()
 ) {
     text.startImage?.let {

@@ -13,6 +13,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme
+import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
@@ -30,6 +32,7 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
         colors = CardDefaults.elevatedCardColors(
             containerColor = card.backgroundColor.toComposeColor(),
         ),
+        elevation = ToolTheme.cardElevation(),
         onClick = { card.handleClickable(state, scope) },
         enabled = !invisible,
         modifier = modifier

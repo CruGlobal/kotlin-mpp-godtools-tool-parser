@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
-import org.cru.godtools.shared.renderer.content.HorizontalPadding
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.RenderTextNode
 import org.cru.godtools.shared.renderer.state.State
@@ -35,11 +35,11 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
         page.header?.let { header ->
             ProvideTextStyle(MaterialTheme.typography.titleMedium) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(HorizontalPadding),
+                    horizontalArrangement = Arrangement.spacedBy(ContentHorizontalPadding),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .background(header.backgroundColor.toComposeColor())
-                        .padding(horizontal = HorizontalPadding)
+                        .padding(horizontal = ContentHorizontalPadding)
                         .testTag(TestTagHeader)
                 ) {
                     header.number?.let { number ->
@@ -67,7 +67,7 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                         heading,
                         modifier = Modifier
                             .padding(top = 24.dp)
-                            .padding(horizontal = HorizontalPadding)
+                            .padding(horizontal = ContentHorizontalPadding)
                             .testTag(TestTagHeroHeading)
                     )
                 }
