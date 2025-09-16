@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.generated.resources.Res
-import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_collapse
-import org.cru.godtools.shared.renderer.generated.resources.accordion_section_action_expand
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_collapse
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
 import org.cru.godtools.shared.tool.parser.model.cardBackgroundColor
@@ -129,8 +129,8 @@ private fun RenderAccordionSection(
                     else -> Icons.Filled.Add
                 },
                 contentDescription = when {
-                    isExpanded -> stringResource(Res.string.accordion_section_action_collapse)
-                    else -> stringResource(Res.string.accordion_section_action_expand)
+                    isExpanded -> stringResource(Res.string.tool_renderer_accordion_section_action_collapse)
+                    else -> stringResource(Res.string.tool_renderer_accordion_section_action_expand)
                 },
                 modifier = Modifier
                     .indication(headerInteractions, ripple(bounded = false, radius = 20.dp))

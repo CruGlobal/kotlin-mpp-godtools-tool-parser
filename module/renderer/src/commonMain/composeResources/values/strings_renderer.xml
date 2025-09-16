@@ -1,7 +1,6 @@
 <resources>
-    <string name="accordion_section_action_collapse">Collapse</string>
-    <string name="accordion_section_action_expand">Expand</string>
-
+    <string name="tool_renderer_accordion_section_action_collapse">Collapse</string>
+    <string name="tool_renderer_accordion_section_action_expand">Expand</string>
     <string name="tool_renderer_input_error_required">%1$s is required</string>
     <string name="tool_renderer_input_error_invalid_email">Please enter a valid email address</string>
 </resources>
