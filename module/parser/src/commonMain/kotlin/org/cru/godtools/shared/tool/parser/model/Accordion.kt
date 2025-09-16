@@ -41,10 +41,13 @@ class Accordion : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    @JsName("createAccordionTests")
+    constructor(
         parent: Base = Manifest(),
+        invisibleIf: String? = null,
+        goneIf: String? = null,
         sections: ((Accordion) -> List<Section>)? = null
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.sections = sections?.invoke(this).orEmpty()
     }
 
@@ -84,13 +87,15 @@ class Accordion : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        @JsName("createTestAccordionSection")
+        constructor(
             accordion: Accordion = Accordion(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            header: Text? = null,
             content: ((Section) -> List<Content>)? = null
         ) : super(accordion) {
             this.accordion = accordion
-            header = null
+            this.header = header
             this.analyticsEvents = analyticsEvents
             this.content = content?.invoke(this).orEmpty()
         }
