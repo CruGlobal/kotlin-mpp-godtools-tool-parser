@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_collapse
@@ -94,12 +95,10 @@ private fun RenderAccordionSection(
     val cardColor = section.stylesParent.cardBackgroundColor.toComposeColor()
 
     ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 4.dp
-        ),
         colors = CardDefaults.cardColors(
             containerColor = cardColor
         ),
+        elevation = ToolTheme.cardElevation(),
         modifier = modifier
             .testTag(TestTagAccordionSection)
             .semantics { selected = isExpanded }
