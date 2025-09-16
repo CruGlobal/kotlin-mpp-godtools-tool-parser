@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -19,7 +20,7 @@ fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifi
         link.text,
         modifier = modifier
             .visibility(link, state)
-            .padding(horizontal = HorizontalPadding)
+            .padding(horizontal = ContentHorizontalPadding)
             .align(link.text.textAlign.alignment)
             .clickable(link, state, scope)
     )

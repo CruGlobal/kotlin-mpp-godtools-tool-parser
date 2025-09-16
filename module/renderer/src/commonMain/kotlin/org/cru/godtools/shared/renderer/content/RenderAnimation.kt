@@ -26,6 +26,7 @@ import io.github.alexzhirkevich.compottie.ioDispatcher
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import kotlin.coroutines.CoroutineContext
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.Resource
 import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -83,7 +84,7 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
         contentDescription = null,
         modifier = Modifier
             .visibility(animation, state)
-            .padding(horizontal = HorizontalPadding)
+            .padding(horizontal = ContentHorizontalPadding)
             .fillMaxWidth()
             .clickable(animation, state, coroutineScope, indication = null)
             .testTag(TestTagAnimation)

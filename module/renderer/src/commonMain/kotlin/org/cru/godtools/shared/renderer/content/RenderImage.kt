@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.clickable
 import org.cru.godtools.shared.renderer.content.extensions.visibility
@@ -29,7 +30,7 @@ internal fun ColumnScope.RenderImage(image: Image, state: State) {
         modifier = Modifier
             .testTag(TestTagImage)
             .visibility(image, state)
-            .padding(horizontal = HorizontalPadding)
+            .padding(horizontal = ContentHorizontalPadding)
             .width(image.width)
             .align(image.gravity.alignment)
             .clickable(image, state, scope)

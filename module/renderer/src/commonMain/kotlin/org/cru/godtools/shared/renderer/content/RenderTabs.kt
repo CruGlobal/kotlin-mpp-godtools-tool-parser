@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
@@ -63,7 +64,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         modifier = modifier
             .testTag(tag = TestTagTabs)
             .visibility(model = tabs, state = state)
-            .padding(horizontal = HorizontalPadding)
+            .padding(horizontal = ContentHorizontalPadding)
             .border(
                 BorderStroke(width = 2.dp, borderColor),
                 borderShape

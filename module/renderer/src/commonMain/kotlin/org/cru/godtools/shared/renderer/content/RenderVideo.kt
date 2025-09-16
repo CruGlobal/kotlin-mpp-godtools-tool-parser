@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import chaintech.videoplayer.host.MediaPlayerHost
 import chaintech.videoplayer.model.VideoPlayerConfig
 import chaintech.videoplayer.ui.youtube.YouTubePlayerComposable
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
@@ -50,7 +51,7 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
             modifier = Modifier
                 .testTag(TestTagVideo)
                 .visibility(model, state)
-                .padding(horizontal = HorizontalPadding)
+                .padding(horizontal = ContentHorizontalPadding)
                 .width(model.width)
                 .align(model.gravity.alignment)
                 .aspectRatio(model.aspectRatio.ratio.toFloat())

@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
 internal object ToolTheme {
+    internal val ContentHorizontalPadding = 16.dp
+
     @Composable
     fun cardElevation() = CardDefaults.elevatedCardElevation(
         defaultElevation = 3.dp,
