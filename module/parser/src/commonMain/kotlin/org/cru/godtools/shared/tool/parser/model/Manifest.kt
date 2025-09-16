@@ -156,6 +156,9 @@ class Manifest : BaseModel, Styles, HasPages {
             else -> primaryTextColor
         }
 
+    val background by lazy {
+        Background(backgroundColor, backgroundImage, backgroundImageGravity, backgroundImageScaleType)
+    }
     internal val backgroundColor: Color
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
@@ -291,6 +294,9 @@ class Manifest : BaseModel, Styles, HasPages {
         navBarColor: Color? = null,
         navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundImage: String? = null,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
         pageControlColor: Color = DEFAULT_CONTROL_COLOR,
@@ -319,9 +325,9 @@ class Manifest : BaseModel, Styles, HasPages {
         _navBarControlColor = navBarControlColor
 
         this.backgroundColor = backgroundColor
-        _backgroundImage = null
-        backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
-        backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+        _backgroundImage = backgroundImage
+        this.backgroundImageGravity = backgroundImageGravity
+        this.backgroundImageScaleType = backgroundImageScaleType
 
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor

@@ -8,6 +8,7 @@ import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.decodeToLottieComposition
 import okio.FileSystem
 import okio.buffer
+import org.cru.godtools.shared.renderer.extensions.toPath
 import org.cru.godtools.shared.tool.parser.model.Resource
 
 @Suppress("FunctionName")

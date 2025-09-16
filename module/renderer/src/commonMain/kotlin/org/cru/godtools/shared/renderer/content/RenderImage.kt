@@ -8,15 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.request.ImageRequest
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.clickable
-import org.cru.godtools.shared.renderer.content.extensions.toPath
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
+import org.cru.godtools.shared.renderer.extensions.toImageRequest
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Image
 
 internal const val TestTagImage = "image"
@@ -26,10 +23,7 @@ internal fun ColumnScope.RenderImage(image: Image, state: State) {
     val scope = rememberCoroutineScope()
 
     AsyncImage(
-        model = ImageRequest.Builder(LocalPlatformContext.current)
-            .fileSystem(LocalResourceFileSystem.current)
-            .data(image.resource?.toPath())
-            .build(),
+        model = image.resource?.toImageRequest(),
         contentDescription = null,
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
