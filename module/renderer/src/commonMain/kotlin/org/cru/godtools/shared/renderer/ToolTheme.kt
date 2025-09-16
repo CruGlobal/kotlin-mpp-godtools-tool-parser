@@ -15,4 +15,5 @@ internal object ToolTheme {
         pressedElevation = 1.dp,
         disabledElevation = 3.dp,
     )
+    internal val CardPadding = 8.dp
 }
