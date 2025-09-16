@@ -24,9 +24,9 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
-import org.cru.godtools.shared.renderer.GodToolsGreen
-import org.cru.godtools.shared.renderer.ProgressBarGapSize
-import org.cru.godtools.shared.renderer.ProgressBarHeight
+import org.cru.godtools.shared.renderer.ToolTheme.GodToolsGreen
+import org.cru.godtools.shared.renderer.ToolTheme.ProgressBarGapSize
+import org.cru.godtools.shared.renderer.ToolTheme.ProgressBarHeight
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.ic_tool_loading_checkmark
 import org.cru.godtools.shared.renderer.generated.resources.tool_loading
