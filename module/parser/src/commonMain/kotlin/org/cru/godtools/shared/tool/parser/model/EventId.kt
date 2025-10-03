@@ -5,6 +5,7 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
+import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
@@ -15,6 +16,16 @@ class EventId(val namespace: String? = null, val name: String) {
         internal const val NAMESPACE_STATE = "state"
 
         val FOLLOWUP = EventId(NAMESPACE_FOLLOWUP, "send")
+
+        internal fun String.toEventIds() = split(REGEX_SEQUENCE_SEPARATOR)
+            .mapNotNull {
+                val components = it.split(':', limit = 2)
+                when {
+                    it.isBlank() -> null
+                    components.size == 1 -> EventId(name = it)
+                    else -> EventId(components[0], components[1])
+                }
+            }
     }
 
     fun resolve(ctx: ExpressionContext) = when (namespace) {
