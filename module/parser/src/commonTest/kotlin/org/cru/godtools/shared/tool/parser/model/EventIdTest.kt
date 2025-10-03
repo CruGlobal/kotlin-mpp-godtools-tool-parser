@@ -6,11 +6,30 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 
 class EventIdTest {
     companion object {
         private val ID1 = EventId("followup", "seND")
     }
+
+    // region Parsing
+    @Test
+    fun verifyToEventIds() {
+        val events = "EVent1 eveNT2 evENt1 followup:send".toEventIds()
+        assertEquals(4, events.size)
+        assertEquals(EventId(name = "event1"), events[0])
+        assertEquals(EventId(name = "event2"), events[1])
+        assertEquals(EventId(name = "event1"), events[2])
+        assertEquals(EventId.FOLLOWUP, events[3])
+    }
+
+    @Test
+    fun verifyToEventIdsEmpty() {
+        assertEquals(emptyList(), "".toEventIds())
+        assertEquals(emptyList(), " ".toEventIds())
+    }
+    // endregion Parsing
 
     // region resolve(ExpressionContext)
     @Test

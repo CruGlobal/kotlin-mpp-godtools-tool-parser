@@ -16,6 +16,7 @@ import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
 import org.cru.godtools.shared.tool.parser.model.EventId
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
@@ -44,7 +45,6 @@ import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
 import org.cru.godtools.shared.tool.parser.model.parseContent
 import org.cru.godtools.shared.tool.parser.model.parseTextChild
 import org.cru.godtools.shared.tool.parser.model.stylesOverride
-import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren

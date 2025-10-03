@@ -22,6 +22,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.EventId
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.HasAnalyticsEvents
@@ -50,16 +51,12 @@ import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Companion.TYPE_CARD_COLLECTION
 import org.cru.godtools.shared.tool.parser.model.page.ContentPage.Companion.TYPE_CONTENT
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_COLOR
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_GRAVITY
-import org.cru.godtools.shared.tool.parser.model.page.Page.Companion.DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
 import org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage.Companion.TYPE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.model.primaryColor
 import org.cru.godtools.shared.tool.parser.model.primaryTextColor
 import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.cru.godtools.shared.tool.parser.model.textColor
 import org.cru.godtools.shared.tool.parser.model.textScale
-import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.toPlatformColor
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.XMLNS_TRACT
