@@ -25,6 +25,7 @@ import org.cru.godtools.shared.tool.parser.internal.DeprecationException
 import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.fluidlocale.toLocaleOrNull
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImageScaleTypeOrNull
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR

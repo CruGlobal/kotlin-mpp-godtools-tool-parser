@@ -12,6 +12,7 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Paragraph
@@ -21,7 +22,6 @@ import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
-import org.cru.godtools.shared.tool.parser.model.toEventIds
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
 
 @RunOnAndroidWith(AndroidJUnit4::class)

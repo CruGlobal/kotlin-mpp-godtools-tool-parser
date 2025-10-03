@@ -12,6 +12,7 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.internal.DeprecationException
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.util.hasUriScheme
 import org.cru.godtools.shared.tool.parser.util.toAbsoluteUriOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser

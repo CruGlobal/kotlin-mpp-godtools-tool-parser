@@ -8,12 +8,12 @@ import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.model.Button
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.TRANSPARENT
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.WHITE
-import org.cru.godtools.shared.tool.parser.model.toEventIds
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class ModalTest : UsesResources("model/tract") {
