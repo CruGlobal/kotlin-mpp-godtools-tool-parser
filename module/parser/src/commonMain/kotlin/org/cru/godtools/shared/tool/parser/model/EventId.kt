@@ -28,9 +28,9 @@ class EventId(val namespace: String? = null, val name: String) {
             }
     }
 
-    fun resolve(ctx: ExpressionContext) = when (namespace) {
-        NAMESPACE_STATE -> ctx.getVar(name).map { EventId(name = it) }
-        else -> listOf(this)
+    fun resolve(ctx: ExpressionContext): Array<EventId> = when (namespace) {
+        NAMESPACE_STATE -> ctx.getVar(name).map { EventId(name = it) }.toTypedArray()
+        else -> arrayOf(this)
     }
 
     override fun equals(other: Any?) = other is EventId &&
