@@ -47,7 +47,6 @@ class RenderLessonTest : BaseRendererTest() {
     }
 
     private val eventSink = TestEventSink<LessonScreen.UiEvent>()
-    private val pagerState = LessonPagerState()
 
     private val closeLesson by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_close) } }
     private val previousPage by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_page_previous) } }
@@ -58,7 +57,6 @@ class RenderLessonTest : BaseRendererTest() {
         val state = LessonScreen.UiState.Loaded(
             manifest = Manifest(type = Type.LESSON),
             state = state,
-            pagerState = pagerState,
             eventSink = eventSink::invoke,
         )
         setContent {
@@ -118,15 +116,17 @@ class RenderLessonTest : BaseRendererTest() {
                 )
             },
         )
+        val lessonPager = LessonPagerState().apply { updateManifest(manifest) }
+
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
             }
         }
 
         onPager().assertExists()
-        assertEquals(2, pagerState.pageCount)
-        assertEquals(0, pagerState.currentPage)
+        assertEquals(2, lessonPager.pagerState.pageCount)
+        assertEquals(0, lessonPager.pagerState.currentPage)
 
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
@@ -144,15 +144,18 @@ class RenderLessonTest : BaseRendererTest() {
                 )
             },
         )
+        lateinit var lessonPager: LessonPagerState
+
         setContent {
+            lessonPager = rememberLessonPagerState(manifest)
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
             }
         }
 
         onPager().assertExists()
-        assertEquals(1, pagerState.pageCount)
-        assertEquals(0, pagerState.currentPage)
+        assertEquals(1, lessonPager.pagerState.pageCount)
+        assertEquals(0, lessonPager.pagerState.currentPage)
         onLessonPage("page2").assertIsDisplayed()
     }
 
@@ -168,10 +171,12 @@ class RenderLessonTest : BaseRendererTest() {
                 )
             },
         )
+        lateinit var lessonPager: LessonPagerState
 
         setContent {
+            lessonPager = rememberLessonPagerState(manifest)
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
             }
         }
 
@@ -197,31 +202,32 @@ class RenderLessonTest : BaseRendererTest() {
                 )
             },
         )
+        val lessonPager = LessonPagerState().apply { updateManifest(manifest) }
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
             }
         }
 
-        assertEquals(2, pagerState.pageCount)
-        assertEquals(0, pagerState.currentPage)
+        assertEquals(2, lessonPager.pagerState.pageCount)
+        assertEquals(0, lessonPager.pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
 
         state.triggerContentEvents(listOf(event1))
         testScope.runCurrent()
         waitForIdle()
 
-        assertEquals(3, pagerState.pageCount)
-        assertEquals(1, pagerState.currentPage)
+        assertEquals(3, lessonPager.pagerState.pageCount)
+        assertEquals(1, lessonPager.pagerState.currentPage)
         onLessonPage("page2").assertIsDisplayed()
 
         state.triggerContentEvents(listOf(event2))
         testScope.runCurrent()
         waitForIdle()
 
-        assertEquals(2, pagerState.pageCount)
-        assertEquals(1, pagerState.currentPage)
+        assertEquals(2, lessonPager.pagerState.pageCount)
+        assertEquals(1, lessonPager.pagerState.currentPage)
         onLessonPage("page3").assertIsDisplayed()
     }
 
@@ -236,26 +242,28 @@ class RenderLessonTest : BaseRendererTest() {
                 )
             },
         )
+        val lessonPager = LessonPagerState().apply { updateManifest(manifest) }
+
         setContent {
             ProvideTestCompositionLocals {
-                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, pagerState = pagerState))
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
             }
         }
 
-        assertEquals(2, pagerState.pageCount)
-        assertEquals(0, pagerState.currentPage)
+        assertEquals(2, lessonPager.pagerState.pageCount)
+        assertEquals(0, lessonPager.pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
 
         onNodeWithContentDescription(nextPage).performClick()
         waitForIdle()
-        assertEquals(1, pagerState.currentPage)
+        assertEquals(1, lessonPager.pagerState.currentPage)
         onLessonPage("page1").assertIsNotDisplayed()
         onLessonPage("page2").assertIsDisplayed()
 
         onNodeWithContentDescription(previousPage).performClick()
         waitForIdle()
-        assertEquals(0, pagerState.currentPage)
+        assertEquals(0, lessonPager.pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
     }
