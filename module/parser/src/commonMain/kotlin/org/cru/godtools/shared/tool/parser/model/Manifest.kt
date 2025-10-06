@@ -307,8 +307,8 @@ class Manifest : BaseModel, Styles, HasPages {
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
-        pages: ((Manifest) -> List<Page>)? = null,
         pageXmlFiles: List<XmlFile> = emptyList(),
+        pages: ((Manifest) -> List<Page>)? = null,
     ) {
         this.config = config
 

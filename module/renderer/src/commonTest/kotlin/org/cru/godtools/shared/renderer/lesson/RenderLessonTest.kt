@@ -3,6 +3,7 @@ package org.cru.godtools.shared.renderer.lesson
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
+import androidx.compose.ui.test.StateRestorationTester
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasTestTag
@@ -27,6 +28,7 @@ import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility
 import org.cru.godtools.shared.renderer.generated.resources.tool_loading
 import org.cru.godtools.shared.renderer.generated.resources.tool_not_found
 import org.cru.godtools.shared.renderer.generated.resources.tool_offline
+import org.cru.godtools.shared.renderer.internal.test.IgnoreOnIos
 import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Manifest.Type
@@ -266,5 +268,46 @@ class RenderLessonTest : BaseRendererTest() {
         assertEquals(0, lessonPager.pagerState.currentPage)
         onLessonPage("page1").assertIsDisplayed()
         onLessonPage("page2").assertIsNotDisplayed()
+    }
+
+    @Test
+    @IgnoreOnIos // TODO: https://youtrack.jetbrains.com/issue/CMP-6836
+    fun `UI - Loaded - HorizontalPager - Saved State`() = runComposeUiTest {
+        val event1 = EventId(name = "content_event")
+        val manifest = Manifest(
+            type = Type.LESSON,
+            pages = {
+                listOf(
+                    LessonPage(it, id = "page1"),
+                    LessonPage(it, id = "page2", isHidden = true, listeners = setOf(event1)),
+                    LessonPage(it, id = "page3"),
+                )
+            },
+        )
+        lateinit var lessonPager: LessonPagerState
+
+        val restorationTester = StateRestorationTester(this)
+
+        restorationTester.setContent {
+            ProvideTestCompositionLocals {
+                lessonPager = rememberLessonPagerState(manifest)
+                RenderLesson(LessonScreen.UiState.Loaded(manifest, state, lessonPager = lessonPager))
+            }
+        }
+
+        onLessonPage("page1").assertIsDisplayed()
+        state.triggerContentEvents(listOf(event1))
+        testScope.runCurrent()
+        waitForIdle()
+
+        assertEquals(3, lessonPager.pagerState.pageCount)
+        assertEquals(1, lessonPager.pagerState.currentPage)
+        onLessonPage("page2").assertIsDisplayed()
+
+        restorationTester.emulateSaveAndRestore()
+
+        assertEquals(3, lessonPager.pagerState.pageCount)
+        assertEquals(1, lessonPager.pagerState.currentPage)
+        onLessonPage("page2").assertIsDisplayed()
     }
 }

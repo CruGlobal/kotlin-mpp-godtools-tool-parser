@@ -13,7 +13,7 @@ data object LessonScreen {
         data class Loaded(
             override val manifest: Manifest,
             val state: State,
-            val lessonPager: LessonPagerState = LessonPagerState(),
+            val lessonPager: LessonPagerState = LessonPagerState(manifest = manifest),
             override val eventSink: (UiEvent) -> Unit = {},
         ) : UiState
         data class Loading(val progress: Float? = null, override val eventSink: (UiEvent) -> Unit = {}) : UiState
