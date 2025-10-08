@@ -393,12 +393,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
         run: npm install -g npm@latest
       - name: Publish package
-        run: ./gradlew :publishing:npm:publish --scan
+        run: ./gradlew :publishing:npm:publish -Pnpm.publish.npmBin=`which npm` --scan
         env:
           ORG_GRADLE_PROJECT_npmPublishTag: ${{ (github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number)) || '' }}
