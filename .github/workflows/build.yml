@@ -402,3 +402,9 @@ jobs:
         run: ./gradlew :publishing:npm:publish -Pnpm.publish.npmBin=`which npm` --scan
         env:
           ORG_GRADLE_PROJECT_npmPublishTag: ${{ (github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number)) || '' }}
+      - name: Archive npm-publish logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-publish-logs
+          path: "~/.npm/_logs"
