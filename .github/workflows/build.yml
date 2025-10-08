@@ -391,6 +391,9 @@ jobs:
           java-version-file: ".java-version"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+      # Ensure npm 11.5.1 or later is installed
+      - name: Update npm
+        run: npm install -g npm@latest
       - name: Publish package
         run: ./gradlew :publishing:npm:publish --scan
         env:
