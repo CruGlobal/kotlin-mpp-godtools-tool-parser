@@ -26,7 +26,7 @@ kotlin {
             dependencies {
                 api(project(":module:common"))
                 api(project(":module:parser-expressions"))
-                implementation(project(":module:parser-base"))
+                implementation(project(":module:parser"))
 
                 implementation(libs.androidx.annotation)
                 implementation(libs.gtoSupport.parcelize)

@@ -3,6 +3,8 @@ package org.cru.godtools.shared.tool.parser.model.lesson
 import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Base
@@ -24,6 +26,8 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_CONTENT = "content"
 
+@JsExport
+@OptIn(ExperimentalJsExport::class)
 class LessonPage : Page, Parent {
     @VisibleForTesting
     override val analyticsEvents: List<AnalyticsEvent>

@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Resource
@@ -17,7 +18,6 @@ import org.cru.godtools.shared.tool.parser.model.TEST_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.TestColors
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.textColor
-import org.cru.godtools.shared.tool.parser.model.toEventIds
 
 @RunOnAndroidWith(AndroidJUnit4::class)
 class TractPageTest : UsesResources("model/tract") {

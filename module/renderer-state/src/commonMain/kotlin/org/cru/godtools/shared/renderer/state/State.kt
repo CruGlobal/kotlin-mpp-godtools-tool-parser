@@ -48,13 +48,8 @@ class State internal constructor(
     private val _contentEvents = MutableSharedFlow<EventId>()
     val contentEvents = _contentEvents.asSharedFlow()
 
-    internal fun resolveContentEvent(eventId: EventId) = when (eventId.namespace) {
-        EventId.NAMESPACE_STATE -> getVar(eventId.name).map { EventId(name = it) }
-        else -> listOf(eventId)
-    }
-
     fun triggerContentEvents(events: List<EventId>) {
-        coroutineScope.launch { events.flatMap { resolveContentEvent(it) }.forEach { _contentEvents.emit(it) } }
+        coroutineScope.launch { events.flatMap { it.resolve(this@State) }.forEach { _contentEvents.emit(it) } }
     }
     // endregion Content Events
 

@@ -9,6 +9,7 @@ import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_ANIMATION
+import org.cru.godtools.shared.tool.parser.model.EventId.Companion.toEventIds
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.skipTag
 
