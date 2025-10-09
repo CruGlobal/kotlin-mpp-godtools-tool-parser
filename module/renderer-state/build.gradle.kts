@@ -28,8 +28,8 @@ kotlin {
                 api(project(":module:parser-expressions"))
                 implementation(project(":module:parser"))
 
+                api(libs.gtoSupport.parcelize)
                 implementation(libs.androidx.annotation)
-                implementation(libs.gtoSupport.parcelize)
                 implementation(libs.kotlin.coroutines.core)
             }
         }

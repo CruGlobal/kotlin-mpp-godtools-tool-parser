@@ -1,6 +1,5 @@
 package org.cru.godtools.shared.renderer.lesson
 
-import androidx.compose.runtime.remember
 import com.github.ajalt.colormath.model.RGB
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.renderer.state.State
@@ -16,6 +15,7 @@ import org.junit.Test
 class RenderLessonPaparazziTest : BasePaparazziTest() {
     @Test
     fun `RenderLesson - Loaded`() {
+        val state = State()
         val manifest = Manifest(
             type = Manifest.Type.LESSON,
             resources = { listOf(resourceBruce) },
@@ -40,8 +40,8 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
             RenderLesson(
                 LessonScreen.UiState.Loaded(
                     manifest,
-                    state = remember { State() },
-                    pagerState = rememberLessonPagerState(initialPage = 1),
+                    state = state,
+                    lessonPager = rememberLessonPagerState(manifest, initialPage = 1),
                 ),
             )
         }
@@ -78,13 +78,14 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
                 )
             },
         )
+        val state = State()
 
         contentSnapshot {
             RenderLesson(
                 LessonScreen.UiState.Loaded(
                     manifest,
-                    state = remember { State() },
-                    pagerState = rememberLessonPagerState(),
+                    state = state,
+                    lessonPager = rememberLessonPagerState(manifest),
                 ),
             )
         }

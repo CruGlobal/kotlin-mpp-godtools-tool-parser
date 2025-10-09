@@ -24,11 +24,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -47,8 +45,8 @@ import org.cru.godtools.shared.renderer.common.ToolNotFound
 import org.cru.godtools.shared.renderer.common.ToolOffline
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
-import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarControlColor
 import org.jetbrains.compose.resources.stringResource
@@ -79,7 +77,7 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                     if (state is LessonScreen.UiState.Loaded) {
                         LinearProgressIndicator(
                             progress = {
-                                val pagerState = state.pagerState
+                                val pagerState = state.lessonPager.pagerState
                                 when (val pageCount = pagerState.pageCount) {
                                     0 -> 0f
                                     else -> (pagerState.currentPage + 1 + pagerState.currentPageOffsetFraction) /
@@ -113,7 +111,11 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
         when (state) {
             is LessonScreen.UiState.Loaded -> Box {
                 RenderBackground(state.manifest.background, Modifier.matchParentSize())
-                RenderLessonPager(state, contentInsets = paddingValues)
+                RenderLessonPager(
+                    lessonPagerState = state.lessonPager,
+                    state = state.state,
+                    contentInsets = paddingValues
+                )
             }
             is LessonScreen.UiState.Loading -> ToolLoading(
                 progress = state.progress,
@@ -137,46 +139,42 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
 
 @Composable
 private fun RenderLessonPager(
-    state: LessonScreen.UiState.Loaded,
+    lessonPagerState: LessonPagerState,
+    state: State,
     contentInsets: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val pagerState = state.pagerState
-
-    val allPages by rememberUpdatedState(state.manifest.pages.filterIsInstance<LessonPage>())
-    val visiblePages = rememberSaveable { mutableStateSetOf<String>() }
-    val pages by remember { derivedStateOf { allPages.filter { it.id in visiblePages || !it.isHidden } } }
-    pagerState.pageCountLambda = { pages.size }
+    val pagerState = lessonPagerState.pagerState
 
     // re-hide hidden pages when they are not the current page
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.settledPage }
-            .mapNotNull { pages.getOrNull(pagerState.currentPage)?.id }
-            .collect { pageId -> visiblePages.removeAll { it != pageId } }
+            .mapNotNull { lessonPagerState.pages.getOrNull(it)?.id }
+            .collect { pageId -> lessonPagerState.visiblePages.removeAll { it != pageId } }
     }
 
     // handle page listeners
-    ContentEventListener(state.state) { eventId ->
-        val page = allPages.firstOrNull { eventId in it.listeners } ?: return@ContentEventListener
-        visiblePages += page.id
-        val index = pages.indexOf(page).takeUnless { it == -1 } ?: return@ContentEventListener
+    ContentEventListener(state) { eventId ->
+        val page = lessonPagerState.allPages.firstOrNull { eventId in it.listeners } ?: return@ContentEventListener
+        lessonPagerState.visiblePages += page.id
+        val index = lessonPagerState.pages.indexOf(page).takeUnless { it == -1 } ?: return@ContentEventListener
         pagerState.animateScrollToPage(index)
     }
 
     HorizontalPager(
         pagerState,
         beyondViewportPageCount = 1,
-        key = { pages[it].id },
-        modifier = modifier.testTag(TestTagLessonPager)
+        key = { lessonPagerState.pages[it].id },
+        modifier = modifier.testTag(TestTagLessonPager),
     ) { i ->
         val isCurrentPage by remember { derivedStateOf { i == pagerState.currentPage } }
         val lifecycleOwner = remember(lifecycleOwner) { ConstrainedStateLifecycleOwner(lifecycleOwner) }
             .apply { maxState = if (isCurrentPage) Lifecycle.State.RESUMED else Lifecycle.State.STARTED }
 
         CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
-            RenderLessonPage(pages[i], state = state.state, contentInsets = contentInsets) { event ->
+            RenderLessonPage(lessonPagerState.pages[i], state = state, contentInsets = contentInsets) { event ->
                 when (event) {
                     LessonPageEvent.NextPage -> coroutineScope.launch { pagerState.animateScrollToPage(i + 1) }
                     LessonPageEvent.PreviousPage -> coroutineScope.launch { pagerState.animateScrollToPage(i - 1) }
