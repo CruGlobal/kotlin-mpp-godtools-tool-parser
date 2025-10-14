@@ -124,7 +124,7 @@ class RenderLessonPageTest : BaseRendererTest() {
                     }
                 }
 
-                assertEquals(State.Event.AnalyticsEventTriggered(analyticsEventVisible), awaitItem())
+                assertEquals(State.Event.AnalyticsEvent.ContentEvent(analyticsEventVisible), awaitItem())
             }
         }
     }
@@ -148,7 +148,7 @@ class RenderLessonPageTest : BaseRendererTest() {
 
                 // resume the lifecycle and ensure the event is triggered
                 lifecycleOwner.currentState = Lifecycle.State.RESUMED
-                assertEquals(State.Event.AnalyticsEventTriggered(analyticsEventVisible), awaitItem())
+                assertEquals(State.Event.AnalyticsEvent.ContentEvent(analyticsEventVisible), awaitItem())
             }
         }
     }
@@ -174,7 +174,7 @@ class RenderLessonPageTest : BaseRendererTest() {
 
                 // advance past the delay and ensure the event is triggered
                 mainClock.advanceTimeBy(200)
-                assertEquals(State.Event.AnalyticsEventTriggered(analyticsEventDelayed), awaitItem())
+                assertEquals(State.Event.AnalyticsEvent.ContentEvent(analyticsEventDelayed), awaitItem())
             }
         }
     }

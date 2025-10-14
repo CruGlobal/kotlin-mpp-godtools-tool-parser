@@ -21,8 +21,8 @@ import org.ccci.gto.android.common.parcelize.Parcelize
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
-import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.EventId
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent as ContentAnalyticsEvent
 
 @JsExport
 @Parcelize
@@ -56,7 +56,10 @@ class State internal constructor(
     // region Events
     sealed class Event {
         data class OpenUrl(val url: Uri) : Event()
-        data class AnalyticsEventTriggered(val event: AnalyticsEvent) : Event()
+        sealed class AnalyticsEvent : Event() {
+            data class ScreenView(val screenName: String) : AnalyticsEvent()
+            data class ContentEvent(val event: ContentAnalyticsEvent) : AnalyticsEvent()
+        }
         data class SubmitForm(val fields: Map<String, String>) : Event()
         data class OpenTip(val tipId: String) : Event()
     }
@@ -75,23 +78,23 @@ class State internal constructor(
     fun triggerOpenUrlEvent(url: Uri) = _events.tryEmit(Event.OpenUrl(url))
 
     // region Analytics Events
-    internal fun recordTriggeredAnalyticsEvent(event: AnalyticsEvent) {
+    internal fun recordTriggeredAnalyticsEvent(event: ContentAnalyticsEvent) {
         triggeredAnalyticsEvents[event.id] = (triggeredAnalyticsEvents[event.id] ?: 0) + 1
     }
     @Suppress("NullableBooleanElvis")
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun shouldTriggerAnalyticsEvent(event: AnalyticsEvent) =
+    fun shouldTriggerAnalyticsEvent(event: ContentAnalyticsEvent) =
         event.limit?.let { (triggeredAnalyticsEvents[event.id] ?: 0) < it } ?: true
 
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    fun triggerAnalyticsEvent(event: AnalyticsEvent) {
+    fun triggerAnalyticsEvent(event: ContentAnalyticsEvent) {
         if (!shouldTriggerAnalyticsEvent(event)) return
         recordTriggeredAnalyticsEvent(event)
-        _events.tryEmit(Event.AnalyticsEventTriggered(event))
+        _events.tryEmit(Event.AnalyticsEvent.ContentEvent(event))
     }
     // endregion Analytics Events
     // endregion Events
