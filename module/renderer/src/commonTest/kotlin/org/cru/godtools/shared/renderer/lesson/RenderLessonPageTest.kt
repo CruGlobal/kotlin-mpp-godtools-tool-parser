@@ -9,9 +9,11 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.lifecycle.Lifecycle
 import app.cash.turbine.test
+import io.fluidsonic.locale.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -110,14 +112,64 @@ class RenderLessonPageTest : BaseRendererTest() {
     )
 
     @Test
-    fun `UI - AnalyticsEvents`() = runComposeUiTest {
+    fun `UI - AnalyticsEvents - Screen`() = runComposeUiTest {
+        val manifest = Manifest(code = "tool", locale = Locale.forLanguageTag("en")) {
+            listOf(LessonPage(it) { emptyList() })
+        }
+        val page = manifest.pages.first() as LessonPage
+
+        testScope.runTest {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ScreenView>().test {
+                setContent {
+                    ProvideTestCompositionLocals {
+                        RenderLessonPage(page, state = state)
+                    }
+                }
+
+                assertEquals(
+                    State.Event.AnalyticsEvent.ScreenView("tool", Locale.forLanguageTag("en"), "tool-0"),
+                    awaitItem(),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `UI - AnalyticsEvents - Screen - Trigger when lifecycle is resumed`() = runComposeUiTest {
+        val manifest = Manifest(code = "tool", locale = Locale.forLanguageTag("en")) {
+            listOf(LessonPage(it) { emptyList() })
+        }
+        val page = manifest.pages.first() as LessonPage
+        lifecycleOwner.currentState = Lifecycle.State.STARTED
+
+        testScope.runTest {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ScreenView>().test {
+                setContent {
+                    ProvideTestCompositionLocals {
+                        RenderLessonPage(page, state = state)
+                    }
+                }
+                expectNoEvents()
+
+                // resume the lifecycle and ensure the event is triggered
+                lifecycleOwner.currentState = Lifecycle.State.RESUMED
+                assertEquals(
+                    State.Event.AnalyticsEvent.ScreenView("tool", Locale.forLanguageTag("en"), "tool-0"),
+                    awaitItem(),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `UI - AnalyticsEvents - Content`() = runComposeUiTest {
         val page = LessonPage(
             manifest,
             analyticsEvents = listOf(analyticsEventVisible),
         )
 
         testScope.runTest {
-            state.events.test {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
                 setContent {
                     ProvideTestCompositionLocals {
                         RenderLessonPage(page, state = state)
@@ -130,7 +182,7 @@ class RenderLessonPageTest : BaseRendererTest() {
     }
 
     @Test
-    fun `UI - AnalyticsEvents - Trigger when lifecycle is resumed`() = runComposeUiTest {
+    fun `UI - AnalyticsEvents - Content - Trigger when lifecycle is resumed`() = runComposeUiTest {
         lifecycleOwner.currentState = Lifecycle.State.STARTED
         val page = LessonPage(
             manifest,
@@ -138,7 +190,7 @@ class RenderLessonPageTest : BaseRendererTest() {
         )
 
         testScope.runTest {
-            state.events.test {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
                 setContent {
                     ProvideTestCompositionLocals {
                         RenderLessonPage(page, state = state)
@@ -154,14 +206,14 @@ class RenderLessonPageTest : BaseRendererTest() {
     }
 
     @Test
-    fun `UI - AnalyticsEvents - Delayed`() = runComposeUiTest {
+    fun `UI - AnalyticsEvents - Content - Delayed`() = runComposeUiTest {
         val page = LessonPage(
             manifest,
             analyticsEvents = listOf(analyticsEventDelayed),
         )
 
         testScope.runTest {
-            state.events.test {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
                 setContent {
                     ProvideTestCompositionLocals {
                         RenderLessonPage(page, state = state)
@@ -180,14 +232,14 @@ class RenderLessonPageTest : BaseRendererTest() {
     }
 
     @Test
-    fun `UI - AnalyticsEvents - Delayed - Canceled when lifecycle is paused`() = runComposeUiTest {
+    fun `UI - AnalyticsEvents - Content - Delayed - Canceled when lifecycle is paused`() = runComposeUiTest {
         val page = LessonPage(
             manifest,
             analyticsEvents = listOf(analyticsEventDelayed),
         )
 
         testScope.runTest {
-            state.events.test {
+            state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
                 setContent {
                     ProvideTestCompositionLocals {
                         RenderLessonPage(page, state = state)

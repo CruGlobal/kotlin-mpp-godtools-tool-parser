@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.renderer.state
 
 import androidx.annotation.RestrictTo
+import io.fluidsonic.locale.Locale
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
@@ -57,7 +58,7 @@ class State internal constructor(
     sealed class Event {
         data class OpenUrl(val url: Uri) : Event()
         sealed class AnalyticsEvent : Event() {
-            data class ScreenView(val screenName: String) : AnalyticsEvent()
+            data class ScreenView(val tool: String?, val locale: Locale?, val screenName: String) : AnalyticsEvent()
             data class ContentEvent(val event: ContentAnalyticsEvent) : AnalyticsEvent()
         }
         data class SubmitForm(val fields: Map<String, String>) : Event()
