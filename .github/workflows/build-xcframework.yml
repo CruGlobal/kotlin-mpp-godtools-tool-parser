@@ -1,0 +1,65 @@
+name: Build XCFramework
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build_and_assemble_xcframework:
+    name: Build And Assemble XCFramework
+    # run on mac so iOS compilation is executed as well
+    runs-on: macos-15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Build
+        run: ./gradlew assemble --scan
+      - name: Run Command Gradle AssembleXCFramework
+        run: ./gradlew assembleGodToolsSharedXCFrameworkXCFramework --warning-mode all
+  
+  build_zip_from_xcframework:
+    name: Build Zip From XCFramework
+    runs-on: macos-latest
+    steps:
+      - name: Run Command Zip
+        run: zip -r GodToolsSharedXCFramework.xcframework.zip GodToolsSharedXCFramework.xcframework
+
+  checksum_built_zip:
+    name: Checksum Built Zip
+    run: swift package compute-checksum GodToolsSharedXCFramework.xcframework.zip
+
+  # upload_to_jfrog:
+  #   name: Upload To JFrog
+  #   run: 
+
+  archive_build:
+    name: Archive Build
+    runs-on: macos-latest
+    uses: actions/upload-artifact@v4
+    with:
+      name: xcode-logs
+      path: "/Build/**"
+
+## TODO:
+## - Run command ./gradlew :composeApp:assembleSharedXCFramework to build folder .xcframework.
+## - Locate .xcframework and zip with command zip -r GodToolsSharedXCFramework.zip GodToolsSharedXCFramework.xcframework
+## - Checksum the created zip with command swift package compute-checksum Shared.xcframework.zip
+## - Upload zip to JFrog
+## - Update Swift Package in the repo with pull request
