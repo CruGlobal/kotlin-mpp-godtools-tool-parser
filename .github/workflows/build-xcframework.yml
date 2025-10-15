@@ -11,9 +11,8 @@ concurrency:
 
 jobs:
 
-  build_and_assemble_xcframework:
-    name: Build And Assemble XCFramework
-    # run on mac so iOS compilation is executed as well
+  build_xcframework:
+    name: Build XCFramework
     runs-on: macos-15
     steps:
       - name: Checkout code
@@ -35,41 +34,12 @@ jobs:
         run: ./gradlew assemble --scan
       - name: Run Command Gradle AssembleXCFramework
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
-  
-  build_zip_from_xcframework:
-    name: Build Zip From XCFramework
-    runs-on: macos-latest
-    needs: [ build_and_assemble_xcframework ]
-    steps:
       - name: Run Command Zip
         run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework
-
-  checksum_built_zip:
-    name: Checksum Built Zip
-    runs-on: macos-latest
-    needs: [ build_zip_from_xcframework ]
-    steps:
       - name: Compute Checksum
         run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework.zip
-
-  # upload_to_jfrog:
-  #   name: Upload To JFrog
-  #   run: 
-
-  archive_build:
-    name: Archive Build
-    runs-on: macos-latest
-    needs: [ build_and_assemble_xcframework ]
-    steps:
       - name: Archive Build
         uses: actions/upload-artifact@v4
         with:
           name: xcode-logs
           path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/"
-
-## TODO:
-## - Run command ./gradlew :composeApp:assembleSharedXCFramework to build folder .xcframework.
-## - Locate .xcframework and zip with command zip -r GodToolsSharedXCFramework.zip GodToolsSharedXCFramework.xcframework
-## - Checksum the created zip with command swift package compute-checksum Shared.xcframework.zip
-## - Upload zip to JFrog
-## - Update Swift Package in the repo with pull request
