@@ -59,7 +59,7 @@ jobs:
   archive_build:
     name: Archive Build
     runs-on: macos-latest
-    needs: [ checksum_built_zip ]
+    needs: [ build_and_assemble_xcframework ]
     steps:
       - name: Archive Build
         uses: actions/upload-artifact@v4
