@@ -42,7 +42,7 @@ jobs:
     needs: [ build_and_assemble_xcframework ]
     steps:
       - name: Run Command Zip
-        run: zip -r GodToolsSharedXCFramework.xcframework.zip GodToolsSharedXCFramework.xcframework
+        run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsSharedXCFramework.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsSharedXCFramework.xcframework
 
   checksum_built_zip:
     name: Checksum Built Zip
@@ -50,7 +50,7 @@ jobs:
     needs: [ build_zip_from_xcframework ]
     steps:
       - name: Compute Checksum
-        run: swift package compute-checksum GodToolsSharedXCFramework.xcframework.zip
+        run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsSharedXCFramework.xcframework.zip
 
   # upload_to_jfrog:
   #   name: Upload To JFrog
