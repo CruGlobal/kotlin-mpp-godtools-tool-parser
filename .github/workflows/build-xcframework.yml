@@ -2,7 +2,7 @@ name: Build XCFramework
 
 on:
   pull_request:
-  
+
   workflow_dispatch:
 
 concurrency:
@@ -39,6 +39,7 @@ jobs:
   build_zip_from_xcframework:
     name: Build Zip From XCFramework
     runs-on: macos-latest
+    needs: [ build_and_assemble_xcframework ]
     steps:
       - name: Run Command Zip
         run: zip -r GodToolsSharedXCFramework.xcframework.zip GodToolsSharedXCFramework.xcframework
@@ -46,6 +47,7 @@ jobs:
   checksum_built_zip:
     name: Checksum Built Zip
     runs-on: macos-latest
+    needs: [ build_zip_from_xcframework ]
     steps:
       - name: Compute Checksum
         run: swift package compute-checksum GodToolsSharedXCFramework.xcframework.zip
@@ -57,6 +59,7 @@ jobs:
   archive_build:
     name: Archive Build
     runs-on: macos-latest
+    needs: [ checksum_built_zip ]
     steps:
       - name: Archive Build
         uses: actions/upload-artifact@v4
