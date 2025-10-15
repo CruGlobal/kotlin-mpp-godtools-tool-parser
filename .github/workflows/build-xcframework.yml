@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xcode-logs
-          path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/**"
+          path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/"
 
 ## TODO:
 ## - Run command ./gradlew :composeApp:assembleSharedXCFramework to build folder .xcframework.
