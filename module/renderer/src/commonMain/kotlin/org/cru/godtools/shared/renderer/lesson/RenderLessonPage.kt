@@ -77,6 +77,7 @@ fun RenderLessonPage(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(contentInsets)
+                .padding(horizontal = 16.dp)
                 // ensure there is always space to scroll above the navigation controls
                 .padding(bottom = 48.dp)
         ) {
