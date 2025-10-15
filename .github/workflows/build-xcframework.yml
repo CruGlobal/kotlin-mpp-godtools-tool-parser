@@ -43,7 +43,10 @@ jobs:
 
   checksum_built_zip:
     name: Checksum Built Zip
-    run: swift package compute-checksum GodToolsSharedXCFramework.xcframework.zip
+    runs-on: macos-latest
+    steps:
+      - name: Compute Checksum
+        run: swift package compute-checksum GodToolsSharedXCFramework.xcframework.zip
 
   # upload_to_jfrog:
   #   name: Upload To JFrog
@@ -52,10 +55,12 @@ jobs:
   archive_build:
     name: Archive Build
     runs-on: macos-latest
-    uses: actions/upload-artifact@v4
-    with:
-      name: xcode-logs
-      path: "/Build/**"
+    steps:
+      - name: Archive Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcode-logs
+          path: "/Build/**"
 
 ## TODO:
 ## - Run command ./gradlew :composeApp:assembleSharedXCFramework to build folder .xcframework.
