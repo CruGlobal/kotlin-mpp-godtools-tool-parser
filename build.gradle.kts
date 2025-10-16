@@ -1,6 +1,5 @@
 import org.ajoberstar.grgit.Grgit
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     id("build-logic")
@@ -19,25 +18,6 @@ allprojects {
             ?.takeIf { it.matches(Regex("\\S+")) }
             ?.let { version = "$version-$it" }
         version = "$version-SNAPSHOT"
-    }
-}
-
-kotlin {
-    val xcframeworkName = "GodToolsShared"
-    val xcf = XCFramework(xcframeworkName)
-
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach {
-        it.binaries.framework {
-            baseName = xcframeworkName
-
-            // Specify CFBundleIdentifier to uniquely identify the framework
-            binaryOption("bundleId", "org.cru.${xcframeworkName}")
-            xcf.add(this)
-            isStatic = true
-        }
     }
 }
 
