@@ -47,6 +47,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
+import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarControlColor
 import org.jetbrains.compose.resources.stringResource
@@ -58,81 +59,86 @@ internal const val TestTagLessonPager = "LessonPager"
 fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
     val eventSink by rememberUpdatedState(state.eventSink)
 
-    Scaffold(
-        topBar = {
-            val appBarColor = state.manifest.lessonNavBarColor.toComposeColor()
-            val appBarControlColor = state.manifest.lessonNavBarControlColor.toComposeColor()
+    ProvideLayoutDirectionFromLocale(locale = state.manifest?.locale) {
+        Scaffold(
+            topBar = {
+                val appBarColor = state.manifest.lessonNavBarColor.toComposeColor()
+                val appBarControlColor = state.manifest.lessonNavBarControlColor.toComposeColor()
 
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { eventSink(LessonScreen.UiEvent.CloseLesson) }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.lesson_accessibility_action_close),
-                            tint = appBarControlColor,
-                        )
-                    }
-                },
-                title = {
-                    if (state is LessonScreen.UiState.Loaded) {
-                        LinearProgressIndicator(
-                            progress = {
-                                val pagerState = state.lessonPager.pagerState
-                                when (val pageCount = pagerState.pageCount) {
-                                    0 -> 0f
-                                    else -> (pagerState.currentPage + 1 + pagerState.currentPageOffsetFraction) /
-                                        pageCount
-                                }
-                            },
-                            gapSize = ProgressBarGapSize,
-                            color = appBarControlColor,
-                            trackColor = appBarControlColor.copy(alpha = appBarControlColor.alpha * 0.24f),
-                            drawStopIndicator = {},
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentWidth()
-                                .height(ProgressBarHeight)
-                        )
-                    }
-                },
-                actions = {
-                    // HACK: to center the title, we add a spacer the same size as the navigation icon
-                    Spacer(modifier = Modifier.width(48.dp))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = appBarColor,
-                    navigationIconContentColor = appBarControlColor,
-                    titleContentColor = appBarControlColor
-                ),
-            )
-        },
-        modifier = modifier,
-    ) { paddingValues ->
-        when (state) {
-            is LessonScreen.UiState.Loaded -> Box {
-                RenderBackground(state.manifest.background, Modifier.matchParentSize())
-                RenderLessonPager(
-                    lessonPagerState = state.lessonPager,
-                    state = state.state,
-                    contentInsets = paddingValues
+                TopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = { eventSink(LessonScreen.UiEvent.CloseLesson) }) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(Res.string.lesson_accessibility_action_close),
+                                tint = appBarControlColor,
+                            )
+                        }
+                    },
+                    title = {
+                        if (state is LessonScreen.UiState.Loaded) {
+                            LinearProgressIndicator(
+                                progress = {
+                                    val pagerState = state.lessonPager.pagerState
+                                    when (val pageCount = pagerState.pageCount) {
+                                        0 -> 0f
+                                        else -> (pagerState.currentPage + 1 + pagerState.currentPageOffsetFraction) /
+                                            pageCount
+                                    }
+                                },
+                                gapSize = ProgressBarGapSize,
+                                color = appBarControlColor,
+                                trackColor = appBarControlColor.copy(alpha = appBarControlColor.alpha * 0.24f),
+                                drawStopIndicator = {},
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth()
+                                    .height(ProgressBarHeight),
+                            )
+                        }
+                    },
+                    actions = {
+                        // HACK: to center the title, we add a spacer the same size as the navigation icon
+                        Spacer(modifier = Modifier.width(48.dp))
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = appBarColor,
+                        navigationIconContentColor = appBarControlColor,
+                        titleContentColor = appBarControlColor,
+                    ),
+                )
+            },
+            modifier = modifier,
+        ) { paddingValues ->
+            when (state) {
+                is LessonScreen.UiState.Loaded -> Box {
+                    RenderBackground(state.manifest.background, Modifier.matchParentSize())
+                    RenderLessonPager(
+                        lessonPagerState = state.lessonPager,
+                        state = state.state,
+                        contentInsets = paddingValues,
+                    )
+                }
+
+                is LessonScreen.UiState.Loading -> ToolLoading(
+                    progress = state.progress,
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                )
+
+                is LessonScreen.UiState.Missing -> ToolNotFound(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                )
+
+                is LessonScreen.UiState.Offline -> ToolOffline(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
                 )
             }
-            is LessonScreen.UiState.Loading -> ToolLoading(
-                progress = state.progress,
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            )
-            is LessonScreen.UiState.Missing -> ToolNotFound(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            )
-            is LessonScreen.UiState.Offline -> ToolOffline(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            )
         }
     }
 }

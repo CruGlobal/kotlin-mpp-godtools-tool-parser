@@ -1,6 +1,8 @@
 package org.cru.godtools.shared.renderer.lesson
 
 import com.github.ajalt.colormath.model.RGB
+import io.fluidsonic.locale.Locale
+import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Gravity
@@ -10,7 +12,6 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
-import org.junit.Test
 
 class RenderLessonPaparazziTest : BasePaparazziTest() {
     @Test
@@ -79,6 +80,38 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
             },
         )
         val state = State()
+
+        contentSnapshot {
+            RenderLesson(
+                LessonScreen.UiState.Loaded(
+                    manifest,
+                    state = state,
+                    lessonPager = rememberLessonPagerState(manifest),
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `RenderLesson - Loaded - RTL`() {
+        val state = State()
+        val manifest = Manifest(
+            type = Manifest.Type.LESSON,
+            locale = Locale.forLanguage("ar"),
+            pages = {
+                listOf(
+                    LessonPage(it) {
+                        listOf(
+                            Text(it, text = "Start", textAlign = Text.Align.START),
+                            Text(it, text = "Center", textAlign = Text.Align.CENTER),
+                            Text(it, text = "End", textAlign = Text.Align.END),
+                        )
+                    },
+                    LessonPage(it),
+                    LessonPage(it),
+                )
+            },
+        )
 
         contentSnapshot {
             RenderLesson(
