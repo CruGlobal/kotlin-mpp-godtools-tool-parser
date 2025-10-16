@@ -77,7 +77,7 @@ class ClickableStateTest {
             }
         }
 
-        state.events.filterIsInstance<State.Event.AnalyticsEventTriggered>().test {
+        state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
             model.handleClickable(state, this)
             assertEquals(analyticsEvent, awaitItem().event)
         }
@@ -136,7 +136,7 @@ class ClickableStateTest {
         }
 
         turbineScope {
-            val analyticsEvents = state.events.filterIsInstance<State.Event.AnalyticsEventTriggered>().testIn(this)
+            val analyticsEvents = state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().testIn(this)
             val contentEvents = state.contentEvents.testIn(this)
             val submitFormEvents = state.events.filterIsInstance<State.Event.SubmitForm>().testIn(this)
             val urlEvents = state.events.filterIsInstance<State.Event.OpenUrl>().testIn(this)

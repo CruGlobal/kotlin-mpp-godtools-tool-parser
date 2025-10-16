@@ -44,14 +44,14 @@ class HasAnalyticsEventsStateTest {
 
         state.events.test {
             model.triggerAnalyticsEvents(AnalyticsEvent.Trigger.CLICKED, state, this@runTest)
-            assertEquals(State.Event.AnalyticsEventTriggered(event1), awaitItem())
-            assertEquals(State.Event.AnalyticsEventTriggered(event2), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event1), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event2), awaitItem())
             advanceUntilIdle()
             expectNoEvents()
 
             model.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, this@runTest)
-            assertEquals(State.Event.AnalyticsEventTriggered(event3), awaitItem())
-            assertEquals(State.Event.AnalyticsEventTriggered(event4), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event3), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event4), awaitItem())
         }
     }
 
@@ -63,13 +63,13 @@ class HasAnalyticsEventsStateTest {
 
         state.events.test {
             launch { model.triggerAnalyticsEvents(AnalyticsEvent.Trigger.CLICKED, state, this@runTest) }
-            assertEquals(State.Event.AnalyticsEventTriggered(event1), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event1), awaitItem())
 
             advanceTimeBy(1_000)
             expectNoEvents()
 
             runCurrent()
-            assertEquals(State.Event.AnalyticsEventTriggered(eventDelayed), expectMostRecentItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(eventDelayed), expectMostRecentItem())
         }
     }
 
@@ -85,7 +85,7 @@ class HasAnalyticsEventsStateTest {
 
         state.events.test {
             job.start()
-            assertEquals(State.Event.AnalyticsEventTriggered(event1), awaitItem())
+            assertEquals(State.Event.AnalyticsEvent.ContentEvent(event1), awaitItem())
 
             advanceTimeBy(999)
             job.cancel()
