@@ -35,11 +35,11 @@ jobs:
       - name: Run Command Gradle AssembleXCFramework
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Run Command Zip
-        run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework
+        run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework
       - name: Compute Checksum
-        run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/release/GodToolsShared.xcframework.zip
+        run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip
       - name: Archive Build
         uses: actions/upload-artifact@v4
         with:
           name: xcode-logs
-          path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/build/XCFrameworks/"
+          path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
