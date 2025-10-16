@@ -18,7 +18,7 @@ kotlin {
             // Specify CFBundleIdentifier to uniquely identify the framework
             binaryOption("bundleId", "org.cru.${xcframeworkName}")
             xcf.add(this)
-            isStatic = true
+            isStatic = false
         }
     }
 }
