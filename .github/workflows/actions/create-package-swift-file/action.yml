@@ -1,0 +1,37 @@
+name: 'Create Package Swift File'
+description: 'This action contains steps creating the Package.swift file for the shared XCFramework'
+runs:
+  using: "composite"
+  steps:
+    - name: Create Package.swift
+      uses: DamianReeves/write-file-action@master
+      with:
+        path: Package.swift
+        contents: |
+          // swift-tools-version: 5.7
+          // The swift-tools-version declares the minimum version of Swift required to build this package.
+
+          import PackageDescription
+
+          let package = Package(
+            name: "GodToolsShared",
+            platforms: [
+              .iOS(.v16),
+            ],
+            products: [
+                .library(name: "GodToolsShared", targets: ["GodToolsShared"])
+            ],
+            targets: [
+                .binaryTarget(
+                  name: "GodToolsShared",
+                  url: "<link to the uploaded XCFramework ZIP file>",
+                  checksum:"<checksum calculated for the ZIP file>")
+            ]
+          )
+        write-mode: overwrite
+    - name: Create Branch and PR
+      uses: peter-evans/create-pull-request@v6
+      with:
+        branch: "swift-package-version-update"
+        title: "Update Package Swift File For Published XCFramework"
+        commit-message: "Package swift updated with checksum ${{ needs.build_xcframework.outputs.swift_package_checksum }}"

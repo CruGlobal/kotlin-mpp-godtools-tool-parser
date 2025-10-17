@@ -14,6 +14,8 @@ jobs:
   build_xcframework:
     name: Build XCFramework
     runs-on: macos-15
+    outputs:
+      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.swift_package_checksum }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -37,7 +39,21 @@ jobs:
       - name: Run Command Zip
         run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework
       - name: Compute Checksum
-        run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip
+        id: swift_package_checksum
+        run: swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip >> $GITHUB_OUTPUT
+      - name: Print Checksum
+        env:
+          CHECKSUM: ${{ needs.build_xcframework.outputs.swift_package_checksum }}
+        run: |
+          printf '%s\n' "$CHECKSUM"
+      # - name: Setup JFrog CLI
+      #   uses: jfrog/setup-jfrog-cli@v4
+      #   env:
+      #     JF_USER: ${{ secrets.JF_USER }}
+      #     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+      #   run: jf rt ping
+      - name: Create Package.swift
+        uses: ./.github/actions/create-package-swift-file
       - name: Archive Build
         uses: actions/upload-artifact@v4
         with:
