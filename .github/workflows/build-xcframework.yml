@@ -15,7 +15,7 @@ jobs:
     name: Build XCFramework
     runs-on: macos-15
     outputs:
-      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.swift_package_checksum }}
+      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -40,7 +40,7 @@ jobs:
         run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework
       - name: Compute Checksum
         id: swift_package_checksum
-        run: echo $(swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip) >> $GITHUB_OUTPUT
+        run: echo "value=$(swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT
       - name: Print Checksum
         env:
           CHECKSUM: ${{ needs.build_xcframework.outputs.swift_package_checksum }}
