@@ -25,7 +25,7 @@ runs:
                 .binaryTarget(
                   name: "GodToolsShared",
                   url: "<link to the uploaded XCFramework ZIP file>",
-                  checksum:"<checksum calculated for the ZIP file>")
+                  checksum:"${{ needs.build_xcframework.outputs.swift_package_checksum }}")
             ]
           )
         write-mode: overwrite
