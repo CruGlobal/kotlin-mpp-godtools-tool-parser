@@ -41,8 +41,6 @@ jobs:
       - name: Compute Checksum
         id: swift_package_checksum
         run: echo "value=$(swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT
-      - name: Actions Checkout
-        uses: actions/checkout@v5
       - name: Create Package.swift
         uses: ./.github/actions/create-package-swift-file
       - name: Archive Build
