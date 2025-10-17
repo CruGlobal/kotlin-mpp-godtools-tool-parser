@@ -25,7 +25,7 @@ runs:
                 .binaryTarget(
                   name: "GodToolsShared",
                   url: "<link to the uploaded XCFramework ZIP file>",
-                  checksum:"${{ needs.build_xcframework.outputs.swift_package_checksum }}")
+                  checksum:"${{ steps.swift_package_checksum.outputs.value }}")
             ]
           )
         write-mode: overwrite
@@ -34,4 +34,4 @@ runs:
       with:
         branch: "swift-package-version-update"
         title: "Update Package Swift File For Published XCFramework"
-        commit-message: "Package swift updated with checksum ${{ needs.build_xcframework.outputs.swift_package_checksum }}"
+        commit-message: "Package swift updated with checksum ${{ steps.swift_package_checksum.outputs.value }}"

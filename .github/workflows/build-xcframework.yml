@@ -14,8 +14,6 @@ jobs:
   build_xcframework:
     name: Build XCFramework
     runs-on: macos-15
-    outputs:
-      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
