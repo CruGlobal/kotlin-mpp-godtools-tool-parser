@@ -25,7 +25,7 @@ runs:
                 .binaryTarget(
                   name: "GodToolsShared",
                   url: "<link to the uploaded XCFramework ZIP file>",
-                  checksum:"${{ steps.swift_package_checksum.outputs.value }}")
+                  checksum: "${{ steps.swift_package_checksum.outputs.value }}")
             ]
           )
         write-mode: overwrite
