@@ -48,8 +48,8 @@ jobs:
           JF_USER: ${{ secrets.JF_USER }}
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: JFrog Upload XCFramework Zip
-        run: jf rt upload "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
+        run: |
+          run: jf rt upload "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
       - name: Create Package.swift
         uses: ./.github/actions/create-package-swift-file
         with:
