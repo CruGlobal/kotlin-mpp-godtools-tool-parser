@@ -44,6 +44,7 @@ jobs:
         with:
           disable-auto-build-publish: true
         env:
+          JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
           JF_USER: ${{ secrets.JF_USER }}
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
       - name: JFrog Upload XCFramework Zip
