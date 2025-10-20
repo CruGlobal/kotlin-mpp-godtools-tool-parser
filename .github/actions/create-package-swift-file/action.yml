@@ -1,5 +1,9 @@
 name: 'Create Package Swift File'
 description: 'This action contains steps creating the Package.swift file for the shared XCFramework'
+inputs:
+  binary_target_checksum:
+    description: 'The computed checksum for the swift package binary target.'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -25,7 +29,7 @@ runs:
                 .binaryTarget(
                   name: "GodToolsShared",
                   url: "<link to the uploaded XCFramework ZIP file>",
-                  checksum: "${{ steps.swift_package_checksum.outputs.value }}")
+                  checksum: "${{ inputs.binary_target_checksum }}")
             ]
           )
         write-mode: overwrite
@@ -35,4 +39,4 @@ runs:
         base: "main"
         branch: "swift-package-version-update"
         title: "Update Package Swift File For Published XCFramework"
-        commit-message: "Package swift updated with checksum ${{ steps.swift_package_checksum.outputs.value }}"
+        commit-message: "Package swift updated with checksum ${{ inputs.binary_target_checksum }}"
