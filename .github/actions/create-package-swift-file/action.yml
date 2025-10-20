@@ -32,6 +32,7 @@ runs:
     - name: Create Branch and PR
       uses: peter-evans/create-pull-request@v6
       with:
+        base: "main"
         branch: "swift-package-version-update"
         title: "Update Package Swift File For Published XCFramework"
         commit-message: "Package swift updated with checksum ${{ steps.swift_package_checksum.outputs.value }}"
