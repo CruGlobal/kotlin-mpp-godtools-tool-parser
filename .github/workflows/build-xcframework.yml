@@ -39,6 +39,16 @@ jobs:
       - name: Compute Checksum
         id: swift_package_checksum
         run: echo "value=$(swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        with:
+          disable-auto-build-publish: true
+        env:
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+        run: |
+          jf rt ping
+          jf rt upload "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip" "test_swift_package.zip"
       - name: Create Package.swift
         uses: ./.github/actions/create-package-swift-file
         with:
@@ -48,13 +58,3 @@ jobs:
         with:
           name: xcode-logs
           path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
-
-
-
-      # TODO: Setup JFrog CLI
-      # - name: Setup JFrog CLI
-      #   uses: jfrog/setup-jfrog-cli@v4
-      #   env:
-      #     JF_USER: ${{ secrets.JF_USER }}
-      #     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-      #   run: jf rt ping
