@@ -46,7 +46,6 @@ jobs:
         env:
           JF_USER: ${{ secrets.JF_USER }}
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-        run: jf rt ping
       - name: JFrog Upload XCFramework Zip
         run: jf rt upload "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip" "test_swift_package.zip"
       - name: Create Package.swift
