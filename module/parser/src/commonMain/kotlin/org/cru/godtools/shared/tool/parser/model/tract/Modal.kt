@@ -74,17 +74,19 @@ class Modal : BaseModel, Parent, Styles {
         this.title = title
     }
 
+    @JsName("createTestModal")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
-        page: TractPage,
+    constructor(
+        page: TractPage = TractPage(),
+        dismissListeners: Set<EventId> = emptySet(),
         title: ((Modal) -> Text?)? = null,
         content: ((Modal) -> List<Content>)? = null,
     ) : super(page) {
         this.page = page
+        listeners = emptySet()
+        this.dismissListeners = dismissListeners
         this.title = title?.invoke(this)
         this.content = content?.invoke(this).orEmpty()
-        listeners = emptySet()
-        dismissListeners = emptySet()
     }
 
     // region Kotlin/JS interop
