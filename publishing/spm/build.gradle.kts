@@ -36,8 +36,8 @@ kotlin {
             ),
             xcframeworkDeployment = SPMXCFrameworkDeployment.HttpDeployment(
                 deployment = HttpStorageDeployment.Upload(
-                    username = "admin",
-                    password = "12345",
+                    username = findProperty("cruGlobalMavenRepositoryUsername")?.toString().orEmpty(),
+                    password = findProperty("cruGlobalMavenRepositoryPassword")?.toString().orEmpty(),
                     uploadDirectoryUrl = "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local"
                 )
             )

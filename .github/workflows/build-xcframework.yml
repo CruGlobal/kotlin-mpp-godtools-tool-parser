@@ -34,6 +34,12 @@ jobs:
         run: ./gradlew assemble --scan
       - name: Available Gradle Tasks
         run: ./gradlew :publishing:spm:tasks --all
+      - name: publish XCFramework Artifacts
+        run: ./gradlew :publishing:spm:deploySpmAsSwiftPackageFromAssembleGodToolsSharedReleaseXCFramework
+        env:
+          ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryUsername: ${{ secrets.JFROG_USERNAME }}
+          ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryPassword: ${{ secrets.JFROG_PASSWORD }}
+
       # - name: Run Command Gradle AssembleXCFramework
       #   run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       # - name: Run Command Zip
