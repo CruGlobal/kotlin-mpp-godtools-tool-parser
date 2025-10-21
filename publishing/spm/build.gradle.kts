@@ -24,6 +24,19 @@ kotlin {
     }
 
     appleBinariesDeployment {
-
+        deployAsSwiftPackage(
+            swiftPackageConfiguration = SwiftPackageConfiguration(
+                packageDeployment = SPMPackageDeployment.GitDeployment(
+                    repository = "https://github.com/CruGlobal/godtools-shared-spm-godtools-shared-swift.git"
+                ),
+            ),
+            xcframeworkDeployment = SPMXCFrameworkDeployment.HttpDeployment(
+                deployment = HttpStorageDeployment.Upload(
+                    username = "admin",
+                    password = "12345",
+                    uploadDirectoryUrl = "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local"
+                )
+            )
+        )
     }
 }
