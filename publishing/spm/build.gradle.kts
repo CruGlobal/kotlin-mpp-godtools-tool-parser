@@ -21,4 +21,8 @@ kotlin {
             isStatic = false
         }
     }
+
+    appleBinariesDeployment {
+        
+    }
 }
