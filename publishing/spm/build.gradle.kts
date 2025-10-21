@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     kotlin("multiplatform") version libs.versions.kotlin
+    id("store.kmpd.plugin") version "0.0.5"
 }
 
 kotlin {
@@ -23,6 +24,6 @@ kotlin {
     }
 
     appleBinariesDeployment {
-        
+
     }
 }

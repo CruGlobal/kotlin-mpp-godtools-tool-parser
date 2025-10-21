@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
     id("build-logic")
-    id("store.kmpd.plugin") version "0.0.5"
     kotlin("multiplatform") version libs.versions.kotlin
     kotlin("native.cocoapods") version libs.versions.kotlin
     alias(libs.plugins.grgit)
