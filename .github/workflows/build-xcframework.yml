@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Store XCFramework Directory In output
         id: xcframework_directory
-        run: echo "value=/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release"
+        run: echo "value=/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release" >> $GITHUB_OUTPUT
       - name: Run Command Zip
         run: zip -r ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework
       - name: Compute Checksum
