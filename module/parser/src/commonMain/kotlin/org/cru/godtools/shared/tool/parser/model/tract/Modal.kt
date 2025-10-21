@@ -74,9 +74,10 @@ class Modal : BaseModel, Parent, Styles {
         this.title = title
     }
 
+    @JsName("createTestModal")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
-        page: TractPage,
+    constructor(
+        page: TractPage = TractPage(),
         title: ((Modal) -> Text?)? = null,
         content: ((Modal) -> List<Content>)? = null,
     ) : super(page) {
