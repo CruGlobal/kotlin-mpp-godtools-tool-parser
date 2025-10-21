@@ -1,4 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import store.kmpd.HttpStorageDeployment
+import store.kmpd.spm.SPMPackageDeployment
+import store.kmpd.spm.SPMXCFrameworkDeployment
+import store.kmpd.spm.SwiftPackageConfiguration
 
 plugins {
     kotlin("multiplatform") version libs.versions.kotlin
