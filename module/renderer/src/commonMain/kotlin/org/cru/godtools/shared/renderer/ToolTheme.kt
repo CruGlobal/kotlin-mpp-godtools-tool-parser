@@ -1,14 +1,19 @@
+@file:Suppress("ktlint:compose:compositionlocal-allowlist")
+
 package org.cru.godtools.shared.renderer
 
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 internal object ToolTheme {
     internal val GodToolsGreen = Color(red = 0x6E, green = 0xDC, blue = 0x50)
 
-    internal val ContentHorizontalPadding = 16.dp
+    @get:Composable
+    internal val ContentHorizontalPadding get() = LocalContentHorizontalPadding.current
+    internal val LocalContentHorizontalPadding = compositionLocalOf { 16.dp }
 
     @Composable
     fun cardElevation() = CardDefaults.elevatedCardElevation(
