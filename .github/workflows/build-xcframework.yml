@@ -61,7 +61,7 @@ jobs:
         with:
           binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
       - name: Swift Package Registry Set
-        run: swift package-registry set https://cruglobal.jfrog.io/ui/native/swift-snapshots-local/
+        run: swift package-registry set https://cruglobal.jfrog.io
       - name: Swift Package Registry Login
         run: swift package-registry login https://cruglobal.jfrog.io/artifactory --username ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }} --password ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
       # - name: Add Credentials
@@ -71,7 +71,7 @@ jobs:
       #     username: ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }}
       #     password: ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
       - name: Swift Package Registry Publish
-        run: swift package-registry publish CruGlobal.GodToolsShared ${{ steps.tag_version.outputs.value }}
+        run: swift package-registry publish CruGlobal.GodToolsShared ${{ steps.tag_version.outputs.value }} --url https://cruglobal.jfrog.io/artifactory/swift-snapshots-local
       # - name: JFrog Upload XCFramework Zip
       #   run: jf rt upload "${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
       # - name: Create Package.swift

@@ -25,11 +25,13 @@ runs:
             products: [
                 .library(name: "GodToolsShared", targets: ["GodToolsShared"])
             ],
+            dependencies: [],
             targets: [
                 .binaryTarget(
                   name: "GodToolsShared",
                   url: "<link to the uploaded XCFramework ZIP file>",
-                  checksum: "${{ inputs.binary_target_checksum }}")
+                  checksum: "${{ inputs.binary_target_checksum }}"
+                )
             ]
           )
         write-mode: overwrite
