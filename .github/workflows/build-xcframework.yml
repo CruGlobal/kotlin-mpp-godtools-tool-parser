@@ -34,6 +34,9 @@ jobs:
         run: ./gradlew assemble --scan
       - name: Run Command Gradle AssembleXCFramework
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
+      - name: Store Tag version
+        id: tag_version
+        run: echo "value=0.0.25" >> $GITHUB_OUTPUT
       - name: Store XCFramework Directory In output
         id: xcframework_directory
         run: echo "value=/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release" >> $GITHUB_OUTPUT
@@ -52,15 +55,17 @@ jobs:
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Swift Package Registry Set
-        run: swift package-registry set --global "https://cruglobal.jfrog.io"
+        run: swift package-registry set https://cruglobal.jfrog.io/ui/native/swift-snapshots-local/
+      - name: Swift Package Registry Publish
+        run: swift package-registry publish CruGlobal.GodToolsShared ${{ steps.tag_version.outputs.value }}
       # - name: JFrog Upload XCFramework Zip
       #   run: jf rt upload "${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
-      - name: Create Package.swift
-        uses: ./.github/actions/create-package-swift-file
-        with:
-          binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
-      - name: Archive Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: xcode-logs
-          path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
+      # - name: Create Package.swift
+      #   uses: ./.github/actions/create-package-swift-file
+      #   with:
+      #     binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      # - name: Archive Build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: xcode-logs
+      #     path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
