@@ -41,6 +41,7 @@ class Multiselect : Content {
         private const val XML_OPTION_SELECTED_COLOR = "option-selected-color"
     }
 
+    val id get() = "multiselect-$stateName"
     @VisibleForTesting
     internal val stateName: String
 
@@ -127,6 +128,8 @@ class Multiselect : Content {
 
         val multiselect: Multiselect
 
+        val id get() = "${multiselect.id}-option-$value"
+
         private val _style: Style?
         val style get() = _style ?: multiselect.optionStyle
 
@@ -190,6 +193,12 @@ class Multiselect : Content {
             Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
             else -> error("The $type trigger type is currently unsupported on Multiselect Options")
         }
+
+        fun isClickable(ctx: ExpressionContext) = isSelected(ctx) ||
+            multiselect.selectionLimit == 1 ||
+            ctx.getVar(multiselect.stateName).size < multiselect.selectionLimit
+        fun isClickableFlow(ctx: ExpressionContext) =
+            ctx.varsChangeFlow(setOf(multiselect.stateName)) { isClickable(it) }.distinctUntilChanged()
 
         fun isSelected(ctx: ExpressionContext) = value in ctx.getVar(multiselect.stateName)
         fun isSelectedFlow(ctx: ExpressionContext) =
