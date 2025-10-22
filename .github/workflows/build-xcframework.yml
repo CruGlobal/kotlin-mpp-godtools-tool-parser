@@ -45,15 +45,15 @@ jobs:
       - name: Compute Checksum
         id: swift_package_checksum
         run: echo "value=$(swift package compute-checksum ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT        
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4
-        with:
-          disable-auto-build-publish: true
-        env:
-          JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
-          JF_USER: ${{ secrets.JF_USER }}
-          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Setup JFrog CLI
+      #   uses: jfrog/setup-jfrog-cli@v4
+      #   with:
+      #     disable-auto-build-publish: true
+      #   env:
+      #     JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
+      #     JF_USER: ${{ secrets.JF_USER }}
+      #     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Change Directory to XCFramework Location
         run: cd ${{ steps.xcframework_directory.outputs.value }}
       - name: Create Package.swift
