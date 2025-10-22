@@ -62,6 +62,8 @@ jobs:
           binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
       - name: Swift Package Registry Set
         run: swift package-registry set https://cruglobal.jfrog.io/ui/native/swift-snapshots-local/
+      - name: Add Credentials
+        run: machine cruglobal.jfrog.io login ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }} password ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
       - name: Swift Package Registry Publish
         run: swift package-registry publish CruGlobal.GodToolsShared ${{ steps.tag_version.outputs.value }}
       # - name: JFrog Upload XCFramework Zip
