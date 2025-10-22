@@ -41,7 +41,7 @@ jobs:
         run: zip -r ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework
       - name: Compute Checksum
         id: swift_package_checksum
-        run: echo "value=$(swift package compute-checksum ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT
+        run: echo "value=$(swift package compute-checksum ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT        
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -51,8 +51,10 @@ jobs:
           JF_USER: ${{ secrets.JF_USER }}
           JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: JFrog Upload XCFramework Zip
-        run: jf rt upload "${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
+      - name: Swift Package Registry Set
+        run: swift package-registry set --global "https://cruglobal.jfrog.io"
+      # - name: JFrog Upload XCFramework Zip
+      #   run: jf rt upload "${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
       - name: Create Package.swift
         uses: ./.github/actions/create-package-swift-file
         with:
