@@ -1,6 +1,9 @@
 name: 'Create Package Swift File'
 description: 'This action contains steps creating the Package.swift file for the shared XCFramework'
 inputs:
+  binary_target_url:
+    description: 'The computed checksum for the swift package binary target.'
+    required: true
   binary_target_checksum:
     description: 'The computed checksum for the swift package binary target.'
     required: true
@@ -29,9 +32,16 @@ runs:
             targets: [
                 .binaryTarget(
                   name: "GodToolsShared",
-                  url: "<link to the uploaded XCFramework ZIP file>",
+                  url: "${{ inputs.binary_target_url }}",
                   checksum: "${{ inputs.binary_target_checksum }}"
                 )
             ]
           )
         write-mode: overwrite
+    - name: Create Branch and PR
+      uses: peter-evans/create-pull-request@v6
+      with:
+        base: "main"
+        branch: "swift-package-version-update"
+        title: "Update Package Swift File For Published XCFramework"
+        commit-message: "Package swift updated with checksum ${{ inputs.binary_target_checksum }}"
