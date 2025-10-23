@@ -92,6 +92,7 @@ class Multiselect : Content {
     constructor(
         parent: Base = Manifest(),
         stateName: String = "",
+        columns: Int = 1,
         selectionLimit: Int = 1,
         optionStyle: Option.Style = Option.DEFAULT_STYLE,
         optionBackgroundColor: Color? = null,
@@ -101,7 +102,7 @@ class Multiselect : Content {
         options: ((Multiselect) -> List<Option>)? = null
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.stateName = stateName
-        columns = 1
+        this.columns = columns
         this.selectionLimit = selectionLimit
         this.optionStyle = optionStyle
         _optionBackgroundColor = optionBackgroundColor
