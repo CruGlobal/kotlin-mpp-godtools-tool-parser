@@ -65,11 +65,42 @@ jobs:
         run: | 
           cd ${{ steps.xcframework_directory.outputs.value }}
           jf rt u ${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
-      # - name: Create Package.swift
-      #   uses: ./.github/actions/create-package-swift-file
-      #   with:
-      #     binary_target_url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}"
-      #     binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      - name: Create Package.swift File
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: Package.swift
+          contents: |
+            // swift-tools-version: 5.9
+            // The swift-tools-version declares the minimum version of Swift required to build this package.
+
+            import PackageDescription
+
+            let package = Package(
+              name: "GodToolsShared",
+              platforms: [
+                .iOS(.v16),
+              ],
+              products: [
+                  .library(name: "GodToolsShared", targets: ["GodToolsShared"])
+              ],
+              dependencies: [],
+              targets: [
+                  .binaryTarget(
+                    name: "GodToolsShared",
+                    url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}",
+                    checksum: "${{ steps.swift_package_checksum.outputs.value }}"
+                  )
+              ]
+            )
+          write-mode: overwrite
+      - name: Pushes test file
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+        with:
+          source_file: Package.swift
+          destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          commit_message: Update package version ${{ steps.tag_version.outputs.value }}
       - name: Archive Build
         uses: actions/upload-artifact@v4
         with:
