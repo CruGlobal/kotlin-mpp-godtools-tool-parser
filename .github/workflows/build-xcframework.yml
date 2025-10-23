@@ -54,8 +54,8 @@ jobs:
           disable-auto-build-publish: true
         env:
           JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
-          JF_USER: ${{ secrets.JF_USER }}
-          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          JF_USER: ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }}
+          JF_PASSWORD: ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JFrog Upload XCFramework Zip
         run: jf rt u ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
