@@ -53,7 +53,7 @@ jobs:
         with:
           disable-auto-build-publish: true
         env:
-          JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
+          JF_URL: 'https://cruglobal.jfrog.io'
           JF_USER: ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }}
           JF_PASSWORD: ${{ secrets.JFROG_TEMP_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
