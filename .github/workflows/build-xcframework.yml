@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Store Tag version
         id: tag_version
-        run: echo "value=0.0.25" >> $GITHUB_OUTPUT
+        run: echo "value=0.0.2" >> $GITHUB_OUTPUT
       - name: Store Zip Name with Version
         id: godtools_shared_zip_file_name
         run: echo "value=GodToolsShared-${{ steps.tag_version.outputs.value }}.xcframework.zip" >> $GITHUB_OUTPUT
@@ -48,39 +48,21 @@ jobs:
       - name: Compute Checksum
         id: swift_package_checksum
         run: echo "value=$(swift package compute-checksum ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
-      # - name: Setup JFrog CLI
-      #   uses: jfrog/setup-jfrog-cli@v4
-      #   with:
-      #     disable-auto-build-publish: true
-      #   env:
-      #     JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
-      #     JF_USER: ${{ secrets.JF_USER }}
-      #     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Change Directory to XCFramework Location
-        run: cd ${{ steps.xcframework_directory.outputs.value }}
-      - name: Create Package.swift
-        uses: ./.github/actions/create-package-swift-file
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
         with:
-          binary_target_url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}"
-          binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
-      - name: Swift Package Registry Set
-        run: swift package-registry set https://cruglobal.jfrog.io
-      - name: Swift Package Registry Login
-        run: swift package-registry login https://cruglobal.jfrog.io/artifactory --username ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }} --password ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
-      # - name: Add Credentials
-      #   uses: extractions/netrc@v2
-      #   with:
-      #     machine: cruglobal.jfrog.io
-      #     username: ${{ secrets.JFROG_SWIFT_CLIENT_USER_EMAIL }}
-      #     password: ${{ secrets.JFROG_SWIFT_CLIENT_TOKEN }}
-      - name: Swift Package Registry Publish
-        run: swift package-registry publish CruGlobal.GodToolsShared ${{ steps.tag_version.outputs.value }} --url https://cruglobal.jfrog.io/artifactory/swift-snapshots-local
-      # - name: JFrog Upload XCFramework Zip
-      #   run: jf rt upload "${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
+          disable-auto-build-publish: true
+        env:
+          JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
+          JF_USER: ${{ secrets.JF_USER }}
+          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: JFrog Upload XCFramework Zip
+        run: jf rt u ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
       # - name: Create Package.swift
       #   uses: ./.github/actions/create-package-swift-file
       #   with:
+      #     binary_target_url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}"
       #     binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
       - name: Archive Build
         uses: actions/upload-artifact@v4
