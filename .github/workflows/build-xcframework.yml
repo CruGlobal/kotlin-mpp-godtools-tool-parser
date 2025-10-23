@@ -49,7 +49,9 @@ jobs:
           zip -r ${{ steps.godtools_shared_zip_file_name.outputs.value }} GodToolsShared.xcframework
       - name: Compute Checksum
         id: swift_package_checksum
-        run: echo "value=$(swift package compute-checksum ${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
+        run: | 
+          cd ${{ steps.xcframework_directory.outputs.value }}
+          echo "value=$(swift package compute-checksum ${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
