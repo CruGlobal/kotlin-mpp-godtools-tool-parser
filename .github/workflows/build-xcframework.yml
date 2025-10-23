@@ -43,11 +43,13 @@ jobs:
       - name: Store XCFramework Directory In output
         id: xcframework_directory
         run: echo "value=/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release" >> $GITHUB_OUTPUT
+      - name: Change Directory To XCFrameworks release
+        run: cd ${{ steps.xcframework_directory.outputs.value }}
       - name: Run Command Zip
-        run: zip -r ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }} ${{ steps.xcframework_directory.outputs.value }}/GodToolsShared.xcframework
+        run: zip -r ${{ steps.godtools_shared_zip_file_name.outputs.value }} GodToolsShared.xcframework
       - name: Compute Checksum
         id: swift_package_checksum
-        run: echo "value=$(swift package compute-checksum ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
+        run: echo "value=$(swift package compute-checksum ${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -58,7 +60,7 @@ jobs:
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JFrog Upload XCFramework Zip
-        run: jf rt u ${{ steps.xcframework_directory.outputs.value }}/${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
+        run: jf rt u ${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
       # - name: Create Package.swift
       #   uses: ./.github/actions/create-package-swift-file
       #   with:
