@@ -38,10 +38,10 @@ runs:
             ]
           )
         write-mode: overwrite
-    - name: Create Branch and PR
-      uses: peter-evans/create-pull-request@v6
-      with:
-        base: "main"
-        branch: "swift-package-version-update"
-        title: "Update Package Swift File For Published XCFramework"
-        commit-message: "Package swift updated with checksum ${{ inputs.binary_target_checksum }}"
+    # - name: Create Branch and PR
+    #   uses: peter-evans/create-pull-request@v6
+    #   with:
+    #     base: "main"
+    #     branch: "swift-package-version-update"
+    #     title: "Update Package Swift File For Published XCFramework"
+    #     commit-message: "Package swift updated with checksum ${{ inputs.binary_target_checksum }}"
