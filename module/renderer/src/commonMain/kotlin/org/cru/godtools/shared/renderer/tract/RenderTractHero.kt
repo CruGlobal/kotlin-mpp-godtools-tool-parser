@@ -61,19 +61,21 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
             // TODO: Render header tips
         }
         page.hero?.let { hero ->
-            hero.heading?.let { heading ->
-                ProvideTextStyle(MaterialTheme.typography.headlineMedium) {
-                    RenderTextNode(
-                        heading,
-                        modifier = Modifier
-                            .padding(top = 24.dp)
-                            .padding(horizontal = ContentHorizontalPadding)
-                            .testTag(TestTagHeroHeading)
-                    )
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                hero.heading?.let { heading ->
+                    ProvideTextStyle(MaterialTheme.typography.headlineMedium) {
+                        RenderTextNode(
+                            heading,
+                            modifier = Modifier
+                                .padding(top = 24.dp)
+                                .padding(horizontal = ContentHorizontalPadding)
+                                .testTag(TestTagHeroHeading)
+                        )
+                    }
                 }
+                Spacer(Modifier.height(16.dp))
+                RenderContent(hero.content, state)
             }
-            Spacer(Modifier.height(16.dp))
-            RenderContent(hero.content, state)
         }
     }
 }
