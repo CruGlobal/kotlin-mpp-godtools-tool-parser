@@ -87,16 +87,19 @@ class Multiselect : Content {
         }
     }
 
+    @JsName("createTestMultiselect")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         parent: Base = Manifest(),
         stateName: String = "",
         selectionLimit: Int = 1,
         optionStyle: Option.Style = Option.DEFAULT_STYLE,
         optionBackgroundColor: Color? = null,
         optionSelectedColor: Color? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
         options: ((Multiselect) -> List<Option>)? = null
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.stateName = stateName
         columns = 1
         this.selectionLimit = selectionLimit
@@ -170,8 +173,9 @@ class Multiselect : Content {
             }
         }
 
+        @JsName("createTestOption")
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        constructor(
             multiselect: Multiselect = Multiselect(),
             style: Style? = null,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),

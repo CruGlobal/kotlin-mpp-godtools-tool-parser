@@ -17,28 +17,38 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Multiselect
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style
 
+internal const val TestTagMultiselect = "multiselect"
+
 @Composable
 internal fun ColumnScope.RenderMultiselect(multiselect: Multiselect, state: State) {
-    multiselect.options.chunked(multiselect.columns).forEach { options ->
-        Row(Modifier.fillMaxWidth()) {
-            options.forEach { option ->
-                key(option.id) {
-                    when (option.style) {
-                        Style.CARD -> RenderMultiselectOptionCard(option, state, modifier = Modifier.weight(1f))
-                        Style.FLAT -> RenderMultiselectOptionFlat(option, state, modifier = Modifier.weight(1f))
+    Column(
+        modifier = Modifier
+            .testTag(TestTagMultiselect)
+            .visibility(multiselect, state)
+    ) {
+        multiselect.options.chunked(multiselect.columns).forEach { options ->
+            Row(Modifier.fillMaxWidth()) {
+                options.forEach { option ->
+                    key(option.id) {
+                        when (option.style) {
+                            Style.CARD -> RenderMultiselectOptionCard(option, state, modifier = Modifier.weight(1f))
+                            Style.FLAT -> RenderMultiselectOptionFlat(option, state, modifier = Modifier.weight(1f))
+                        }
                     }
                 }
-            }
-            repeat(multiselect.columns - options.size) {
-                Spacer(Modifier.weight(1f))
+                repeat(multiselect.columns - options.size) {
+                    Spacer(Modifier.weight(1f))
+                }
             }
         }
     }
