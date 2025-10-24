@@ -129,14 +129,3 @@ jobs:
           user_email: levi.eggert@cru.org
           user_name: levieggertcru
           commit_message: Update package version ${{ needs.build_and_upload_xcframework.outputs.tag_version }}
-
-      # - name: Push Package.swift to GodTools Shared Swift Repo
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     token: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
-      #     repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
-      #     base: main
-      #     branch: "swift-package-version-update"
-      #     title: "Update Package Swift File For Published XCFramework"
-      #     body: "This PR updates the Package.swift for published XCFramework version ${{ steps.tag_version.outputs.value }}."
-      #     commit-message: "Package swift updated with checksum ${{ steps.swift_package_checksum.outputs.value }}"
