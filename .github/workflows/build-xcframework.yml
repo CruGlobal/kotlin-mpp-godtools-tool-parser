@@ -37,6 +37,10 @@ jobs:
   build_and_upload_xcframework:
     name: Build And Upload XCFramework
     runs-on: macos-15
+    outputs:
+      godtools_shared_zip_file_name: ${{ steps.godtools_shared_zip_file_name.outputs.value }}
+      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      tag_version: ${{ steps.tag_version.outputs.value }}
     needs: [ build ]
     steps:
       - name: Checkout code
@@ -109,8 +113,8 @@ jobs:
               targets: [
                   .binaryTarget(
                     name: "GodToolsShared",
-                    url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}",
-                    checksum: "${{ steps.swift_package_checksum.outputs.value }}"
+                    url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/${{ needs.build_and_upload_xcframework.outputs.godtools_shared_zip_file_name }}",
+                    checksum: "${{ needs.build_and_upload_xcframework.outputs.swift_package_checksum }}"
                   )
               ]
             )
@@ -124,7 +128,7 @@ jobs:
           destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
           user_email: levi.eggert@cru.org
           user_name: levieggertcru
-          commit_message: Update package version ${{ steps.tag_version.outputs.value }}
+          commit_message: Update package version ${{ needs.build_and_upload_xcframework.outputs.tag_version }}
 
       # - name: Push Package.swift to GodTools Shared Swift Repo
       #   uses: peter-evans/create-pull-request@v6
