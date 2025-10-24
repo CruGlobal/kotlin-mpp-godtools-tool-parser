@@ -39,6 +39,8 @@ jobs:
     runs-on: macos-15
     needs: [ build ]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
       - name: Run Command Gradle AssembleXCFramework
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Store Tag version
@@ -78,6 +80,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build_xcframework ]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
       - name: Create Package.swift File
         uses: DamianReeves/write-file-action@master
         with:
