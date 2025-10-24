@@ -14,19 +14,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.flow.flowOf
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.renderer.tips.LocalTipsRepository
+import org.cru.godtools.shared.renderer.tips.TipCornerSize
+import org.cru.godtools.shared.renderer.tips.TipElevation
+import org.cru.godtools.shared.renderer.tips.TipIconSize
+import org.cru.godtools.shared.renderer.tips.TipSize
+import org.cru.godtools.shared.renderer.tips.produceIsComplete
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
-
-private val InlineTipShape = RoundedCornerShape(6.dp)
-private val InlineTipElevation = 4.dp
-private val InlineTipSize = 40.dp
-private val InlineTipIconSize = 24.dp
 
 internal const val TestTagInlineTip = "inline_tip"
 
@@ -35,28 +33,18 @@ internal fun RenderInlineTip(model: InlineTip, state: State) {
     if (!state.showTips.collectAsState().value) return
 
     val tip = model.tip ?: return
+    val isComplete by tip.produceIsComplete()
     val isInvisible by remember(state, model) { model.isInvisibleFlow(state) }.collectAsState(model.isInvisible(state))
 
-    val tipsRepository = LocalTipsRepository.current
-    val tool = tip.manifest.code
-    val locale = tip.manifest.locale
-    val tipId = tip.id
-    val isComplete by remember(tipsRepository, tool, locale, tipId) {
-        when {
-            tool == null || locale == null -> flowOf(false)
-            else -> tipsRepository.isTipCompleteFlow(tool, locale, tipId)
-        }
-    }.collectAsState(false)
-
     Surface(
-        onClick = { state.triggerEvent(State.Event.OpenTip(tipId)) },
+        onClick = { state.triggerEvent(State.Event.OpenTip(tip.id)) },
         enabled = !isInvisible,
-        shape = InlineTipShape,
-        shadowElevation = InlineTipElevation,
+        shape = RoundedCornerShape(TipCornerSize),
+        shadowElevation = TipElevation,
         modifier = Modifier
             .visibility(model, state)
             .padding(horizontal = ContentHorizontalPadding, vertical = 4.dp)
-            .size(InlineTipSize)
+            .size(TipSize)
             .testTag(TestTagInlineTip)
     ) {
         Image(
@@ -66,7 +54,7 @@ internal fun RenderInlineTip(model: InlineTip, state: State) {
                 .fillMaxSize()
                 .tipBackground(isComplete = isComplete)
                 .wrapContentSize()
-                .size(InlineTipIconSize)
+                .size(TipIconSize)
         )
     }
 }
