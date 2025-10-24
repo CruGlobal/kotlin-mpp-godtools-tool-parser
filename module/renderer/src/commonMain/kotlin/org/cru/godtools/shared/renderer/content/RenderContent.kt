@@ -18,6 +18,7 @@ import org.cru.godtools.shared.tool.parser.model.Form
 import org.cru.godtools.shared.tool.parser.model.Image
 import org.cru.godtools.shared.tool.parser.model.Input
 import org.cru.godtools.shared.tool.parser.model.Link
+import org.cru.godtools.shared.tool.parser.model.Multiselect
 import org.cru.godtools.shared.tool.parser.model.Paragraph
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Tabs
@@ -46,6 +47,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
         is Image -> RenderImage(content, state)
         is InlineTip -> RenderInlineTip(content, state)
         is Input -> RenderInput(content, state)
+        is Multiselect -> RenderMultiselect(content, state)
         is Paragraph -> RenderParagraph(content, state)
         is Tabs -> RenderTabs(content, state)
         is Text -> RenderText(content, state)

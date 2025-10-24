@@ -41,6 +41,7 @@ class Multiselect : Content {
         private const val XML_OPTION_SELECTED_COLOR = "option-selected-color"
     }
 
+    val id get() = "multiselect-$stateName"
     @VisibleForTesting
     internal val stateName: String
 
@@ -86,18 +87,22 @@ class Multiselect : Content {
         }
     }
 
+    @JsName("createTestMultiselect")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         parent: Base = Manifest(),
         stateName: String = "",
+        columns: Int = 1,
         selectionLimit: Int = 1,
         optionStyle: Option.Style = Option.DEFAULT_STYLE,
         optionBackgroundColor: Color? = null,
         optionSelectedColor: Color? = null,
+        invisibleIf: String? = null,
+        goneIf: String? = null,
         options: ((Multiselect) -> List<Option>)? = null
-    ) : super(parent) {
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.stateName = stateName
-        columns = 1
+        this.columns = columns
         this.selectionLimit = selectionLimit
         this.optionStyle = optionStyle
         _optionBackgroundColor = optionBackgroundColor
@@ -126,6 +131,8 @@ class Multiselect : Content {
         }
 
         val multiselect: Multiselect
+
+        val id get() = "${multiselect.id}-option-$value"
 
         private val _style: Style?
         val style get() = _style ?: multiselect.optionStyle
@@ -167,8 +174,9 @@ class Multiselect : Content {
             }
         }
 
+        @JsName("createTestOption")
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        constructor(
             multiselect: Multiselect = Multiselect(),
             style: Style? = null,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
@@ -190,6 +198,12 @@ class Multiselect : Content {
             Trigger.CLICKED -> analyticsEvents.filter { it.isTriggerType(Trigger.CLICKED, Trigger.DEFAULT) }
             else -> error("The $type trigger type is currently unsupported on Multiselect Options")
         }
+
+        fun isClickable(ctx: ExpressionContext) = isSelected(ctx) ||
+            multiselect.selectionLimit == 1 ||
+            ctx.getVar(multiselect.stateName).size < multiselect.selectionLimit
+        fun isClickableFlow(ctx: ExpressionContext) =
+            ctx.varsChangeFlow(setOf(multiselect.stateName)) { isClickable(it) }.distinctUntilChanged()
 
         fun isSelected(ctx: ExpressionContext) = value in ctx.getVar(multiselect.stateName)
         fun isSelectedFlow(ctx: ExpressionContext) =
