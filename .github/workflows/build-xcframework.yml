@@ -34,8 +34,8 @@ jobs:
       - name: Build
         run: ./gradlew assemble --scan
 
-  build_xcframework:
-    name: Build XCFramework
+  build_and_upload_xcframework:
+    name: Build And Upload XCFramework
     runs-on: macos-15
     needs: [ build ]
     steps:
@@ -74,11 +74,16 @@ jobs:
         run: | 
           cd ${{ steps.xcframework_directory.outputs.value }}
           jf rt u ${{ steps.godtools_shared_zip_file_name.outputs.value }} swift-snapshots-local/CruGlobal/GodToolsShared/${{ steps.godtools_shared_zip_file_name.outputs.value }}
+      # - name: Archive Build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: xcode-logs
+      #     path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
       
-  create_package_swift:
-    name: Create Package Swift
+  update_and_tag_package_swift:
+    name: Update And Tag Package Swift
     runs-on: ubuntu-latest
-    needs: [ build_xcframework ]
+    needs: [ build_and_upload_xcframework ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -117,9 +122,17 @@ jobs:
         with:
           source_file: Package.swift
           destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          user_email: levi.eggert@cru.org
+          user_name: levieggertcru
           commit_message: Update package version ${{ steps.tag_version.outputs.value }}
-      # - name: Archive Build
-      #   uses: actions/upload-artifact@v4
+
+      # - name: Push Package.swift to GodTools Shared Swift Repo
+      #   uses: peter-evans/create-pull-request@v6
       #   with:
-      #     name: xcode-logs
-      #     path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
+      #     token: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+      #     repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+      #     base: main
+      #     branch: "swift-package-version-update"
+      #     title: "Update Package Swift File For Published XCFramework"
+      #     body: "This PR updates the Package.swift for published XCFramework version ${{ steps.tag_version.outputs.value }}."
+      #     commit-message: "Package swift updated with checksum ${{ steps.swift_package_checksum.outputs.value }}"
