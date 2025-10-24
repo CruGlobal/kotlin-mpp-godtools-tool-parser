@@ -145,8 +145,13 @@ private fun RenderAccordionSection(
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
-            RenderContent(section.content, state)
-            Spacer(modifier = Modifier.height(8.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+            ) {
+                RenderContent(section.content, state)
+            }
         }
     }
 }
