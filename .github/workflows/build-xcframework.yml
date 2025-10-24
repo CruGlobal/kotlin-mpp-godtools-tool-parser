@@ -49,7 +49,7 @@ jobs:
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Store Tag version
         id: tag_version
-        run: echo "value=0.0.3" >> $GITHUB_OUTPUT
+        run: echo "value=0.0.4" >> $GITHUB_OUTPUT
       - name: Store Zip Name with Version
         id: godtools_shared_zip_file_name
         run: echo "value=GodToolsShared-${{ steps.tag_version.outputs.value }}.xcframework.zip" >> $GITHUB_OUTPUT
@@ -129,3 +129,15 @@ jobs:
           user_email: levi.eggert@cru.org
           user_name: levieggertcru
           commit_message: Update package version ${{ needs.build_and_upload_xcframework.outputs.tag_version }}
+      - name: Tag GodTools Shared Swift Repo
+        uses: actions/checkout@v5
+        with: 
+          repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          token: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+      - name: Create Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+          TAG_NAME: ${{ needs.build_and_upload_xcframework.outputs.tag_version }}
+        run: |
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
