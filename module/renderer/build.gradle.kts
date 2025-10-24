@@ -36,6 +36,7 @@ kotlin {
                 implementation(compose.runtime)
 
                 api(libs.circuit.runtime)
+                implementation(libs.androidx.graphics.shapes)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
                 implementation(libs.colormath.jetpack.compose)

@@ -25,6 +25,7 @@ robolectric = "4.15.1"
 android-gradle = "com.android.tools.build:gradle:8.13.0"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.9.4"
+androidx-graphics-shapes = "androidx.graphics:graphics-shapes:1.1.0"
 androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidx-lifecycle" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
