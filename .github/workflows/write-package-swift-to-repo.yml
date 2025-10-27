@@ -1,0 +1,74 @@
+name: Write Package Swift To Repo
+
+on:
+  pull_request:
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  update_and_tag_package_swift:
+    name: Update And Tag Package Swift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: GodToolsShared SSH Key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
+      - name: Checkout GodToolsShared Repo
+        uses: actions/checkout@v5
+        with:
+          repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          ssh-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
+      - name: Create Package.swift File
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: Package.swift
+          contents: |
+            // swift-tools-version: 5.9
+            // The swift-tools-version declares the minimum version of Swift required to build this package.
+
+            import PackageDescription
+
+            let package = Package(
+              name: "GodToolsShared",
+              platforms: [
+                .iOS(.v16),
+              ],
+              products: [
+                  .library(name: "GodToolsShared", targets: ["GodToolsShared"])
+              ],
+              dependencies: [],
+              targets: [
+                  .binaryTarget(
+                    name: "GodToolsShared",
+                    url: "https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/CruGlobal/GodToolsShared/GodToolsShared-0.0.5.xcframework.zip",
+                    checksum: "586d6b44314f8558498bf426fc4c7c549f5425b2cded9988b246ad790a984352"
+                  )
+              ]
+            )
+          write-mode: overwrite
+      - name: Push Package.swift to GodTools Shared Swift Repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        with:
+          source_file: Package.swift
+          destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          user_email: levi.eggert@cru.org
+          user_name: levieggertcru
+          commit_message: Update package version 0.0.5
+      - name: Tag GodTools Shared Swift Repo
+        uses: actions/checkout@v5
+        with: 
+          repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+      - name: Create Tag
+        env:
+          TAG_NAME: 0.0.5
+        run: |
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
