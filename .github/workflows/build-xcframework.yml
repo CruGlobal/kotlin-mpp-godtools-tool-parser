@@ -11,8 +11,9 @@ concurrency:
 
 jobs:
 
-  build_xcframework:
-    name: Build XCFramework
+  build:
+    name: Build
+    # run on mac so iOS compilation is executed as well
     runs-on: macos-15
     steps:
       - name: Checkout code
@@ -32,6 +33,18 @@ jobs:
           restore-keys: ${{ runner.os }}-konan-
       - name: Build
         run: ./gradlew assemble --scan
+
+  build_and_upload_xcframework:
+    name: Build And Upload XCFramework
+    runs-on: macos-15
+    outputs:
+      godtools_shared_zip_file_name: ${{ steps.godtools_shared_zip_file_name.outputs.value }}
+      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      tag_version: ${{ steps.tag_version.outputs.value }}
+    needs: [ build ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
       - name: Available Gradle Tasks
         run: ./gradlew :publishing:spm:tasks --all
       - name: publish XCFramework Artifacts
