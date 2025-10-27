@@ -1,6 +1,8 @@
-name: Manual Build XCFramework
+name: Build XCFramework
 
 on:
+  pull_request:
+  
   workflow_call:
     inputs:
       tag-version:
