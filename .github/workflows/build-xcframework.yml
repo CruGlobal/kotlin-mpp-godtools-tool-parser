@@ -91,6 +91,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+      - name: GodToolsShared SSH Key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
+      - name: Checkout GodToolsShared Repo
+        uses: actions/checkout@v5
+        with:
+          repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          ssh-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
       - name: Create Package.swift File
         uses: DamianReeves/write-file-action@master
         with:
@@ -119,10 +128,6 @@ jobs:
               ]
             )
           write-mode: overwrite
-      - name: GodToolsShared SSH Key
-        uses: webfactory/ssh-agent@v0.9.1
-        with:
-          ssh-private-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
       - name: Push Package.swift to GodTools Shared Swift Repo
         uses: dmnemec/copy_file_to_another_repo_action@main
         with:
