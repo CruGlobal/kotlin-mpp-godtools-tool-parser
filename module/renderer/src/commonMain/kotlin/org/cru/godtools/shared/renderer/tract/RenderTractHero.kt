@@ -11,18 +11,28 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.RenderTextNode
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.tips.TipArrowHeight
+import org.cru.godtools.shared.renderer.tips.TipUpArrow
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.backgroundColor
+
+private val HeaderContentVerticalPadding = 16.dp
+private val HeaderTipArrowShadowPadding = 4.dp
 
 internal const val TestTagHeader = "header"
 internal const val TestTagHeaderNumber = "header_number"
@@ -52,13 +62,32 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                             title,
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(vertical = 16.dp)
+                                .padding(vertical = HeaderContentVerticalPadding)
                                 .testTag(TestTagHeaderTitle)
                         )
                     }
+
+                    header.tip?.let { tip ->
+                        if (state.showTips.collectAsState().value) {
+                            Popup(
+                                alignment = Alignment.BottomStart,
+                                offset = with(LocalDensity.current) {
+                                    IntOffset(
+                                        x = -HeaderTipArrowShadowPadding.roundToPx(),
+                                        y = (
+                                            (TipArrowHeight + (HeaderTipArrowShadowPadding * 2)) -
+                                                HeaderContentVerticalPadding
+                                            ).roundToPx(),
+                                    )
+                                },
+                                properties = PopupProperties(clippingEnabled = false),
+                            ) {
+                                TipUpArrow(tip, state, modifier = Modifier.padding(HeaderTipArrowShadowPadding))
+                            }
+                        }
+                    }
                 }
             }
-            // TODO: Render header tips
         }
         page.hero?.let { hero ->
             Column(Modifier.padding(horizontal = 16.dp)) {
