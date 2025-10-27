@@ -125,6 +125,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         color: Color? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
+        iconName: String? = null,
         iconGravity: Gravity.Horizontal = DEFAULT_ICON_GRAVITY,
         iconSize: Int = DEFAULT_ICON_SIZE,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
@@ -143,7 +144,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         _buttonColor = color
         backgroundColor = DEFAULT_BACKGROUND_COLOR
 
-        iconName = null
+        this.iconName = iconName
         this.iconGravity = iconGravity
         this.iconSize = iconSize
 

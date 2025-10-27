@@ -91,6 +91,44 @@ class RenderButtonPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderButton() - Icon`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Button(
+                    manifest,
+                    style = Button.Style.CONTAINED,
+                    iconName = "black_panther",
+                    iconGravity = Gravity.Horizontal.START,
+                    text = { Text(it, "Start Icon") }
+                ),
+                Button(
+                    manifest,
+                    style = Button.Style.CONTAINED,
+                    iconName = "black_panther",
+                    iconGravity = Gravity.Horizontal.END,
+                    text = { Text(it, "End Icon") }
+                ),
+                Button(
+                    manifest,
+                    style = Button.Style.CONTAINED,
+                    iconName = "black_panther",
+                    iconGravity = Gravity.Horizontal.START,
+                    iconSize = 48,
+                    text = { Text(it, "Large Icon") }
+                ),
+                Button(
+                    manifest,
+                    style = Button.Style.CONTAINED,
+                    iconName = "bruce",
+                    iconGravity = Gravity.Horizontal.START,
+                    iconSize = 48,
+                    text = { Text(it, "Large Icon") }
+                ),
+            )
+        )
+    }
+
+    @Test
     fun `RenderButton() - Gravity`() = contentSnapshot {
         RenderContentStack(
             listOf(

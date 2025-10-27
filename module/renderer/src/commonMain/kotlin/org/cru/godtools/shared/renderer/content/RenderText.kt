@@ -1,34 +1,25 @@
 package org.cru.godtools.shared.renderer.content
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.resolveDefaults
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
-import coil3.compose.rememberConstraintsSizeResolver
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
 import org.cru.godtools.shared.renderer.content.extensions.visibility
-import org.cru.godtools.shared.renderer.extensions.toImageRequestBuilder
 import org.cru.godtools.shared.renderer.state.State
-import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Text
 
 private val DEFAULT_MIN_LINES = 1
@@ -83,32 +74,3 @@ internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
-
-@Composable
-private fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifier = Modifier) {
-    val sizeResolver = rememberConstraintsSizeResolver()
-    val painter = rememberAsyncImagePainter(
-        model = resource.toImageRequestBuilder()
-            .size(sizeResolver)
-            .build()
-    )
-    val aspectRatio = painter.intrinsicSize.aspectRatio
-
-    Image(
-        painter = painter,
-        contentDescription = null,
-        contentScale = ContentScale.Fit,
-        modifier = modifier
-            .sizeIn(maxWidth = imageSize.dp, maxHeight = imageSize.dp)
-            .then(sizeResolver)
-            .then(
-                when {
-                    !aspectRatio.isNaN() ->
-                        Modifier.aspectRatio(aspectRatio, matchHeightConstraintsFirst = aspectRatio < 1f)
-                    else -> Modifier
-                },
-            ),
-    )
-}
-
-private val Size.aspectRatio get() = width / height
