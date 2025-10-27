@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          path: kotlin-mpp-godtools-tool-parser
       - name: GodToolsShared SSH Key
         uses: webfactory/ssh-agent@v0.9.1
         with:
@@ -25,6 +27,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+          path: godtools-shared-spm-godtools-shared-swift
           ssh-key: ${{ secrets.GODTOOLS_SHARED_SSH_KEY }}
       - name: Create Package.swift File
         uses: DamianReeves/write-file-action@master
@@ -55,15 +58,19 @@ jobs:
             )
           write-mode: overwrite
       - name: Copy file to destination
-        run: cp CruGlobal/kotlin-mpp-godtools-tool-parser/Package.swift CruGlobal/godtools-shared-spm-godtools-shared-swift/Package.swift
+        run: cp kotlin-mpp-godtools-tool-parser/Package.swift godtools-shared-spm-godtools-shared-swift/Package.swift
       - name: git commands
+        env:
+          TAG_NAME: 0.0.5
         run: |
-          cd CruGlobal/godtools-shared-spm-godtools-shared-swift; 
+          cd godtools-shared-spm-godtools-shared-swift; 
           git config user.name "levieggertcru";
           git config user.email "levi.eggert@cru.org";
           git add Package.swift;
           git commit -m "Update package version 0.0.5" Package.swift;
           git push origin HEAD;
+          git tag $TAG_NAME;
+          git push origin $TAG_NAME;
       # - name: Push Package.swift to GodTools Shared Swift Repo
       #   uses: dmnemec/copy_file_to_another_repo_action@main
       #   with:
@@ -72,13 +79,13 @@ jobs:
       #     user_email: levi.eggert@cru.org
       #     user_name: levieggertcru
       #     commit_message: Update package version 0.0.5
-      - name: Tag GodTools Shared Swift Repo
-        uses: actions/checkout@v5
-        with: 
-          repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
-      - name: Create Tag
-        env:
-          TAG_NAME: 0.0.5
-        run: |
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+      # - name: Tag GodTools Shared Swift Repo
+      #   uses: actions/checkout@v5
+      #   with: 
+      #     repository: CruGlobal/godtools-shared-spm-godtools-shared-swift
+      # - name: Create Tag
+      #   env:
+      #     TAG_NAME: 0.0.5
+      #   run: |
+      #     git tag $TAG_NAME
+      #     git push origin $TAG_NAME
