@@ -54,14 +54,24 @@ jobs:
               ]
             )
           write-mode: overwrite
-      - name: Push Package.swift to GodTools Shared Swift Repo
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        with:
-          source_file: Package.swift
-          destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
-          user_email: levi.eggert@cru.org
-          user_name: levieggertcru
-          commit_message: Update package version 0.0.5
+      - name: Copy file to destination
+        run: cp CruGlobal/kotlin-mpp-godtools-tool-parser/Package.swift CruGlobal/godtools-shared-spm-godtools-shared-swift/Package.swift
+      - name: git commands
+        run: |
+          cd CruGlobal/godtools-shared-spm-godtools-shared-swift; 
+          git config user.name "levieggertcru";
+          git config user.email "levi.eggert@cru.org";
+          git add Package.swift;
+          git commit -m "Update package version 0.0.5" Package.swift;
+          git push origin HEAD;
+      # - name: Push Package.swift to GodTools Shared Swift Repo
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   with:
+      #     source_file: Package.swift
+      #     destination_repo: CruGlobal/godtools-shared-spm-godtools-shared-swift
+      #     user_email: levi.eggert@cru.org
+      #     user_name: levieggertcru
+      #     commit_message: Update package version 0.0.5
       - name: Tag GodTools Shared Swift Repo
         uses: actions/checkout@v5
         with: 
