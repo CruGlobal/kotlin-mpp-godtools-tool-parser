@@ -1,0 +1,82 @@
+name: Build XCFramework
+
+on:
+  pull_request:
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    name: Build
+    # run on mac so iOS compilation is executed as well
+    runs-on: macos-15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version-file: ".java-version"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Build
+        run: ./gradlew assemble --scan
+
+  build_and_upload_xcframework:
+    name: Build And Upload XCFramework
+    runs-on: macos-15
+    outputs:
+      godtools_shared_zip_file_name: ${{ steps.godtools_shared_zip_file_name.outputs.value }}
+      swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      tag_version: ${{ steps.tag_version.outputs.value }}
+    needs: [ build ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Available Gradle Tasks
+        run: ./gradlew :publishing:spm:tasks --all
+      - name: publish XCFramework Artifacts
+        run: ./gradlew :publishing:spm:deploySpmAsSwiftPackageFromAssembleGodToolsSharedReleaseXCFramework
+        env:
+          ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryUsername: ${{ secrets.JFROG_USERNAME }}
+          ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryPassword: ${{ secrets.JFROG_PASSWORD }}
+
+      # - name: Run Command Gradle AssembleXCFramework
+      #   run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
+      # - name: Run Command Zip
+      #   run: zip -r /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework
+      # - name: Compute Checksum
+      #   id: swift_package_checksum
+      #   run: echo "value=$(swift package compute-checksum /Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip)" >> $GITHUB_OUTPUT
+      # - name: Setup JFrog CLI
+      #   uses: jfrog/setup-jfrog-cli@v4
+      #   with:
+      #     disable-auto-build-publish: true
+      #   env:
+      #     JF_URL: 'https://cruglobal.jfrog.io/artifactory/swift-snapshots-local/'
+      #     JF_USER: ${{ secrets.JF_USER }}
+      #     JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: JFrog Upload XCFramework Zip
+      #   run: jf rt upload "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/release/GodToolsShared.xcframework.zip" "CruGlobal/GodToolsShared/GodToolsShared-1.0.0.zip"
+      # - name: Create Package.swift
+      #   uses: ./.github/actions/create-package-swift-file
+      #   with:
+      #     binary_target_checksum: ${{ steps.swift_package_checksum.outputs.value }}
+      # - name: Archive Build
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: xcode-logs
+      #     path: "/Users/runner/work/kotlin-mpp-godtools-tool-parser/kotlin-mpp-godtools-tool-parser/publishing/spm/build/XCFrameworks/"
