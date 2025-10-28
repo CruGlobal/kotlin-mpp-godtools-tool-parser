@@ -22,8 +22,10 @@ import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Button
+import org.cru.godtools.shared.tool.parser.model.Gravity
 
 private val ButtonVerticalPadding = 4.dp
+private val ButtonIconPadding = 8.dp
 
 @Composable
 internal fun ColumnScope.RenderButton(button: Button, state: State) {
@@ -64,7 +66,15 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
                 .width(button.width)
                 .align(button.gravity.alignment)
         ) {
+            val icon = button.icon
+            val iconGravity = button.iconGravity
+            if (icon != null && iconGravity == Gravity.Horizontal.START) {
+                RenderImageNode(icon, button.iconSize, modifier = Modifier.padding(end = ButtonIconPadding))
+            }
             RenderTextNode(button.text)
+            if (icon != null && iconGravity == Gravity.Horizontal.END) {
+                RenderImageNode(icon, button.iconSize, modifier = Modifier.padding(start = ButtonIconPadding))
+            }
         }
     }
 }
