@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,7 +34,9 @@ fun RenderContentStack(
                 .verticalScroll(rememberScrollState())
                 .padding(contentPadding)
         ) {
-            RenderContent(content, state)
+            ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+                RenderContent(content, state)
+            }
         }
     }
 }

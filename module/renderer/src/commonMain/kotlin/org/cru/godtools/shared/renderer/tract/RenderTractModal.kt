@@ -44,7 +44,9 @@ fun RenderTractModal(modal: Modal, state: State, modifier: Modifier = Modifier, 
                     )
                 }
             }
-            RenderContent(modal.content, state)
+            ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+                RenderContent(modal.content, state)
+            }
         }
     }
 }

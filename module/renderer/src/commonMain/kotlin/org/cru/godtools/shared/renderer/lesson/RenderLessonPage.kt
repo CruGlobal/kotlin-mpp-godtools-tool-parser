@@ -18,6 +18,8 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -90,7 +92,9 @@ fun RenderLessonPage(
                 // ensure there is always space to scroll above the navigation controls
                 .padding(bottom = 48.dp)
         ) {
-            RenderContent(page.content, state = state)
+            ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+                RenderContent(page.content, state = state)
+            }
         }
 
         CompositionLocalProvider(LocalContentColor provides page.controlColor.toComposeColor()) {
