@@ -1,13 +1,9 @@
 package org.cru.godtools.shared.renderer.content
 
 import androidx.compose.foundation.background
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
@@ -64,19 +60,12 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderText() - Text Scale - Line Height`() = contentSnapshot {
-        val textStyle = MaterialTheme.typography.bodyMedium.copy(
-            fontSize = 14.sp,
-            lineHeight = 16.sp,
+        RenderContentStack(
+            listOf(
+                Text(text = multilineString, textScale = 0.3),
+                Text(text = multilineString, textScale = 3.0),
+            ),
         )
-
-        CompositionLocalProvider(LocalTextStyle provides textStyle) {
-            RenderContentStack(
-                listOf(
-                    Text(text = multilineString, textScale = 0.3),
-                    Text(text = multilineString, textScale = 3.0),
-                ),
-            )
-        }
     }
 
     @Test

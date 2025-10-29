@@ -103,7 +103,9 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                RenderContent(hero.content, state)
+                ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+                    RenderContent(hero.content, state)
+                }
             }
         }
     }
