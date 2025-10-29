@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.resolveDefaults
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.textAlign
@@ -62,15 +63,18 @@ internal fun ColumnScope.RenderText(text: Text, state: State) = Row(
 
 @Composable
 internal fun RenderTextNode(text: Text, modifier: Modifier = Modifier) {
+    val defaultTextStyle = resolveDefaults(LocalTextStyle.current, LocalLayoutDirection.current)
+
     Text(
         text.text,
         color = text.textColor.toComposeColor(),
-        fontSize = resolveDefaults(LocalTextStyle.current, LocalLayoutDirection.current).fontSize * text.textScale,
+        fontSize = defaultTextStyle.fontSize * text.textScale,
         fontWeight = text.fontWeight?.let { FontWeight(it) },
         fontStyle = FontStyle.Italic.takeIf { Text.Style.ITALIC in text.textStyles },
         textDecoration = TextDecoration.Underline.takeIf { Text.Style.UNDERLINE in text.textStyles },
         textAlign = text.textAlign.textAlign,
+        lineHeight = defaultTextStyle.lineHeight.let { if (it.isSpecified) it * text.textScale else it },
         minLines = text.minimumLines.coerceAtLeast(DEFAULT_MIN_LINES),
-        modifier = modifier
+        modifier = modifier,
     )
 }
