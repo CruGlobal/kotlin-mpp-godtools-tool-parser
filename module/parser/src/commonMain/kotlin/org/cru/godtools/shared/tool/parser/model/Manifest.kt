@@ -31,7 +31,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImag
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
-import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
@@ -145,7 +144,7 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val navBarColor
         get() = when {
             _navBarColor != null -> _navBarColor
-            type == Type.LESSON -> DEFAULT_LESSON_NAV_BAR_COLOR
+            type == Type.LESSON -> defaultLessonNavBarColor
             else -> primaryColor
         }
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
@@ -474,7 +473,7 @@ class Manifest : BaseModel, Styles, HasPages {
 val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
 val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor
 
-val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
+val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: defaultLessonNavBarColor
 val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
 
 val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR
@@ -484,3 +483,12 @@ val Manifest?.backgroundImageScaleType
 
 @get:AndroidColorInt
 val Manifest?.categoryLabelColor get() = this?.categoryLabelColor ?: textColor
+
+/**
+ * Default transparent navbar color for lessons to allow for full bleed images.
+ *
+ * HACK: We base this off the background color to effectively use the background color as the status bar background
+ *       color on older versions of Android.
+ */
+@VisibleForTesting
+internal val Manifest?.defaultLessonNavBarColor get() = backgroundColor.toSRGB().copy(alpha = 0f)
