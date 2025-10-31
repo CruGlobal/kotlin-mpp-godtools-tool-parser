@@ -18,7 +18,6 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.RenderBackground
+import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.generated.resources.Res
@@ -92,7 +92,7 @@ fun RenderLessonPage(
                 // ensure there is always space to scroll above the navigation controls
                 .padding(bottom = 48.dp)
         ) {
-            ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+            ProvideTextStyle(ToolTheme.ContentTextStyle) {
                 RenderContent(page.content, state = state)
             }
         }

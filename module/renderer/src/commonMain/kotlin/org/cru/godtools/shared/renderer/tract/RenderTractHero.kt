@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.RenderTextNode
@@ -103,7 +104,7 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+                ProvideTextStyle(ToolTheme.ContentTextStyle) {
                     RenderContent(hero.content, state)
                 }
             }
