@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
+import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_input_error_invalid_email
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_input_error_required
@@ -60,6 +61,7 @@ internal fun RenderInput(model: Input, state: State) {
         ),
         modifier = Modifier
             .testTag(TestTagInput)
+            .visibility(model, state)
             .padding(horizontal = ContentHorizontalPadding)
             .fillMaxWidth()
     )
