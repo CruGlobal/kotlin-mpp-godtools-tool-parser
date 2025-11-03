@@ -24,6 +24,7 @@ internal fun RenderFlow(flow: Flow, state: State) {
         horizontalArrangement = flow.rowGravity.arrangement,
         modifier = Modifier
             .testTag(TestTagFlow)
+            .visibility(flow, state)
             .fillMaxWidth()
     ) {
         flow.items.forEachIndexed { pos, item ->

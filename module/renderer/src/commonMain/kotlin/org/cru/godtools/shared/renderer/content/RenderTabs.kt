@@ -5,6 +5,7 @@ package org.cru.godtools.shared.renderer.content
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -108,8 +109,10 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         }
     )
 
-    RenderContent(
-        content = selectedTab?.content.orEmpty(),
-        state = state
-    )
+    Column(modifier = Modifier.visibility(tabs, state)) {
+        RenderContent(
+            content = selectedTab?.content.orEmpty(),
+            state = state,
+        )
+    }
 }
