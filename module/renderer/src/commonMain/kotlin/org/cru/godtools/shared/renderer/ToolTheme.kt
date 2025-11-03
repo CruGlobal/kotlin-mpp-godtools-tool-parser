@@ -3,10 +3,12 @@
 package org.cru.godtools.shared.renderer
 
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 internal object ToolTheme {
     internal val GodToolsGreen = Color(red = 0x6E, green = 0xDC, blue = 0x50)
@@ -14,6 +16,11 @@ internal object ToolTheme {
     @get:Composable
     internal val ContentHorizontalPadding get() = LocalContentHorizontalPadding.current
     internal val LocalContentHorizontalPadding = compositionLocalOf { 16.dp }
+
+    internal val ContentTextStyle = Typography().bodyLarge.copy(
+        fontSize = 16.sp,
+        lineHeight = 20.sp
+    )
 
     @Composable
     fun cardElevation() = CardDefaults.elevatedCardElevation(

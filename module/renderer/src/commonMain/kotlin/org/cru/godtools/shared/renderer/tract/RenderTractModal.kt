@@ -12,6 +12,7 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.RenderTextNode
@@ -44,7 +45,7 @@ fun RenderTractModal(modal: Modal, state: State, modifier: Modifier = Modifier, 
                     )
                 }
             }
-            ProvideTextStyle(MaterialTheme.typography.bodyLarge) {
+            ProvideTextStyle(ToolTheme.ContentTextStyle) {
                 RenderContent(modal.content, state)
             }
         }
