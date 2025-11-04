@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.Background
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -175,6 +176,14 @@ class TractPage : Page {
         @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
+        val background by lazy {
+            Background(
+                backgroundColor,
+                backgroundImage,
+                backgroundImageGravity,
+                backgroundImageScaleType,
+            )
+        }
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _backgroundColor: Color?
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor
