@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ fun RenderContentStack(
     content: List<Content>,
     modifier: Modifier = Modifier,
     state: State = remember { State() },
+    scrollState: ScrollState = rememberScrollState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     ProvideLayoutDirectionFromLocale(
@@ -31,7 +33,7 @@ fun RenderContentStack(
         Column(
             modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(contentPadding)
         ) {
             ProvideTextStyle(ToolTheme.ContentTextStyle) {
