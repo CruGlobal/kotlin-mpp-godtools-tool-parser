@@ -2,6 +2,7 @@ package org.cru.godtools.shared.renderer.tract
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,21 @@ class RenderTractCardContentPaparazziTest : BasePaparazziTest() {
                         )
                     }
                 ),
+            )
+        }
+    }
+
+    @Test
+    fun `RenderTractCardContent() - Fading Edge`() = contentSnapshot {
+        ElevatedCard(Modifier.padding(16.dp).fillMaxSize()) {
+            RenderTractCardContent(
+                TractPage.Card(
+                    page = TractPage(manifest),
+                    content = { card ->
+                        List(50) { i -> Text(card, text = "Line ${i + 1}") }
+                    }
+                ),
+                scrollState = rememberScrollState(20),
             )
         }
     }
