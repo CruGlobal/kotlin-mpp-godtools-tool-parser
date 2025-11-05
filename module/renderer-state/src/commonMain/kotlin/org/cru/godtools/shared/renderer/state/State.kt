@@ -110,8 +110,12 @@ class State internal constructor(
     @HiddenFromObjC
     @JsExport.Ignore
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun accordionExpandedSections(accordionId: String) = accordionExpandedSections[accordionId]?.toSet().orEmpty()
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     fun accordionExpandedSectionsFlow(accordionId: String) = accordionExpandedSectionsChangeFlow(accordionId)
-        .map { accordionExpandedSections[accordionId]?.toSet().orEmpty() }
+        .map { accordionExpandedSections(accordionId) }
         .distinctUntilChanged()
 
     @HiddenFromObjC

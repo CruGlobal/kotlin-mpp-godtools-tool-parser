@@ -51,7 +51,7 @@ internal const val TestTagAccordionSection = "accordion section"
 fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier) {
     val accordionId = accordion.id
     val expandedSections by remember(state, accordionId) { state.accordionExpandedSectionsFlow(accordionId) }
-        .collectAsState(emptySet())
+        .collectAsState(state.accordionExpandedSections(accordionId))
 
     Column(
         modifier = modifier
