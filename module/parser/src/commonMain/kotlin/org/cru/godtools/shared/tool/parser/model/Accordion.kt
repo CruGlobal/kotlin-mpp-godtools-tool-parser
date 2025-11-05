@@ -77,6 +77,8 @@ class Accordion : Content {
         val accordion: Accordion
         val id by lazy { "${accordion.id}-section-${accordion.sections.indexOf(this)}" }
 
+        val backgroundColor get() = stylesParent.cardBackgroundColor
+
         val header: Text?
         private val analyticsEvents: List<AnalyticsEvent>
         override val content: List<Content>

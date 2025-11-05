@@ -40,8 +40,6 @@ import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accord
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
-import org.cru.godtools.shared.tool.parser.model.cardBackgroundColor
-import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.jetbrains.compose.resources.stringResource
 
 internal const val TestTagAccordion = "accordion"
@@ -83,7 +81,7 @@ private fun RenderAccordionSection(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cardColor = section.stylesParent.cardBackgroundColor.toComposeColor()
+    val cardColor = section.backgroundColor.toComposeColor()
 
     ElevatedCard(
         colors = CardDefaults.cardColors(
