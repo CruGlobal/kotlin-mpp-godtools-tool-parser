@@ -14,6 +14,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
 import org.cru.godtools.shared.common.model.toUriOrNull
+import org.cru.godtools.shared.tool.parser.model.Accordion
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.EventId
 
@@ -201,6 +202,46 @@ class StateTest {
         }
     }
     // endregion Events
+
+    // region Accordion State
+    @Test
+    fun `toggleAccordionSection - opens and closes a section`() = runTest {
+        val accordion = Accordion { listOf(Accordion.Section(it)) }
+        val section = accordion.sections.first()
+
+        state.accordionExpandedSectionsFlow(accordion.id).test {
+            // initial state should be empty
+            assertEquals(emptySet(), awaitItem())
+
+            // toggle open
+            state.toggleAccordionSection(section)
+            assertEquals(setOf(section.id), awaitItem())
+
+            // toggle closed
+            state.toggleAccordionSection(section)
+            assertEquals(emptySet(), awaitItem())
+        }
+    }
+
+    @Test
+    fun `toggleAccordionSection - selecting a new section closes previous`() = runTest {
+        val accordion = Accordion { listOf(Accordion.Section(it), Accordion.Section(it)) }
+        val first = accordion.sections[0]
+        val second = accordion.sections[1]
+
+        state.accordionExpandedSectionsFlow(accordion.id).test {
+            assertEquals(emptySet(), awaitItem())
+
+            // open first
+            state.toggleAccordionSection(first)
+            assertEquals(setOf(first.id), awaitItem())
+
+            // open second -> first should close
+            state.toggleAccordionSection(second)
+            assertEquals(setOf(second.id), awaitItem())
+        }
+    }
+    // endregion Accordion State
 
     // region Form Fields
     @Test

@@ -22,6 +22,7 @@ import org.ccci.gto.android.common.parcelize.Parcelize
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
+import org.cru.godtools.shared.tool.parser.model.Accordion
 import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent as ContentAnalyticsEvent
 
@@ -31,6 +32,7 @@ import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent as ContentAnalyt
 class State internal constructor(
     private val triggeredAnalyticsEvents: MutableMap<String, Int> = mutableMapOf(),
     private val vars: MutableMap<String, List<String>?> = mutableMapOf(),
+    private val accordionExpandedSections: MutableMap<String, List<String>> = mutableMapOf(),
     private val formFieldValues: MutableMap<String?, String?> = mutableMapOf(),
     private val formFieldValidation: MutableMap<String?, Boolean> = mutableMapOf(),
 ) : Parcelable, ExpressionContext by SimpleExpressionContext(vars) {
@@ -99,6 +101,33 @@ class State internal constructor(
     }
     // endregion Analytics Events
     // endregion Events
+
+    // region Accordion State
+    private val accordionExpandedSectionsChange = MutableSharedFlow<String>(extraBufferCapacity = Int.MAX_VALUE)
+    private fun accordionExpandedSectionsChangeFlow(accordionId: String) =
+        accordionExpandedSectionsChange.onSubscription { emit(accordionId) }.filter { it == accordionId }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun accordionExpandedSectionsFlow(accordionId: String) = accordionExpandedSectionsChangeFlow(accordionId)
+        .map { accordionExpandedSections[accordionId]?.toSet().orEmpty() }
+        .distinctUntilChanged()
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    fun toggleAccordionSection(section: Accordion.Section) {
+        val accordionId = section.accordion.id
+        val sectionId = section.id
+        val currentSections = accordionExpandedSections[accordionId].orEmpty()
+        accordionExpandedSections[accordionId] = when {
+            sectionId in currentSections -> currentSections - sectionId
+            else -> listOf(sectionId)
+        }
+        accordionExpandedSectionsChange.tryEmit(accordionId)
+    }
+    // endregion Accordion State
 
     // region Form State
     private val formFieldChange = MutableSharedFlow<String?>(extraBufferCapacity = Int.MAX_VALUE)

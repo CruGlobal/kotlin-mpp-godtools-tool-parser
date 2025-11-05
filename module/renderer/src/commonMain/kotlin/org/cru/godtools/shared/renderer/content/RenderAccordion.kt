@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,8 +20,9 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,13 +48,10 @@ internal const val TestTagAccordion = "accordion"
 internal const val TestTagAccordionSection = "accordion section"
 
 @Composable
-fun RenderAccordion(
-    accordion: Accordion,
-    state: State,
-    modifier: Modifier = Modifier,
-    supportsMultiSelection: Boolean = false
-) {
-    val expandedSections = remember { mutableStateSetOf<String>() }
+fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier) {
+    val accordionId = accordion.id
+    val expandedSections by remember(state, accordionId) { state.accordionExpandedSectionsFlow(accordionId) }
+        .collectAsState(emptySet())
 
     Column(
         modifier = modifier
@@ -62,21 +59,13 @@ fun RenderAccordion(
             .visibility(accordion, state)
     ) {
         accordion.sections.forEachIndexed { index, section ->
-            key(section.id) {
-                val isExpanded = section.id in expandedSections
-
+            val sectionId = section.id
+            key(sectionId) {
                 RenderAccordionSection(
                     section,
                     state = state,
-                    isExpanded = isExpanded,
-                    onClick = {
-                        if (section.id in expandedSections) {
-                            expandedSections -= section.id
-                        } else {
-                            if (!supportsMultiSelection) expandedSections.clear()
-                            expandedSections += section.id
-                        }
-                    },
+                    isExpanded = sectionId in expandedSections,
+                    onClick = { state.toggleAccordionSection(section) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(CardPadding)
