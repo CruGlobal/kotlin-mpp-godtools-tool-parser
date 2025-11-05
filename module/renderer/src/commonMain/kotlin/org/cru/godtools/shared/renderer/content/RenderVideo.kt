@@ -35,6 +35,7 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
         }.apply { loadUrl(model.videoId.orEmpty()) }
         val playerConfig = remember {
             VideoPlayerConfig(
+                isAutoHideControlEnabled = false,
                 isFullScreenEnabled = false,
                 autoPlayNextReel = false,
             )
