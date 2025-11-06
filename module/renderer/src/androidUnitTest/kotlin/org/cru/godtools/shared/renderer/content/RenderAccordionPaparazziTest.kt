@@ -59,6 +59,25 @@ class RenderAccordionPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderAccordion() - Long Header`() = contentSnapshot {
+        val accordion = Accordion {
+            listOf(
+                Accordion.Section(
+                    it,
+                    header = {
+                        Text(
+                            it,
+                            text = "This is a very long header text that should wrap onto multiple lines to test " +
+                                "the layout behavior of the accordion section header",
+                        )
+                    },
+                )
+            )
+        }
+        RenderContentStack(listOf(accordion))
+    }
+
+    @Test
     fun `RenderAccordion() - IsInvisible`() {
         val state = State().apply {
             setVar("a", listOf("value"))

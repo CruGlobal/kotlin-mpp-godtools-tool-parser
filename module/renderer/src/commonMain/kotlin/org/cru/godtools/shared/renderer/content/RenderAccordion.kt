@@ -8,7 +8,6 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -101,13 +100,12 @@ private fun RenderAccordionSection(section: Accordion.Section, state: State, mod
                 RenderTextNode(
                     it,
                     modifier = Modifier
+                        .weight(1f)
                         .padding(start = ContentHorizontalPadding)
                         .padding(vertical = 4.dp)
                         .align(alignment = Alignment.CenterVertically)
                 )
             }
-
-            Spacer(Modifier.weight(1f))
 
             Icon(
                 imageVector = if (!isExpanded) Icons.Filled.Add else Icons.Filled.Remove,
