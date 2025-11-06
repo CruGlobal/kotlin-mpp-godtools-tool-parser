@@ -6,7 +6,10 @@ import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.native.HiddenFromObjC
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.page.page
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
@@ -14,10 +17,20 @@ private const val XML_SECTION = "section"
 private const val XML_SECTION_HEADER = "header"
 
 @JsExport
-@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class, ExperimentalUuidApi::class)
 class Accordion : Content {
     internal companion object {
         internal const val XML_ACCORDION = "accordion"
+    }
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    val id by lazy {
+        val page = page
+        val pageId = page?.id ?: Uuid.random().toString()
+        val index = page?.descendants.orEmpty().filterIsInstance<Accordion>().indexOf(this)
+        "$pageId-accordion-$index"
     }
 
     @JsName("_sections")
@@ -58,8 +71,13 @@ class Accordion : Content {
     // endregion Kotlin/JS interop
 
     class Section : BaseModel, Parent, HasAnalyticsEvents {
-        private val accordion: Accordion
-        val id: String get() = "section-${accordion.sections.indexOf(this)}"
+        @HiddenFromObjC
+        @JsExport.Ignore
+        @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+        val accordion: Accordion
+        val id by lazy { "${accordion.id}-section-${accordion.sections.indexOf(this)}" }
+
+        val backgroundColor get() = stylesParent.cardBackgroundColor
 
         val header: Text?
         private val analyticsEvents: List<AnalyticsEvent>
@@ -91,11 +109,11 @@ class Accordion : Content {
         constructor(
             accordion: Accordion = Accordion(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
-            header: Text? = null,
+            header: ((Section) -> Text?)? = null,
             content: ((Section) -> List<Content>)? = null
         ) : super(accordion) {
             this.accordion = accordion
-            this.header = header
+            this.header = header?.invoke(this)
             this.analyticsEvents = analyticsEvents
             this.content = content?.invoke(this).orEmpty()
         }

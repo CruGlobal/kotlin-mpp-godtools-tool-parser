@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,13 +20,16 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.AccessibilityAction
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
@@ -40,76 +42,59 @@ import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accord
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
-import org.cru.godtools.shared.tool.parser.model.cardBackgroundColor
-import org.cru.godtools.shared.tool.parser.model.stylesParent
 import org.jetbrains.compose.resources.stringResource
 
 internal const val TestTagAccordion = "accordion"
 internal const val TestTagAccordionSection = "accordion section"
 
 @Composable
-fun RenderAccordion(
-    accordion: Accordion,
-    state: State,
-    modifier: Modifier = Modifier,
-    supportsMultiSelection: Boolean = false
+fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Modifier) = Column(
+    modifier = modifier
+        .testTag(TestTagAccordion)
+        .visibility(accordion, state),
 ) {
-    val expandedSections = remember { mutableStateSetOf<String>() }
-
-    Column(
-        modifier = modifier
-            .testTag(TestTagAccordion)
-            .visibility(accordion, state)
-    ) {
-        accordion.sections.forEachIndexed { index, section ->
-            key(section.id) {
-                val isExpanded = section.id in expandedSections
-
-                RenderAccordionSection(
-                    section,
-                    state = state,
-                    isExpanded = isExpanded,
-                    onClick = {
-                        if (section.id in expandedSections) {
-                            expandedSections -= section.id
-                        } else {
-                            if (!supportsMultiSelection) expandedSections.clear()
-                            expandedSections += section.id
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(CardPadding)
-                )
-            }
+    accordion.sections.forEach {
+        key(it.id) {
+            RenderAccordionSection(
+                it,
+                state = state,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
 
 @Composable
-private fun RenderAccordionSection(
-    section: Accordion.Section,
-    state: State,
-    isExpanded: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val cardColor = section.stylesParent.cardBackgroundColor.toComposeColor()
+private fun RenderAccordionSection(section: Accordion.Section, state: State, modifier: Modifier = Modifier) {
+    val accordionId = section.accordion.id
+    val expandedSections by remember(state, accordionId) { state.accordionExpandedSectionsFlow(accordionId) }
+        .collectAsState(state.accordionExpandedSections(accordionId))
+    val isExpanded by remember { derivedStateOf { section.id in expandedSections } }
 
     ElevatedCard(
         colors = CardDefaults.cardColors(
-            containerColor = cardColor
+            containerColor = section.backgroundColor.toComposeColor()
         ),
         elevation = ToolTheme.cardElevation(),
         modifier = modifier
             .testTag(TestTagAccordionSection)
-            .semantics { selected = isExpanded }
+            .padding(CardPadding)
+            .semantics {
+                // add Expand/Collapse Accessibility actions
+                set(
+                    if (isExpanded) SemanticsActions.Collapse else SemanticsActions.Expand,
+                    AccessibilityAction(null) {
+                        state.toggleAccordionSection(section)
+                        true
+                    },
+                )
+            }
     ) {
-        val headerInteractions = remember { MutableInteractionSource() }
+        val interactionSource = remember { MutableInteractionSource() }
 
         Row(
             modifier = Modifier
-                .clickable(interactionSource = headerInteractions, indication = null, onClick = onClick)
+                .clickable(interactionSource, indication = null) { state.toggleAccordionSection(section) }
                 .heightIn(min = 48.dp)
         ) {
             section.header?.let {
@@ -125,16 +110,13 @@ private fun RenderAccordionSection(
             Spacer(Modifier.weight(1f))
 
             Icon(
-                imageVector = when {
-                    isExpanded -> Icons.Filled.Remove
-                    else -> Icons.Filled.Add
-                },
+                imageVector = if (!isExpanded) Icons.Filled.Add else Icons.Filled.Remove,
                 contentDescription = when {
                     isExpanded -> stringResource(Res.string.tool_renderer_accordion_section_action_collapse)
                     else -> stringResource(Res.string.tool_renderer_accordion_section_action_expand)
                 },
                 modifier = Modifier
-                    .indication(headerInteractions, ripple(bounded = false, radius = 20.dp))
+                    .indication(interactionSource, ripple(bounded = false, radius = 20.dp))
                     .padding(12.dp)
                     .align(Alignment.Top)
             )

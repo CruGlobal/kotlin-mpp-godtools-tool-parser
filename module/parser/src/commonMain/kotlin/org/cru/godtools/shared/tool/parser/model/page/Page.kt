@@ -20,6 +20,7 @@ import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.model.Background
+import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -323,3 +324,5 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     val platformControlColor get() = controlColor.toPlatformColor()
     // endregion Kotlin/JS interop
 }
+
+internal val Base.page: Page? get() = parent as? Page ?: parent?.page
