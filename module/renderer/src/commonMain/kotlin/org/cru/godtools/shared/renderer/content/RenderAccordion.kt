@@ -19,11 +19,13 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -31,16 +33,22 @@ import androidx.compose.ui.semantics.AccessibilityAction
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleOwner
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
+import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_collapse
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_accordion_section_action_expand
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Accordion
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.jetbrains.compose.resources.stringResource
 
 internal const val TestTagAccordion = "accordion"
@@ -65,6 +73,8 @@ fun RenderAccordion(accordion: Accordion, state: State, modifier: Modifier = Mod
 
 @Composable
 private fun RenderAccordionSection(section: Accordion.Section, state: State, modifier: Modifier = Modifier) {
+    val coroutineScope = rememberCoroutineScope()
+
     val accordionId = section.accordion.id
     val expandedSections by remember(state, accordionId) { state.accordionExpandedSectionsFlow(accordionId) }
         .collectAsState(state.accordionExpandedSections(accordionId))
@@ -120,17 +130,28 @@ private fun RenderAccordionSection(section: Accordion.Section, state: State, mod
             )
         }
 
-        AnimatedVisibility(
-            visible = isExpanded,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
+        val baseLifecycleOwner = LocalLifecycleOwner.current
+        val lifecycleOwner = remember(baseLifecycleOwner) { ConstrainedStateLifecycleOwner(baseLifecycleOwner) }
+            .apply { maxState = if (isExpanded) Lifecycle.State.RESUMED else Lifecycle.State.STARTED }
+
+        CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically(),
+                exit = shrinkVertically(),
             ) {
-                RenderContent(section.content, state)
+                LifecycleResumeEffect(section, state) {
+                    val visible = section.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
+                    onPauseOrDispose { visible.forEach { it.cancel() } }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                ) {
+                    RenderContent(section.content, state)
+                }
             }
         }
     }
