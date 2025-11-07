@@ -1,0 +1,14 @@
+"project_id": "844554"
+"api_token_env": "CROWDIN_API_TOKEN"
+"base_path": "."
+"base_url": "https://api.crowdin.com"
+
+"preserve_hierarchy": true
+
+files: [
+  {
+    "source": "/module/renderer/src/commonMain/composeResources/values/strings*.xml",
+    "translation": "/module/renderer/src/commonMain/composeResources/values-%android_code%/%original_file_name%",
+    "update_option": "update_as_unapproved"
+  },
+]
