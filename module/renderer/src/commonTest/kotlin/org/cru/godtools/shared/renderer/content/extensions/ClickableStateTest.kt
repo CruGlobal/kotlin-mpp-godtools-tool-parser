@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.renderer.FakeFocusManager
 import org.cru.godtools.shared.renderer.TestConstants
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
@@ -32,6 +33,7 @@ class ClickableStateTest {
     }
     private val state = State().apply { updateFormFieldValue("name", "value") }
 
+    private val focusManager = FakeFocusManager()
     private val testScope = TestScope()
 
     @BeforeTest
@@ -47,7 +49,8 @@ class ClickableStateTest {
         }
 
         state.contentEvents.test {
-            model.handleClickable(state, this)
+            model.handleClickable(state, focusManager, this)
+            assertEquals(1, focusManager.clearFocusCalled)
             assertEquals(event1, awaitItem())
             assertEquals(event2, awaitItem())
         }
@@ -61,7 +64,8 @@ class ClickableStateTest {
         }
 
         state.events.filterIsInstance<State.Event.OpenUrl>().test {
-            model.handleClickable(state, this)
+            model.handleClickable(state, focusManager, this)
+            assertEquals(1, focusManager.clearFocusCalled)
             assertEquals(TestConstants.TEST_URL, awaitItem().url)
         }
     }
@@ -78,7 +82,8 @@ class ClickableStateTest {
         }
 
         state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
-            model.handleClickable(state, this)
+            model.handleClickable(state, focusManager, this)
+            assertEquals(1, focusManager.clearFocusCalled)
             assertEquals(analyticsEvent, awaitItem().event)
         }
     }
@@ -92,7 +97,8 @@ class ClickableStateTest {
         }
 
         state.events.filterIsInstance<State.Event.SubmitForm>().test {
-            model.handleClickable(state, this)
+            model.handleClickable(state, focusManager, this)
+            assertEquals(1, focusManager.clearFocusCalled)
             assertEquals(State.Event.SubmitForm(mapOf("name" to "value")), awaitItem())
         }
     }
@@ -114,7 +120,8 @@ class ClickableStateTest {
             val contentEvents = state.contentEvents.testIn(this)
             val events = state.events.testIn(this)
 
-            model.handleClickable(state, this@runTest)
+            model.handleClickable(state, focusManager, this@runTest)
+            assertEquals(0, focusManager.clearFocusCalled)
             contentEvents.expectNoEvents()
             events.expectNoEvents()
 
@@ -141,7 +148,8 @@ class ClickableStateTest {
             val submitFormEvents = state.events.filterIsInstance<State.Event.SubmitForm>().testIn(this)
             val urlEvents = state.events.filterIsInstance<State.Event.OpenUrl>().testIn(this)
 
-            model.handleClickable(state, this@runTest)
+            model.handleClickable(state, focusManager, this@runTest)
+            assertEquals(1, focusManager.clearFocusCalled)
             assertEquals(analyticsEvent, analyticsEvents.awaitItem().event)
             assertEquals(event1, contentEvents.awaitItem())
             assertEquals(event2, contentEvents.awaitItem())

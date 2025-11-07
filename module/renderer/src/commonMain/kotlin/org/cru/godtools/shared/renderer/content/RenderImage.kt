@@ -29,22 +29,18 @@ import org.cru.godtools.shared.tool.parser.model.Resource
 internal const val TestTagImage = "image"
 
 @Composable
-internal fun ColumnScope.RenderImage(image: Image, state: State) {
-    val scope = rememberCoroutineScope()
-
-    AsyncImage(
-        model = image.resource?.toImageRequest(),
-        contentDescription = null,
-        contentScale = ContentScale.FillWidth,
-        modifier = Modifier
-            .testTag(TestTagImage)
-            .visibility(image, state)
-            .padding(horizontal = ContentHorizontalPadding)
-            .width(image.width)
-            .align(image.gravity.alignment)
-            .clickable(image, state, scope)
-    )
-}
+internal fun ColumnScope.RenderImage(image: Image, state: State) = AsyncImage(
+    model = image.resource?.toImageRequest(),
+    contentDescription = null,
+    contentScale = ContentScale.FillWidth,
+    modifier = Modifier
+        .testTag(TestTagImage)
+        .visibility(image, state)
+        .padding(horizontal = ContentHorizontalPadding)
+        .width(image.width)
+        .align(image.gravity.alignment)
+        .clickable(image, state)
+)
 
 @Composable
 internal fun RenderImageNode(resource: Resource, imageSize: Int, modifier: Modifier = Modifier) {

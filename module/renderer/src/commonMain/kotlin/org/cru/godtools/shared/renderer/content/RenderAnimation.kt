@@ -51,7 +51,6 @@ internal val LocalCompottieCoroutineContext = staticCompositionLocalOf<Coroutine
 internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     val resource = animation.resource?.takeUnless { it.localName == null } ?: return
 
-    val coroutineScope = rememberCoroutineScope()
     val fileSystem = LocalResourceFileSystem.current
 
     val composition by rememberLottieComposition(coroutineContext = LocalCompottieCoroutineContext.current) {
@@ -86,7 +85,7 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
             .visibility(animation, state)
             .padding(horizontal = ContentHorizontalPadding)
             .fillMaxWidth()
-            .clickable(animation, state, coroutineScope, indication = null)
+            .clickable(animation, state, indication = null)
             .testTag(TestTagAnimation)
             .semantics { set(AnimationIsPlaying, animationState.isPlaying) },
     )

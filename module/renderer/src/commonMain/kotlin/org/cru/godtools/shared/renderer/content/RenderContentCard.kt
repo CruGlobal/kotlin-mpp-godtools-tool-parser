@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme
@@ -22,6 +23,7 @@ import org.cru.godtools.shared.tool.parser.model.Card
 
 @Composable
 internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Modifier) {
+    val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
 
     val invisible by remember(card, state) {
@@ -33,7 +35,7 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
             containerColor = card.backgroundColor.toComposeColor(),
         ),
         elevation = ToolTheme.cardElevation(),
-        onClick = { card.handleClickable(state, scope) },
+        onClick = { card.handleClickable(state, focusManager = focusManager, scope = scope) },
         enabled = !invisible,
         modifier = modifier
             .visibility(card, state)

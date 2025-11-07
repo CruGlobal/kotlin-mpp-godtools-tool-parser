@@ -13,15 +13,11 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Link
 
 @Composable
-fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier) {
-    val scope = rememberCoroutineScope()
-
-    RenderTextNode(
-        link.text,
-        modifier = modifier
-            .visibility(link, state)
-            .padding(horizontal = ContentHorizontalPadding)
-            .align(link.text.textAlign.alignment)
-            .clickable(link, state, scope)
-    )
-}
+fun ColumnScope.RenderLink(link: Link, state: State, modifier: Modifier = Modifier) = RenderTextNode(
+    link.text,
+    modifier = modifier
+        .visibility(link, state)
+        .padding(horizontal = ContentHorizontalPadding)
+        .align(link.text.textAlign.alignment)
+        .clickable(link, state),
+)
