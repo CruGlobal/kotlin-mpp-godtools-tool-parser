@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
@@ -29,6 +30,7 @@ private val ButtonIconPadding = 8.dp
 
 @Composable
 internal fun ColumnScope.RenderButton(button: Button, state: State) {
+    val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
 
     val invisible by remember(button, state) {
@@ -42,7 +44,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
         LocalMinimumInteractiveComponentSize provides minSize - (ButtonVerticalPadding * 2)
     ) {
         Button(
-            onClick = { button.handleClickable(state, scope) },
+            onClick = { button.handleClickable(state, focusManager = focusManager, scope = scope) },
             enabled = !invisible,
             colors = when (button.style) {
                 Button.Style.OUTLINED -> ButtonDefaults.outlinedButtonColors(
