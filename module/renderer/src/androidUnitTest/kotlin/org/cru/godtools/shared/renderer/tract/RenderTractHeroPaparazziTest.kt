@@ -14,6 +14,9 @@ import org.cru.godtools.shared.tool.parser.model.tract.Hero
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 class RenderTractHeroPaparazziTest : BasePaparazziTest() {
+    private val lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Maecenas eu eros eu nulla dictum rutrum. Donec sollicitudin risus id orci."
+
     private fun header(
         number: ((Header) -> Text?)? = { Text(it, text = "4") },
         title: ((Header) -> Text?)? = { Text(it, text = "Header") },
@@ -45,6 +48,14 @@ class RenderTractHeroPaparazziTest : BasePaparazziTest() {
     fun `RenderTractHero() - Header - No Number`() = contentSnapshot {
         RenderTractHero(
             TractPage(header = header(number = null), hero = hero()),
+            Modifier.fillMaxSize()
+        )
+    }
+
+    @Test
+    fun `RenderTractHero() - Header - Long title`() = contentSnapshot {
+        RenderTractHero(
+            TractPage(header = header(title = { Text(it, text = lorem) }), hero = hero()),
             Modifier.fillMaxSize()
         )
     }
@@ -83,6 +94,14 @@ class RenderTractHeroPaparazziTest : BasePaparazziTest() {
         RenderTractHero(
             TractPage(header = header()),
             Modifier.fillMaxSize(),
+        )
+    }
+
+    @Test
+    fun `RenderTractHero() - Hero - Long heading`() = contentSnapshot {
+        RenderTractHero(
+            TractPage(hero = hero(heading = { Text(it, text = lorem) })),
+            Modifier.fillMaxSize()
         )
     }
 

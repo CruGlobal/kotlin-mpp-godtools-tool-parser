@@ -44,7 +44,7 @@ internal const val TestTagHeroHeading = "hero_heading"
 fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State = remember { State() }) {
     Column(modifier = modifier) {
         page.header?.let { header ->
-            ProvideTextStyle(MaterialTheme.typography.titleMedium) {
+            ProvideTextStyle(ToolTheme.TractHeaderTextStyle) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(ContentHorizontalPadding),
                     verticalAlignment = Alignment.CenterVertically,
@@ -54,7 +54,9 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
                         .testTag(TestTagHeader)
                 ) {
                     header.number?.let { number ->
-                        ProvideTextStyle(LocalTextStyle.current.copy(fontSize = LocalTextStyle.current.fontSize * 3)) {
+                        ProvideTextStyle(
+                            LocalTextStyle.current.run { copy(fontSize = fontSize * 3, lineHeight = lineHeight * 3) }
+                        ) {
                             RenderTextNode(number, Modifier.testTag(TestTagHeaderNumber))
                         }
                     }
@@ -93,7 +95,7 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
         page.hero?.let { hero ->
             Column(Modifier.padding(horizontal = 16.dp)) {
                 hero.heading?.let { heading ->
-                    ProvideTextStyle(MaterialTheme.typography.headlineMedium) {
+                    ProvideTextStyle(ToolTheme.TractHeroHeadingTextStyle) {
                         RenderTextNode(
                             heading,
                             modifier = Modifier
