@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.renderer.lesson
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -48,8 +50,10 @@ import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
+import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarControlColor
+import org.cru.godtools.shared.tool.parser.model.navBarColor
 import org.jetbrains.compose.resources.stringResource
 
 internal const val TestTagLessonPager = "LessonPager"
@@ -123,18 +127,21 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                 is LessonScreen.UiState.Loading -> ToolLoading(
                     progress = state.progress,
                     modifier = Modifier
+                        .background(state.manifest.backgroundColor.toComposeColor())
                         .padding(paddingValues)
                         .fillMaxSize(),
                 )
 
                 is LessonScreen.UiState.Missing -> ToolNotFound(
                     modifier = Modifier
+                        .background(state.manifest.backgroundColor.toComposeColor())
                         .padding(paddingValues)
                         .fillMaxSize(),
                 )
 
                 is LessonScreen.UiState.Offline -> ToolOffline(
                     modifier = Modifier
+                        .background(state.manifest.backgroundColor.toComposeColor())
                         .padding(paddingValues)
                         .fillMaxSize(),
                 )

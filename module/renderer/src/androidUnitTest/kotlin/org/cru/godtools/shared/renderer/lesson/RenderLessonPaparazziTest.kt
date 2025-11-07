@@ -52,6 +52,8 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
     fun `RenderLesson - Loaded - Background Layers`() {
         val manifest = Manifest(
             type = Manifest.Type.LESSON,
+            navBarColor = RGB(0, 0, 0, 0.5f),
+            navBarControlColor = RGB(1, 1, 1),
             backgroundColor = RGB(0, 1, 1),
             backgroundImage = "black_panther",
             backgroundImageGravity = Gravity(Gravity.Horizontal.START, Gravity.Vertical.CENTER),

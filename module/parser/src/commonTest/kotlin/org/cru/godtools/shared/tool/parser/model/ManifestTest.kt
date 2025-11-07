@@ -1,8 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
-import com.github.ajalt.colormath.model.RGB
 import io.fluidsonic.locale.Locale
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -330,16 +328,17 @@ class ManifestTest : UsesResources() {
     @Test
     fun testLessonNavBarColors() {
         val manifestNull: Manifest? = null
-        assertEquals(manifestNull.defaultLessonNavBarColor, manifestNull.lessonNavBarColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, manifestNull.lessonNavBarColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifestNull.lessonNavBarControlColor)
 
         val manifestPrimary = Manifest(
             type = Manifest.Type.LESSON,
             primaryColor = TestColors.GREEN,
-            primaryTextColor = TestColors.RED
+            primaryTextColor = TestColors.RED,
+            backgroundColor = TestColors.BLUE
         )
-        assertEquals(manifestPrimary.defaultLessonNavBarColor, manifestPrimary.navBarColor)
-        assertEquals(manifestPrimary.defaultLessonNavBarColor, manifestPrimary.lessonNavBarColor)
+        assertEquals(TestColors.BLUE, manifestPrimary.navBarColor)
+        assertEquals(TestColors.BLUE, manifestPrimary.lessonNavBarColor)
         assertEquals(TestColors.GREEN, manifestPrimary.navBarControlColor)
         assertEquals(TestColors.GREEN, manifestPrimary.lessonNavBarControlColor)
 
@@ -348,25 +347,13 @@ class ManifestTest : UsesResources() {
             primaryColor = TestColors.RED,
             primaryTextColor = TestColors.RED,
             navBarColor = TestColors.GREEN,
-            navBarControlColor = TestColors.BLUE
+            navBarControlColor = TestColors.BLUE,
+            backgroundColor = TestColors.RED,
         )
         assertEquals(TestColors.GREEN, manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN, manifestNavBar.lessonNavBarColor)
         assertEquals(TestColors.BLUE, manifestNavBar.navBarControlColor)
         assertEquals(TestColors.BLUE, manifestNavBar.lessonNavBarControlColor)
-    }
-
-    @Test
-    fun testDefaultLessonNavBarColor() {
-        val color = RGB(
-            r = Random.nextFloat(),
-            g = Random.nextFloat(),
-            b = Random.nextFloat(),
-            alpha = Random.nextFloat()
-        )
-
-        val manifest = Manifest(type = Manifest.Type.LESSON, backgroundColor = color)
-        assertEquals(color.copy(alpha = 0f), manifest.defaultLessonNavBarColor)
     }
     // endregion navbar colors
 
