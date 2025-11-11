@@ -54,7 +54,7 @@ class Accordion : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    @JsName("createAccordionTests")
+    @JsName("createTestAccordion")
     constructor(
         parent: Base = Manifest(),
         invisibleIf: String? = null,
