@@ -53,6 +53,7 @@ include("module:renderer-state")
 include("module:user-activity")
 
 include("publishing:npm")
+include("publishing:spm")
 
 // automatically accept the scans.gradle.com TOS when running in GHA
 if (System.getenv("GITHUB_ACTIONS")?.toBoolean() == true) {

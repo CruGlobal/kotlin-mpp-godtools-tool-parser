@@ -17,6 +17,7 @@ import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimension
 import org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
+import org.cru.godtools.shared.tool.parser.xml.getDeviceAttributeValue
 import org.cru.godtools.shared.tool.parser.xml.skipTag
 
 private const val XML_RESOURCE = "resource"
@@ -62,8 +63,10 @@ class Image : Content, Clickable {
             this.url = url
         }
 
-        gravity = parser.getAttributeValue(XML_GRAVITY).toGravityOrNull()?.horizontal ?: DEFAULT_GRAVITY
-        width = parser.getAttributeValue(XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels } ?: DEFAULT_WIDTH
+        gravity = parser.getDeviceAttributeValue(manifest.config, XML_GRAVITY).toGravityOrNull()?.horizontal
+            ?: DEFAULT_GRAVITY
+        width = parser.getDeviceAttributeValue(manifest.config, XML_WIDTH).toDimensionOrNull()?.takeIf { it is Pixels }
+            ?: DEFAULT_WIDTH
 
         parser.skipTag()
     }

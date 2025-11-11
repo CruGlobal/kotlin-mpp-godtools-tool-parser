@@ -61,6 +61,26 @@ class ImageTest : UsesResources() {
         val image = Image(manifest, getTestXmlParser("image_restricted.xml"))
         assertTrue(image.isIgnored)
     }
+
+    @Test
+    fun `Image Parsing - Device Overrides - Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType != DeviceType.WEB) return@runTest
+
+        val image = Image(manifest, getTestXmlParser("image_device_overrides.xml"))
+        assertEquals(Gravity.Horizontal.CENTER, image.gravity)
+        assertEquals(Dimension.Pixels(100), image.width)
+    }
+
+    @Test
+    fun `Image Parsing - Device Overrides - Not Web`() = runTest {
+        val manifest = Manifest()
+        if (manifest.config.deviceType == DeviceType.WEB) return@runTest
+
+        val image = Image(manifest, getTestXmlParser("image_device_overrides.xml"))
+        assertEquals(Gravity.Horizontal.START, image.gravity)
+        assertEquals(Dimension.Pixels(50), image.width)
+    }
     // endregion parse Image
 
     // region Property: resource
