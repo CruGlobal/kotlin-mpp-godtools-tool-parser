@@ -16,14 +16,18 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import kotlinx.coroutines.CoroutineScope
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
+import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Multiselect
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style
 
@@ -56,11 +60,12 @@ internal fun ColumnScope.RenderMultiselect(multiselect: Multiselect, state: Stat
 
 @Composable
 private fun RenderMultiselectOptionFlat(option: Multiselect.Option, state: State, modifier: Modifier = Modifier) {
+    val coroutineScope = rememberCoroutineScope()
     val isClickable by option.produceIsClickable(state)
     val isSelected by option.produceIsSelected(state)
 
     Surface(
-        onClick = { option.toggleSelected(state) },
+        onClick = { toggleOption(option, state, coroutineScope) },
         enabled = isClickable,
         shape = MaterialTheme.shapes.medium,
         color = when {
@@ -79,11 +84,12 @@ private fun RenderMultiselectOptionFlat(option: Multiselect.Option, state: State
 
 @Composable
 private fun RenderMultiselectOptionCard(option: Multiselect.Option, state: State, modifier: Modifier = Modifier) {
+    val coroutineScope = rememberCoroutineScope()
     val isClickable by option.produceIsClickable(state)
     val isSelected by option.produceIsSelected(state)
 
     ElevatedCard(
-        onClick = { option.toggleSelected(state) },
+        onClick = { toggleOption(option, state, coroutineScope) },
         enabled = isClickable,
         colors = CardDefaults.elevatedCardColors(
             containerColor = when {
@@ -106,3 +112,7 @@ private fun Multiselect.Option.produceIsClickable(state: State) =
 
 @Composable
 private fun Multiselect.Option.produceIsSelected(state: State) = isSelectedFlow(state).collectAsState(isSelected(state))
+
+private fun toggleOption(option: Multiselect.Option, state: State, coroutineScope: CoroutineScope) =
+    option.toggleSelected(state)
+        .also { if (it) option.triggerAnalyticsEvents(AnalyticsEvent.Trigger.CLICKED, state, coroutineScope) }
