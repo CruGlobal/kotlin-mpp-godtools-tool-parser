@@ -2,6 +2,11 @@
 
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +24,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,15 +50,11 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         tabs.isInvisibleFlow(state)
     }.collectAsState(tabs.isInvisible(state))
 
-    var selectedIndex by remember { mutableIntStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
     val borderShape = MaterialTheme.shapes.small
-    val selectedTab by remember(tabs) {
-        derivedStateOf {
-            tabs.tabs.getOrNull(selectedIndex)
-        }
-    }
+    val selectedTab by remember(tabs) { derivedStateOf { tabs.tabs.getOrNull(selectedIndex) } }
 
     ContentEventListener(state, tabs) { event ->
         tabs.tabs.firstOrNull { event in it.listeners }?.let {
@@ -109,10 +111,16 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
         }
     )
 
-    Column(modifier = Modifier.visibility(tabs, state)) {
-        RenderContent(
-            content = selectedTab?.content.orEmpty(),
-            state = state,
-        )
+    AnimatedContent(
+        selectedTab,
+        transitionSpec = { fadeIn(tween(0)) togetherWith fadeOut(tween(0)) },
+        modifier = Modifier.visibility(tabs, state)
+    ) {
+        Column {
+            RenderContent(
+                content = it?.content.orEmpty(),
+                state = state,
+            )
+        }
     }
 }
