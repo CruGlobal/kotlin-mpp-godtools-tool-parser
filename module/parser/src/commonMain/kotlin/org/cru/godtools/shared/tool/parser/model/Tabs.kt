@@ -42,8 +42,14 @@ class Tabs : Content {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(parent: Base = Manifest()) : super(parent) {
-        tabs = emptyList()
+    @JsName("createTestTabs")
+    constructor(
+        parent: Base = Manifest(),
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+        tabs: ((Tabs) -> List<Tabs.Tab>)? = null
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
+        this.tabs = tabs?.invoke(this).orEmpty()
     }
 
     // region Kotlin/JS interop
@@ -85,15 +91,19 @@ class Tabs : Content {
         }
 
         @RestrictTo(RestrictTo.Scope.TESTS)
-        internal constructor(
+        @JsName("createTestTab")
+        constructor(
             parent: Tabs = Tabs(),
-            analyticsEvents: List<AnalyticsEvent> = emptyList()
+            label: Text? = null,
+            analyticsEvents: List<AnalyticsEvent> = emptyList(),
+            listeners: Set<EventId> = emptySet(),
+            content: ((Tab) -> List<Content>)? = null
         ) : super(parent) {
             tabs = parent
+            this.label = label
             this.analyticsEvents = analyticsEvents
-            listeners = emptySet()
-            label = null
-            content = emptyList()
+            this.listeners = listeners
+            this.content = content?.invoke(this).orEmpty()
         }
 
         // region HasAnalyticsEvents

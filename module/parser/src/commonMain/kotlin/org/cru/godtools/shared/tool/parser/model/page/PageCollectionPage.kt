@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.page
 
+import androidx.annotation.RestrictTo
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.reflect.KClass
@@ -9,6 +10,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.HasPages
+import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.XMLNS_ANALYTICS
 import org.cru.godtools.shared.tool.parser.model.XML_EVENTS
 import org.cru.godtools.shared.tool.parser.model.parseAnalyticsEvents
@@ -43,6 +45,8 @@ class PageCollectionPage : Page, HasPages {
     override var pages: List<Page> by setOnce()
         private set
 
+    override val children get() = pages
+
     private constructor(
         container: HasPages,
         fileName: String?,
@@ -64,6 +68,16 @@ class PageCollectionPage : Page, HasPages {
                 }
             }
         }
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    internal constructor(
+        container: HasPages = Manifest(),
+        pages: ((PageCollectionPage) -> List<Page>)? = null,
+    ) : super(container) {
+        analyticsEvents = emptyList()
+        parsedPages = emptyList()
+        this.pages = pages?.invoke(this).orEmpty()
     }
 
     private fun XmlPullParser.parsePages() = buildList {

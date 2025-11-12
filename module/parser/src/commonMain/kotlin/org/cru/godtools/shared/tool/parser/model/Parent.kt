@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -15,6 +16,11 @@ interface Parent : Base {
     @JsExport.Ignore
     @JsName("_content")
     val content: List<Content>
+
+    @HiddenFromObjC
+    @JsExport.Ignore
+    @get:RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    override val children: List<Base> get() = content
 
     // region Kotlin/JS interop
     @HiddenFromObjC

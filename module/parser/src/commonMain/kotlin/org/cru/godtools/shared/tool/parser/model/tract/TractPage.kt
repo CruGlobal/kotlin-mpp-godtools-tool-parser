@@ -12,6 +12,7 @@ import org.cru.godtools.shared.tool.parser.internal.AndroidColorInt
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.Background
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Content
@@ -56,8 +57,6 @@ private const val XML_MODALS = "modals"
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
 class TractPage : Page {
-    val isLastPage get() = manifest.pages.lastOrNull() == this
-
     override val analyticsEvents = emptyList<AnalyticsEvent>()
 
     val header: Header?
@@ -66,6 +65,8 @@ class TractPage : Page {
     @JsName("_modals")
     val modals: List<Modal>
     val callToAction: CallToAction
+
+    override val children by lazy { listOfNotNull(hero) + modals + cards }
 
     internal constructor(
         container: HasPages,
@@ -101,7 +102,7 @@ class TractPage : Page {
     @JsName("createTestTractPage")
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
-        manifest: Manifest = Manifest(),
+        container: HasPages = Manifest(),
         fileName: String? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
@@ -112,10 +113,13 @@ class TractPage : Page {
         textScale: Double = DEFAULT_TEXT_SCALE,
         cardBackgroundColor: Color? = null,
         cardTextColor: Color? = null,
+        header: ((TractPage) -> Header?)? = null,
+        hero: ((TractPage) -> Hero?)? = null,
         cards: ((TractPage) -> List<Card>?)? = null,
-        callToAction: ((TractPage) -> CallToAction?)? = null
+        modals: ((TractPage) -> List<Modal>?)? = null,
+        callToAction: ((TractPage) -> CallToAction?)? = null,
     ) : super(
-        manifest,
+        container,
         fileName = fileName,
         primaryColor = primaryColor,
         backgroundColor = backgroundColor,
@@ -128,10 +132,10 @@ class TractPage : Page {
     ) {
         _cardTextColor = cardTextColor
 
-        header = null
-        hero = null
+        this.header = header?.invoke(this)
+        this.hero = hero?.invoke(this)
         this.cards = cards?.invoke(this).orEmpty()
-        modals = emptyList()
+        this.modals = modals?.invoke(this).orEmpty()
         this.callToAction = callToAction?.invoke(this) ?: CallToAction(this)
     }
 
@@ -172,6 +176,14 @@ class TractPage : Page {
         @JsName("_dismissListeners")
         val dismissListeners: Set<EventId>
 
+        val background by lazy {
+            Background(
+                backgroundColor,
+                backgroundImage,
+                backgroundImageGravity,
+                backgroundImageScaleType,
+            )
+        }
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
         private val _backgroundColor: Color?
         internal val backgroundColor get() = _backgroundColor ?: page.cardBackgroundColor

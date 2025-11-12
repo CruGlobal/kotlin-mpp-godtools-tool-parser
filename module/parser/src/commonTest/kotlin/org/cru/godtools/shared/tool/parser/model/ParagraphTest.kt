@@ -32,7 +32,24 @@ class ParagraphTest : UsesResources() {
     }
 
     @Test
-    fun testTipsProperty() {
+    fun `Property - children`() {
+        val paragraph = Paragraph {
+            listOf(
+                Text(it, "text1"),
+                Paragraph {
+                    listOf(
+                        Text(it, "text2")
+                    )
+                },
+                Text(it, "text3"),
+            )
+        }
+
+        assertEquals(paragraph.content, paragraph.children)
+    }
+
+    @Test
+    fun `Property - tips`() {
         val manifest = Manifest(tips = { listOf(Tip(it, "tip2"), Tip(it, "tip1")) })
         val paragraph = Paragraph(manifest) { listOf(InlineTip(it, "tip1"), InlineTip(it, "tip2")) }
         assertEquals(listOf(manifest.findTip("tip1")!!, manifest.findTip("tip2")!!), paragraph.tips)

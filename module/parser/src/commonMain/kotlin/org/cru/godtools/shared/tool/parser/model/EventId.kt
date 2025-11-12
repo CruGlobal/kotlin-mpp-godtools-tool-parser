@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.expressions.ExpressionContext
 import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 
@@ -12,8 +13,10 @@ import org.cru.godtools.shared.tool.parser.util.REGEX_SEQUENCE_SEPARATOR
 class EventId(val namespace: String? = null, val name: String) {
     companion object {
         private const val NAMESPACE_FOLLOWUP = "followup"
+        @HiddenFromObjC
+        @JsExport.Ignore
         @VisibleForTesting
-        internal const val NAMESPACE_STATE = "state"
+        const val NAMESPACE_STATE = "state"
 
         val FOLLOWUP = EventId(NAMESPACE_FOLLOWUP, "send")
 

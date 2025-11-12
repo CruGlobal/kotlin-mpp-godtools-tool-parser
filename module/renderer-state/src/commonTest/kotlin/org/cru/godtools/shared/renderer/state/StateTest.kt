@@ -3,8 +3,20 @@ package org.cru.godtools.shared.renderer.state
 import app.cash.turbine.test
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.yield
+import org.cru.godtools.shared.common.model.toUriOrNull
+import org.cru.godtools.shared.tool.parser.model.Accordion
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.EventId
 
 private const val KEY = "key"
 private const val KEY2 = "key2"
@@ -12,23 +24,23 @@ private const val KEY2 = "key2"
 class StateTest {
     private val state = State()
 
-    // region Analytics Events Tracking
+    // region Analytics Events
     @Test
     fun testAnalyticsEventsTracking() {
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY))
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
+        val event = AnalyticsEvent(id = KEY)
+        val event2 = AnalyticsEvent(id = KEY2, limit = 1)
 
-        state.recordTriggeredAnalyticsEvent(KEY)
-        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY))
+        assertTrue(state.shouldTriggerAnalyticsEvent(event))
+        assertTrue(state.shouldTriggerAnalyticsEvent(event2))
 
-        state.recordTriggeredAnalyticsEvent(KEY)
-        assertEquals(2, state.getTriggeredAnalyticsEventsCount(KEY))
-        assertEquals(0, state.getTriggeredAnalyticsEventsCount(KEY2))
-
-        state.recordTriggeredAnalyticsEvent(KEY2)
-        assertEquals(1, state.getTriggeredAnalyticsEventsCount(KEY2))
+        repeat(50) {
+            state.triggerAnalyticsEvent(event)
+            state.triggerAnalyticsEvent(event2)
+            assertTrue(state.shouldTriggerAnalyticsEvent(event))
+            assertFalse(state.shouldTriggerAnalyticsEvent(event2))
+        }
     }
-    // endregion Analytics Events Tracking
+    // endregion Analytics Events
 
     // region State Vars
     @Test
@@ -111,4 +123,154 @@ class StateTest {
         assertEquals(listOf("1", "3"), state.getVar(KEY))
     }
     // endregion State Vars
+
+    // region Content Events
+    @Test
+    fun `triggerContentEvents - All Events emitted`() = runTest {
+        val events = listOf(EventId(name = "event1"), EventId(name = "event2"))
+
+        state.contentEvents.test {
+            state.triggerContentEvents(events)
+            assertEquals(events[0], awaitItem())
+            assertEquals(events[1], awaitItem())
+        }
+    }
+
+    @Test
+    fun `triggerContentEvents - Resolve State EventIds`() = runTest {
+        state.setVar(KEY, listOf("state_value1", "state_value2"))
+        val events = listOf(
+            EventId(name = "event1"),
+            EventId(namespace = EventId.NAMESPACE_STATE, name = KEY),
+            EventId(name = "event2"),
+        )
+
+        state.contentEvents.test {
+            state.triggerContentEvents(events)
+            assertEquals(EventId(name = "event1"), awaitItem())
+            assertEquals(EventId(name = "state_value1"), awaitItem())
+            assertEquals(EventId(name = "state_value2"), awaitItem())
+            assertEquals(EventId(name = "event2"), awaitItem())
+        }
+    }
+
+    @Test
+    fun `triggerContentEvents - Ensure first event can launch a new subscriber for subsequent events`() = runTest {
+        var order = 0
+        val mutex = Mutex(true)
+        val events = listOf(EventId(name = "event1"), EventId(name = "event2"))
+
+        // first subscriber
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            // this subscriber should only collect the first event
+            state.contentEvents.take(1).collect {
+                assertEquals(2, order++)
+                assertEquals(events[0], it)
+                // we unlock the mutex and yield to start the second subscriber
+                mutex.unlock()
+                yield()
+            }
+        }
+        // second subscriber
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            // this subscriber suspends until started by the first subscriber
+            assertEquals(0, order++)
+            mutex.withLock {
+                // start the second subscriber
+                assertEquals(3, order++)
+                state.contentEvents.test {
+                    // this should only collect remaining events
+                    assertEquals(events[1], awaitItem())
+                }
+            }
+        }
+
+        // trigger the events
+        assertEquals(1, order++)
+        state.triggerContentEvents(events)
+    }
+    // endregion Content Events
+
+    // region Events
+    @Test
+    fun `triggerOpenUrlEvent - Event emitted`() = runTest {
+        val url = "https://example.com".toUriOrNull()!!
+
+        state.events.test {
+            state.triggerOpenUrlEvent(url)
+            assertEquals(State.Event.OpenUrl(url), awaitItem())
+        }
+    }
+    // endregion Events
+
+    // region Accordion State
+    @Test
+    fun `toggleAccordionSection - opens and closes a section`() = runTest {
+        val accordion = Accordion { listOf(Accordion.Section(it)) }
+        val section = accordion.sections.first()
+
+        state.accordionExpandedSectionsFlow(accordion.id).test {
+            // initial state should be empty
+            assertEquals(emptySet(), awaitItem())
+
+            // toggle open
+            state.toggleAccordionSection(section)
+            assertEquals(setOf(section.id), awaitItem())
+
+            // toggle closed
+            state.toggleAccordionSection(section)
+            assertEquals(emptySet(), awaitItem())
+        }
+    }
+
+    @Test
+    fun `toggleAccordionSection - selecting a new section closes previous`() = runTest {
+        val accordion = Accordion { listOf(Accordion.Section(it), Accordion.Section(it)) }
+        val first = accordion.sections[0]
+        val second = accordion.sections[1]
+
+        state.accordionExpandedSectionsFlow(accordion.id).test {
+            assertEquals(emptySet(), awaitItem())
+
+            // open first
+            state.toggleAccordionSection(first)
+            assertEquals(setOf(first.id), awaitItem())
+
+            // open second -> first should close
+            state.toggleAccordionSection(second)
+            assertEquals(setOf(second.id), awaitItem())
+        }
+    }
+    // endregion Accordion State
+
+    // region Form Fields
+    @Test
+    fun `formFieldValue - returns value stored for the field`() {
+        assertNull(state.formFieldValue("field"))
+
+        state.updateFormFieldValue("field", "value")
+        state.updateFormFieldValue("field2", "value2")
+        assertEquals("value", state.formFieldValue("field"))
+        assertEquals("value2", state.formFieldValue("field2"))
+        assertNull(state.formFieldValue("field3"))
+
+        state.updateFormFieldValue("field", "value2")
+        assertEquals("value2", state.formFieldValue("field"))
+    }
+
+    @Test
+    fun `formFieldValueFlow - Updates to the field value are emitted`() = runTest {
+        val field = "field"
+
+        state.formFieldValueFlow(field).test {
+            assertNull(awaitItem())
+
+            state.updateFormFieldValue(field, "value1")
+            assertEquals("value1", awaitItem())
+
+            state.updateFormFieldValue(field + "2", "invalid")
+            expectNoEvents()
+        }
+    }
+    // endregion Form Fields
 }

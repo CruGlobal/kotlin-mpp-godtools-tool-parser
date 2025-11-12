@@ -19,6 +19,8 @@ import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
+import org.cru.godtools.shared.tool.parser.model.Background
+import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Card
 import org.cru.godtools.shared.tool.parser.model.EventId
@@ -139,6 +141,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     val id by lazy { _id ?: fileName ?: "${manifest.code}-$position" }
     val position by lazy { parentPageContainer.pages.indexOf(this) }
+    val isFirstPage by lazy { parentPageContainer.pages.firstOrNull() == this }
+    val isLastPage by lazy { parentPageContainer.pages.lastOrNull() == this }
 
     private val _id: String?
     @VisibleForTesting
@@ -171,6 +175,15 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     private val _primaryTextColor: Color?
     override val primaryTextColor get() = _primaryTextColor ?: stylesParent.primaryTextColor
+
+    val background by lazy {
+        Background(
+            backgroundColor,
+            backgroundImage,
+            backgroundImageGravity,
+            backgroundImageScaleType,
+        )
+    }
 
     val backgroundColor: Color
 
@@ -243,6 +256,8 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         container: HasPages = Manifest(),
         id: String? = null,
         fileName: String? = null,
+        isHidden: Boolean = false,
+        listeners: Set<EventId> = emptySet(),
         parentPage: String? = null,
         primaryColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
@@ -260,9 +275,9 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         this.fileName = fileName
         _parentPage = parentPage
 
-        isHidden = false
+        this.isHidden = isHidden
 
-        listeners = emptySet()
+        this.listeners = listeners
         dismissListeners = emptySet()
 
         _primaryColor = primaryColor
@@ -309,3 +324,5 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
     val platformControlColor get() = controlColor.toPlatformColor()
     // endregion Kotlin/JS interop
 }
+
+internal val Base.page: Page? get() = parent as? Page ?: parent?.page

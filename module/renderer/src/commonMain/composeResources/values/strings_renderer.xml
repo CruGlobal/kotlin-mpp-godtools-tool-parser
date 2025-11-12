@@ -1,0 +1,20 @@
+<resources>
+    <!-- Common Tool Strings -->
+    <eat-comment />
+    <string name="tool_loading">The tool you requested is loading…</string>
+    <string name="tool_not_found">The tool you requested cannot be found</string>
+    <string name="tool_offline">The tool you requested requires an internet connection to open</string>
+
+    <!-- Lesson Strings -->
+    <eat-comment />
+    <string name="lesson_accessibility_action_close">Close Lesson</string>
+    <string name="lesson_accessibility_action_page_previous">Previous Page</string>
+    <string name="lesson_accessibility_action_page_next">Next Page</string>
+
+    <!-- Tool Content Strings -->
+    <eat-comment />
+    <string name="tool_renderer_accordion_section_action_collapse">Collapse</string>
+    <string name="tool_renderer_accordion_section_action_expand">Expand</string>
+    <string name="tool_renderer_input_error_required">%1$s is required</string>
+    <string name="tool_renderer_input_error_invalid_email">Please enter a valid email address</string>
+</resources>

@@ -85,6 +85,32 @@ class CardCollectionPageTest : UsesResources("model/page") {
     }
     // endregion Parse XML
 
+    @Test
+    fun `Property - children`() {
+        val page = CardCollectionPage(header = { CardCollectionPage.Header(it) }) {
+            listOf(
+                CardCollectionPage.Card(it) { listOf(Text(it, "text")) },
+                CardCollectionPage.Card(it) { listOf(Text(it, "text")) },
+            )
+        }
+
+        assertEquals(3, page.children.size)
+        assertEquals(listOf(page.header!!) + page.cards, page.children)
+    }
+
+    @Test
+    fun `Property - children - No Header`() {
+        val page = CardCollectionPage {
+            listOf(
+                CardCollectionPage.Card(it) { listOf(Text(it, "text")) },
+                CardCollectionPage.Card(it) { listOf(Text(it, "text")) },
+            )
+        }
+
+        assertEquals(2, page.children.size)
+        assertEquals(page.cards, page.children)
+    }
+
     // region Header
     @Test
     fun `Property - header - Styles - textAlign`() = runTest {

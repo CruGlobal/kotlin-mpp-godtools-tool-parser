@@ -127,6 +127,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          lfs: 'true'
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -147,7 +149,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Android Unit Tests
-        run: ./gradlew test koverXmlReportRelease --scan --no-build-cache
+        run: ./gradlew test verifyPaparazzi koverXmlReportRelease --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v5
         with:
@@ -159,7 +161,9 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: android-unit-test-results
-          path: "**/build/reports/tests/"
+          path: |
+            **/build/paparazzi/failures/
+            **/build/reports/tests/
       - name: Archive kover results
         if: always()
         uses: actions/upload-artifact@v5
@@ -187,7 +191,7 @@ jobs:
           key: ${{ runner.os }}-konan-${{ github.sha }}
           restore-keys: ${{ runner.os }}-konan-
       - name: Run iOS Unit Tests
-        run: ./gradlew iosX64Test --scan
+        run: ./gradlew iosSimulatorArm64Test iosX64Test --scan
 
   js_tests:
     name: JS Unit Tests
@@ -247,6 +251,9 @@ jobs:
         run: ./gradlew podspec
       - name: Lint podspec
         run: bundle exec pod spec lint *.podspec --allow-warnings --verbose
+        env:
+          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
+          GIT_LFS_SKIP_SMUDGE: 1
 
   check_version:
     name: Check Version is Unreleased
@@ -366,6 +373,9 @@ jobs:
         run: bundle exec pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
       - name: Push podspec
         run: bundle exec pod repo push CruGlobal *.podspec --allow-warnings
+        env:
+          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
+          GIT_LFS_SKIP_SMUDGE: 1
 
   deploy_npm:
     name: Publish npm package

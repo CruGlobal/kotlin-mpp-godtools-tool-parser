@@ -1,0 +1,118 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
+package org.cru.godtools.shared.renderer.content
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
+import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
+import org.cru.godtools.shared.renderer.content.extensions.visibility
+import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ContentEventListener
+import org.cru.godtools.shared.tool.parser.model.Tabs
+import org.cru.godtools.shared.tool.parser.model.primaryColor
+import org.cru.godtools.shared.tool.parser.model.primaryTextColor
+import org.cru.godtools.shared.tool.parser.model.stylesParent
+
+internal const val TestTagTabs = "tabs"
+internal const val TestTagTab = "tab"
+
+@Composable
+internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
+    val invisible by remember(tabs, state) {
+        tabs.isInvisibleFlow(state)
+    }.collectAsState(tabs.isInvisible(state))
+
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
+    val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
+    val borderShape = MaterialTheme.shapes.small
+    val selectedTab by remember(tabs) {
+        derivedStateOf {
+            tabs.tabs.getOrNull(selectedIndex)
+        }
+    }
+
+    ContentEventListener(state, tabs) { event ->
+        tabs.tabs.firstOrNull { event in it.listeners }?.let {
+            selectedIndex = it.position
+        }
+    }
+
+    SecondaryTabRow(
+        selectedTabIndex = selectedIndex,
+        modifier = modifier
+            .testTag(tag = TestTagTabs)
+            .visibility(model = tabs, state = state)
+            .padding(horizontal = ContentHorizontalPadding)
+            .border(
+                BorderStroke(width = 2.dp, borderColor),
+                borderShape
+            )
+            // Needed to clip SecondaryTabRow when applying border modifier. ~Levi
+            .clip(borderShape),
+        containerColor = Color.White,
+        contentColor = Color.White,
+        indicator = @Composable {
+        },
+        divider = @Composable {
+        },
+        tabs = @Composable {
+            tabs.tabs.forEachIndexed { index, tab ->
+
+                val isSelected: Boolean = index == selectedIndex
+                val primaryColor = tab.stylesParent.primaryColor.toComposeColor()
+                val primaryTextColor = tab.stylesParent.primaryTextColor.toComposeColor()
+                val backgroundColor = if (isSelected) primaryColor else primaryTextColor
+
+                Tab(
+                    selected = isSelected,
+                    onClick = {
+                        selectedIndex = index
+                    },
+                    modifier = Modifier
+                        .testTag(TestTagTab)
+                        .background(backgroundColor),
+                    text = {
+                        tab.label?.let {
+                            Text(
+                                text = it.text
+                            )
+                        }
+                    },
+                    enabled = !invisible,
+                    selectedContentColor = primaryTextColor,
+                    unselectedContentColor = primaryColor
+                )
+            }
+        }
+    )
+
+    Column(modifier = Modifier.visibility(tabs, state)) {
+        RenderContent(
+            content = selectedTab?.content.orEmpty(),
+            state = state,
+        )
+    }
+}

@@ -26,12 +26,13 @@ class TipPage : BaseModel, Parent {
 
     @RestrictTo(RestrictTo.Scope.TESTS)
     internal constructor(
-        tip: Tip,
-        position: Int,
+        tip: Tip = Tip(),
+        position: Int = 0,
+        content: ((TipPage) -> List<Content>)? = null,
     ) : super(tip) {
         this.tip = tip
         this.position = position
-        content = emptyList()
+        this.content = content?.invoke(this).orEmpty()
     }
 
     val isLastPage get() = position == tip.pages.size - 1

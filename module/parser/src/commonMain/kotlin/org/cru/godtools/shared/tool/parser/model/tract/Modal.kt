@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.tool.parser.model.tract
 
+import androidx.annotation.RestrictTo
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
@@ -71,6 +72,21 @@ class Modal : BaseModel, Parent, Styles {
             }
         }
         this.title = title
+    }
+
+    @JsName("createTestModal")
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        page: TractPage = TractPage(),
+        dismissListeners: Set<EventId> = emptySet(),
+        title: ((Modal) -> Text?)? = null,
+        content: ((Modal) -> List<Content>)? = null,
+    ) : super(page) {
+        this.page = page
+        listeners = emptySet()
+        this.dismissListeners = dismissListeners
+        this.title = title?.invoke(this)
+        this.content = content?.invoke(this).orEmpty()
     }
 
     // region Kotlin/JS interop

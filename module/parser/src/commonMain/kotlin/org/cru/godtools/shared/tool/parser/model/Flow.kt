@@ -3,6 +3,7 @@
 
 package org.cru.godtools.shared.tool.parser.model
 
+import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.js.ExperimentalJsExport
@@ -14,8 +15,6 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_FLOW
 import org.cru.godtools.shared.tool.parser.expressions.Expression
 import org.cru.godtools.shared.tool.parser.model.Dimension.Companion.toDimensionOrNull
-import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ITEM_WIDTH
-import org.cru.godtools.shared.tool.parser.model.Flow.Companion.DEFAULT_ROW_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
 import org.cru.godtools.shared.tool.parser.xml.getDeviceAttributeValue
@@ -44,6 +43,8 @@ class Flow : Content {
     @JsName("_items")
     val items: List<Item>
 
+    override val children get() = items
+
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_FLOW)
 
@@ -62,10 +63,24 @@ class Flow : Content {
 
             // we haven't handled this tag yet, if it's a content element wrap it in an Item.
             if (parser.eventType == XmlPullParser.START_TAG) {
-                val item = Item(this) { parser.parseContentElement(it)?.takeUnless { it.isIgnored } }
+                val item = Item(this) { listOfNotNull(parser.parseContentElement(it)?.takeUnless { it.isIgnored }) }
                 if (item.content.isNotEmpty()) items += item
             }
         }
+    }
+
+    @JsName("createTestFlow")
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    constructor(
+        parent: Base = Manifest(),
+        rowGravity: Gravity.Horizontal = DEFAULT_ROW_GRAVITY,
+        goneIf: String? = null,
+        invisibleIf: String? = null,
+        items: ((Flow) -> List<Item>)? = null
+    ) : super(parent, goneIf = goneIf, invisibleIf = invisibleIf) {
+        itemWidth = DEFAULT_ITEM_WIDTH
+        this.rowGravity = rowGravity
+        this.items = items?.invoke(this).orEmpty()
     }
 
     override val isIgnored get() = !manifest.config.supportsFeature(FEATURE_FLOW) || super.isIgnored
@@ -106,12 +121,18 @@ class Flow : Content {
             content = parseContent(parser)
         }
 
-        internal constructor(flow: Flow, content: (Item) -> Content?) : super(flow) {
+        @JsName("createFlowItem")
+        @VisibleForTesting
+        constructor(
+            flow: Flow = Flow(),
+            width: Dimension? = null,
+            content: ((Flow) -> List<Content>)? = null
+        ) : super(flow) {
             this.flow = flow
-            _width = null
+            _width = width
             invisibleIf = null
             goneIf = null
-            this.content = listOfNotNull(content(this))
+            this.content = content?.invoke(flow).orEmpty()
         }
     }
 }

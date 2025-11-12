@@ -20,6 +20,7 @@ dependencyResolutionManagement {
         maven("https://jitpack.io") {
             content {
                 includeGroup("com.strumenta.antlr-kotlin")
+                includeGroupByRegex("com\\.github\\..*")
             }
         }
         maven("https://raw.githubusercontent.com/Deezer/KustomExport/mvn-repo") {
@@ -47,6 +48,7 @@ include("module:interop")
 include("module:parser")
 include("module:parser-base")
 include("module:parser-expressions")
+include("module:renderer")
 include("module:renderer-state")
 include("module:user-activity")
 

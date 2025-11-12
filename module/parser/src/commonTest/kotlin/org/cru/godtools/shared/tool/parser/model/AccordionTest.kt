@@ -82,4 +82,17 @@ class AccordionTest : UsesResources() {
 
         assertFailsWith(IllegalStateException::class) { section.getAnalyticsEvents(AnalyticsEvent.Trigger.UNKNOWN) }
     }
+
+    @Test
+    fun `Property - children`() {
+        val accordion = Accordion {
+            listOf(
+                Accordion.Section(it) { listOf(Text(it, "text"),) },
+                Accordion.Section(it) { listOf(Text(it, "text"),) },
+            )
+        }
+
+        assertEquals(2, accordion.sections.size)
+        assertEquals(accordion.sections, accordion.children)
+    }
 }

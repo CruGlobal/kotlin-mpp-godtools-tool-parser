@@ -16,6 +16,7 @@ import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.TEST_GRAVITY
 import org.cru.godtools.shared.tool.parser.model.TestColors
+import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.textColor
 
 @RunOnAndroidWith(AndroidJUnit4::class)
@@ -123,6 +124,28 @@ class TractPageTest : UsesResources("model/tract") {
         val manifest = Manifest(textScale = 3.0)
         assertEquals(3.0, TractPage(manifest).textScale, 0.001)
         assertEquals(6.0, TractPage(manifest, textScale = 2.0).textScale, 0.001)
+    }
+
+    @Test
+    fun `Property - children`() {
+        val page = TractPage(
+            hero = { Hero(it) { listOf(Text(it, text = "text")) } },
+            cards = {
+                listOf(
+                    TractPage.Card(it) { listOf(Text(it, "text")) },
+                    TractPage.Card(it) { listOf(Text(it, "text")) },
+                )
+            },
+            modals = {
+                listOf(
+                    Modal(it) { listOf(Text(it, "text")) },
+                    Modal(it) { listOf(Text(it, "text")) },
+                )
+            },
+        )
+
+        assertEquals(5, page.children.size)
+        assertEquals((listOf(page.hero!!) + page.cards + page.modals).toSet(), page.children.toSet())
     }
 
     private suspend fun parsePageXml(file: String) = TractPage(Manifest(), null, getTestXmlParser(file))

@@ -4,6 +4,7 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.VisibleForTesting
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.common.model.Uri
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent.Trigger
 import org.cru.godtools.shared.tool.parser.xml.XmlPullParser
@@ -41,13 +42,16 @@ class Link : Content, HasAnalyticsEvents, Clickable {
     override val isIgnored get() = super.isIgnored || !isClickable
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    @JsName("createTestLink")
+    constructor(
         parent: Base = Manifest(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
-        text: ((Base) -> Text?)? = null
-    ) : super(parent) {
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+        text: ((Base) -> Text?)? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.analyticsEvents = analyticsEvents
         this.events = events
         this.url = url

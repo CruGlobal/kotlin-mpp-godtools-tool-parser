@@ -118,19 +118,23 @@ class Button : Content, HasAnalyticsEvents, Clickable {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    @JsName("createTestButton")
+    constructor(
         parent: Base = Manifest(),
         style: Style? = null,
         color: Color? = null,
         gravity: Gravity.Horizontal = DEFAULT_GRAVITY,
         width: Dimension = DEFAULT_WIDTH,
+        iconName: String? = null,
         iconGravity: Gravity.Horizontal = DEFAULT_ICON_GRAVITY,
         iconSize: Int = DEFAULT_ICON_SIZE,
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         events: List<EventId> = emptyList(),
         url: Uri? = null,
-        text: ((Base) -> Text?)? = null
-    ) : super(parent) {
+        invisibleIf: String? = null,
+        goneIf: String? = null,
+        text: ((Base) -> Text?)? = null,
+    ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
         this.events = events
         this.url = url
 
@@ -140,7 +144,7 @@ class Button : Content, HasAnalyticsEvents, Clickable {
         _buttonColor = color
         backgroundColor = DEFAULT_BACKGROUND_COLOR
 
-        iconName = null
+        this.iconName = iconName
         this.iconGravity = iconGravity
         this.iconSize = iconSize
 

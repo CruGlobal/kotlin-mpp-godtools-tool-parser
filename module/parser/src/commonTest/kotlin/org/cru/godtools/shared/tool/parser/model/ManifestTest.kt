@@ -17,7 +17,6 @@ import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_C
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
 import org.cru.godtools.shared.tool.parser.internal.color
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
-import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
 import org.cru.godtools.shared.tool.parser.model.page.ContentPage
@@ -329,16 +328,17 @@ class ManifestTest : UsesResources() {
     @Test
     fun testLessonNavBarColors() {
         val manifestNull: Manifest? = null
-        assertEquals(DEFAULT_LESSON_NAV_BAR_COLOR, manifestNull.lessonNavBarColor)
+        assertEquals(Manifest.DEFAULT_BACKGROUND_COLOR, manifestNull.lessonNavBarColor)
         assertEquals(Manifest.DEFAULT_PRIMARY_COLOR, manifestNull.lessonNavBarControlColor)
 
         val manifestPrimary = Manifest(
             type = Manifest.Type.LESSON,
             primaryColor = TestColors.GREEN,
-            primaryTextColor = TestColors.RED
+            primaryTextColor = TestColors.RED,
+            backgroundColor = TestColors.BLUE
         )
-        assertEquals(DEFAULT_LESSON_NAV_BAR_COLOR, manifestPrimary.navBarColor)
-        assertEquals(DEFAULT_LESSON_NAV_BAR_COLOR, manifestPrimary.lessonNavBarColor)
+        assertEquals(TestColors.BLUE, manifestPrimary.navBarColor)
+        assertEquals(TestColors.BLUE, manifestPrimary.lessonNavBarColor)
         assertEquals(TestColors.GREEN, manifestPrimary.navBarControlColor)
         assertEquals(TestColors.GREEN, manifestPrimary.lessonNavBarControlColor)
 
@@ -347,7 +347,8 @@ class ManifestTest : UsesResources() {
             primaryColor = TestColors.RED,
             primaryTextColor = TestColors.RED,
             navBarColor = TestColors.GREEN,
-            navBarControlColor = TestColors.BLUE
+            navBarControlColor = TestColors.BLUE,
+            backgroundColor = TestColors.RED,
         )
         assertEquals(TestColors.GREEN, manifestNavBar.navBarColor)
         assertEquals(TestColors.GREEN, manifestNavBar.lessonNavBarColor)

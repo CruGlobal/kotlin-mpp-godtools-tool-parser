@@ -31,6 +31,7 @@ kotlin {
                 api(project(":module:interop"))
                 api(project(":module:parser"))
                 api(project(":module:parser-base"))
+                api(project(":module:renderer"))
                 api(project(":module:renderer-state"))
                 api(project(":module:user-activity"))
             }
@@ -62,6 +63,7 @@ kotlin {
             export(project(":module:interop"))
             export(project(":module:parser"))
             export(project(":module:parser-base"))
+            export(project(":module:renderer"))
             export(project(":module:renderer-state"))
             export(project(":module:user-activity"))
         }

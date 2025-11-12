@@ -31,7 +31,6 @@ import org.cru.godtools.shared.tool.parser.model.ImageScaleType.Companion.toImag
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_BACKGROUND_COLOR
 import org.cru.godtools.shared.tool.parser.model.Multiselect.Companion.XML_MULTISELECT_OPTION_SELECTED_COLOR
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
-import org.cru.godtools.shared.tool.parser.model.lesson.DEFAULT_LESSON_NAV_BAR_COLOR
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 import org.cru.godtools.shared.tool.parser.model.lesson.XMLNS_LESSON
 import org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
@@ -145,7 +144,7 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val navBarColor
         get() = when {
             _navBarColor != null -> _navBarColor
-            type == Type.LESSON -> DEFAULT_LESSON_NAV_BAR_COLOR
+            type == Type.LESSON -> backgroundColor
             else -> primaryColor
         }
     @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
@@ -157,6 +156,9 @@ class Manifest : BaseModel, Styles, HasPages {
             else -> primaryTextColor
         }
 
+    val background by lazy {
+        Background(backgroundColor, backgroundImage, backgroundImageGravity, backgroundImageScaleType)
+    }
     internal val backgroundColor: Color
     private val _backgroundImage: String?
     val backgroundImage get() = getResource(_backgroundImage)
@@ -292,6 +294,9 @@ class Manifest : BaseModel, Styles, HasPages {
         navBarColor: Color? = null,
         navBarControlColor: Color? = null,
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
+        backgroundImage: String? = null,
+        backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
+        backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         cardBackgroundColor: Color? = null,
         categoryLabelColor: Color? = null,
         pageControlColor: Color = DEFAULT_CONTROL_COLOR,
@@ -302,8 +307,8 @@ class Manifest : BaseModel, Styles, HasPages {
         resources: ((Manifest) -> List<Resource>)? = null,
         shareables: ((Manifest) -> List<Shareable>)? = null,
         tips: ((Manifest) -> List<Tip>)? = null,
-        pages: ((Manifest) -> List<Page>)? = null,
         pageXmlFiles: List<XmlFile> = emptyList(),
+        pages: ((Manifest) -> List<Page>)? = null,
     ) {
         this.config = config
 
@@ -320,9 +325,9 @@ class Manifest : BaseModel, Styles, HasPages {
         _navBarControlColor = navBarControlColor
 
         this.backgroundColor = backgroundColor
-        _backgroundImage = null
-        backgroundImageGravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY
-        backgroundImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE
+        _backgroundImage = backgroundImage
+        this.backgroundImageGravity = backgroundImageGravity
+        this.backgroundImageScaleType = backgroundImageScaleType
 
         _cardBackgroundColor = cardBackgroundColor
         _categoryLabelColor = categoryLabelColor
@@ -468,7 +473,7 @@ class Manifest : BaseModel, Styles, HasPages {
 val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor
 val Manifest?.navBarControlColor get() = this?.navBarControlColor ?: primaryTextColor
 
-val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: DEFAULT_LESSON_NAV_BAR_COLOR
+val Manifest?.lessonNavBarColor get() = this?.navBarColor ?: backgroundColor
 val Manifest?.lessonNavBarControlColor get() = this?.navBarControlColor ?: primaryColor
 
 val Manifest?.backgroundColor get() = this?.backgroundColor ?: Manifest.DEFAULT_BACKGROUND_COLOR

@@ -5,8 +5,11 @@ import androidx.annotation.VisibleForTesting
 import com.github.ajalt.colormath.Color
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
+import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.EventId
 import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.HasPages
 import org.cru.godtools.shared.tool.parser.model.ImageScaleType
@@ -53,27 +56,37 @@ class LessonPage : Page, Parent {
         }
     }
 
+    @Suppress("VisibleForTests")
+    @JsName("createTestLessonPage")
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
-        manifest: Manifest = Manifest(),
+    constructor(
+        container: HasPages = Manifest(),
+        id: String? = null,
+        isHidden: Boolean = false,
+        listeners: Set<EventId> = emptySet(),
         analyticsEvents: List<AnalyticsEvent> = emptyList(),
         backgroundColor: Color = DEFAULT_BACKGROUND_COLOR,
         backgroundImage: String? = null,
         backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
         backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
         controlColor: Color? = null,
-        textScale: Double = DEFAULT_TEXT_SCALE
+        textColor: Color? = null,
+        textScale: Double = DEFAULT_TEXT_SCALE,
+        content: ((Base) -> List<Content>)? = null,
     ) : super(
-        manifest,
+        container,
+        id = id,
+        isHidden = isHidden,
+        listeners = listeners,
         backgroundColor = backgroundColor,
         backgroundImage = backgroundImage,
         backgroundImageGravity = backgroundImageGravity,
         backgroundImageScaleType = backgroundImageScaleType,
         controlColor = controlColor,
-        textScale = textScale
+        textColor = textColor,
+        textScale = textScale,
     ) {
         this.analyticsEvents = analyticsEvents
-
-        content = emptyList()
+        this.content = content?.invoke(this).orEmpty()
     }
 }
