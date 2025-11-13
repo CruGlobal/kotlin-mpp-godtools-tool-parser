@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -17,6 +15,7 @@ import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
+import org.cru.godtools.shared.renderer.content.extensions.produceIsInvisible
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Card
@@ -26,9 +25,7 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
 
-    val invisible by remember(card, state) {
-        card.isInvisibleFlow(state)
-    }.collectAsState(card.isInvisible(state))
+    val isInvisible by card.produceIsInvisible(state)
 
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
@@ -36,7 +33,7 @@ internal fun RenderContentCard(card: Card, state: State, modifier: Modifier = Mo
         ),
         elevation = ToolTheme.cardElevation(),
         onClick = { card.handleClickable(state, focusManager = focusManager, scope = scope) },
-        enabled = !invisible,
+        enabled = !isInvisible,
         modifier = modifier
             .visibility(card, state)
             .fillMaxWidth()
