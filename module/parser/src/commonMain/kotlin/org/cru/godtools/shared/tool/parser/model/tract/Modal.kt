@@ -32,7 +32,7 @@ class Modal : BaseModel, Parent, Styles {
     }
 
     val page: TractPage
-    val id get() = "${page.id}-$position"
+    val id get() = "${page.id}-modal-$position"
     private val position get() = page.modals.indexOf(this)
 
     val title: Text?

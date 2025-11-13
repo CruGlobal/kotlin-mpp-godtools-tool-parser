@@ -162,7 +162,7 @@ class TractPage : Page {
 
         val page: TractPage
 
-        val id get() = "${page.id}-$position"
+        val id get() = "${page.id}-card-$position"
         val position: Int
         val visiblePosition get() = page.visibleCards.indexOf(this).takeUnless { it == -1 }
         val isLastVisibleCard get() = this == page.visibleCards.lastOrNull()

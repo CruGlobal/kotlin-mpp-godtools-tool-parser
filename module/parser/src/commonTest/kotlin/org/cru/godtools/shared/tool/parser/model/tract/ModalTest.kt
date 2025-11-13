@@ -20,7 +20,7 @@ class ModalTest : UsesResources("model/tract") {
     @Test
     fun testParseModal() = runTest {
         val modal = TractPage(Manifest(), "testPage", getTestXmlParser("modal.xml")).modals.single()
-        assertEquals("testPage-0", modal.id)
+        assertEquals("testPage-modal-0", modal.id)
         assertFixedAttributes(modal)
         assertEquals("listener1 listener2".toEventIds().toSet(), modal.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), modal.dismissListeners)
