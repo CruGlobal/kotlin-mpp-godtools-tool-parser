@@ -46,6 +46,7 @@ kotlin {
                 implementation(libs.gtoSupport.androidx.lifecycle)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
+                implementation(libs.kotlin.immutable.collections)
             }
         }
         commonTest {
