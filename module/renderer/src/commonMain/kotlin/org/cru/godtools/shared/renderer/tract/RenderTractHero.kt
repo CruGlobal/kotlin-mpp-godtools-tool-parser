@@ -13,6 +13,7 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -21,14 +22,17 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.RenderContent
 import org.cru.godtools.shared.renderer.content.RenderTextNode
+import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.tips.TipArrowHeight
 import org.cru.godtools.shared.renderer.tips.TipUpArrow
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.backgroundColor
 
@@ -93,6 +97,12 @@ fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State
             }
         }
         page.hero?.let { hero ->
+            val coroutineScope = rememberCoroutineScope()
+            LifecycleResumeEffect(hero, state) {
+                val visible = hero.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
+                onPauseOrDispose { visible.forEach { it.cancel() } }
+            }
+
             Column(Modifier.padding(horizontal = 16.dp)) {
                 hero.heading?.let { heading ->
                     ProvideTextStyle(ToolTheme.TractHeroHeadingTextStyle) {
