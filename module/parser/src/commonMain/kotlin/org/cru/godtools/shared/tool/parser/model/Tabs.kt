@@ -94,13 +94,13 @@ class Tabs : Content {
         @JsName("createTestTab")
         constructor(
             parent: Tabs = Tabs(),
-            label: Text? = null,
+            label: ((Tab) -> Text?)? = null,
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             listeners: Set<EventId> = emptySet(),
             content: ((Tab) -> List<Content>)? = null
         ) : super(parent) {
             tabs = parent
-            this.label = label
+            this.label = label?.invoke(this)
             this.analyticsEvents = analyticsEvents
             this.listeners = listeners
             this.content = content?.invoke(this).orEmpty()

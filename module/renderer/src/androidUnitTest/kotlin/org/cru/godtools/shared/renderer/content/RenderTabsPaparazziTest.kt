@@ -10,7 +10,6 @@ import org.cru.godtools.shared.tool.parser.model.Tabs
 import org.cru.godtools.shared.tool.parser.model.Text
 
 class RenderTabsPaparazziTest : BasePaparazziTest() {
-
     @Test
     fun `RenderTabs() - Tabs`() = contentSnapshot {
         RenderContentStack(
@@ -21,7 +20,7 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                     listOf(
                         Tabs.Tab(
                             parent = it,
-                            label = Text(text = "1")
+                            label = { Text(text = "1") },
                         ) {
                             listOf(
                                 Text(
@@ -39,7 +38,7 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                         },
                         Tabs.Tab(
                             parent = it,
-                            label = Text(text = "2")
+                            label = { Text(text = "2") },
                         ) {
                             listOf(
                                 Text(
@@ -54,11 +53,11 @@ class RenderTabsPaparazziTest : BasePaparazziTest() {
                                     gravity = Gravity.Horizontal.CENTER,
                                 )
                             )
-                        }
+                        },
                     )
                 },
                 Spacer(),
-                Text(text = "Render Tabs")
+                Text(text = "Render Tabs"),
             )
         )
     }
