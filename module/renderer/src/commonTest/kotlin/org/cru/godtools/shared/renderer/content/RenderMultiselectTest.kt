@@ -156,7 +156,7 @@ class RenderMultiselectTest : BaseRenderContentTest() {
             onNodeWithText("option 2").performClick()
             assertEquals("event2", awaitItem().event.action)
 
-            // 2 options are already selected, so we shouldn't be able to select a 3rd option
+            // 2 options are already selected, selecting a 3rd option shouldn't trigger an AnalyticsEvent
             onNodeWithText("option 3").performClick()
             expectNoEvents()
 
