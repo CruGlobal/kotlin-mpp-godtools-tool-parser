@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
+import org.cru.godtools.shared.renderer.content.extensions.produceIsInvisible
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
@@ -34,7 +35,7 @@ internal fun RenderInlineTip(model: InlineTip, state: State) {
 
     val tip = model.tip ?: return
     val isComplete by tip.produceIsComplete()
-    val isInvisible by remember(state, model) { model.isInvisibleFlow(state) }.collectAsState(model.isInvisible(state))
+    val isInvisible by model.produceIsInvisible(state)
 
     Surface(
         onClick = { state.triggerEvent(State.Event.OpenTip(tip.id)) },

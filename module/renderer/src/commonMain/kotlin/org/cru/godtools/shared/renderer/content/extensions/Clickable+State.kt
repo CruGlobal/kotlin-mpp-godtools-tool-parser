@@ -51,7 +51,7 @@ private fun Clickable.isClickableModifierNeeded(state: State): Boolean {
     val hasAnalyticsEvents = (this as? HasAnalyticsEvents)?.getAnalyticsEvents(AnalyticsEvent.Trigger.CLICKED)
         ?.isNotEmpty() == true
     val isInvisible = when {
-        this is Visibility -> remember(this, state) { isInvisibleFlow(state) }.collectAsState(isInvisible(state)).value
+        this is Visibility -> produceIsInvisible(state).value
         else -> false
     }
 

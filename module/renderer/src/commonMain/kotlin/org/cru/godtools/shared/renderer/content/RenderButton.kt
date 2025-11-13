@@ -8,9 +8,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -19,6 +17,7 @@ import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
 import org.cru.godtools.shared.renderer.content.extensions.alignment
 import org.cru.godtools.shared.renderer.content.extensions.handleClickable
+import org.cru.godtools.shared.renderer.content.extensions.produceIsInvisible
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.content.extensions.width
 import org.cru.godtools.shared.renderer.state.State
@@ -33,9 +32,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
 
-    val invisible by remember(button, state) {
-        button.isInvisibleFlow(state)
-    }.collectAsState(button.isInvisible(state))
+    val isInvisible by button.produceIsInvisible(state)
 
     val minSize = LocalMinimumInteractiveComponentSize.current
     CompositionLocalProvider(
@@ -45,7 +42,7 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
     ) {
         Button(
             onClick = { button.handleClickable(state, focusManager = focusManager, scope = scope) },
-            enabled = !invisible,
+            enabled = !isInvisible,
             colors = when (button.style) {
                 Button.Style.OUTLINED -> ButtonDefaults.outlinedButtonColors(
                     containerColor = button.backgroundColor.toComposeColor()

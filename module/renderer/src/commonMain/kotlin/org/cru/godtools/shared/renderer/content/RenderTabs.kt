@@ -15,7 +15,6 @@ import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
+import org.cru.godtools.shared.renderer.content.extensions.produceIsInvisible
 import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvents
 import org.cru.godtools.shared.renderer.content.extensions.visibility
 import org.cru.godtools.shared.renderer.state.State
@@ -47,12 +47,9 @@ internal const val TestTagTab = "tab"
 internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
 
-    val invisible by remember(tabs, state) {
-        tabs.isInvisibleFlow(state)
-    }.collectAsState(tabs.isInvisible(state))
-
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
+    val isInvisible by tabs.produceIsInvisible(state)
     val borderColor = tabs.stylesParent.primaryColor.toComposeColor()
     val borderShape = MaterialTheme.shapes.small
     val selectedTab by remember(tabs) { derivedStateOf { tabs.tabs.getOrNull(selectedIndex) } }
@@ -89,7 +86,7 @@ internal fun ColumnScope.RenderTabs(tabs: Tabs, state: State, modifier: Modifier
                     selectedIndex = index
                 },
                 text = tab.label?.let { { Text(it.text) } },
-                enabled = !invisible,
+                enabled = !isInvisible,
                 selectedContentColor = primaryTextColor,
                 unselectedContentColor = primaryColor,
                 modifier = Modifier
