@@ -40,7 +40,7 @@ class CardCollectionPageTest : UsesResources("model/page") {
 
             assertEquals(2, cards.size)
             with(cards[0]) {
-                assertEquals("${page.id}-0", id)
+                assertEquals("${page.id}-card-0", id)
                 assertTrue(getAnalyticsEvents(Trigger.VISIBLE).isEmpty())
                 assertTrue(getAnalyticsEvents(Trigger.HIDDEN).isEmpty())
                 assertEquals(page.cardBackgroundColor, backgroundColor)

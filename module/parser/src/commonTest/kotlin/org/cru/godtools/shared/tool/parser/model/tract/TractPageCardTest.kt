@@ -29,7 +29,7 @@ class TractPageCardTest : UsesResources("model/tract") {
     @Test
     fun verifyParseCard() = runTest {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
-        assertEquals("page.xml-0", card.id)
+        assertEquals("page.xml-card-0", card.id)
         assertEquals("Card 1", card.label!!.text)
         assertEquals(card.primaryColor, card.label!!.textColor)
         assertNotEquals(card.textColor, card.label!!.textColor)

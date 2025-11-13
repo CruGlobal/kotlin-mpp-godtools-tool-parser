@@ -140,7 +140,7 @@ class CardCollectionPage : Page {
         val page: CardCollectionPage
 
         private val _id: String?
-        val id get() = _id ?: "${page.id}-$position"
+        val id get() = _id ?: "${page.id}-card-$position"
         val position get() = page.cards.indexOf(this)
 
         @Suppress("ktlint:standard:property-naming") // https://github.com/pinterest/ktlint/issues/2448
