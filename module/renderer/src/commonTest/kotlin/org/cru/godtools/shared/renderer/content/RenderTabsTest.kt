@@ -30,14 +30,14 @@ class RenderTabsTest : BaseRenderContentTest() {
         listOf(
             Tabs.Tab(
                 parent = it,
-                label = Text(text = "1"),
-                listeners = setOf(TAB_1_EVENT_LISTENER)
+                label = { Text(text = "1") },
+                listeners = setOf(TAB_1_EVENT_LISTENER),
             ),
             Tabs.Tab(
                 parent = it,
-                label = Text(text = "2"),
-                listeners = setOf(TAB_2_EVENT_LISTENER)
-            )
+                label = { Text(text = "2") },
+                listeners = setOf(TAB_2_EVENT_LISTENER),
+            ),
         )
     }
 
