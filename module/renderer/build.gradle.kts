@@ -36,6 +36,7 @@ kotlin {
                 implementation(compose.runtime)
 
                 api(libs.circuit.runtime)
+                api(libs.kotlin.immutable.collections)
                 implementation(libs.androidx.graphics.shapes)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.coil.compose)
@@ -46,7 +47,6 @@ kotlin {
                 implementation(libs.gtoSupport.androidx.lifecycle)
                 implementation(libs.gtoSupport.compose)
                 implementation(libs.gtoSupport.okio)
-                implementation(libs.kotlin.immutable.collections)
             }
         }
         commonTest {
