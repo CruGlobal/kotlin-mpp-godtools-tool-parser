@@ -26,7 +26,7 @@ androidx-annotation = { module = "androidx.annotation:annotation", version.ref =
 androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.9.5"
 androidx-graphics-shapes = "androidx.graphics:graphics-shapes:1.1.0"
 androidx-lifecycle-runtime-compose = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.9.6"
-androidx-lifecycle-testing = "androidx.lifecycle:lifecycle-runtime-testing:2.9.4"
+androidx-lifecycle-testing = "androidx.lifecycle:lifecycle-runtime-testing:2.10.0"
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 antlr-kotlin-gradle = { module = "com.strumenta:antlr-kotlin-gradle-plugin", version.ref = "antlr-kotlin" }
 antlr-kotlin-runtime = { module = "com.strumenta:antlr-kotlin-runtime", version.ref = "antlr-kotlin" }
