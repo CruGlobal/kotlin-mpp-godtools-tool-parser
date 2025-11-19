@@ -23,7 +23,7 @@ robolectric = "4.15.1"
 [libraries]
 android-gradle = "com.android.tools.build:gradle:8.13.1"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
-androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.9.4"
+androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.9.5"
 androidx-graphics-shapes = "androidx.graphics:graphics-shapes:1.1.0"
 androidx-lifecycle-runtime-compose = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.9.6"
 androidx-lifecycle-testing = "androidx.lifecycle:lifecycle-runtime-testing:2.9.4"
