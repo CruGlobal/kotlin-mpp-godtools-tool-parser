@@ -78,7 +78,7 @@ compose = { id = "org.jetbrains.compose", version = "1.9.3" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.3" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
 paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha02" }
