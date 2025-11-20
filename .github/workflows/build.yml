@@ -31,7 +31,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           lfs: 'true'
       - name: Setup Java JDK
@@ -175,7 +175,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -197,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -226,7 +226,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Java JDK
@@ -262,7 +262,7 @@ jobs:
       tag: ${{ steps.tag_name.outputs.tag }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Find Version
         id: version
         run: grep ^version= gradle.properties >> $GITHUB_OUTPUT
@@ -283,7 +283,7 @@ jobs:
     needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Create Tag
         env:
           TAG_NAME: ${{ needs.check_version.outputs.tag }}
@@ -315,7 +315,7 @@ jobs:
     needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -339,7 +339,7 @@ jobs:
     needs: [ build, check_metadata, ktlint, lint, ios_tests, check_version ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Java JDK
@@ -384,7 +384,7 @@ jobs:
     needs: [ build, check_metadata, ktlint, lint, js_tests, check_version ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup Java JDK

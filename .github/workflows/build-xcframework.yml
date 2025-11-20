@@ -19,7 +19,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
@@ -46,7 +46,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Run Command Gradle AssembleXCFramework
         run: ./gradlew assembleGodToolsSharedXCFramework --warning-mode all
       - name: Store Tag version
@@ -92,7 +92,7 @@ jobs:
     needs: [ build_and_upload_xcframework ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Create Package.swift File
         uses: DamianReeves/write-file-action@master
         with:
@@ -132,7 +132,7 @@ jobs:
           user_name: levieggertcru
           commit_message: Update package version ${{ needs.build_and_upload_xcframework.outputs.tag_version }}
       - name: Tag GodTools Shared Swift Repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with: 
           repository: CruGlobal/godtools-shared-swift
           token: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
