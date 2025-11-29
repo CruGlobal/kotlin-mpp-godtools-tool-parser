@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/base
           cp build/bin/iosArm64/podReleaseFramework/*/Headers/*.h diff/base
-      - uses: int128/diff-action@v1
+      - uses: int128/diff-action@v2
         with:
           base: "${{ github.workspace }}/diff/base"
           head: "${{ github.workspace }}/diff/head"
