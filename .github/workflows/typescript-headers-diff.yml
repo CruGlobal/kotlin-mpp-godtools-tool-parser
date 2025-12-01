@@ -39,11 +39,15 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/diff/base
           cp publishing/npm/build/dist/js/productionLibrary/*.d.ts diff/base
           cp publishing/npm/build/dist/js/productionLibrary/*.json diff/base
-      - uses: int128/diff-action@v2
+      - id: diff
+        uses: int128/diff-action@v2
         with:
           base: "${{ github.workspace }}/diff/base"
           head: "${{ github.workspace }}/diff/head"
           label: typescript-headers-changed
-          comment-header: |
+      - uses: int128/comment-action@v1
+        with:
+          update-if-exists: replace
+          post: |
             ## Typescript headers
-          comment-body-no-diff: No changes
+            ${{ steps.diff.outputs.comment-body || 'No changes' }}
