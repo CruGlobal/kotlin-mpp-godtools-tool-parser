@@ -23,5 +23,6 @@ data object LessonScreen {
 
     sealed interface UiEvent : CircuitUiEvent {
         data object CloseLesson : UiEvent
+        data object ShareLesson : UiEvent
     }
 }

@@ -8,6 +8,7 @@
     <!-- Lesson Strings -->
     <eat-comment />
     <string name="lesson_accessibility_action_close">Close Lesson</string>
+    <string name="lesson_accessibility_action_share">Share Lesson</string>
     <string name="lesson_accessibility_action_page_previous">Previous Page</string>
     <string name="lesson_accessibility_action_page_next">Next Page</string>
 
