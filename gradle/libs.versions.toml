@@ -53,7 +53,7 @@ kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0"
-kotlin-kover-gradle = "org.jetbrains.kotlinx:kover-gradle-plugin:0.9.3"
+kotlin-kover-gradle = "org.jetbrains.kotlinx:kover-gradle-plugin:0.9.4"
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintGradle" }
 ktlint-rules-compose = "io.nlopez.compose.rules:ktlint:0.5.1"
 kustomExport = { module = "deezer.kustomexport:lib", version.ref = "kustomExport" }
