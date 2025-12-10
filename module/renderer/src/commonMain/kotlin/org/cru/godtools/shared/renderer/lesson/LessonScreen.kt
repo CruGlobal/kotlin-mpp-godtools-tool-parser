@@ -8,14 +8,15 @@ import org.cru.godtools.shared.tool.parser.model.Manifest
 data object LessonScreen {
     sealed interface UiState : CircuitUiState {
         val manifest: Manifest? get() = null
+        val showShareAction: Boolean get() = false
         val eventSink: (UiEvent) -> Unit
 
         data class Loaded(
             override val manifest: Manifest,
             val state: State,
+            override val showShareAction: Boolean = false,
             val lessonPager: LessonPagerState = LessonPagerState(manifest = manifest),
             override val eventSink: (UiEvent) -> Unit = {},
-            val showShareAction: Boolean = false,
         ) : UiState
         data class Loading(val progress: Float? = null, override val eventSink: (UiEvent) -> Unit = {}) : UiState
         data class Missing(override val eventSink: (UiEvent) -> Unit = {}) : UiState
