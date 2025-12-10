@@ -104,7 +104,7 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                         }
                     },
                     actions = {
-                        if (state is LessonScreen.UiState.Loaded && state.showShareAction) {
+                        if (state.showShareAction) {
                             IconButton(onClick = { eventSink(LessonScreen.UiEvent.ShareLesson) }) {
                                 Icon(
                                     Icons.Filled.Share,
