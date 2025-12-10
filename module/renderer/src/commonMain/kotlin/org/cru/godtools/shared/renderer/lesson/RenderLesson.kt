@@ -62,10 +62,7 @@ internal const val TestTagLessonPager = "LessonPager"
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun RenderLesson(
-    state: LessonScreen.UiState,
-    modifier: Modifier = Modifier,
-) {
+fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
     val eventSink by rememberUpdatedState(state.eventSink)
 
     ProvideLayoutDirectionFromLocale(locale = state.manifest?.locale) {
@@ -107,7 +104,7 @@ fun RenderLesson(
                         }
                     },
                     actions = {
-                        if (state is LessonScreen.UiState.Loaded && state.manifest.code != null && state.manifest.locale != null) {
+                        if (state is LessonScreen.UiState.Loaded && state.showShareAction) {
                             IconButton(onClick = { eventSink(LessonScreen.UiEvent.ShareLesson) }) {
                                 Icon(
                                     Icons.Filled.Share,

@@ -15,6 +15,7 @@ data object LessonScreen {
             val state: State,
             val lessonPager: LessonPagerState = LessonPagerState(manifest = manifest),
             override val eventSink: (UiEvent) -> Unit = {},
+            val showShareAction: Boolean = false,
         ) : UiState
         data class Loading(val progress: Float? = null, override val eventSink: (UiEvent) -> Unit = {}) : UiState
         data class Missing(override val eventSink: (UiEvent) -> Unit = {}) : UiState
