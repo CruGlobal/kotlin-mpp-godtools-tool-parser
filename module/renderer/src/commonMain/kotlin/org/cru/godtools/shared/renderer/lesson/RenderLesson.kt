@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +48,7 @@ import org.cru.godtools.shared.renderer.common.ToolNotFound
 import org.cru.godtools.shared.renderer.common.ToolOffline
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
+import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_share
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
@@ -102,8 +104,18 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                         }
                     },
                     actions = {
-                        // HACK: to center the title, we add a spacer the same size as the navigation icon
-                        Spacer(modifier = Modifier.width(48.dp))
+                        if (state.showShareAction) {
+                            IconButton(onClick = { eventSink(LessonScreen.UiEvent.ShareLesson) }) {
+                                Icon(
+                                    Icons.Filled.Share,
+                                    contentDescription = stringResource(Res.string.lesson_accessibility_action_share),
+                                    tint = appBarControlColor,
+                                )
+                            }
+                        } else {
+                            // HACK: to center the title, we add a spacer the same size as the navigation icon
+                            Spacer(modifier = Modifier.width(48.dp))
+                        }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = appBarColor,
