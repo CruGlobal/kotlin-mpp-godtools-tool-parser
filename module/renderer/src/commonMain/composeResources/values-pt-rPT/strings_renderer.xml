@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">A ferramenta que solicitaste está a carregar…</string>
+    <string name="tool_not_found">A ferramenta que solicitou não foi encontrada</string>
+    <string name="tool_offline">A ferramenta que solicitou requer uma ligação à internet para ser aberta</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
 </resources>

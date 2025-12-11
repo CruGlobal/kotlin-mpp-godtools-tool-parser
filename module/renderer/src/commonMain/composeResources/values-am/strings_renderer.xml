@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">የጠየቁት መተግበርያ በሂደት ላይ ነዉ…</string>
+    <string name="tool_not_found">የፈለጉት መተግበርያ አልተገኘም</string>
+    <string name="tool_offline">Die hulpmiddel wat jy aangevra het, benodig \'n internetverbinding om oop te maak</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$s እንዲሞላ ይጠበቃል</string>
+    <string name="tool_renderer_input_error_invalid_email">እባክዎትን ትክክለኛ ኢሜይል ያስገቡ</string>
 </resources>

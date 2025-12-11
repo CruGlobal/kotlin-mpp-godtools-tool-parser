@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">リクエストしたツールを読み込み中…</string>
+    <string name="tool_not_found">リクエストしたツールが見つかりません</string>
+    <string name="tool_offline">リクエストされたツールを開くためにはインターネット接続が必要です</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$sが必要です</string>
+    <string name="tool_renderer_input_error_invalid_email">有効なメールアドレスを入力してください</string>
 </resources>

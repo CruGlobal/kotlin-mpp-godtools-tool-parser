@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">工具正在載入中…</string>
+    <string name="tool_not_found">找不到您要求的工具</string>
+    <string name="tool_offline">你要求的工具需要網路連線才能開啟</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">必須輸入%1$s</string>
+    <string name="tool_renderer_input_error_invalid_email">請輸入正確的電子郵件地址</string>
 </resources>
