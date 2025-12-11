@@ -25,6 +25,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_close
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
+import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_share
 import org.cru.godtools.shared.renderer.generated.resources.tool_loading
 import org.cru.godtools.shared.renderer.generated.resources.tool_not_found
 import org.cru.godtools.shared.renderer.generated.resources.tool_offline
@@ -51,11 +52,12 @@ class RenderLessonTest : BaseRendererTest() {
     private val eventSink = TestEventSink<LessonScreen.UiEvent>()
 
     private val closeLesson by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_close) } }
+    private val shareLesson by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_share) } }
     private val previousPage by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_page_previous) } }
     private val nextPage by lazy { runBlocking { getString(Res.string.lesson_accessibility_action_page_next) } }
 
     @Test
-    fun `UI - AppBar Close Button`() = runComposeUiTest {
+    fun `UI - AppBar - Close Button`() = runComposeUiTest {
         val state = LessonScreen.UiState.Loaded(
             manifest = Manifest(type = Type.LESSON),
             state = state,
@@ -69,6 +71,24 @@ class RenderLessonTest : BaseRendererTest() {
 
         onNodeWithContentDescription(closeLesson).assertExists().performClick()
         eventSink.assertEvent(LessonScreen.UiEvent.CloseLesson)
+    }
+
+    @Test
+    fun `UI - AppBar - Share Action`() = runComposeUiTest {
+        val state = LessonScreen.UiState.Loaded(
+            manifest = Manifest(type = Type.LESSON),
+            state = state,
+            showShareAction = true,
+            eventSink = eventSink::invoke,
+        )
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderLesson(state)
+            }
+        }
+
+        onNodeWithContentDescription(shareLesson).assertExists().performClick()
+        eventSink.assertEvent(LessonScreen.UiEvent.ShareLesson)
     }
 
     @Test
