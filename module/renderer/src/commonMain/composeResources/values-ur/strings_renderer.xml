@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">آپ کا مطلوبہ ٹول لوڈ ہو رہا ہے۔۔۔…</string>
+    <string name="tool_not_found">آپ کا مطلوبہ ٹول نہیں مل سکتا</string>
+    <string name="tool_offline">آپ کے مطلوبہ ٹول کو انٹر نیٹ کنکشن آن ہونے کی</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$s مطلوب ہے</string>
 </resources>

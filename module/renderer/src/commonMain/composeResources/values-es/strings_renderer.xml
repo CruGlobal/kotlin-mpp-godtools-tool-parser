@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">Se está cargando la herramienta que has solicitado…</string>
+    <string name="tool_not_found">No se puede encontrar la herramienta que has solicitado</string>
+    <string name="tool_offline">La herramienta solicitada requiere conexión a internet para abrirse</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">Se requiere %1$s</string>
+    <string name="tool_renderer_input_error_invalid_email">Ingresa una dirección de correo electrónico válida</string>
 </resources>

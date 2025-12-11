@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">Загрузка требуемого инструмента…</string>
+    <string name="tool_not_found">Не удалось найти инструмент</string>
+    <string name="tool_offline">Запрошенный вами инструмент требует подключение к Интернету</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">Необходимо ввести %1$s</string>
+    <string name="tool_renderer_input_error_invalid_email">Введите правильный адрес эл. почты</string>
 </resources>

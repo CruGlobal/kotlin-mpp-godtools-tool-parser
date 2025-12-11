@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">工具正在載入中…</string>
+    <string name="tool_not_found">Instrumentul solicitat nu poate fi găsit</string>
+    <string name="tool_offline">Instrumentul solicitat necesită conexiune la internet pentru a fi deschis</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$s este necesar</string>
+    <string name="tool_renderer_input_error_invalid_email">Introdu o adresă de e-mail validă</string>
 </resources>

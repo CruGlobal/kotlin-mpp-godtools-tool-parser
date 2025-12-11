@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">आपका अनुरोधित टूल लोड हो रहा है…</string>
+    <string name="tool_not_found">आपका अनुरोधित टूल नहीं मिला</string>
+    <string name="tool_offline">आपके द्वारा अनुरोधित टूल को खोलने के लिए इंटरनेट कनेक्शन आवश्यक है</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$s जरूरी है</string>
+    <string name="tool_renderer_input_error_invalid_email">कृपया एक मान्य ईमेल अड्रेस डालें</string>
 </resources>

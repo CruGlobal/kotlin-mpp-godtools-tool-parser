@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common Tool Strings -->
+    <string name="tool_loading">جاري تحميل الأداة التي طلبتها…</string>
+    <string name="tool_not_found">لا يمكن إيجاد الأداة التي طلبتها</string>
+    <string name="tool_offline">الأداة التي طلبتها تستلزم فتح الاتصال بالإنترنت</string>
     <!-- Lesson Strings -->
     <!-- Tool Content Strings -->
+    <string name="tool_renderer_input_error_required">%1$s مطلوب</string>
+    <string name="tool_renderer_input_error_invalid_email">يرجى إدخال عنوان إلكتروني صالح</string>
 </resources>
