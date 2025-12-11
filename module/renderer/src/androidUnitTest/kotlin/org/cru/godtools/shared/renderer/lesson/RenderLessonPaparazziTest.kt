@@ -14,35 +14,50 @@ import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
 
 class RenderLessonPaparazziTest : BasePaparazziTest() {
+    private val lessonManifest = Manifest(
+        type = Manifest.Type.LESSON,
+        resources = { listOf(resourceBruce) },
+        pages = {
+            listOf(
+                LessonPage(it),
+                LessonPage(it) {
+                    listOf(
+                        Text(it, text = "Top of Page"),
+                        Spacer(),
+                        Image(it, resource = "bruce"),
+                        Spacer(),
+                        Text(it, text = "Bottom of Page"),
+                    )
+                },
+                LessonPage(it)
+            )
+        },
+    )
+    private val state = State()
+
     @Test
     fun `RenderLesson - Loaded`() {
-        val state = State()
-        val manifest = Manifest(
-            type = Manifest.Type.LESSON,
-            resources = { listOf(resourceBruce) },
-            pages = {
-                listOf(
-                    LessonPage(it),
-                    LessonPage(it) {
-                        listOf(
-                            Text(it, text = "Top of Page"),
-                            Spacer(),
-                            Image(it, resource = "bruce"),
-                            Spacer(),
-                            Text(it, text = "Bottom of Page"),
-                        )
-                    },
-                    LessonPage(it)
-                )
-            },
-        )
-
         contentSnapshot {
             RenderLesson(
                 LessonScreen.UiState.Loaded(
-                    manifest,
+                    lessonManifest,
                     state = state,
-                    lessonPager = rememberLessonPagerState(manifest, initialPage = 1),
+                    showShareAction = true,
+                    lessonPager = rememberLessonPagerState(lessonManifest, initialPage = 1),
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `RenderLesson - Loaded - No Share Action`() {
+        contentSnapshot {
+            RenderLesson(
+                LessonScreen.UiState.Loaded(
+                    lessonManifest,
+                    state = state,
+                    showShareAction = false,
+                    lessonPager = rememberLessonPagerState(lessonManifest, initialPage = 1),
                 ),
             )
         }
@@ -81,13 +96,13 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
                 )
             },
         )
-        val state = State()
 
         contentSnapshot {
             RenderLesson(
                 LessonScreen.UiState.Loaded(
                     manifest,
                     state = state,
+                    showShareAction = true,
                     lessonPager = rememberLessonPagerState(manifest),
                 ),
             )
@@ -96,7 +111,6 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderLesson - Loaded - RTL`() {
-        val state = State()
         val manifest = Manifest(
             type = Manifest.Type.LESSON,
             locale = Locale.forLanguage("ar"),
@@ -120,6 +134,7 @@ class RenderLessonPaparazziTest : BasePaparazziTest() {
                 LessonScreen.UiState.Loaded(
                     manifest,
                     state = state,
+                    showShareAction = true,
                     lessonPager = rememberLessonPagerState(manifest),
                 ),
             )
