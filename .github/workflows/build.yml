@@ -93,7 +93,7 @@ jobs:
         run: ./gradlew :build-logic:ktlintCheck ktlintCheck --scan
       - name: Archive ktlint results
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ktlint-results
           path: "**/build/reports/ktlint/"
@@ -157,7 +157,7 @@ jobs:
           verbose: true
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: android-unit-test-results
           path: |
@@ -165,7 +165,7 @@ jobs:
             **/build/reports/tests/
       - name: Archive kover results
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: kover-results
           path: "**/build/reports/kover/"
@@ -215,7 +215,7 @@ jobs:
         run: ./gradlew jsTest --scan
       - name: Archive test results
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: js-unit-test-results
           path: "**/build/reports/tests/"
