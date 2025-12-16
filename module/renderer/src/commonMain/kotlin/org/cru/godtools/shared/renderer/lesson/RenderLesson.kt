@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -55,7 +54,6 @@ import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarControlColor
-import org.cru.godtools.shared.tool.parser.model.navBarColor
 import org.jetbrains.compose.resources.stringResource
 
 internal const val TestTagLessonPager = "LessonPager"
@@ -85,11 +83,10 @@ fun RenderLesson(state: LessonScreen.UiState, modifier: Modifier = Modifier) {
                         if (state is LessonScreen.UiState.Loaded) {
                             LinearProgressIndicator(
                                 progress = {
-                                    val pagerState = state.lessonPager.pagerState
-                                    when (val pageCount = pagerState.pageCount) {
+                                    val pager = state.lessonPager.pagerState
+                                    when (val pageCount = pager.pageCount) {
                                         0 -> 0f
-                                        else -> (pagerState.currentPage + 1 + pagerState.currentPageOffsetFraction) /
-                                            pageCount
+                                        else -> (pager.currentPage + 1 + pager.currentPageOffsetFraction) / pageCount
                                     }
                                 },
                                 gapSize = ProgressBarGapSize,

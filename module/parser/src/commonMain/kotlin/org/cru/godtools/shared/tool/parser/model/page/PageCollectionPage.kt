@@ -87,10 +87,7 @@ class PageCollectionPage : Page, HasPages {
         parseChildren {
             when (namespace) {
                 XMLNS_PAGE -> when (name) {
-                    XML_PAGE -> {
-                        parse(this@PageCollectionPage, null, this@parsePages)
-                            ?.let { add(PageOrImport(it)) }
-                    }
+                    XML_PAGE -> parse(this@PageCollectionPage, null, this@parsePages)?.let { add(PageOrImport(it)) }
                     XML_IMPORT -> add(PageOrImport(ref = getAttributeValue(XML_IMPORT_FILENAME)))
                 }
             }

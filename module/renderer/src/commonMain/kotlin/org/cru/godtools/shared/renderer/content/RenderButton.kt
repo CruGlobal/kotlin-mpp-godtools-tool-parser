@@ -47,7 +47,9 @@ internal fun ColumnScope.RenderButton(button: Button, state: State) {
                 Button.Style.OUTLINED -> ButtonDefaults.outlinedButtonColors(
                     containerColor = button.backgroundColor.toComposeColor()
                 )
-                Button.Style.CONTAINED, Button.Style.UNKNOWN -> ButtonDefaults.buttonColors(
+
+                Button.Style.CONTAINED,
+                Button.Style.UNKNOWN -> ButtonDefaults.buttonColors(
                     containerColor = button.buttonColor.toComposeColor()
                 )
             },

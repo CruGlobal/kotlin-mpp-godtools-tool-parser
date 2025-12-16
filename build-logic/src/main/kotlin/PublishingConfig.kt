@@ -9,14 +9,12 @@ internal fun Project.enablePublishing() {
         repositories {
             maven {
                 name = "cruGlobalMavenRepository"
-                setUrl(
-                    when {
-                        isSnapshotVersion ->
-                            "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/"
-                        else -> "https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/"
-                    }
-                )
+                when {
+                    isSnapshotVersion ->
+                        setUrl("https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-snapshots-local/")
 
+                    else -> setUrl("https://cruglobal.jfrog.io/cruglobal/list/maven-cru-android-public-releases-local/")
+                }
                 credentials(PasswordCredentials::class)
             }
         }

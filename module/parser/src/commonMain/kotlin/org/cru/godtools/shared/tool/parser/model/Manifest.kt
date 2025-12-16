@@ -363,10 +363,11 @@ class Manifest : BaseModel, Styles, HasPages {
     @JsExport.Ignore
     fun findTip(id: String?) = tips[id]
 
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     override fun <T : Page> supportsPageType(type: KClass<T>) = when (this.type) {
         Type.ARTICLE -> false
         Type.CYOA -> when (type) {
-            CardCollectionPage::class,
+            CardCollectionPage::class -> true
             ContentPage::class -> true
             PageCollectionPage::class -> config.supportsFeature(FEATURE_PAGE_COLLECTION)
             else -> false

@@ -37,6 +37,7 @@ internal fun ColumnScope.RenderContent(content: Content, state: State) {
 
     if (isGone) return
 
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     when (content) {
         is Accordion -> RenderAccordion(content, state)
         is Animation -> RenderAnimation(content, state)

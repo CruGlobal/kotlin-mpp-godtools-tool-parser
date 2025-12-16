@@ -67,14 +67,15 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     )
 
     ContentEventListener(state, animation) {
-        when {
-            it in animation.playListeners && !animationState.isPlaying -> {
+        when (it) {
+            in animation.playListeners if !animationState.isPlaying -> {
                 if (animationState.isAtEnd && animationState.progress > 0f) {
                     iterations = animationState.iteration + 1
                 }
                 isPlaying = true
             }
-            it in animation.stopListeners && animationState.isPlaying -> isPlaying = false
+
+            in animation.stopListeners if animationState.isPlaying -> isPlaying = false
         }
     }
 
