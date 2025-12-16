@@ -9,7 +9,7 @@ compottie = "2.0.2"
 fluidLocale = "0.13.0"
 gtoSupport = "4.5.0"
 jvm = "21"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 kotlinCoroutines = "1.10.2"
 kustomExport = "0.8.2"
 goncalossilvaResources = "0.11.0"
@@ -78,7 +78,7 @@ compose = { id = "org.jetbrains.compose", version = "1.9.3" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.3" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.4" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
 paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha02" }
