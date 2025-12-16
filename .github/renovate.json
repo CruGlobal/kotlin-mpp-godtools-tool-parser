@@ -15,20 +15,10 @@
   },
   "packageRules": [
     {
-      "groupName": "Kotlin and KSP",
-      "description": "Kotlin and KSP versions are tightly coupled.",
+      "groupName": "Kotlin",
       "matchPackageNames": [
         "org.jetbrains.kotlin:kotlin{/,}**",
-        "com.google.devtools.ksp{/,}**"
-      ]
-    },
-    {
-      "matchManagers": [
-        "gradle"
-      ],
-      "groupName": "kotlinx.coroutines",
-      "matchPackageNames": [
-        "org.jetbrains.kotlinx:kotlinx-coroutines-{/,}**"
+        "org.jetbrains.kotlin.plugin.compose{/,}**"
       ]
     },
     {
