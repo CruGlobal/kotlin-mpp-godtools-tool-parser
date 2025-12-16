@@ -8,6 +8,9 @@ import org.cru.godtools.shared.renderer.BasePaparazziTest
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Base
 import org.cru.godtools.shared.tool.parser.model.Content
+import org.cru.godtools.shared.tool.parser.model.Dimension
+import org.cru.godtools.shared.tool.parser.model.Gravity
+import org.cru.godtools.shared.tool.parser.model.Image
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tract.Header
 import org.cru.godtools.shared.tool.parser.model.tract.Hero
@@ -111,5 +114,39 @@ class RenderTractHeroPaparazziTest : BasePaparazziTest() {
             TractPage(),
             Modifier.fillMaxSize()
         )
+    }
+
+    @Test
+    fun `RenderTractHero() - GT-2872 - Image Alignment`() {
+        val page = TractPage(
+            manifest,
+            header = null,
+            hero = hero {
+                listOf(
+                    Image(
+                        it,
+                        resource = "bruce",
+                        width = Dimension.Pixels(200),
+                        gravity = Gravity.Horizontal.START,
+                    ),
+                    Image(
+                        it,
+                        resource = "bruce",
+                        width = Dimension.Pixels(200),
+                        gravity = Gravity.Horizontal.CENTER,
+                    ),
+                    Image(
+                        it,
+                        resource = "bruce",
+                        width = Dimension.Pixels(200),
+                        gravity = Gravity.Horizontal.END,
+                    ),
+                )
+            },
+        )
+
+        contentSnapshot {
+            RenderTractHero(page, Modifier.fillMaxSize())
+        }
     }
 }
