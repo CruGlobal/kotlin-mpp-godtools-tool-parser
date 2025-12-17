@@ -43,6 +43,7 @@ internal fun Modifier.clickable(
 ) = when {
     model.isClickableModifierNeeded(state) ->
         clickable(interactionSource, indication) { model.handleClickable(state, focusManager, scope) }
+
     else -> this
 }
 

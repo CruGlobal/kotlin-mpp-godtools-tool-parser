@@ -65,6 +65,7 @@ internal fun ToolLoading(progress: Float?, modifier: Modifier = Modifier) {
                     gapSize = ProgressBarGapSize,
                     modifier = progressModifier
                 )
+
                 else -> {
                     val progress by animateFloatAsState(progress)
                     LinearProgressIndicator(

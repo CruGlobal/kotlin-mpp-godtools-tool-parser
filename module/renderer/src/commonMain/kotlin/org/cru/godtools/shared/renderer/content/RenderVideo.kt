@@ -60,5 +60,6 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
             YouTubePlayerComposable(playerHost = playerHost, playerConfig = playerConfig)
         }
     }
+
     Video.Provider.UNKNOWN -> Unit
 }

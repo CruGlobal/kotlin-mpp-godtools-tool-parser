@@ -93,11 +93,12 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
         ): Page? {
             parser.require(XmlPullParser.START_TAG, null, XML_PAGE)
 
-            return when (parser.namespace to parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
-                XMLNS_PAGE to TYPE_PAGE_COLLECTION -> {
+            return when (parser.getAttributeValue(XMLNS_XSI, XML_TYPE)) {
+                TYPE_PAGE_COLLECTION if (parser.namespace == XMLNS_PAGE) -> {
                     if (!container.supportsPageType(PageCollectionPage::class)) return null
                     PageCollectionPage.parse(container, fileName, parser, parseFile)
                 }
+
                 else -> parse(container, fileName, parser)
             }?.takeIf { container.supportsPageType(it::class) }
         }
@@ -150,6 +151,7 @@ abstract class Page : BaseModel, Styles, HasAnalyticsEvents {
 
     private val _parentPage: String?
     val parentPage get() = parentPageContainer.findPage(_parentPage?.substringBefore("?"))
+    @Suppress("ktlint:standard:blank-line-between-when-conditions")
     val parentPageParams get() = when {
         parentPage == null -> emptyMap()
         else -> _parentPage.orEmpty().substringAfter("?", "")
