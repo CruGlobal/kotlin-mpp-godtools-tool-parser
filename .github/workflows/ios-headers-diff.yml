@@ -48,5 +48,4 @@ jobs:
           update-if-exists: replace
           post: |
             ## iOS Framework headers
-          comment-body-no-diff: No changes
             ${{ steps.diff.outputs.comment-body || 'No changes' }}
