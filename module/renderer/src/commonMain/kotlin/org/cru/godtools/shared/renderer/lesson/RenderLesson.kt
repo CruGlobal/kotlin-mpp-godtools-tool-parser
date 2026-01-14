@@ -35,10 +35,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
-import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleOwner
 import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.ToolTheme.ProgressBarGapSize
 import org.cru.godtools.shared.renderer.ToolTheme.ProgressBarHeight
@@ -167,7 +167,6 @@ private fun RenderLessonPager(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val lifecycleOwner = LocalLifecycleOwner.current
     val pagerState = lessonPagerState.pagerState
 
     // re-hide hidden pages when they are not the current page
@@ -192,8 +191,9 @@ private fun RenderLessonPager(
         modifier = modifier.testTag(TestTagLessonPager),
     ) { i ->
         val isCurrentPage by remember { derivedStateOf { i == pagerState.currentPage } }
-        val lifecycleOwner = remember(lifecycleOwner) { ConstrainedStateLifecycleOwner(lifecycleOwner) }
-            .apply { maxState = if (isCurrentPage) Lifecycle.State.RESUMED else Lifecycle.State.STARTED }
+        val lifecycleOwner = rememberLifecycleOwner(
+            maxLifecycle = if (isCurrentPage) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
+        )
 
         CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
             RenderLessonPage(lessonPagerState.pages[i], state = state, contentInsets = contentInsets) { event ->
