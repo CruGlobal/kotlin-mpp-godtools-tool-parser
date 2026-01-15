@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
-import org.ccci.gto.android.common.androidx.lifecycle.ConstrainedStateLifecycleOwner
 import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.ToolTheme.CardPadding
 import org.cru.godtools.shared.renderer.ToolTheme.ContentHorizontalPadding
@@ -130,9 +130,9 @@ private fun RenderAccordionSection(section: Accordion.Section, state: State, mod
             )
         }
 
-        val baseLifecycleOwner = LocalLifecycleOwner.current
-        val lifecycleOwner = remember(baseLifecycleOwner) { ConstrainedStateLifecycleOwner(baseLifecycleOwner) }
-            .apply { maxState = if (isExpanded) Lifecycle.State.RESUMED else Lifecycle.State.STARTED }
+        val lifecycleOwner = rememberLifecycleOwner(
+            maxLifecycle = if (isExpanded) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
+        )
 
         CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
             AnimatedVisibility(
