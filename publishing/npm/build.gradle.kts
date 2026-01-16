@@ -32,12 +32,7 @@ npmPublish {
         }
     }
     registries {
-        val token = findProperty("npmPublishRegistryNpmjsAuthToken")
-        if (token != null) {
-            npmjs {
-                authToken.set(token.toString())
-            }
-        }
+        npmjs {}
     }
 }
 tasks.withType<NpmPublishTask> {
