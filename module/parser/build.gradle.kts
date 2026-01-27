@@ -17,7 +17,7 @@ kotlin {
     configureJsTargets()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(project(":module:parser-base"))
                 api(project(":module:parser-expressions"))
@@ -34,24 +34,24 @@ kotlin {
                 implementation(libs.kustomExport.coroutines)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.androidx.annotation)
                 implementation(libs.colormath.android.colorint)
             }
         }
-        val jsMain by getting {
+        jsMain {
             dependencies {
                 implementation(npm("sax", "1.2.4"))
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(libs.gtoSupport.androidx.test.junit)
                 implementation(libs.turbine)
             }
         }
-        val jsTest by getting {
+        jsTest {
             dependencies {
                 implementation(libs.goncalossilvaResources)
             }

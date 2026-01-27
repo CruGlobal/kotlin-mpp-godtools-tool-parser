@@ -11,7 +11,7 @@ kotlin {
     configureJsTargets()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":module:parser"))
                 implementation(project(":module:renderer-state"))
