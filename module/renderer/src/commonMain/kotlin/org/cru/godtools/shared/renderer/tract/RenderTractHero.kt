@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -32,6 +33,7 @@ import org.cru.godtools.shared.renderer.content.extensions.triggerAnalyticsEvent
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.tips.TipArrowHeight
 import org.cru.godtools.shared.renderer.tips.TipUpArrow
+import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 import org.cru.godtools.shared.tool.parser.model.tract.backgroundColor
@@ -45,85 +47,87 @@ internal const val TestTagHeaderTitle = "header_title"
 internal const val TestTagHeroHeading = "hero_heading"
 
 @Composable
-fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State = remember { State() }) {
-    Column(modifier = modifier) {
-        page.header?.let { header ->
-            ProvideTextStyle(ToolTheme.TractHeaderTextStyle) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(ContentHorizontalPadding),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .background(header.backgroundColor.toComposeColor())
-                        .padding(horizontal = ContentHorizontalPadding)
-                        .testTag(TestTagHeader)
-                ) {
-                    header.number?.let { number ->
-                        ProvideTextStyle(
-                            LocalTextStyle.current.run { copy(fontSize = fontSize * 3, lineHeight = lineHeight * 3) }
-                        ) {
-                            RenderTextNode(number, Modifier.testTag(TestTagHeaderNumber))
-                        }
-                    }
-                    header.title?.let { title ->
-                        RenderTextNode(
-                            title,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = HeaderContentVerticalPadding)
-                                .testTag(TestTagHeaderTitle)
-                        )
-                    }
-
-                    header.tip?.let { tip ->
-                        if (state.showTips.collectAsState().value) {
-                            Popup(
-                                alignment = Alignment.BottomStart,
-                                offset = with(LocalDensity.current) {
-                                    IntOffset(
-                                        x = -HeaderTipArrowShadowPadding.roundToPx(),
-                                        y = (
-                                            (TipArrowHeight + (HeaderTipArrowShadowPadding * 2)) -
-                                                HeaderContentVerticalPadding
-                                            ).roundToPx(),
-                                    )
-                                },
-                                properties = PopupProperties(clippingEnabled = false),
+fun RenderTractHero(page: TractPage, modifier: Modifier = Modifier, state: State = rememberSaveable { State() }) =
+    ProvideLayoutDirectionFromLocale(page.manifest.locale) {
+        Column(modifier = modifier) {
+            page.header?.let { header ->
+                ProvideTextStyle(ToolTheme.TractHeaderTextStyle) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(ContentHorizontalPadding),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .background(header.backgroundColor.toComposeColor())
+                            .padding(horizontal = ContentHorizontalPadding)
+                            .testTag(TestTagHeader)
+                    ) {
+                        header.number?.let { number ->
+                            val style = LocalTextStyle.current
+                            ProvideTextStyle(
+                                style.copy(fontSize = style.fontSize * 3, lineHeight = style.lineHeight * 3),
                             ) {
-                                TipUpArrow(tip, state, modifier = Modifier.padding(HeaderTipArrowShadowPadding))
+                                RenderTextNode(number, Modifier.testTag(TestTagHeaderNumber))
+                            }
+                        }
+                        header.title?.let { title ->
+                            RenderTextNode(
+                                title,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(vertical = HeaderContentVerticalPadding)
+                                    .testTag(TestTagHeaderTitle)
+                            )
+                        }
+
+                        header.tip?.let { tip ->
+                            if (state.showTips.collectAsState().value) {
+                                Popup(
+                                    alignment = Alignment.BottomStart,
+                                    offset = with(LocalDensity.current) {
+                                        IntOffset(
+                                            x = -HeaderTipArrowShadowPadding.roundToPx(),
+                                            y = (
+                                                (TipArrowHeight + (HeaderTipArrowShadowPadding * 2)) -
+                                                    HeaderContentVerticalPadding
+                                                ).roundToPx(),
+                                        )
+                                    },
+                                    properties = PopupProperties(clippingEnabled = false),
+                                ) {
+                                    TipUpArrow(tip, state, modifier = Modifier.padding(HeaderTipArrowShadowPadding))
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        page.hero?.let { hero ->
-            val coroutineScope = rememberCoroutineScope()
-            LifecycleResumeEffect(hero, state) {
-                val visible = hero.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
-                onPauseOrDispose { visible.forEach { it.cancel() } }
-            }
-
-            Column(
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                hero.heading?.let { heading ->
-                    ProvideTextStyle(ToolTheme.TractHeroHeadingTextStyle) {
-                        RenderTextNode(
-                            heading,
-                            modifier = Modifier
-                                .padding(top = 24.dp)
-                                .padding(horizontal = ContentHorizontalPadding)
-                                .testTag(TestTagHeroHeading)
-                        )
-                    }
+            page.hero?.let { hero ->
+                val coroutineScope = rememberCoroutineScope()
+                LifecycleResumeEffect(hero, state) {
+                    val visible = hero.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
+                    onPauseOrDispose { visible.forEach { it.cancel() } }
                 }
-                Spacer(Modifier.height(16.dp))
-                ProvideTextStyle(ToolTheme.ContentTextStyle) {
-                    RenderContent(hero.content, state)
+
+                Column(
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    hero.heading?.let { heading ->
+                        ProvideTextStyle(ToolTheme.TractHeroHeadingTextStyle) {
+                            RenderTextNode(
+                                heading,
+                                modifier = Modifier
+                                    .padding(top = 24.dp)
+                                    .padding(horizontal = ContentHorizontalPadding)
+                                    .testTag(TestTagHeroHeading)
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(16.dp))
+                    ProvideTextStyle(ToolTheme.ContentTextStyle) {
+                        RenderContent(hero.content, state)
+                    }
                 }
             }
         }
     }
-}
