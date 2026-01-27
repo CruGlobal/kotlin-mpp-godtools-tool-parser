@@ -10,18 +10,18 @@ kotlin {
     configureJsTargets()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(libs.colormath)
                 implementation(libs.kermit)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(libs.gtoSupport.androidx.test.junit)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 api(libs.colormath.jetpack.compose)
             }

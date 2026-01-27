@@ -8,12 +8,12 @@ android {
 
 kotlin {
     sourceSets {
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.materialColorUtilities)
             }
         }
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(project(":module:common"))
 
@@ -24,7 +24,7 @@ kotlin {
                 implementation(libs.okio)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(libs.gtoSupport.androidx.test.junit)
             }

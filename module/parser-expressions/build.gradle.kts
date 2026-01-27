@@ -11,7 +11,7 @@ kotlin {
     configureJsTargets()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation(libs.androidx.annotation)
