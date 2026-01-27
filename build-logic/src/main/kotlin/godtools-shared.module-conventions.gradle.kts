@@ -5,8 +5,12 @@ plugins {
 }
 
 android {
-    baseConfiguration(project)
+    compileSdkVersion(36)
+    defaultConfig {
+        minSdk = 24
+    }
 }
+
 enablePublishing()
 
 kotlin {
