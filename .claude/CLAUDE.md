@@ -26,9 +26,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Code style checks
 ./gradlew :build-logic:ktlintCheck ktlintCheck
+./gradlew ktlintFormat                   # Auto-fix code style issues
 
 # Android lint
 ./gradlew lint
+
+# Snapshot testing (Android) — recording only happens in CI
+./gradlew verifyPaparazzi                # Verify snapshots
 
 # Generate iOS CocoaPods podspec
 ./gradlew podspec
@@ -109,3 +113,11 @@ All modules apply the `godtools-shared.module-conventions` convention plugin whi
 - Ktlint
 
 Dependency versions are centralized in `gradle/libs.versions.toml`. Custom Maven repos include CruGlobal JFrog (for custom ANTLR-Kotlin and material-color-utilities builds), JitPack, and Deezer KustomExport.
+
+## Code Style
+
+- Max line length: 120 characters
+- ktlint with `android_studio` code style
+- 4-space indent for Kotlin files
+- Trailing commas allowed but not enforced
+- Composable functions exempt from standard function naming rules
