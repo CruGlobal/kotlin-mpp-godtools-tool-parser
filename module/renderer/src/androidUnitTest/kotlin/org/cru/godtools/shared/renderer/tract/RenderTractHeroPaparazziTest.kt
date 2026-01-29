@@ -1,7 +1,10 @@
 package org.cru.godtools.shared.renderer.tract
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
 import org.cru.godtools.shared.renderer.BasePaparazziTest
@@ -147,6 +150,23 @@ class RenderTractHeroPaparazziTest : BasePaparazziTest() {
 
         contentSnapshot {
             RenderTractHero(page, Modifier.fillMaxSize())
+        }
+    }
+
+    @Test
+    fun `RenderTractHero() - GT-2879 - LTR page in RTL pager`() {
+        val page = TractPage(
+            manifest,
+            header = header(),
+            hero = hero(),
+        )
+
+        contentSnapshot {
+            // set the LayoutDirection to RTL to emulate the pager direction
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                // render our LTR page
+                RenderTractHero(page, Modifier.fillMaxSize())
+            }
         }
     }
 }
