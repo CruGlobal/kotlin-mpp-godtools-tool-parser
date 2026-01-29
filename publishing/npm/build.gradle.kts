@@ -29,6 +29,11 @@ npmPublish {
     packages {
         named("js") {
             packageName.set("godtools-shared")
+            packageJson {
+                repository {
+                    url.set("https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser")
+                }
+            }
         }
     }
     registries {
