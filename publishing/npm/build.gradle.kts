@@ -29,15 +29,15 @@ npmPublish {
     packages {
         named("js") {
             packageName.set("godtools-shared")
+            packageJson {
+                repository {
+                    url.set("https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser")
+                }
+            }
         }
     }
     registries {
-        val token = findProperty("npmPublishRegistryNpmjsAuthToken")
-        if (token != null) {
-            npmjs {
-                authToken.set(token.toString())
-            }
-        }
+        npmjs {}
     }
 }
 tasks.withType<NpmPublishTask> {
