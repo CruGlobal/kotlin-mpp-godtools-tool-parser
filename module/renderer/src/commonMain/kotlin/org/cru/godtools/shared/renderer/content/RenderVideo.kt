@@ -29,7 +29,7 @@ internal fun ColumnScope.RenderVideo(model: Video, state: State) = when (model.p
         val playerHost = remember {
             MediaPlayerHost(
                 mediaUrl = model.videoId.orEmpty(),
-                isPaused = true,
+                autoPlay = false,
                 isLooping = false
             )
         }.apply { loadUrl(model.videoId.orEmpty()) }
