@@ -328,7 +328,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
       - name: Publish library
-        run: ./gradlew publish --scan
+        run: ./gradlew publish -x :publishing:npm:publish --scan
         env:
           ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryUsername: ${{ secrets.JFROG_USERNAME }}
           ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryPassword: ${{ secrets.JFROG_PASSWORD }}
