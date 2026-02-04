@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  id-token: write # Required for OIDC
-  contents: read
+  id-token: write # Required for OIDC for npm publish
+  contents: write # Required for creating a new tag when releasing
 
 env:
   ORG_GRADLE_PROJECT_releaseBuild: ${{ github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main' }}
