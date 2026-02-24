@@ -44,6 +44,16 @@ class RenderMultiselectPaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderMultiselect - Options=Card - Select limit reached`() = contentSnapshot {
+        RenderContentStack(
+            listOf(mockMultiselect(columns = 1, optionStyle = Option.Style.CARD)),
+            state = State().apply {
+                setVar("multiselect", listOf("1", "3", "4", "6"))
+            },
+        )
+    }
+
+    @Test
     fun `RenderMultiselect - Options=Flat - Selected`() = contentSnapshot {
         RenderContentStack(
             listOf(mockMultiselect(columns = 4, optionStyle = Option.Style.FLAT)),
@@ -51,11 +61,21 @@ class RenderMultiselectPaparazziTest : BasePaparazziTest() {
         )
     }
 
-    private fun mockMultiselect(columns: Int, optionStyle: Option.Style? = null) = Multiselect(
+    @Test
+    fun `RenderMultiselect - Options=Mixed - Select limit reached`() = contentSnapshot {
+        RenderContentStack(
+            listOf(mockMultiselect(columns = 3)),
+            state = State().apply {
+                setVar("multiselect", listOf("1", "3", "4", "6"))
+            }
+        )
+    }
+
+    private fun mockMultiselect(columns: Int, optionStyle: Option.Style? = null, selectionLimit: Int = 4) = Multiselect(
         manifest,
         stateName = "multiselect",
         columns = columns,
-        selectionLimit = 4,
+        selectionLimit = selectionLimit,
     ) { multiselect ->
         List(7) { i ->
             Option(
