@@ -88,14 +88,17 @@ private fun RenderMultiselectOptionCard(option: Multiselect.Option, state: State
     val isClickable by option.produceIsClickable(state)
     val isSelected by option.produceIsSelected(state)
 
+    val colorOptions = when {
+        isSelected -> option.selectedColor.toComposeColor()
+        else -> option.backgroundColor.toComposeColor()
+    }
+
     ElevatedCard(
         onClick = { toggleOption(option, state, coroutineScope) },
         enabled = isClickable,
         colors = CardDefaults.elevatedCardColors(
-            containerColor = when {
-                isSelected -> option.selectedColor.toComposeColor()
-                else -> option.backgroundColor.toComposeColor()
-            },
+            containerColor = colorOptions,
+            disabledContainerColor = colorOptions
         ),
         elevation = ToolTheme.cardElevation(),
         modifier = modifier.padding(CardPadding)
