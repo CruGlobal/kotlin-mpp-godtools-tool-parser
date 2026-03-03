@@ -48,7 +48,7 @@ gtoSupport-compose = { module = "org.ccci.gto.android:gto-support-compose", vers
 gtoSupport-fluidsonic-locale = { module = "org.ccci.gto.android:gto-support-fluidsonic-locale", version.ref = "gtoSupport" }
 gtoSupport-okio = { module = "org.ccci.gto.android:gto-support-okio", version.ref = "gtoSupport" }
 gtoSupport-parcelize = { module = "org.ccci.gto.android:gto-support-parcelize", version.ref = "gtoSupport" }
-kermit = "co.touchlab:kermit:2.0.8"
+kermit = "co.touchlab:kermit:2.1.0"
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
