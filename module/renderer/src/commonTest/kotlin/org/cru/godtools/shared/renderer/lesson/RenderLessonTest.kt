@@ -100,7 +100,7 @@ class RenderLessonTest : BaseRendererTest() {
         }
 
         onPager().assertDoesNotExist()
-        onNodeWithText(runBlocking { getString(Res.string.tool_not_found) }).assertIsDisplayed()
+        onNodeWithText(getString(Res.string.tool_not_found)).assertIsDisplayed()
     }
 
     @Test
@@ -112,7 +112,7 @@ class RenderLessonTest : BaseRendererTest() {
         }
 
         onPager().assertDoesNotExist()
-        onNodeWithText(runBlocking { getString(Res.string.tool_offline) }).assertIsDisplayed()
+        onNodeWithText(getString(Res.string.tool_offline)).assertIsDisplayed()
     }
 
     @Test
@@ -124,7 +124,7 @@ class RenderLessonTest : BaseRendererTest() {
         }
 
         onPager().assertDoesNotExist()
-        onNodeWithText(runBlocking { getString(Res.string.tool_loading) }).assertIsDisplayed()
+        onNodeWithText(getString(Res.string.tool_loading)).assertIsDisplayed()
     }
 
     @Test
