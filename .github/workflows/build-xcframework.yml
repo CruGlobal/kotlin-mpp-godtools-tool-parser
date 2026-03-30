@@ -68,7 +68,7 @@ jobs:
           cd ${{ steps.xcframework_directory.outputs.value }}
           echo "value=$(swift package compute-checksum ${{ steps.godtools_shared_zip_file_name.outputs.value }})" >> $GITHUB_OUTPUT        
       - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4
+        uses: jfrog/setup-jfrog-cli@v5
         with:
           disable-auto-build-publish: true
         env:
