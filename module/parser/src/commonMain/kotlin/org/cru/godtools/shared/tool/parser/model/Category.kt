@@ -46,10 +46,11 @@ class Category : BaseModel, Styles {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(manifest: Manifest = Manifest(), label: (Base) -> Text?) : super(manifest) {
+    constructor(manifest: Manifest = Manifest(), label: ((Base) -> Text?)? = null, banner: String? = null) :
+        super(manifest) {
         id = null
-        this.label = label(this)
+        this.label = label?.invoke(this)
         aemTags = emptySet()
-        _banner = null
+        _banner = banner
     }
 }
