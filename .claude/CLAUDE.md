@@ -33,6 +33,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Snapshot testing (Android) — recording only happens in CI
 ./gradlew verifyPaparazzi                # Verify snapshots
+# To record new/updated snapshots: trigger the "Record Snapshots" workflow_dispatch
+# in GitHub Actions on the target branch — it commits the updated snapshot images back to the branch
 
 # Generate iOS CocoaPods podspec
 ./gradlew podspec
