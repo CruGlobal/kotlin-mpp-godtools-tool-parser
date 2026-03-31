@@ -1,14 +1,17 @@
-# gradle project ignores
+# Gradle
 .gradle/
 build/
 *.podspec
 
-# Android Studio project ignores
+# Kotlin
+.kotlin/
+
+# Android Studio
 .idea/
 *.iml
 captures/
 out/
 local.properties
 
-# Kotlin project ignores
-.kotlin/
+# Claude Code
+.claude/settings.local.json
