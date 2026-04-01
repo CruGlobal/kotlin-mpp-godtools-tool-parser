@@ -22,6 +22,12 @@ internal object ToolTheme {
         fontSize = 16.sp,
         lineHeight = 20.sp
     )
+
+    internal val ArticleLabelTextStyle = Typography().headlineMedium.copy(
+        fontSize = 30.sp,
+        lineHeight = 34.sp
+    )
+
     internal val TractHeaderTextStyle = Typography().titleMedium.copy(
         fontSize = 18.sp,
         fontWeight = FontWeight.Normal,
