@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import org.cru.godtools.shared.renderer.ToolTheme
 import org.cru.godtools.shared.renderer.content.RenderTextNode
 import org.cru.godtools.shared.renderer.extensions.toImageRequest
 import org.cru.godtools.shared.tool.parser.model.Category
@@ -29,12 +31,14 @@ fun RenderArticleCategory(category: Category, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize(),
         )
         category.label?.let {
-            RenderTextNode(
-                text = it,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(20.dp),
-            )
+            ProvideTextStyle(ToolTheme.ArticleLabelTextStyle) {
+                RenderTextNode(
+                    text = it,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(20.dp),
+                )
+            }
         }
     }
 }
