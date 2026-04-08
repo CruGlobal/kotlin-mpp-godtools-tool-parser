@@ -19,7 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ./gradlew :module:parser:testDebugUnitTest --tests "org.cru.godtools.shared.parser.FooTest"
 
 # Run iOS unit tests
-./gradlew iosSimulatorArm64Test iosX64Test
+./gradlew iosSimulatorArm64Test
 
 # Run JavaScript unit tests
 ./gradlew jsTest
@@ -64,7 +64,7 @@ publishing/
 ## Architecture
 
 ### Platforms & Targets
-Each module supports `androidTarget`, `iosX64`, `iosArm64`, `iosSimulatorArm64`, and `js` via the `godtools-shared.module-conventions` convention plugin in `build-logic/`.
+Each module supports `androidTarget`, `iosArm64`, `iosSimulatorArm64`, and `js` via the `godtools-shared.module-conventions` convention plugin in `build-logic/`.
 
 ### Parsing Pipeline
 - `ManifestParser` uses a factory-injected `XmlPullParser` (Android/iOS/JS implementations differ)
