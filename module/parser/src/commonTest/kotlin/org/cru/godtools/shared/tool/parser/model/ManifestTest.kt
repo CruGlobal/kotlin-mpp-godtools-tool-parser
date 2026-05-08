@@ -176,6 +176,32 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
+    fun testParseManifestResourceChecksums() = runTest {
+        val manifest = parseManifest("manifest_checksums.xml", ParserConfig().withParseRelated(false))
+        val expectedChecksum = "aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899"
+
+        val resource = assertNotNull(manifest.resources["file.jpg"])
+        assertEquals(expectedChecksum, resource.checksumSha256)
+        assertEquals(5678, resource.size)
+
+        val resourceNoChecksum = assertNotNull(manifest.resources["file2.jpg"])
+        assertNull(resourceNoChecksum.checksumSha256)
+        assertNull(resourceNoChecksum.size)
+
+        assertEquals(2, manifest.pageXmlFiles.size)
+        assertEquals(expectedChecksum, manifest.pageXmlFiles[0].checksumSha256)
+        assertEquals(1234, manifest.pageXmlFiles[0].size)
+        assertNull(manifest.pageXmlFiles[1].checksumSha256)
+        assertNull(manifest.pageXmlFiles[1].size)
+
+        assertEquals(2, manifest.tipXmlFiles.size)
+        assertEquals(expectedChecksum, manifest.tipXmlFiles[0].checksumSha256)
+        assertEquals(9012, manifest.tipXmlFiles[0].size)
+        assertNull(manifest.tipXmlFiles[1].checksumSha256)
+        assertNull(manifest.tipXmlFiles[1].size)
+    }
+
+    @Test
     fun testParseManifestWithoutParsingRelated() = runTest {
         val expectedRelatedFiles = setOf(
             "page1_sha.xml",
