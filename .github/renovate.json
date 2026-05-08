@@ -18,6 +18,7 @@
       "groupName": "Kotlin",
       "matchPackageNames": [
         "org.jetbrains.kotlin:kotlin{/,}**",
+        "org.jetbrains.kotlin.native.cocoapods{/,}**",
         "org.jetbrains.kotlin.plugin.compose{/,}**"
       ]
     },
