@@ -15,7 +15,7 @@ import org.cru.godtools.shared.tool.parser.model.Resource
 @OptIn(InternalCompottieApi::class)
 internal fun LottieCompositionSpec.Companion.Resource(fileSystem: FileSystem, resource: Resource) =
     object : LottieCompositionSpec {
-        override val key get() = "resource_${resource.localName}"
+        override val key get() = "resource_${resource.src}"
 
         override suspend fun load() = fileSystem.source(resource.toPath()!!).buffer().readByteArray()
             .decodeToLottieComposition(LottieAnimationFormat.Undefined)

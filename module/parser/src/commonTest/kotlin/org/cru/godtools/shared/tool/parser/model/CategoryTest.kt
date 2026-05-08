@@ -18,11 +18,11 @@ class CategoryTest : UsesResources() {
         assertEquals("testParseCategory", category.id)
         assertNotNull(category.banner).also {
             assertEquals("banner.jpg", it.name)
-            assertEquals("bannersha1.jpg", it.localName)
+            assertEquals("bannersha1.jpg", it.src)
         }
         assertEquals(setOf("tag1", "tag2"), category.aemTags)
         assertEquals("Category", category.label!!.text)
-        assertEquals(TestColors.RED, category.label!!.textColor)
+        assertEquals(TestColors.RED, category.label.textColor)
     }
 
     @Test

@@ -38,9 +38,9 @@ abstract class BasePaparazziTest(
     renderingMode: RenderingMode = RenderingMode.NORMAL
 ) {
     protected companion object {
-        val resourceBlackPanther = Resource(name = "black_panther", localName = "black_panther.png")
-        val resourceBruce = Resource(name = "bruce", localName = "bruce.jpg")
-        val resourceWaterfall = Resource(name = "waterfall", localName = "waterfall.jpg")
+        val resourceBlackPanther = Resource(name = "black_panther", src = "black_panther.png")
+        val resourceBruce = Resource(name = "bruce", src = "bruce.jpg")
+        val resourceWaterfall = Resource(name = "waterfall", src = "waterfall.jpg")
     }
     enum class AccessibilityMode { ACCESSIBILITY, NO_ACCESSIBILITY }
 
