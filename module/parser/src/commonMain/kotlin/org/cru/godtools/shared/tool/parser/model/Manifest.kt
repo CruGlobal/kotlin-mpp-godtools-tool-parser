@@ -206,9 +206,9 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val tipXmlFiles: List<XmlFile>
 
     val relatedFiles get() = buildSet {
-        addAll(pageXmlFiles.map { it.src })
-        addAll(tipXmlFiles.map { it.src })
-        addAll(resources.values.mapNotNull { it.localName })
+        addAll(pageXmlFiles)
+        addAll(tipXmlFiles)
+        addAll(resources.values.filter { it.src != null })
     }
 
     private constructor(parser: XmlPullParser, config: ParserConfig) {
@@ -476,12 +476,18 @@ class Manifest : BaseModel, Styles, HasPages {
         }
     }
 
+    interface File {
+        val src: String?
+        val checksumSha256: String?
+        val size: Int?
+    }
+
     data class XmlFile(
-        internal val name: String?,
-        internal val src: String,
-        internal val checksumSha256: String? = null,
-        internal val size: Int? = null,
-    )
+        val name: String?,
+        override val src: String,
+        override val checksumSha256: String? = null,
+        override val size: Int? = null,
+    ) : File
 }
 
 val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor

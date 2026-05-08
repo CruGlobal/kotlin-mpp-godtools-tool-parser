@@ -69,7 +69,7 @@ class ManifestTest : UsesResources() {
         assertEquals("testParseCategory", category.id)
         val banner = assertNotNull(category.banner)
         assertEquals("banner.jpg", banner.name)
-        assertEquals("bannersha1.jpg", banner.localName)
+        assertEquals("bannersha1.jpg", banner.src)
         assertEquals(setOf("tag1", "tag2"), category.aemTags)
         val label = assertNotNull(category.label)
         assertEquals("Category", label.text)
@@ -137,7 +137,7 @@ class ManifestTest : UsesResources() {
         assertTrue(manifest.backgroundImageGravity.isEnd)
         val backgroundImage = assertNotNull(manifest.backgroundImage)
         assertEquals("file.jpg", backgroundImage.name)
-        assertEquals("sha1.jpg", backgroundImage.localName)
+        assertEquals("sha1.jpg", backgroundImage.src)
     }
 
     @Test
@@ -203,7 +203,7 @@ class ManifestTest : UsesResources() {
 
     @Test
     fun testParseManifestWithoutParsingRelated() = runTest {
-        val expectedRelatedFiles = setOf(
+        val expectedRelatedFileSrcs = setOf(
             "page1_sha.xml",
             "page2_sha.xml",
             "tip1_sha.xml",
@@ -217,7 +217,7 @@ class ManifestTest : UsesResources() {
         assertTrue(manifest.pages.isEmpty())
         assertTrue(manifest.tips.isEmpty())
         assertTrue(manifest.hasTips)
-        assertEquals(expectedRelatedFiles, manifest.relatedFiles)
+        assertEquals(expectedRelatedFileSrcs, manifest.relatedFiles.map { it.src }.toSet())
     }
 
     @Test
