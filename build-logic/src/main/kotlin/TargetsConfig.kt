@@ -24,7 +24,6 @@ internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
 }
 
 fun KotlinMultiplatformExtension.configureIosTargets() {
-    iosX64 { copyTestResources() }
     iosArm64 { copyTestResources() }
     iosSimulatorArm64 { copyTestResources() }
 }
