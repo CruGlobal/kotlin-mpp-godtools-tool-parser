@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `godtools-shared` is a **Kotlin Multiplatform (KMP)** library that parses and renders interactive GodTools content (lessons, tracts, etc.) across Android, iOS, and JavaScript/Web platforms.
 
+The XML content format is defined by XSD schemas in the [`mobile-content-api` repository](https://github.com/CruGlobal/mobile-content-api/tree/master/public/xmlns), covering manifest, tract, lesson, cyoa, article, and other content types.
+
 ## Build & Development Commands
 
 ```bash

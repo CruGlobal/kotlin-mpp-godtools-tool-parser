@@ -49,7 +49,7 @@ internal val LocalCompottieCoroutineContext = staticCompositionLocalOf<Coroutine
 
 @Composable
 internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
-    val resource = animation.resource?.takeUnless { it.localName == null } ?: return
+    val resource = animation.resource?.takeUnless { it.src == null } ?: return
 
     val fileSystem = LocalResourceFileSystem.current
 

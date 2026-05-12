@@ -66,6 +66,8 @@ private const val XML_PAGES = "pages"
 private const val XML_PAGES_PAGE = "page"
 private const val XML_PAGES_PAGE_FILENAME = "filename"
 private const val XML_PAGES_PAGE_SRC = "src"
+private const val XML_PAGES_PAGE_CHECKSUM_SHA256 = "checksum-sha256"
+private const val XML_PAGES_PAGE_SIZE = "size"
 private const val XML_PAGES_AEM_IMPORT = "aem-import"
 private const val XML_PAGES_AEM_IMPORT_SRC = "src"
 private const val XML_RESOURCES = "resources"
@@ -73,6 +75,8 @@ private const val XML_TIPS = "tips"
 private const val XML_TIPS_TIP = "tip"
 private const val XML_TIPS_TIP_ID = "id"
 private const val XML_TIPS_TIP_SRC = "src"
+private const val XML_TIPS_TIP_CHECKSUM_SHA256 = "checksum-sha256"
+private const val XML_TIPS_TIP_SIZE = "size"
 
 @JsExport
 @OptIn(ExperimentalJsExport::class, ExperimentalObjCRefinement::class)
@@ -199,12 +203,12 @@ class Manifest : BaseModel, Styles, HasPages {
         private set
 
     internal val pageXmlFiles: List<XmlFile>
-    private val tipXmlFiles: List<XmlFile>
+    internal val tipXmlFiles: List<XmlFile>
 
     val relatedFiles get() = buildSet {
-        addAll(pageXmlFiles.map { it.src })
-        addAll(tipXmlFiles.map { it.src })
-        addAll(resources.values.mapNotNull { it.localName })
+        addAll(pageXmlFiles)
+        addAll(tipXmlFiles)
+        addAll(resources.values.filter { it.src != null })
     }
 
     private constructor(parser: XmlPullParser, config: ParserConfig) {
@@ -403,7 +407,9 @@ class Manifest : BaseModel, Styles, HasPages {
                     XML_PAGES_PAGE -> {
                         val src = getAttributeValue(XML_PAGES_PAGE_SRC) ?: return@parseChildren
                         val fileName = getAttributeValue(XML_PAGES_PAGE_FILENAME)
-                        result.pages += XmlFile(fileName, src)
+                        val checksumSha256 = getAttributeValue(XML_PAGES_PAGE_CHECKSUM_SHA256)?.lowercase()
+                        val size = getAttributeValue(XML_PAGES_PAGE_SIZE)?.toIntOrNull()
+                        result.pages += XmlFile(fileName, src, checksumSha256, size)
                     }
                 }
 
@@ -434,7 +440,9 @@ class Manifest : BaseModel, Styles, HasPages {
                     XML_TIPS_TIP -> {
                         val id = getAttributeValue(XML_TIPS_TIP_ID) ?: return@parseChildren
                         val src = getAttributeValue(XML_TIPS_TIP_SRC) ?: return@parseChildren
-                        add(XmlFile(id, src))
+                        val checksumSha256 = getAttributeValue(XML_TIPS_TIP_CHECKSUM_SHA256)?.lowercase()
+                        val size = getAttributeValue(XML_TIPS_TIP_SIZE)?.toIntOrNull()
+                        add(XmlFile(id, src, checksumSha256, size))
                     }
                 }
             }
@@ -468,7 +476,18 @@ class Manifest : BaseModel, Styles, HasPages {
         }
     }
 
-    data class XmlFile(internal val name: String?, internal val src: String)
+    interface File {
+        val src: String?
+        val checksumSha256: String?
+        val size: Int?
+    }
+
+    data class XmlFile(
+        val name: String?,
+        override val src: String,
+        override val checksumSha256: String? = null,
+        override val size: Int? = null,
+    ) : File
 }
 
 val Manifest?.navBarColor get() = this?.navBarColor ?: primaryColor

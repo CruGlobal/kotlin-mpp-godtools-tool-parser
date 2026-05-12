@@ -26,13 +26,13 @@ object TestResources {
         .build()
 
     val resources = listOf(
-        Resource(name = "black_square", localName = "black_square.png"),
-        Resource(name = "red_square", localName = "red_square.png"),
-        Resource(name = "green_square", localName = "green_square.png"),
-        Resource(name = "tall", localName = "tall.png"),
-        Resource(name = "wide", localName = "wide.png"),
-        Resource(name = "kotlin_anim", localName = "kotlin_anim.json"),
-        Resource(name = "nyan_cat", localName = "nyan_cat.lottie"),
+        Resource(name = "black_square", src = "black_square.png"),
+        Resource(name = "red_square", src = "red_square.png"),
+        Resource(name = "green_square", src = "green_square.png"),
+        Resource(name = "tall", src = "tall.png"),
+        Resource(name = "wide", src = "wide.png"),
+        Resource(name = "kotlin_anim", src = "kotlin_anim.json"),
+        Resource(name = "nyan_cat", src = "nyan_cat.lottie"),
     )
 }
 

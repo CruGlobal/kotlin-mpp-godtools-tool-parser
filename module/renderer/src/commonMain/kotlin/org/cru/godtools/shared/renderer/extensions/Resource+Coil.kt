@@ -9,7 +9,7 @@ import okio.Path.Companion.toPath
 import org.cru.godtools.shared.renderer.util.LocalResourceFileSystem
 import org.cru.godtools.shared.tool.parser.model.Resource
 
-internal fun Resource.toPath() = localName?.toPath()
+internal fun Resource.toPath() = src?.toPath()
 
 @Composable
 internal fun Resource.toImageRequestBuilder() = ImageRequest.Builder(LocalPlatformContext.current)

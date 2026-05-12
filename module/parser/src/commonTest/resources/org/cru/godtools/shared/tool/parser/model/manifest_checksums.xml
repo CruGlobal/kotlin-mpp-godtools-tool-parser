@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest">
+    <pages>
+        <page filename="page0.xml" src="page0_sha.xml"
+            checksum-sha256="AABBCCDDEEFF00112233445566778899AABBCCDDEEFF00112233445566778899"
+            size="1234" />
+        <page src="page1_sha.xml" />
+    </pages>
+
+    <tips>
+        <tip id="tip1" src="tip1_sha.xml"
+            checksum-sha256="AABBCCDDEEFF00112233445566778899AABBCCDDEEFF00112233445566778899"
+            size="9012" />
+        <tip id="tip2" src="tip2_sha.xml" />
+    </tips>
+
+    <resources>
+        <resource filename="file.jpg" src="sha1.jpg"
+            checksum-sha256="AABBCCDDEEFF00112233445566778899AABBCCDDEEFF00112233445566778899"
+            size="5678" />
+        <resource filename="file2.jpg" src="sha2.jpg" />
+    </resources>
+</manifest>

@@ -69,7 +69,7 @@ class ManifestTest : UsesResources() {
         assertEquals("testParseCategory", category.id)
         val banner = assertNotNull(category.banner)
         assertEquals("banner.jpg", banner.name)
-        assertEquals("bannersha1.jpg", banner.localName)
+        assertEquals("bannersha1.jpg", banner.src)
         assertEquals(setOf("tag1", "tag2"), category.aemTags)
         val label = assertNotNull(category.label)
         assertEquals("Category", label.text)
@@ -137,7 +137,7 @@ class ManifestTest : UsesResources() {
         assertTrue(manifest.backgroundImageGravity.isEnd)
         val backgroundImage = assertNotNull(manifest.backgroundImage)
         assertEquals("file.jpg", backgroundImage.name)
-        assertEquals("sha1.jpg", backgroundImage.localName)
+        assertEquals("sha1.jpg", backgroundImage.src)
     }
 
     @Test
@@ -176,8 +176,34 @@ class ManifestTest : UsesResources() {
     }
 
     @Test
+    fun testParseManifestResourceChecksums() = runTest {
+        val manifest = parseManifest("manifest_checksums.xml", ParserConfig().withParseRelated(false))
+        val expectedChecksum = "aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899"
+
+        val resource = assertNotNull(manifest.resources["file.jpg"])
+        assertEquals(expectedChecksum, resource.checksumSha256)
+        assertEquals(5678, resource.size)
+
+        val resourceNoChecksum = assertNotNull(manifest.resources["file2.jpg"])
+        assertNull(resourceNoChecksum.checksumSha256)
+        assertNull(resourceNoChecksum.size)
+
+        assertEquals(2, manifest.pageXmlFiles.size)
+        assertEquals(expectedChecksum, manifest.pageXmlFiles[0].checksumSha256)
+        assertEquals(1234, manifest.pageXmlFiles[0].size)
+        assertNull(manifest.pageXmlFiles[1].checksumSha256)
+        assertNull(manifest.pageXmlFiles[1].size)
+
+        assertEquals(2, manifest.tipXmlFiles.size)
+        assertEquals(expectedChecksum, manifest.tipXmlFiles[0].checksumSha256)
+        assertEquals(9012, manifest.tipXmlFiles[0].size)
+        assertNull(manifest.tipXmlFiles[1].checksumSha256)
+        assertNull(manifest.tipXmlFiles[1].size)
+    }
+
+    @Test
     fun testParseManifestWithoutParsingRelated() = runTest {
-        val expectedRelatedFiles = setOf(
+        val expectedRelatedFileSrcs = setOf(
             "page1_sha.xml",
             "page2_sha.xml",
             "tip1_sha.xml",
@@ -191,7 +217,7 @@ class ManifestTest : UsesResources() {
         assertTrue(manifest.pages.isEmpty())
         assertTrue(manifest.tips.isEmpty())
         assertTrue(manifest.hasTips)
-        assertEquals(expectedRelatedFiles, manifest.relatedFiles)
+        assertEquals(expectedRelatedFileSrcs, manifest.relatedFiles.map { it.src }.toSet())
     }
 
     @Test
