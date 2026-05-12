@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     id("godtools-shared.module-conventions")
     alias(libs.plugins.compose)
@@ -30,10 +28,10 @@ kotlin {
                 api(project(":module:parser"))
                 api(project(":module:renderer-state"))
 
-                implementation(compose.components.resources)
-                implementation(compose.materialIconsExtended)
-                implementation(compose.material3)
-                implementation(compose.runtime)
+                implementation(libs.compose.components.resources)
+                implementation(libs.compose.material.icons.extended)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.runtime)
 
                 api(libs.circuit.runtime)
                 api(libs.kotlin.immutable.collections)
@@ -50,8 +48,7 @@ kotlin {
         }
         commonTest {
             dependencies {
-                @OptIn(ExperimentalComposeLibrary::class)
-                implementation(compose.uiTest)
+                implementation(libs.compose.ui.test)
 
                 implementation(libs.androidx.lifecycle.testing)
                 implementation(libs.circuit.test)
