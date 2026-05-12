@@ -6,7 +6,7 @@ internal fun KotlinMultiplatformExtension.configureCommonSourceSets() {
     sourceSets.named("commonTest") {
         dependencies {
             implementation(kotlin("test"))
-            implementation(project.libs.findBundle("common-test-framework").get())
+            implementation(project.versionCatalog.findBundle("common-test-framework").get())
         }
     }
 }
@@ -18,7 +18,7 @@ internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
 
     sourceSets.named("androidUnitTest") {
         dependencies {
-            implementation(project.libs.findBundle("android-test-framework").get())
+            implementation(project.versionCatalog.findBundle("android-test-framework").get())
         }
     }
 }

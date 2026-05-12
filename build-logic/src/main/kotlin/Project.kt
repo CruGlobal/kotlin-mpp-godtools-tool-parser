@@ -6,4 +6,4 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 internal fun Project.ktlint(action: KtlintExtension.() -> Unit) = extensions.configure(action)
 
-internal val Project.libs get() = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
+internal val Project.versionCatalog get() = project.extensions.getByType<VersionCatalogsExtension>().named("libs")

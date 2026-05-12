@@ -15,7 +15,7 @@ enablePublishing()
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.findVersion("jvm").get().requiredVersion))
+        languageVersion.set(JavaLanguageVersion.of(versionCatalog.findVersion("jvm").get().requiredVersion))
     }
 
     configureAndroidTargets()
