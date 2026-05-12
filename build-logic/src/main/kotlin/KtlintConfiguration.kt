@@ -4,9 +4,9 @@ fun Project.configureKtlint() {
     pluginManager.apply("org.jlleitschuh.gradle.ktlint")
 
     ktlint {
-        version.set(libs.findVersion("ktlint").get().requiredVersion)
+        version.set(versionCatalog.findVersion("ktlint").get().requiredVersion)
 
-        dependencies.add("ktlintRuleset", libs.findBundle("ktlint-rulesets").get())
+        dependencies.add("ktlintRuleset", versionCatalog.findBundle("ktlint-rulesets").get())
 
         filter {
             exclude { layout.buildDirectory.asFileTree.contains(it.file) }
