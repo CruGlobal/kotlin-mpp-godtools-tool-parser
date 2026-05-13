@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build
     # run on mac so iOS compilation is executed as well
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -38,7 +38,7 @@ jobs:
 
   build_and_upload_xcframework:
     name: Build And Upload XCFramework
-    runs-on: macos-15
+    runs-on: macos-26
     outputs:
       godtools_shared_zip_file_name: ${{ steps.godtools_shared_zip_file_name.outputs.value }}
       swift_package_checksum: ${{ steps.swift_package_checksum.outputs.value }}
