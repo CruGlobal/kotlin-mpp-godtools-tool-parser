@@ -19,6 +19,7 @@ kotlin {
         }
     }
 }
+configureKtlint()
 
 npmPublish {
     organization.set("cruglobal")

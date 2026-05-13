@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    kotlin("multiplatform") version libs.versions.kotlin
+    id("build-logic")
+    kotlin("multiplatform")
 }
 
 val xcframeworkName = "GodToolsShared"
@@ -24,7 +25,7 @@ kotlin {
             export(project(":module:user-activity"))
 
             // Specify CFBundleIdentifier to uniquely identify the framework
-            binaryOption("bundleId", "org.cru.${xcframeworkName}")
+            binaryOption("bundleId", "org.cru.$xcframeworkName")
             xcf.add(this)
             isStatic = false
         }
@@ -43,6 +44,7 @@ kotlin {
         }
     }
 }
+configureKtlint()
 
 val zipXCFramework = tasks.register<Zip>("zip${xcframeworkName}SpmXCFramework") {
     dependsOn("assemble${xcframeworkName}XCFramework")
@@ -91,6 +93,6 @@ val generateSpmPackageSwift = tasks.register("generate${xcframeworkName}SpmPacka
 
 tasks.register("assemble${xcframeworkName}SpmPackage") {
     group = "build"
-    description = "Assembles the $xcframeworkName SPM package: zips the XCFramework and generates a local Package.swift."
+    description = "Assembles the $xcframeworkName SPM package."
     dependsOn(generateSpmPackageSwift)
 }
