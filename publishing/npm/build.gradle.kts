@@ -3,7 +3,7 @@ import dev.petuska.npm.publish.task.NpmPublishTask
 plugins {
     id("build-logic")
     kotlin("multiplatform")
-    id("org.ajoberstar.grgit.service")
+    alias(libs.plugins.grgit)
     alias(libs.plugins.npm.publish)
 }
 

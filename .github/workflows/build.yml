@@ -224,40 +224,6 @@ jobs:
           name: js-unit-test-results
           path: "**/build/reports/tests/"
 
-  lint_ios_podspec:
-    name: Lint iOS Podspec
-    runs-on: macos-26
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Setup Java JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: "temurin"
-          java-version-file: ".tool-versions"
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-      - name: Cache Konan
-        uses: actions/cache@v5
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-konan-
-      - name: Create podspec
-        run: ./gradlew podspec
-      - name: Lint podspec
-        run: bundle exec pod spec lint *.podspec --allow-warnings --verbose
-        env:
-          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
-          GIT_LFS_SKIP_SMUDGE: 1
-
   check_version:
     name: Check Version is Unreleased
     runs-on: ubuntu-latest
@@ -332,51 +298,6 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryUsername: ${{ secrets.JFROG_USERNAME }}
           ORG_GRADLE_PROJECT_cruGlobalMavenRepositoryPassword: ${{ secrets.JFROG_PASSWORD }}
-
-  deploy_ios_podspec:
-    name: Publish iOS Podspec
-    runs-on: macos-26
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: CocoaPods')) ||
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
-    needs: [ build, check_metadata, ktlint, lint, ios_tests, check_version ]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Setup Java JDK
-        uses: actions/setup-java@v5
-        with:
-          distribution: "temurin"
-          java-version-file: ".tool-versions"
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-      - name: Cache Konan
-        uses: actions/cache@v5
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-konan-
-      - name: Create podspec
-        run: ./gradlew podspec
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Add CruGlobal CocoaPods Repo
-        run: bundle exec pod repo add CruGlobal git@github.com:CruGlobal/cocoapods-specs.git
-      - name: Push podspec
-        run: bundle exec pod repo push CruGlobal *.podspec --allow-warnings
-        env:
-          # HACK: Disable Git LFS for this step due to issues with GHA being able to fetch LFS files
-          GIT_LFS_SKIP_SMUDGE: 1
 
   deploy_npm:
     name: Publish npm package
