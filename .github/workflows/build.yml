@@ -402,3 +402,136 @@ jobs:
         run: ./gradlew :publishing:npm:publish --scan
         env:
           ORG_GRADLE_PROJECT_npmPublishTag: ${{ (github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number)) || '' }}
+
+  assemble_spm_xcframework:
+    name: Assemble XCFramework
+    runs-on: macos-15
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: SPM')) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    needs: [ build, check_metadata, ktlint, ios_tests, check_version ]
+    outputs:
+      zip_filename: ${{ steps.zip_filename.outputs.value }}
+      checksum: ${{ steps.checksum.outputs.value }}
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version-file: ".tool-versions"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Cache Konan
+        uses: actions/cache@v5
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Build XCFramework
+        run: ./gradlew assembleGodToolsSharedXCFramework --scan
+      - name: Compute effective version
+        id: version
+        env:
+          BASE_VERSION: ${{ needs.check_version.outputs.version }}
+          VERSION_SUFFIX: ${{ env.ORG_GRADLE_PROJECT_versionSuffix }}
+          RELEASE_BUILD: ${{ env.ORG_GRADLE_PROJECT_releaseBuild }}
+        run: |
+          if [ "$RELEASE_BUILD" = "true" ]; then
+            echo "value=$BASE_VERSION" >> $GITHUB_OUTPUT
+          elif [ -n "$VERSION_SUFFIX" ]; then
+            echo "value=$BASE_VERSION-$VERSION_SUFFIX" >> $GITHUB_OUTPUT
+          else
+            echo "value=$BASE_VERSION-SNAPSHOT" >> $GITHUB_OUTPUT
+          fi
+      - name: Compute zip filename
+        id: zip_filename
+        run: echo "value=GodToolsShared-${{ steps.version.outputs.value }}.xcframework.zip" >> $GITHUB_OUTPUT
+      - name: Zip XCFramework
+        working-directory: publishing/spm/build/XCFrameworks/release
+        run: zip -r "${{ steps.zip_filename.outputs.value }}" GodToolsShared.xcframework
+      - name: Compute checksum
+        id: checksum
+        working-directory: publishing/spm/build/XCFrameworks/release
+        run: echo "value=$(swift package compute-checksum '${{ steps.zip_filename.outputs.value }}')" >> $GITHUB_OUTPUT
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v5
+        with:
+          disable-auto-build-publish: true
+        env:
+          JF_URL: 'https://cruglobal.jfrog.io'
+          JF_USER: ${{ secrets.JFROG_USERNAME }}
+          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload XCFramework to JFrog
+        working-directory: publishing/spm/build/XCFrameworks/release
+        env:
+          RELEASE_BUILD: ${{ env.ORG_GRADLE_PROJECT_releaseBuild }}
+          ZIP_FILENAME: ${{ steps.zip_filename.outputs.value }}
+        run: |
+          if [ "$RELEASE_BUILD" = "true" ]; then
+            JFROG_REPO="swift-releases-local"
+          else
+            JFROG_REPO="swift-snapshots-local"
+          fi
+          jf rt u "$ZIP_FILENAME" "$JFROG_REPO/CruGlobal/GodToolsShared/$ZIP_FILENAME"
+
+  deploy_spm:
+    name: Publish SPM Package
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main'
+    needs: [ assemble_spm_xcframework, check_version ]
+    steps:
+      - name: Create Package.swift
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: Package.swift
+          contents: |
+            // swift-tools-version: 5.9
+            // The swift-tools-version declares the minimum version of Swift required to build this package.
+
+            import PackageDescription
+
+            let package = Package(
+              name: "GodToolsShared",
+              platforms: [
+                .iOS(.v16),
+              ],
+              products: [
+                  .library(name: "GodToolsShared", targets: ["GodToolsShared"])
+              ],
+              dependencies: [],
+              targets: [
+                  .binaryTarget(
+                    name: "GodToolsShared",
+                    url: "https://cruglobal.jfrog.io/artifactory/swift-releases-local/CruGlobal/GodToolsShared/${{ needs.assemble_spm_xcframework.outputs.zip_filename }}",
+                    checksum: "${{ needs.assemble_spm_xcframework.outputs.checksum }}"
+                  )
+              ]
+            )
+          write-mode: overwrite
+      - name: Push Package.swift to GodTools Shared Swift Repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+        with:
+          source_file: Package.swift
+          destination_repo: CruGlobal/godtools-shared-swift
+          user_email: levi.eggert@cru.org
+          user_name: levieggertcru
+          commit_message: Update package version ${{ needs.assemble_spm_xcframework.outputs.version }}
+      - name: Checkout GodTools Shared Swift Repo
+        uses: actions/checkout@v6
+        with:
+          repository: CruGlobal/godtools-shared-swift
+          token: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+      - name: Create Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GODTOOLS_SHARED_SWIFT_GITHUB_ACCESS_TOKEN }}
+          TAG_NAME: ${{ needs.check_version.outputs.tag }}
+        run: |
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
