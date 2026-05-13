@@ -15,6 +15,13 @@
   },
   "packageRules": [
     {
+      "groupName": "Compose Multiplatform",
+      "matchPackageNames": [
+        "org.jetbrains.compose:{/,}**",
+        "org.jetbrains.compose.*:{/,}**"
+      ]
+    },
+    {
       "groupName": "Kotlin",
       "matchPackageNames": [
         "org.jetbrains.kotlin:kotlin{/,}**",
