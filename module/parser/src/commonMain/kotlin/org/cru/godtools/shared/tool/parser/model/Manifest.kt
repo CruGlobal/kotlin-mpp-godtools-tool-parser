@@ -205,7 +205,7 @@ class Manifest : BaseModel, Styles, HasPages {
     internal val pageXmlFiles: List<XmlFile>
     internal val tipXmlFiles: List<XmlFile>
 
-    val relatedFiles get() = buildSet {
+    val relatedFiles get() = buildList {
         addAll(pageXmlFiles)
         addAll(tipXmlFiles)
         addAll(resources.values.filter { it.src != null })
