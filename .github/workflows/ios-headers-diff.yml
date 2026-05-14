@@ -24,19 +24,19 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
       - name: Generate current Framework headers
-        run: ./gradlew :linkPodReleaseFrameworkIosArm64 --scan
+        run: ./gradlew :publishing:spm:linkReleaseFrameworkIosArm64 --scan
       - name: Copy current Framework headers
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/head
-          cp build/bin/iosArm64/podReleaseFramework/*/Headers/*.h diff/head
+          cp publishing/spm/build/bin/iosArm64/releaseFramework/GodToolsShared.framework/Headers/*.h diff/head
       - name: Checkout base
         run: git checkout $GITHUB_BASE_REF
       - name: Generate base Framework headers
-        run: ./gradlew clean :linkPodReleaseFrameworkIosArm64 --scan
+        run: ./gradlew clean :publishing:spm:linkReleaseFrameworkIosArm64 --scan
       - name: Copy base Framework headers
         run: |
           mkdir -p $GITHUB_WORKSPACE/diff/base
-          cp build/bin/iosArm64/podReleaseFramework/*/Headers/*.h diff/base
+          cp publishing/spm/build/bin/iosArm64/releaseFramework/GodToolsShared.framework/Headers/*.h diff/base
       - id: diff
         uses: int128/diff-action@v2
         with:

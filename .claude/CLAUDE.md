@@ -38,8 +38,8 @@ The XML content format is defined by XSD schemas in the [`mobile-content-api` re
 # To record new/updated snapshots: trigger the "Record Snapshots" workflow_dispatch
 # in GitHub Actions on the target branch — it commits the updated snapshot images back to the branch
 
-# Generate iOS CocoaPods podspec
-./gradlew podspec
+# Assemble SPM package (XCFramework zip + local Package.swift)
+./gradlew assembleGodToolsSharedSpmPackage
 ```
 
 ## Module Structure
@@ -105,7 +105,7 @@ Each module supports `androidTarget`, `iosArm64`, `iosSimulatorArm64`, and `js` 
 - Version is defined in `gradle.properties` (`godtools.version`)
 - Appends `-SNAPSHOT` unless `releaseBuild=true`
 - PR builds get a `PR{number}` suffix
-- Publishes to: JFrog Artifactory (Maven), CocoaPods (`GodToolsToolParser`), npm (`@godtools/tool-parser`)
+- Publishes to: JFrog Artifactory (Maven), SPM (`GodToolsShared`), npm (`@godtools/tool-parser`)
 - After a release, the patch version is auto-incremented and committed
 
 ## Gradle Configuration
