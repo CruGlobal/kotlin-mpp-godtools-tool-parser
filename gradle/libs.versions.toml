@@ -85,4 +85,4 @@ grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.9" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "org.jetbrains.kotlin.npm-publish", version = "3.7.0" }
-paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha04" }
+paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha05" }
