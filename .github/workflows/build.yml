@@ -154,7 +154,7 @@ jobs:
       - name: Run Android Unit Tests
         run: ./gradlew test verifyPaparazzi koverXmlReportRelease --scan --no-build-cache
       - name: Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
