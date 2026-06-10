@@ -18,5 +18,5 @@ internal fun LottieCompositionSpec.Companion.Resource(fileSystem: FileSystem, re
         override val key get() = "resource_${resource.src}"
 
         override suspend fun load() = fileSystem.source(resource.toPath()!!).buffer().readByteArray()
-            .decodeToLottieComposition(LottieAnimationFormat.Undefined)
+            .decodeToLottieComposition(LottieAnimationFormat.Unknown)
     }
