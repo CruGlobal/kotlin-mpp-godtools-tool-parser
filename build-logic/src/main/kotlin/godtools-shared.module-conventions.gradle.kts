@@ -21,7 +21,14 @@ kotlin {
     configureAndroidTargets()
     configureIosTargets()
 
-    configureCommonSourceSets()
+    sourceSets {
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(project.versionCatalog.findBundle("common-test-framework").get())
+            }
+        }
+    }
 }
 configureKtlint()
 
