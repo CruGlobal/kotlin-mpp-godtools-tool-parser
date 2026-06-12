@@ -2,18 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
-internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
-    androidTarget {
-        publishLibraryVariants("debug", "release")
-    }
-
-    sourceSets.named("androidUnitTest") {
-        dependencies {
-            implementation(project.versionCatalog.findBundle("android-test-framework").get())
-        }
-    }
-}
-
 fun KotlinMultiplatformExtension.configureIosTargets() {
     iosArm64 { copyTestResources() }
     iosSimulatorArm64 { copyTestResources() }

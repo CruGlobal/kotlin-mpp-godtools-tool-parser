@@ -14,18 +14,26 @@ android {
 enablePublishing()
 
 kotlin {
+    androidTarget {
+        publishLibraryVariants("debug", "release")
+    }
+    configureIosTargets()
+
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(versionCatalog.findVersion("jvm").get().requiredVersion))
     }
-
-    configureAndroidTargets()
-    configureIosTargets()
 
     sourceSets {
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(project.versionCatalog.findBundle("common-test-framework").get())
+            }
+        }
+
+        androidUnitTest {
+            dependencies {
+                implementation(project.versionCatalog.findBundle("android-test-framework").get())
             }
         }
     }
