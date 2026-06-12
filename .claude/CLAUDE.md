@@ -15,10 +15,10 @@ The XML content format is defined by XSD schemas in the [`mobile-content-api` re
 ./gradlew assemble
 
 # Run Android unit tests with snapshot verification and code coverage
-./gradlew test verifyPaparazzi koverXmlReportRelease
+./gradlew testAndroidHostTest verifyPaparazzi koverXmlReportAndroid
 
 # Run a single test class (Android)
-./gradlew :module:parser:testDebugUnitTest --tests "org.cru.godtools.shared.parser.FooTest"
+./gradlew :module:parser:testAndroidHostTest --tests "org.cru.godtools.shared.parser.FooTest"
 
 # Run iOS unit tests
 ./gradlew iosSimulatorArm64Test
