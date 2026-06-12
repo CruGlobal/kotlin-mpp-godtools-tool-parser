@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "org.cru.godtools.shared.tool.parser"
 
         withHostTest {}
