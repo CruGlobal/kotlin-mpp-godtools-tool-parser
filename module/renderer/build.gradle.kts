@@ -10,7 +10,7 @@ compose.resources {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "org.cru.godtools.shared.renderer"
 
         androidResources.enable = true
