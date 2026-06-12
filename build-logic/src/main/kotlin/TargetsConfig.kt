@@ -1,4 +1,6 @@
+import org.gradle.api.NamedDomainObjectContainer
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
@@ -37,3 +39,6 @@ private fun KotlinNativeTarget.copyTestResources() {
         }
 }
 // endregion iOS Test Resources
+
+internal fun NamedDomainObjectContainer<KotlinSourceSet>.optionalAndroidHostTest(action: KotlinSourceSet.() -> Unit) =
+    matching { it.name == "androidHostTest" }.configureEach(action)

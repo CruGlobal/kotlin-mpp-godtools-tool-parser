@@ -5,23 +5,21 @@ plugins {
     alias(libs.plugins.paparazzi)
 }
 
-android {
-    namespace = "org.cru.godtools.shared.renderer"
-
-    testOptions.unitTests.isIncludeAndroidResources = true
-
-    sourceSets {
-        getByName("test") {
-            resources.srcDir("src/commonTest/resources")
-        }
-    }
-}
-
 compose.resources {
     packageOfResClass = "org.cru.godtools.shared.renderer.generated.resources"
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.renderer"
+
+        androidResources.enable = true
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -57,7 +55,7 @@ kotlin {
                 implementation(libs.turbine)
             }
         }
-        androidUnitTest {
+        getByName("androidHostTest") {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
 

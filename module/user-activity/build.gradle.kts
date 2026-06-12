@@ -2,11 +2,13 @@ plugins {
     id("godtools-shared.module-conventions")
 }
 
-android {
-    namespace = "org.cru.godtools.shared.user.activity"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.user.activity"
+
+        withHostTest { }
+    }
+
     sourceSets {
         androidMain {
             dependencies {

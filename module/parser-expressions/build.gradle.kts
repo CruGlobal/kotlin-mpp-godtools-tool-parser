@@ -3,11 +3,13 @@ plugins {
     id("antlr-kotlin")
 }
 
-android {
-    namespace = "org.cru.godtools.shared.tool.parser.expressions"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.tool.parser.expressions"
+
+        withHostTest { }
+    }
+
     configureJsTargets()
 
     sourceSets {
