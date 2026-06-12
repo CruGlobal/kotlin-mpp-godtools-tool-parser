@@ -2,11 +2,13 @@ plugins {
     id("godtools-shared.module-conventions")
 }
 
-android {
-    namespace = "org.cru.godtools.shared.interop"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.interop"
+
+        withHostTest { }
+    }
+
     sourceSets {
         iosMain {
             dependencies {

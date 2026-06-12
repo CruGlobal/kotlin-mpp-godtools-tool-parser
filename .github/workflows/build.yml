@@ -152,7 +152,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Run Android Unit Tests
-        run: ./gradlew test verifyPaparazzi koverXmlReportRelease --scan --no-build-cache
+        run: ./gradlew testAndroidHostTest verifyPaparazzi koverXmlReportAndroid --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v7
         with:

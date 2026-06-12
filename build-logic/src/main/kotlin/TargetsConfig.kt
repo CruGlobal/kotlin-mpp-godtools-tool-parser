@@ -1,27 +1,8 @@
+import org.gradle.api.NamedDomainObjectContainer
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
-
-internal fun KotlinMultiplatformExtension.configureCommonSourceSets() {
-    sourceSets.named("commonTest") {
-        dependencies {
-            implementation(kotlin("test"))
-            implementation(project.versionCatalog.findBundle("common-test-framework").get())
-        }
-    }
-}
-
-internal fun KotlinMultiplatformExtension.configureAndroidTargets() {
-    androidTarget {
-        publishLibraryVariants("debug", "release")
-    }
-
-    sourceSets.named("androidUnitTest") {
-        dependencies {
-            implementation(project.versionCatalog.findBundle("android-test-framework").get())
-        }
-    }
-}
 
 fun KotlinMultiplatformExtension.configureIosTargets() {
     iosArm64 { copyTestResources() }
@@ -58,3 +39,6 @@ private fun KotlinNativeTarget.copyTestResources() {
         }
 }
 // endregion iOS Test Resources
+
+internal fun NamedDomainObjectContainer<KotlinSourceSet>.optionalAndroidHostTest(action: KotlinSourceSet.() -> Unit) =
+    matching { it.name == "androidHostTest" }.configureEach(action)

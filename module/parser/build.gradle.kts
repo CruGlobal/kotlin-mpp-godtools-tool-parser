@@ -3,17 +3,12 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-android {
-    namespace = "org.cru.godtools.shared.tool.parser"
-
-    sourceSets {
-        getByName("test") {
-            resources.srcDir("src/commonTest/resources")
-        }
-    }
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.tool.parser"
+
+        withHostTest {}
+    }
     configureJsTargets()
 
     sourceSets {
@@ -60,12 +55,10 @@ kotlin {
 }
 
 kover.reports {
-    androidComponents.onVariants { variant ->
-        variant(variant.name) {
-            filtersAppend {
-                // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
-                excludes.classes("**.SaxXmlPullParser*")
-            }
+    variant("android") {
+        filtersAppend {
+            // exclude SaxXmlPullParser from reports because it is only used by iOS and JS
+            excludes.classes("**.SaxXmlPullParser*")
         }
     }
 }

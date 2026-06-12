@@ -2,11 +2,13 @@ plugins {
     id("godtools-shared.module-conventions")
 }
 
-android {
-    namespace = "org.cru.godtools.shared.tool.parser.base"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.tool.parser.base"
+
+        withHostTest { }
+    }
+
     configureJsTargets()
 
     sourceSets {

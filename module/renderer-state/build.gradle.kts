@@ -5,14 +5,12 @@ plugins {
     kotlin("plugin.parcelize")
 }
 
-android {
-    namespace = "org.cru.godtools.shared.renderer.state"
-}
-
 kotlin {
-    configureJsTargets()
+    androidLibrary {
+        namespace = "org.cru.godtools.shared.renderer.state"
 
-    androidTarget {
+        withHostTest { }
+
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions.freeCompilerArgs.addAll(
             "-P",
@@ -20,6 +18,7 @@ kotlin {
                 "org.ccci.gto.android.common.parcelize.Parcelize",
         )
     }
+    configureJsTargets()
 
     sourceSets {
         commonMain {
