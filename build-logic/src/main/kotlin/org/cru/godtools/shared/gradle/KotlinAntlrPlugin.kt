@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.antlr.AntlrPlugin.ANTLR_CONFIGURATION_NAME
 import org.gradle.api.plugins.antlr.internal.DefaultAntlrSourceDirectorySet
 import org.gradle.kotlin.dsl.create
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -21,7 +22,6 @@ class KotlinAntlrPlugin : Plugin<Project> {
 
         // create antlr configuration
         val antlrConfiguration = target.configurations.create(ANTLR_CONFIGURATION_NAME)
-            .setVisible(false)
             .setDescription("The Antlr libraries to be used for this project.")
 
         // for each source set
@@ -48,10 +48,9 @@ class KotlinAntlrPlugin : Plugin<Project> {
                         .get().asFile
                 }
 
-            // 3) Set up the Antlr output directory (adding to javac inputs!)
-            // TODO: register as a generated source once it is supported in the gradle plugin
-            //       see: https://youtrack.jetbrains.com/issue/KT-45161#focus=Comments-27-8632322.0-0
-            kotlin.srcDir(generateTask)
+            // 3) Register the Antlr output as a generated Kotlin source directory
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            generatedKotlin.srcDir(generateTask)
         }
     }
 }
