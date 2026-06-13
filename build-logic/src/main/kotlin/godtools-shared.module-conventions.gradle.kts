@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
-
 plugins {
     kotlin("multiplatform")
     id("com.android.kotlin.multiplatform.library")
@@ -9,7 +7,7 @@ plugins {
 enablePublishing()
 
 kotlin {
-    androidLibrary {
+    android {
         compileSdk = 36
         minSdk = 24
     }

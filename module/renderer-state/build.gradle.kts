@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "org.cru.godtools.shared.renderer.state"
 
         withHostTest { }
