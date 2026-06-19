@@ -93,6 +93,7 @@ class Text : Content {
 
         textStyles = parser.getDeviceAttributeValue(manifest.config, XML_TEXT_STYLE)?.toTextStyles().orEmpty()
 
+        @Suppress("DEPRECATION")
         fontWeight = parser.getDeviceAttributeValue(manifest.config, XML_FONT_WEIGHT)?.toIntOrNull()
             ?.coerceIn(1..1000)
             ?: FONT_WEIGHT_BOLD.takeIf { Style.BOLD in textStyles }
@@ -213,6 +214,7 @@ class Text : Content {
         UNDERLINE;
 
         internal companion object {
+            @Suppress("DEPRECATION")
             private fun String.toTextStyleOrNull() = when (this) {
                 XML_TEXT_STYLE_BOLD -> BOLD
                 XML_TEXT_STYLE_ITALIC -> ITALIC
