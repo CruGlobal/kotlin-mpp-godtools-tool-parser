@@ -71,7 +71,7 @@ Each module supports `androidTarget`, `iosArm64`, `iosSimulatorArm64`, and `js` 
 ### Parsing Pipeline
 - `ManifestParser` uses a factory-injected `XmlPullParser` (Android/iOS/JS implementations differ)
 - Parsing is suspendable; results are sealed: `ParserResult.Data` or `ParserResult.Error` (Corrupted, NotFound)
-- `@KustomExport` annotations on key types generate JS/TypeScript definitions
+- `@KustomExport` annotations on key types generate JS/TypeScript definitions (legacy — being phased out; do not add new usages)
 
 ### State Management
 - `renderer-state` holds a `State` class implementing `ExpressionContext` for variable evaluation
@@ -91,11 +91,11 @@ Each module supports `androidTarget`, `iosArm64`, `iosSimulatorArm64`, and `js` 
 | Technology | Purpose |
 |---|---|
 | Kotlin Multiplatform 2.3.x | Cross-platform code sharing |
-| Jetpack Compose 1.10.x | UI rendering |
+| Jetpack Compose 1.11.x | UI rendering |
 | Circuit 0.33.x | Reactive UI state management |
 | ANTLR-Kotlin | Expression grammar parsing |
 | Kotlin Coroutines/Flow | Async and reactive streams |
-| KustomExport | Kotlin → JS/TypeScript export |
+| KustomExport | Kotlin → JS/TypeScript export (legacy — being phased out) |
 | Kover | Code coverage |
 | Paparazzi | Compose snapshot testing |
 | Ktlint | Code style enforcement |

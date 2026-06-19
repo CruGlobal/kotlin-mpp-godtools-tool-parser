@@ -12,30 +12,43 @@ Review pull request $ARGUMENTS against the godtools-shared project conventions.
 1. Check for dismissed issues by reading `.claude/skills/pr-review/dismissed-issues.md` if it exists.
    Load all dismissed entries — each has a **Pattern** and **Reason**. You will use these to suppress matching findings later.
 
-2. Fetch the PR diff and metadata:
+2. Fetch the PR diff and metadata. If `$ARGUMENTS` is provided, use it as the PR number:
 ```
 gh pr diff $ARGUMENTS
 gh pr view $ARGUMENTS
 ```
+If no PR number is given (or the above fails because no upstream PR exists), fall back to reviewing the current branch against `main`:
+```
+git diff main...HEAD
+git log main...HEAD --oneline
+```
+Use the branch name and commit log as the "title" in the review header.
 
 3. Identify all changed files and categorize them (module, source set, tests, build config, etc.).
 
-4. Review each category using the checklist below.
+4. Pre-flight checks — run ktlint and lint, recording results for the review:
+```
+./gradlew :build-logic:ktlintCheck ktlintCheck
+./gradlew lint
+```
+Any failures are reported as **❌ Must Fix** items in the review output. They do not stop the rest of the review.
 
-5. Before outputting, cross-reference every finding against dismissed patterns. A finding matches a dismissed pattern when it describes the same class of issue (not necessarily the exact file/line — match by concept). Move matched findings to a separate suppressed list.
+5. Review each category using the checklist below. Before outputting, cross-reference every finding against dismissed patterns — a finding matches when it describes the same class of issue (not necessarily the exact file/line). Move matched findings to a separate suppressed list.
 
 6. Output a structured review (format below).
 
-7. Post inline comments to the PR for every ⚠️ and ❌ finding that references a specific file and line number. Before posting, deduplicate against all existing comments (resolved or not) to avoid re-posting anything already raised:
+7. Post inline comments to the PR for every ⚠️ and ❌ finding that references a specific file and line number. **Skip this step entirely when reviewing a branch with no PR — there is nowhere to post.** Otherwise, before posting, deduplicate against all existing comments (resolved or not) to avoid re-posting anything already raised:
 
 ```bash
-# Get the head SHA, repo, and all existing review comments (resolved and unresolved)
+# Get the head SHA and repo
 HEAD_SHA=$(gh pr view $ARGUMENTS --json headRefOid -q .headRefOid)
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-EXISTING=$(gh api repos/$REPO/pulls/$ARGUMENTS/comments --jq '[.[] | select(.in_reply_to_id == null) | {path:.path, line:.line, body:.body}]')
+
+# Fetch all existing review comments (resolved and unresolved) to deduplicate against
+gh api repos/$REPO/pulls/$ARGUMENTS/comments --jq '[.[] | select(.in_reply_to_id == null) | {path, line, body}]'
 ```
 
-For each finding, check whether any existing comment (resolved or not) already covers the same file + line (or contains substantially the same text). Skip any finding that is already covered. Then bundle the remaining new comments into a single review submission:
+For each finding, check whether any comment from the output above already covers the same file + line (or contains substantially the same text). Skip any finding that is already covered. Then bundle the remaining new comments into a single review submission:
 
 ```bash
 gh api repos/$REPO/pulls/$ARGUMENTS/reviews \
@@ -53,7 +66,13 @@ gh api repos/$REPO/pulls/$ARGUMENTS/reviews \
 
 Use the exact file path from the diff (e.g. `module/parser/src/.../Foo.kt`) and the line number in the current version of the file (RIGHT side). Each comment body should contain the full finding description. Always append the attribution footer `\n\n🤖 Posted by [Claude Code](https://claude.ai/code)` to each comment. If no new actionable findings exist (only ✅ items or all already commented), skip this step.
 
-8. After the review output, print:
+8. If the review has **no ❌ or ⚠️ findings** (only ✅ and/or ⏭️ items), ask the user whether to post the full review. **Skip this step entirely when reviewing a branch with no PR — branch review mode is local-only.** Otherwise, if they say yes:
+   - Check whether the PR author matches the current git user (`gh pr view $ARGUMENTS --json author -q .author.login` vs `gh api user -q .login`)
+   - If it is a **self-review**, post with `--comment` (GitHub does not allow self-approval)
+   - If it is **someone else's PR**, ask whether to approve or just comment, then post with `--approve` or `--comment` accordingly
+   - Always append `\n\n🤖 Posted by [Claude Code](https://claude.ai/code)` to the body
+
+9. After the review output, print:
 
 ```
 ---
@@ -83,10 +102,8 @@ To dismiss a finding so it won't appear in future reviews, say:
 
 - [ ] New Compose components live in `renderer/content/` for content types or appropriate subdirectory
 - [ ] `@Composable` functions contain no business logic — pure rendering only
-- [ ] New visual components have a corresponding Paparazzi snapshot test
-- [ ] Paparazzi tests extend `BasePaparazziTest` and use `contentSnapshot { … }`
-- [ ] Animated component tests use `animatedContentSnapshot { … }` with appropriate `start`/`end` range
-- [ ] New Paparazzi snapshots are generated by triggering the "Record Snapshots" CI workflow — not recorded locally
+- [ ] Bare `launch { }` calls in a `@Composable` body re-run on every recomposition — use `LaunchedEffect` for one-shot effects keyed by inputs, or only call `scope.launch { }` from event callbacks (e.g. `onClick`, `eventSink` lambdas)
+- [ ] Writes that must survive composition cancellation use `launch(start = CoroutineStart.UNDISPATCHED) { withContext(NonCancellable) { … } }` — `rememberCoroutineScope()` is canceled when the composable leaves composition; `UNDISPATCHED` ensures the coroutine starts before the first suspension and `NonCancellable` ensures the write completes. Do NOT use `launch(NonCancellable) { … }` — passing `NonCancellable` to `launch` replaces the parent `Job`, breaking structured concurrency
 - [ ] `LocalInspectionMode` is not set to `true` in production code (only in tests/previews)
 
 ### Renderer State Module (`module/renderer-state`)
@@ -99,31 +116,31 @@ To dismiss a finding so it won't appear in future reviews, say:
 
 For any new module, check `build.gradle.kts`:
 - [ ] Applies `godtools-shared.module-conventions` convention plugin
+- [ ] Android targets come from `com.android.kotlin.multiplatform.library` (applied by the convention plugin) — do not apply the standalone `com.android.library` plugin
 - [ ] No manual duplication of multiplatform target setup (handled by convention plugin)
 - [ ] No redundant Kover or Ktlint config (handled by convention plugin)
 - [ ] Additional plugins (KSP, ANTLR, Parcelize, Paparazzi) are only added when the module actually needs them
+- [ ] Custom Maven repos (CruGlobal JFrog for ANTLR-Kotlin and material-color-utilities, JitPack, Deezer) are configured only in the root `settings.gradle.kts` — modules must not hardcode `repositories { maven { url = ... } }` blocks
 
 ### Testing
 
 **Paparazzi snapshot tests (renderer)**
+- [ ] New visual components have a corresponding Paparazzi snapshot test
 - [ ] Test class extends `BasePaparazziTest`
 - [ ] Uses `contentSnapshot { … }` for static renders
-- [ ] Uses `animatedContentSnapshot { … }` for animated content (Lottie, etc.)
+- [ ] Uses `animatedContentSnapshot { … }` for animated content (Lottie, etc.) with appropriate `start`/`end` range
 - [ ] `maxPercentDifference = 0.0` is not overridden without justification
 
 **Unit tests (all modules)**
 - [ ] Flow-based tests use Turbine (`flow.test { … }`)
 - [ ] Parser tests use in-memory XML strings or test fixture files — never real network
-- [ ] Tests are in the correct source set (`commonTest`, `androidUnitTest`, etc.)
+- [ ] Tests are in the correct source set (`commonTest`, `androidHostTest`, etc.)
 
 ### Code Style
 
-- [ ] Max line length: 120 characters
-- [ ] Ktlint `android_studio` code style
-- [ ] Constants in `commonMain` use `PascalCase` (per renderer `.editorconfig`)
+Ktlint and `.editorconfig` enforce most style rules (line length, formatter rules, constant naming) — step 4's pre-flight already covers those. Manual checks:
+
 - [ ] Package prefix: `org.cru.godtools.shared`
-- [ ] `@Composable` functions may use capitalized names (exempt from function naming rules)
-- [ ] Trailing commas on declaration and call sites are optional (not enforced by Ktlint)
 
 ### General Quality
 
@@ -131,12 +148,31 @@ For any new module, check `build.gradle.kts`:
 - [ ] No hardcoded strings that should come from the parsed manifest
 - [ ] No new Gradle dependencies added without a corresponding entry in `gradle/libs.versions.toml`
 - [ ] Dependencies added to `libs.versions.toml` follow existing naming conventions
+- [ ] Logging uses Kermit (`Logger.*`) — no `println` or Android `Log.*` calls
+
+### JS Export Surface
+
+- [ ] No new usage of `@KustomExport` or `deezer.kustomexport:*` dependencies — the library is being phased out (existing usages are not a finding; new ones are ⚠️)
+
+### Deprecated API Usage
+
+Scan changed files for deprecated API calls. Flag each one as a **Minor Issue** (⚠️) with a suggested replacement.
+
+To surface deprecated usages introduced or touched in the diff:
+```bash
+# Compiler warnings will flag @Deprecated-annotated symbols
+./gradlew testAndroidHostTest 2>&1 | grep -i "deprecat"
+```
+
+### PR Hygiene
+
+- [ ] No unrelated auto-formatter whitespace changes mixed into the diff (check with `git diff main...HEAD --stat` — flag files with churn that don't match the stated PR scope)
 
 ---
 
 ## Output Format
 
-Structure the review as:
+Structure the review as (use `## PR Review: <title> (#<number>)` when reviewing a PR, or `## Review: <branch-name>` when reviewing a branch locally):
 
 ```
 ## PR Review: <title> (#<number>)
