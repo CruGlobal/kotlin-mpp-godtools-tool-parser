@@ -6,13 +6,13 @@ import org.cru.godtools.shared.common.model.ThemeType
 
 @ConsistentCopyVisibility
 data class IconColors internal constructor(
-    @VisibleForTesting
+    @property:VisibleForTesting
     internal val light: Color,
-    @VisibleForTesting
+    @property:VisibleForTesting
     internal val dark: Color,
-    @VisibleForTesting
+    @property:VisibleForTesting
     internal val containerLight: Color,
-    @VisibleForTesting
+    @property:VisibleForTesting
     internal val containerDark: Color,
 ) {
     @Suppress("FunctionName")
