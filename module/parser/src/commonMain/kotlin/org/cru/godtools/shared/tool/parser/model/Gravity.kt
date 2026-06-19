@@ -59,7 +59,7 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
 
                 Gravity(horizontal ?: Horizontal.CENTER, vertical ?: Vertical.CENTER)
             } catch (e: IllegalArgumentException) {
-                Logger.e("Gravity", e) { "error parsing Gravity: $this" }
+                Logger.e(e, tag = "Gravity") { "error parsing Gravity: $this" }
                 null
             }
         }

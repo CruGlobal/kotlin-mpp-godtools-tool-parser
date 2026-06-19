@@ -18,7 +18,7 @@ internal value class Version private constructor(val version: List<UInt>) : Comp
         internal fun String.toVersionOrNull() = try {
             toVersion()
         } catch (e: IllegalArgumentException) {
-            Logger.e("Version", e) { "Invalid Version: $this" }
+            Logger.e(e, tag = "Version") { "Invalid Version: $this" }
             null
         }
     }
