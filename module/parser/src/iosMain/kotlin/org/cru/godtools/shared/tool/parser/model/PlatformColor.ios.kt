@@ -5,7 +5,6 @@ import org.cru.godtools.shared.common.internal.colormath.toColormathSRGB
 import org.cru.godtools.shared.common.internal.colormath.toUIColor
 import platform.UIKit.UIColor
 
-@Suppress("CONFLICTING_OVERLOADS")
 actual typealias PlatformColor = UIColor
 
 internal actual fun Color.toPlatformColor() = toUIColor()

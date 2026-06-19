@@ -8,7 +8,6 @@ import platform.darwin.NSObject
 class IosXmlPullParser(parser: NSXMLParser) : SaxXmlPullParser() {
     private val internalParser = InternalXMLParser(parser)
 
-    @Suppress("CONFLICTING_OVERLOADS")
     private inner class InternalXMLParser(parser: NSXMLParser) : NSObject(), NSXMLParserDelegateProtocol {
         // region Active Namespaces
         private val namespaces = mutableMapOf<String, MutableList<String>>()
