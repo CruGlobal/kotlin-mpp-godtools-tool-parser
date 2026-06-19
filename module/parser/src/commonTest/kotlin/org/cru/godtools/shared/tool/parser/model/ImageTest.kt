@@ -98,6 +98,7 @@ class ImageTest : UsesResources() {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testPropertyResourceLegacyWebImages() {
         val config = ParserConfig().withLegacyWebImageResources(true)
         val manifest = Manifest(config = config, resources = { listOf(Resource(it, name = resourceName)) })
