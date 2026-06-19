@@ -15,7 +15,7 @@ data class Badge internal constructor(
     }
 
     enum class BadgeType(
-        @VisibleForTesting internal vararg val variantProgressTargets: Int,
+        @property:VisibleForTesting internal vararg val variantProgressTargets: Int,
         internal val colors: IconColors
     ) {
         TOOLS_OPENED(1, 5, 10, colors = IconColors(base = RGB("#62CCF3"))),
