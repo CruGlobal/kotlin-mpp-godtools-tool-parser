@@ -20,6 +20,7 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import io.fluidsonic.locale.Locale
 import kotlin.test.BeforeTest
 import kotlin.uuid.ExperimentalUuidApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import okio.Path.Companion.toPath
 import org.cru.godtools.shared.renderer.content.LocalCompottieCoroutineContext
@@ -117,12 +118,10 @@ abstract class BasePaparazziTest(
         content: @Composable BoxScope.() -> Unit,
     ) {
         paparazzi.gif(start = start, end = end) {
-            val coroutineScope = rememberCoroutineScope()
-
             CompositionLocalProvider(LocalInspectionMode provides true) {
                 PreviewContextConfigurationEffect()
             }
-            CompositionLocalProvider(LocalCompottieCoroutineContext provides coroutineScope.coroutineContext) {
+            CompositionLocalProvider(LocalCompottieCoroutineContext provides Dispatchers.Unconfined) {
                 ProvideRendererServices(TestResources.fileSystem) {
                     Box(modifier = Modifier.background(Color.White), content = content)
                 }
