@@ -80,7 +80,11 @@ internal fun ColumnScope.RenderAnimation(animation: Animation, state: State) {
     }
 
     Image(
-        painter = rememberLottiePainter(composition, progress = { animationState.value }),
+        painter = rememberLottiePainter(
+            composition,
+            progress = { animationState.value },
+            coroutineContext = LocalCompottieCoroutineContext.current,
+        ),
         contentDescription = null,
         modifier = Modifier
             .visibility(animation, state)
