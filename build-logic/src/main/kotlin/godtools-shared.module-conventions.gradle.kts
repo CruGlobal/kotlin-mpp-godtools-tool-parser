@@ -13,6 +13,10 @@ kotlin {
     }
     configureIosTargets()
 
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(versionCatalog.findVersion("jvm").get().requiredVersion))
     }
