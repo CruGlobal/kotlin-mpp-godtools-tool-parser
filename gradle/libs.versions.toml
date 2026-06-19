@@ -16,7 +16,6 @@ kustomExport = "0.8.2"
 goncalossilvaResources = "0.15.0"
 ktlint = "1.8.0"
 ktlintGradle = "14.2.0"
-napier = "2.6.1"
 okio = "3.18.1"
 robolectric = "4.16.1"
 
