@@ -3,7 +3,6 @@
 package org.cru.godtools.shared.renderer.content.extensions
 
 import io.github.alexzhirkevich.compottie.InternalCompottieApi
-import io.github.alexzhirkevich.compottie.LottieAnimationFormat
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.decodeToLottieComposition
 import okio.FileSystem
@@ -18,5 +17,5 @@ internal fun LottieCompositionSpec.Companion.Resource(fileSystem: FileSystem, re
         override val key get() = "resource_${resource.src}"
 
         override suspend fun load() = fileSystem.source(resource.toPath()!!).buffer().readByteArray()
-            .decodeToLottieComposition(LottieAnimationFormat.Unknown)
+            .decodeToLottieComposition()
     }
