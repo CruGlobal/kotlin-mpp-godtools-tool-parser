@@ -37,7 +37,10 @@ class KotlinAntlrPlugin : Plugin<Project> {
 
             // 2) Create Antlr generate parser task
             val generateTask =
-                target.tasks.register("generate${name.capitalize()}GrammarSource", AntlrKotlinTask::class.java) {
+                target.tasks.register(
+                    "generate${name.replaceFirstChar { it.uppercase() }}GrammarSource",
+                    AntlrKotlinTask::class.java,
+                ) {
                     antlrClasspath = antlrConfiguration
                     maxHeapSize = "64m"
                     arguments = listOf("-visitor")
