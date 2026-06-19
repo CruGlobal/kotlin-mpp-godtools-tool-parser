@@ -11,6 +11,7 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_MULTISELECT
 import org.cru.godtools.shared.tool.parser.expressions.SimpleExpressionContext
@@ -57,7 +58,7 @@ class ButtonTest : UsesResources() {
         assertFalse(button.isIgnored)
         assertEquals(Button.Style.OUTLINED, button.style)
         assertEquals(TestColors.GREEN, button.backgroundColor)
-        assertEquals("https://www.google.com/", button.url!!.toString())
+        assertEquals("https://www.google.com/".toUriOrNull(), button.url)
         assertEquals("url button", button.text.text)
         assertEquals(1, button.analyticsEvents.size)
         assertEquals("firebase action", button.analyticsEvents.single().action)

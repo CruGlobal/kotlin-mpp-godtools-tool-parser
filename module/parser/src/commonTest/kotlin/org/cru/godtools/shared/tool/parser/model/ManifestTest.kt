@@ -12,6 +12,7 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
+import org.cru.godtools.shared.common.model.toUriOrNull
 import org.cru.godtools.shared.tool.parser.ParserConfig
 import org.cru.godtools.shared.tool.parser.ParserConfig.Companion.FEATURE_PAGE_COLLECTION
 import org.cru.godtools.shared.tool.parser.internal.UsesResources
@@ -74,7 +75,7 @@ class ManifestTest : UsesResources() {
         val label = assertNotNull(category.label)
         assertEquals("Category", label.text)
         assertEquals(1, manifest.aemImports.size)
-        assertEquals("https://www.example.com", manifest.aemImports.single().toString())
+        assertEquals("https://www.example.com".toUriOrNull(), manifest.aemImports.single())
     }
 
     @Test
