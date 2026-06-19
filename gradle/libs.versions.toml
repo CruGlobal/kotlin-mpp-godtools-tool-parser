@@ -40,7 +40,7 @@ colormath-jetpack-compose = { module = "com.github.ajalt.colormath:colormath-ext
 compose-components-resources = "org.jetbrains.compose.components:components-resources:1.11.1"
 compose-material-icons-extended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
-compose-media-player = "network.chaintech:compose-multiplatform-media-player:1.0.50"
+compose-media-player = "network.chaintech:compose-multiplatform-media-player:1.0.53"
 compose-runtime = "org.jetbrains.compose.runtime:runtime:1.11.1"
 compose-ui-test = "org.jetbrains.compose.ui:ui-test:1.11.1"
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
