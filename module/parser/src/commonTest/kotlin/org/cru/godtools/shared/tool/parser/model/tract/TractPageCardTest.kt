@@ -6,6 +6,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -30,9 +31,11 @@ class TractPageCardTest : UsesResources("model/tract") {
     fun verifyParseCard() = runTest {
         val card = TractPage(Manifest(code = "test"), "page.xml", getTestXmlParser("card.xml")).cards.single()
         assertEquals("page.xml-card-0", card.id)
-        assertEquals("Card 1", card.label!!.text)
-        assertEquals(card.primaryColor, card.label!!.textColor)
-        assertNotEquals(card.textColor, card.label!!.textColor)
+        assertNotNull(card.label) {
+            assertEquals("Card 1", it.text)
+            assertEquals(card.primaryColor, it.textColor)
+            assertNotEquals(card.textColor, it.textColor)
+        }
         assertEquals(TestColors.RED, card.backgroundColor)
         assertEquals("listener1 listener2".toEventIds().toSet(), card.listeners)
         assertEquals("dismiss-listener1 dismiss-listener2".toEventIds().toSet(), card.dismissListeners)
@@ -123,14 +126,18 @@ class TractPageCardTest : UsesResources("model/tract") {
     @Test
     fun testLabelTextColor() {
         with(Card(label = { Text(it) })) {
-            assertEquals(primaryColor, label!!.textColor)
-            assertNotEquals(textColor, label!!.textColor)
+            assertNotNull(label) {
+                assertEquals(primaryColor, it.textColor)
+                assertNotEquals(textColor, it.textColor)
+            }
         }
 
         with(Card(label = { Text(it, textColor = TestColors.GREEN) })) {
-            assertEquals(TestColors.GREEN, label!!.textColor)
-            assertNotEquals(primaryColor, label!!.textColor)
-            assertNotEquals(textColor, label!!.textColor)
+            assertNotNull(label) {
+                assertEquals(TestColors.GREEN, it.textColor)
+                assertNotEquals(primaryColor, it.textColor)
+                assertNotEquals(textColor, it.textColor)
+            }
         }
     }
 }
