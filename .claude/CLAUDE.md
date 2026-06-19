@@ -91,7 +91,7 @@ Each module supports `androidTarget`, `iosArm64`, `iosSimulatorArm64`, and `js` 
 | Technology | Purpose |
 |---|---|
 | Kotlin Multiplatform 2.3.x | Cross-platform code sharing |
-| Jetpack Compose 1.10.x | UI rendering |
+| Jetpack Compose 1.11.x | UI rendering |
 | Circuit 0.33.x | Reactive UI state management |
 | ANTLR-Kotlin | Expression grammar parsing |
 | Kotlin Coroutines/Flow | Async and reactive streams |
