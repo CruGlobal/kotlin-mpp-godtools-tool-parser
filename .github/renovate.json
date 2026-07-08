@@ -5,12 +5,15 @@
   "labels": [
     "dependencies"
   ],
+  "automerge": true,
+  "automergeStrategy": "squash",  
   "dependencyDashboard": true,
   "baseBranchPatterns": [
     "$default",
     "/^feature\\/.*/"
   ],
   "lockFileMaintenance": {
+    "automerge": true,
     "enabled": true
   },
   "packageRules": [
