@@ -21,7 +21,7 @@ okio = "3.17.0"
 robolectric = "4.15.1"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:9.2.1"
+android-gradle = "com.android.tools.build:gradle:9.3.0"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.11.4"
 androidx-graphics-shapes = "androidx.graphics:graphics-shapes:1.1.0"
