@@ -17,7 +17,7 @@ goncalossilvaResources = "0.15.0"
 ktlint = "1.8.0"
 ktlintGradle = "14.2.0"
 napier = "2.6.1"
-okio = "3.18.0"
+okio = "3.18.1"
 robolectric = "4.15.1"
 
 [libraries]
