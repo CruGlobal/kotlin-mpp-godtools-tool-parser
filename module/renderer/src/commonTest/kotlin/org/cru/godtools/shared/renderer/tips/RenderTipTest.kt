@@ -14,11 +14,13 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.v2.runComposeUiTest
+import app.cash.turbine.test
 import io.fluidsonic.locale.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -28,6 +30,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_accessibility_action_close
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_action_close
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_action_next
+import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
@@ -148,5 +151,26 @@ class RenderTipTest : BaseRendererTest() {
 
         assertEquals(1, dismissed)
         assertFalse(tipsRepository.isTipCompleteFlow("tool", Locale.forLanguageTag("en"), tip.id).first())
+    }
+
+    @Test
+    fun `Analytics - ScreenView event for each settled page`() = runComposeUiTest {
+        state.events.filterIsInstance<State.Event.AnalyticsEvent.ScreenView>().test {
+            setContent { TestRenderTip() }
+            assertEquals(
+                State.Event.AnalyticsEvent.ScreenView("tool", Locale.forLanguageTag("en"), "tool-tip-tip1-0"),
+                awaitItem(),
+            )
+
+            // the pre-composed (but not current) page 1 must not fire its ScreenView eagerly
+            expectNoEvents()
+
+            onPageButton(0).performClick()
+            waitForIdle()
+            assertEquals(
+                State.Event.AnalyticsEvent.ScreenView("tool", Locale.forLanguageTag("en"), "tool-tip-tip1-1"),
+                awaitItem(),
+            )
+        }
     }
 }
