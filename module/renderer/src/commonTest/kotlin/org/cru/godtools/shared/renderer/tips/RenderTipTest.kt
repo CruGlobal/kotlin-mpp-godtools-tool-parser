@@ -17,6 +17,9 @@ import androidx.compose.ui.test.v2.runComposeUiTest
 import io.fluidsonic.locale.Locale
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
 import org.ccci.gto.support.androidx.test.junit.runners.RunOnAndroidWith
@@ -107,5 +110,43 @@ class RenderTipTest : BaseRendererTest() {
 
         onNodeWithContentDescription(closeTip).assertIsDisplayed().performClick()
         assertEquals(1, dismissed)
+    }
+
+    @Test
+    fun `Action - Close button on last page marks the tip complete`() = runComposeUiTest {
+        setContent { TestRenderTip() }
+
+        onPageButton(0).performClick()
+        onPageButton(1).performClick()
+        onPageButton(2).performClick()
+        waitForIdle()
+
+        assertEquals(1, dismissed)
+        assertTrue(tipsRepository.isTipCompleteFlow(tip.manifest.code!!, Locale.forLanguageTag("en"), tip.id).first())
+    }
+
+    @Test
+    fun `Action - X button does not mark the tip complete`() = runComposeUiTest {
+        setContent { TestRenderTip() }
+
+        onNodeWithContentDescription(closeTip).performClick()
+        waitForIdle()
+
+        assertEquals(1, dismissed)
+        assertFalse(tipsRepository.isTipCompleteFlow(tip.manifest.code!!, Locale.forLanguageTag("en"), tip.id).first())
+    }
+
+    @Test
+    fun `Action - Close button skips marking complete when manifest has no code or locale`() = runComposeUiTest {
+        val tip = Tip(id = "tip1", type = Tip.Type.ASK) { tip ->
+            listOf(TipPage(tip, position = 0) { page -> listOf(Text(page, text = "Only Page")) })
+        }
+        setContent { TestRenderTip(tip) }
+
+        onPageButton(0).performClick()
+        waitForIdle()
+
+        assertEquals(1, dismissed)
+        assertFalse(tipsRepository.isTipCompleteFlow("tool", Locale.forLanguageTag("en"), tip.id).first())
     }
 }

@@ -34,7 +34,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cru.godtools.shared.renderer.content.extensions.stringTipType
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_accessibility_action_close
@@ -67,6 +70,7 @@ fun RenderTip(
     onDismiss: () -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val tipsRepository = LocalTipsRepository.current
     val pagerState = rememberPagerState { tip.pages.size }
 
     ProvideLayoutDirectionFromLocale(tip.manifest.locale) {
@@ -94,7 +98,18 @@ fun RenderTip(
                         page,
                         state = state,
                         onNextPage = { coroutineScope.launch { pagerState.animateScrollToPage(i + 1) } },
-                        onCloseTip = onDismiss,
+                        onCloseTip = {
+                            val tool = tip.manifest.code
+                            val locale = tip.manifest.locale
+                            if (tool != null && locale != null) {
+                                coroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                                    withContext(NonCancellable) {
+                                        tipsRepository.markTipComplete(tool, locale, tip.id)
+                                    }
+                                }
+                            }
+                            onDismiss()
+                        },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
