@@ -18,8 +18,14 @@ import org.cru.godtools.shared.renderer.generated.resources.ic_tips_quote
 import org.cru.godtools.shared.renderer.generated.resources.ic_tips_quote_done
 import org.cru.godtools.shared.renderer.generated.resources.ic_tips_tip
 import org.cru.godtools.shared.renderer.generated.resources.ic_tips_tip_done
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_type_ask
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_type_consider
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_type_prepare
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_type_quote
+import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_type_tip
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun painterTip(tip: Tip, isComplete: Boolean) = painterResource(
@@ -29,6 +35,17 @@ internal fun painterTip(tip: Tip, isComplete: Boolean) = painterResource(
         Tip.Type.QUOTE -> if (isComplete) Res.drawable.ic_tips_quote_done else Res.drawable.ic_tips_quote
         Tip.Type.PREPARE -> if (isComplete) Res.drawable.ic_tips_prepare_done else Res.drawable.ic_tips_prepare
         Tip.Type.TIP -> if (isComplete) Res.drawable.ic_tips_tip_done else Res.drawable.ic_tips_tip
+    }
+)
+
+@Composable
+internal fun stringTipType(type: Tip.Type) = stringResource(
+    when (type) {
+        Tip.Type.ASK -> Res.string.tool_renderer_tip_type_ask
+        Tip.Type.CONSIDER -> Res.string.tool_renderer_tip_type_consider
+        Tip.Type.PREPARE -> Res.string.tool_renderer_tip_type_prepare
+        Tip.Type.QUOTE -> Res.string.tool_renderer_tip_type_quote
+        Tip.Type.TIP -> Res.string.tool_renderer_tip_type_tip
     }
 )
 
