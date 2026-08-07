@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,8 +43,6 @@ import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.stringResource
-
-internal const val TestTagTipPager = "TipPager"
 
 private val TipAppBarHeight = 64.dp
 private val TipProgressBarHeight = 12.dp
@@ -75,7 +71,7 @@ fun RenderTip(
 
     ProvideLayoutDirectionFromLocale(tip.manifest.locale) {
         Column(modifier) {
-            TipAppBar(pagerState, onDismiss = onDismiss)
+            TipAppBar(tip, pagerState, onDismiss = onDismiss)
             TipHeader(tip, modifier = Modifier.padding(top = 8.dp))
 
             HorizontalPager(
@@ -85,7 +81,6 @@ fun RenderTip(
                 modifier = Modifier
                     .weight(1f)
                     .padding(top = 16.dp)
-                    .testTag(TestTagTipPager)
             ) { i ->
                 val page = tip.pages[i]
                 val isCurrentPage by remember { derivedStateOf { i == pagerState.currentPage } }
@@ -119,7 +114,9 @@ fun RenderTip(
 }
 
 @Composable
-private fun TipAppBar(pagerState: PagerState, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+private fun TipAppBar(tip: Tip, pagerState: PagerState, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    val primaryColor = tip.primaryColor.toComposeColor()
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -133,9 +130,10 @@ private fun TipAppBar(pagerState: PagerState, onDismiss: () -> Unit, modifier: M
             Icon(
                 Icons.Filled.Close,
                 contentDescription = stringResource(Res.string.tool_renderer_tip_accessibility_action_close),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = primaryColor,
             )
         }
+
         LinearProgressIndicator(
             progress = {
                 when (val pageCount = pagerState.pageCount) {
@@ -143,6 +141,8 @@ private fun TipAppBar(pagerState: PagerState, onDismiss: () -> Unit, modifier: M
                     else -> (pagerState.currentPage + 1 + pagerState.currentPageOffsetFraction) / pageCount
                 }
             },
+            color = primaryColor,
+            trackColor = primaryColor.copy(alpha = primaryColor.alpha * 0.24f),
             gapSize = TipProgressBarGapSize,
             drawStopIndicator = {},
             modifier = Modifier
