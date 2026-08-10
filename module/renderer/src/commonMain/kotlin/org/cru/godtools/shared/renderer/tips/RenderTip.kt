@@ -18,9 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,9 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.NonCancellable
@@ -40,6 +34,7 @@ import org.cru.godtools.shared.renderer.content.extensions.stringTipType
 import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tool_renderer_tip_accessibility_action_close
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.ProvideCurrentPageLifecycleOwner
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.stringResource
@@ -83,12 +78,8 @@ fun RenderTip(
                     .padding(top = 16.dp)
             ) { i ->
                 val page = tip.pages[i]
-                val isCurrentPage by remember { derivedStateOf { i == pagerState.currentPage } }
-                val lifecycleOwner = rememberLifecycleOwner(
-                    maxLifecycle = if (isCurrentPage) Lifecycle.State.RESUMED else Lifecycle.State.STARTED,
-                )
 
-                CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
+                ProvideCurrentPageLifecycleOwner(pagerState, page = i) {
                     RenderTipPage(
                         page,
                         state = state,

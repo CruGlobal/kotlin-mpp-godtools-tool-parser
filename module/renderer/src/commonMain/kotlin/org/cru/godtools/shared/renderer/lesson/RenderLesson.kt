@@ -22,20 +22,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.github.ajalt.colormath.extensions.android.composecolor.toComposeColor
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
@@ -50,6 +44,7 @@ import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_share
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.util.ContentEventListener
+import org.cru.godtools.shared.renderer.util.ProvideCurrentPageLifecycleOwner
 import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.tool.parser.model.backgroundColor
 import org.cru.godtools.shared.tool.parser.model.lessonNavBarColor
@@ -190,12 +185,7 @@ private fun RenderLessonPager(
         key = { lessonPagerState.pages[it].id },
         modifier = modifier.testTag(TestTagLessonPager),
     ) { i ->
-        val isCurrentPage by remember { derivedStateOf { i == pagerState.currentPage } }
-        val lifecycleOwner = rememberLifecycleOwner(
-            maxLifecycle = if (isCurrentPage) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
-        )
-
-        CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
+        ProvideCurrentPageLifecycleOwner(pagerState, page = i) {
             RenderLessonPage(lessonPagerState.pages[i], state = state, contentInsets = contentInsets) { event ->
                 when (event) {
                     LessonPageEvent.NextPage -> coroutineScope.launch { pagerState.animateScrollToPage(i + 1) }
