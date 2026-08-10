@@ -55,28 +55,39 @@ abstract class BasePaparazziTest(
 
     protected val tipsRepository = InMemoryTipsRepository()
 
+    // region Test Manifests
     protected val manifest by lazy {
         Manifest(
             code = "tool",
             locale = Locale.forLanguage("en"),
-            resources = {
-                listOf(
-                    resourceBlackPanther,
-                    resourceBruce,
-                    resourceWaterfall,
-                ) + TestResources.resources
-            },
-            tips = {
-                listOf(
-                    Tip(it, id = "ask", type = Tip.Type.ASK),
-                    Tip(it, id = "consider", type = Tip.Type.CONSIDER),
-                    Tip(it, id = "prepare", type = Tip.Type.PREPARE),
-                    Tip(it, id = "quote", type = Tip.Type.QUOTE),
-                    Tip(it, id = "tip", type = Tip.Type.TIP),
-                )
-            },
+            resources = { buildResources() },
+            tips = { it.buildTips() },
         )
     }
+
+    protected val rtlManifest by lazy {
+        Manifest(
+            code = "tool",
+            locale = Locale.forLanguage("ar"),
+            resources = { buildResources() },
+            tips = { it.buildTips() },
+        )
+    }
+
+    private fun buildResources() = listOf(
+        resourceBlackPanther,
+        resourceBruce,
+        resourceWaterfall,
+    ) + TestResources.resources
+
+    private fun Manifest.buildTips() = listOf(
+        Tip(this, id = "ask", type = Tip.Type.ASK),
+        Tip(this, id = "consider", type = Tip.Type.CONSIDER),
+        Tip(this, id = "prepare", type = Tip.Type.PREPARE),
+        Tip(this, id = "quote", type = Tip.Type.QUOTE),
+        Tip(this, id = "tip", type = Tip.Type.TIP),
+    )
+    // endregion Test Manifests
 
     @BeforeTest
     @OptIn(DelicateCoilApi::class)

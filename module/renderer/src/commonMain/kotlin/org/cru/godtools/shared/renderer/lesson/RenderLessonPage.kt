@@ -39,6 +39,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_next
 import org.cru.godtools.shared.renderer.generated.resources.lesson_accessibility_action_page_previous
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.util.triggerScreenView
 import org.cru.godtools.shared.tool.analytics.ToolAnalyticsScreenNames
 import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.lesson.LessonPage
@@ -64,13 +65,7 @@ fun RenderLessonPage(
 ) {
     val coroutineScope = rememberCoroutineScope()
     LifecycleResumeEffect(page, state) {
-        state.triggerEvent(
-            State.Event.AnalyticsEvent.ScreenView(
-                tool = page.manifest.code,
-                locale = page.manifest.locale,
-                screenName = ToolAnalyticsScreenNames.forLessonPage(page)
-            )
-        )
+        state.triggerScreenView(page.manifest, ToolAnalyticsScreenNames.forLessonPage(page))
 
         val delayedEvents = page.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
         onPauseOrDispose { delayedEvents.forEach { it.cancel() } }

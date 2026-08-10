@@ -10,10 +10,12 @@ import kotlin.test.BeforeTest
 import kotlinx.coroutines.test.TestScope
 import org.cru.godtools.shared.renderer.internal.compose.resources.PreviewContextConfigurationEffect
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.renderer.tips.InMemoryTipsRepository
 import org.cru.godtools.shared.renderer.util.ProvideRendererServices
 
 abstract class BaseRendererTest {
     protected val state = State()
+    protected val tipsRepository = InMemoryTipsRepository()
 
     protected val lifecycleOwner = TestLifecycleOwner(Lifecycle.State.RESUMED)
     protected val testScope = TestScope()
@@ -23,7 +25,7 @@ abstract class BaseRendererTest {
         CompositionLocalProvider(LocalInspectionMode provides true) {
             PreviewContextConfigurationEffect()
         }
-        ProvideRendererServices(TestResources.fileSystem) {
+        ProvideRendererServices(TestResources.fileSystem, tipsRepository = tipsRepository) {
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner, content = content)
         }
     }

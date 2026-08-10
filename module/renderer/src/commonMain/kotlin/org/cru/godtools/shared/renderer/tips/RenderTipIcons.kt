@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +33,27 @@ internal val TipElevation = 4.dp
 internal val TipArrowHeight = 48.dp
 private val TipArrowSize = 12.dp
 internal val TipCornerSize = CornerSize(6.dp)
+
+@Composable
+internal fun TipIcon(tip: Tip, modifier: Modifier = Modifier) {
+    val isComplete by tip.produceIsComplete()
+
+    Surface(
+        shape = RoundedCornerShape(TipCornerSize),
+        shadowElevation = TipElevation,
+        modifier = modifier.size(TipSize)
+    ) {
+        Image(
+            painterTip(tip, isComplete = isComplete),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .tipBackground(isComplete = isComplete)
+                .wrapContentSize()
+                .size(TipIconSize)
+        )
+    }
+}
 
 @Composable
 internal fun TipUpArrow(tip: Tip, state: State, modifier: Modifier = Modifier) {

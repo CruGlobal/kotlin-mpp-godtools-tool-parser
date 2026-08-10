@@ -25,7 +25,7 @@ class TipPage : BaseModel, Parent {
     }
 
     @RestrictTo(RestrictTo.Scope.TESTS)
-    internal constructor(
+    constructor(
         tip: Tip = Tip(),
         position: Int = 0,
         content: ((TipPage) -> List<Content>)? = null,
