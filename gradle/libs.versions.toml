@@ -67,6 +67,7 @@ materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.22"
+touchrobot-paparazzi = "me.saket.touchrobot:touchrobot-paparazzi:0.2.0"
 turbine = "app.cash.turbine:turbine:1.2.1"
 
 # HACK: dependencies used to trigger renovate upgrades

@@ -60,6 +60,7 @@ kotlin {
                 implementation(libs.androidx.compose.ui.test.manifest)
 
                 implementation(libs.testparameterinjector)
+                implementation(libs.touchrobot.paparazzi)
             }
         }
     }
