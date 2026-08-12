@@ -201,6 +201,15 @@ class StateTest {
             assertEquals(State.Event.OpenUrl(url), awaitItem())
         }
     }
+
+    @Test
+    fun `Event - OpenModal`() = runTest {
+        val state = State()
+        state.events.test {
+            state.triggerEvent(State.Event.OpenModal(pageId = "page0", modalId = "page0-modal-0"))
+            assertEquals(State.Event.OpenModal(pageId = "page0", modalId = "page0-modal-0"), awaitItem())
+        }
+    }
     // endregion Events
 
     // region Accordion State
