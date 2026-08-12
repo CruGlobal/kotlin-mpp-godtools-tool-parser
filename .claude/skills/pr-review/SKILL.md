@@ -239,12 +239,23 @@ Scan new/changed test classes for redundant tests and flag each as a **Minor Iss
 Ktlint and `.editorconfig` enforce most style rules (line length, formatter rules, constant naming) — step 4's pre-flight already covers those. Manual checks:
 
 - [ ] Package prefix: `org.cru.godtools.shared`
-- [ ] No trailing comma on single-line function/constructor signatures or calls — e.g. `fun foo(a: String, b: Int,)` is wrong; trailing commas are only valid when parameters are on separate lines (ktlint's `trailing-comma-on-*` rules are disabled in `.editorconfig`, so the pre-flight does NOT catch this). Only touch a trailing comma on a line already being modified — don't churn otherwise-unchanged lines
+- [ ] **Trailing commas** — ktlint's `trailing-comma-on-*` rules are disabled in `.editorconfig`, so
+  the pre-flight does NOT catch this; check by hand. Only touch a trailing comma on a line already
+  being modified — don't churn otherwise-unchanged lines. The convention:
+  - A single-line signature or call takes **no** trailing comma (`fun foo(a: String, b: Int,)` is wrong)
+  - A multi-line non-`Modifier` call or signature **does** take a trailing comma on its last argument
+  - A multi-line `Modifier` chain as a call's last parameter takes **no** trailing comma after its
+    final `.foo()`
 
 ### General Quality
 
 - [ ] No Android framework references (`Context`, `Activity`, etc.) in `commonMain` code
 - [ ] No hardcoded strings that should come from the parsed manifest
+- [ ] User-visible renderer UI strings (labels, contentDescriptions for chrome — not tool content) use
+  `stringResource(Res.string.*)` with source strings in
+  `module/renderer/src/commonMain/composeResources/values/strings_renderer.xml` — no inline literals
+- [ ] Translated `values-*/strings_renderer.xml` files are Crowdin-managed (`crowdin.yml`,
+  crowdin-upload/download workflows) — hand edits to them are flagged; they'll be overwritten
 - [ ] No new Gradle dependencies added without a corresponding entry in `gradle/libs.versions.toml`
 - [ ] Dependencies added to `libs.versions.toml` follow existing naming conventions
 - [ ] Logging uses Kermit (`Logger.*`) — no `println` or Android `Log.*` calls
