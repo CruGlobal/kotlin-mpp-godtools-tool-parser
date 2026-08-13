@@ -1,6 +1,7 @@
 package org.cru.godtools.shared.tool.parser.model.tips
 
 import androidx.annotation.RestrictTo
+import kotlin.uuid.Uuid
 import org.cru.godtools.shared.tool.parser.model.BaseModel
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Styles
@@ -47,7 +48,7 @@ class Tip : BaseModel, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         manifest: Manifest = Manifest(),
-        id: String = "",
+        id: String = Uuid.random().toString(),
         type: Type = Type.DEFAULT,
         pages: ((Tip) -> List<TipPage>)? = null,
     ) : super(manifest) {
