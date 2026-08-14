@@ -17,7 +17,6 @@ import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
@@ -63,7 +62,7 @@ class TractPageLayoutTest : BaseRendererTest() {
                     card = { card ->
                         Box(Modifier.testTag("card-${card.position}")) { RenderTractCard(card, state, {}, {}, {}) }
                     },
-                    onCardSwiped = onSwipe,
+                    onCardSwipe = onSwipe,
                     modifier = Modifier
                         .fillMaxSize()
                         .testTag("layout")

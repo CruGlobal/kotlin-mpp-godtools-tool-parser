@@ -98,7 +98,7 @@ fun RenderTractPage(
             callToActionTip = page.callToAction.tip
                 ?.takeIf { showTips }
                 ?.let { tip -> { TipDownArrow(tip, state) } },
-            onCardSwiped = { currentPageEvents(TractPageEvent.CardSwiped) },
+            onCardSwipe = { currentPageEvents(TractPageEvent.CardSwiped) },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentInsets)
