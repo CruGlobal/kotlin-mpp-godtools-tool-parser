@@ -5,6 +5,7 @@
     <string name="tool_not_found">Không thể tìm thấy công cụ bạn yêu cầu</string>
     <string name="tool_offline">Công cụ bạn yêu cầu cần kết nối Internet để mở</string>
     <!-- Lesson Strings -->
+    <!-- Tip Strings -->
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s là bắt buộc</string>
     <string name="tool_renderer_input_error_invalid_email">Vui lòng nhập địa chỉ email hợp lệ</string>

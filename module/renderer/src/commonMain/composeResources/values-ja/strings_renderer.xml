@@ -5,6 +5,7 @@
     <string name="tool_not_found">リクエストしたツールが見つかりません</string>
     <string name="tool_offline">リクエストされたツールを開くためにはインターネット接続が必要です</string>
     <!-- Lesson Strings -->
+    <!-- Tip Strings -->
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$sが必要です</string>
     <string name="tool_renderer_input_error_invalid_email">有効なメールアドレスを入力してください</string>

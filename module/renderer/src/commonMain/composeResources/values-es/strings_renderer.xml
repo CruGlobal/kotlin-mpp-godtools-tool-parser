@@ -9,6 +9,7 @@
     <string name="lesson_accessibility_action_share">Compartir Lección</string>
     <string name="lesson_accessibility_action_page_previous">Página Previa</string>
     <string name="lesson_accessibility_action_page_next">Siguiente Página</string>
+    <!-- Tip Strings -->
     <!-- Tool Content Strings -->
     <string name="tool_renderer_accordion_section_action_collapse">Colapsar</string>
     <string name="tool_renderer_accordion_section_action_expand">Abrir</string>

@@ -5,6 +5,7 @@
     <string name="tool_not_found">Das von Ihnen angeforderte Tool konnte nicht gefunden werden</string>
     <string name="tool_offline">Das von dir angeforderte Tool benötigt eine Internetverbindung, um zu öffnen</string>
     <!-- Lesson Strings -->
+    <!-- Tip Strings -->
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s ist erforderlich</string>
     <string name="tool_renderer_input_error_invalid_email">Bitte eine gültige E-Mail-Adresse eingeben</string>
