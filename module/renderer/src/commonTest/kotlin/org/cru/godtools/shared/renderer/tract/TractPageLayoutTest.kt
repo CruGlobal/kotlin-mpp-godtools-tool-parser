@@ -222,6 +222,7 @@ class TractPageLayoutTest : BaseRendererTest() {
     }
     // endregion Action - Fling
 
+    // region Animation - Card Change
     @Test
     fun `Animation - card change - positions animate between states`() = runComposeUiTest {
         mainClock.autoAdvance = false
@@ -251,13 +252,45 @@ class TractPageLayoutTest : BaseRendererTest() {
         setTestContent(pageState)
 
         pageState.navigateToCard(page.cards[2])
-        // partway into the 300ms card-change animation the CTA fade-in hasn't started yet
         advanceTimeBy(96)
         onNodeWithTag("cta").assertIsNotDisplayed()
 
         advanceTimeBy(960)
         onNodeWithTag("cta").assertIsDisplayed()
     }
+
+    @Test
+    fun `Animation - card change - retargets when the active card changes mid-animation`() = runComposeUiTest {
+        mainClock.autoAdvance = false
+        val pageState = TractPageState(page)
+        setTestContent(pageState)
+
+        val container = onNodeWithTag("container").getBoundsInRoot()
+        val card1StackedTop = cardSurface(1).getBoundsInRoot().top
+
+        pageState.navigateToCard(page.cards[0])
+        advanceTimeBy(96)
+        val card1BeforeRetarget = cardSurface(1).getBoundsInRoot().top
+        assertTrue(
+            card1BeforeRetarget > card1StackedTop,
+            "card 1 should be mid-flight down toward its peek position before retargeting, was $card1BeforeRetarget",
+        )
+
+        pageState.navigateToCard(page.cards[1])
+        advanceTimeBy(96)
+        val card1AfterRetarget = cardSurface(1).getBoundsInRoot().top
+        assertTrue(
+            card1AfterRetarget < card1BeforeRetarget,
+            "card 1 should reverse toward its new target immediately after retargeting, was $card1AfterRetarget",
+        )
+
+        // advance well past both animations' 300ms duration
+        advanceTimeBy(2_000)
+
+        val activeTop = cardSurface(1).getBoundsInRoot().top
+        assertEquals(container.top + 16.dp, activeTop, "retargeted card should settle at the active position")
+    }
+    // endregion Animation - Card Change
 
     @Test
     fun `Layout - bounce hint - disabling mid-bounce restores the card to its base position`() = runComposeUiTest {

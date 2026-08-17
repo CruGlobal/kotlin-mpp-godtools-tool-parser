@@ -258,7 +258,7 @@ private fun AnimateTargetsEffect(animations: TractPageLayoutAnimations) {
     LaunchedEffect(animations) {
         var lastActiveCard: String? = null
         var initial = true
-        snapshotFlow { animations.targets }.filterNotNull().collect { targets ->
+        snapshotFlow { animations.targets }.filterNotNull().collectLatest { targets ->
             val animate = !initial && targets.activeCardId != lastActiveCard
             initial = false
             lastActiveCard = targets.activeCardId
