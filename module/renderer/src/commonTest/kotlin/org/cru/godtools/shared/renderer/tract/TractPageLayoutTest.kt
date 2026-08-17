@@ -292,35 +292,79 @@ class TractPageLayoutTest : BaseRendererTest() {
     }
     // endregion Animation - Card Change
 
+    // region Animation - Card Bounce
     @Test
-    fun `Layout - bounce hint - disabling mid-bounce restores the card to its base position`() = runComposeUiTest {
+    fun `Animation - Card Bounce - disabling mid-bounce completes the running bounce`() = runComposeUiTest {
         mainClock.autoAdvance = false
         val pageState = TractPageState(page)
         setTestContent(pageState)
-        mainClock.advanceTimeBy(1_000)
         val baseTop = cardSurface(0).getBoundsInRoot().top
 
         pageState.isBounceFirstCard = true
-        // past the 2s initial bounce delay and partway into the ~1s first bounce, pumped frame-by-frame so the
-        // withFrameNanos loop inside the bounce effect actually advances
-        var bounceTop = baseTop
-        repeat(140) {
-            mainClock.advanceTimeBy(16)
-            bounceTop = cardSurface(0).getBoundsInRoot().top
-        }
-        assertTrue(bounceTop != baseTop, "card should be mid-bounce, was unchanged at $bounceTop")
+        advanceTimeBy(2_240)
+        val bounceTop = cardSurface(0).getBoundsInRoot().top
+        assertTrue(bounceTop < baseTop, "card should be lifted above its base position mid-bounce, was $bounceTop")
 
         pageState.isBounceFirstCard = false
-        var restoredTop = bounceTop
-        repeat(5) {
-            mainClock.advanceTimeBy(16)
-            restoredTop = cardSurface(0).getBoundsInRoot().top
-        }
+        advanceTimeBy(80)
+        val animatingTop = cardSurface(0).getBoundsInRoot().top
         assertTrue(
-            restoredTop == baseTop,
-            "disabling the bounce mid-bounce should restore the card to its base position",
+            animatingTop != baseTop,
+            "the running bounce should keep animating after the hint is disabled",
+        )
+
+        // run past the end of the ~1s bounce animation
+        advanceTimeBy(960)
+        assertEquals(
+            baseTop,
+            cardSurface(0).getBoundsInRoot().top,
+            "the bounce should finish at the card's base position"
+        )
+
+        // run 60 seconds past the animation ending to ensure the bounce doesn't trigger again
+        val endTime = mainClock.currentTime + 60_000
+        while (mainClock.currentTime < endTime) {
+            mainClock.advanceTimeByFrame()
+            assertEquals(
+                baseTop,
+                cardSurface(0).getBoundsInRoot().top,
+                "no further bounces should run after the hint is disabled"
+            )
+        }
+    }
+
+    @Test
+    fun `Animation - Card Bounce - navigating to a card immediately interrupts the bounce`() = runComposeUiTest {
+        mainClock.autoAdvance = false
+        val pageState = TractPageState(page)
+        setTestContent(pageState)
+        val container = onNodeWithTag("container").getBoundsInRoot()
+        val baseTop = cardSurface(0).getBoundsInRoot().top
+
+        pageState.isBounceFirstCard = true
+        advanceTimeBy(2_240)
+        val bounceTop = cardSurface(0).getBoundsInRoot().top
+        assertTrue(bounceTop < baseTop, "card should be lifted above its base position mid-bounce, was $bounceTop")
+
+        pageState.navigateToCard(page.cards[0])
+        // the bounce never lifts the card more than 40dp above its base position, so clearing that range within a
+        // few frames proves the card-change animation took over immediately instead of the bounce finishing first
+        advanceTimeBy(128)
+        val interruptedTop = cardSurface(0).getBoundsInRoot().top
+        assertTrue(
+            interruptedTop < baseTop - 40.dp,
+            "card should move toward the active position immediately, was $interruptedTop",
+        )
+
+        // run past the 300ms card-change animation
+        advanceTimeBy(400)
+        assertEquals(
+            container.top + 16.dp,
+            cardSurface(0).getBoundsInRoot().top,
+            "card should settle at the active position"
         )
     }
+    // endregion Animation - Card Bounce
 
     @Test
     fun `UI - offscreen cards - not placed`() = runComposeUiTest {

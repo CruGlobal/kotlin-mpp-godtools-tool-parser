@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,9 +32,11 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -270,16 +271,24 @@ private fun AnimateTargetsEffect(animations: TractPageLayoutAnimations) {
 // region Bounce Effect
 private val BounceInitialDelay = 2.seconds
 private val BounceDelay = 7.seconds
-private val BounceFirstBounce = 400.milliseconds
 private val BounceHeight = 40.dp
+private const val BounceBounces = 4
+private const val BounceDecay = 0.5
+private val BounceFirstBounce = 400.milliseconds
 
 @Composable
 private fun BounceFirstCardEffect(pageState: TractPageState, animations: TractPageLayoutAnimations) {
-    val bounceEasing = remember { TractBounceEasing() }
-    val bounceDuration = remember { bounceEasing.totalDuration(BounceFirstBounce) }
     val bounceHeightPx = with(LocalDensity.current) { BounceHeight.toPx() }
+    val bounceSpec = remember(bounceHeightPx) {
+        TractBounceAnimationSpec(
+            heightPx = bounceHeightPx,
+            firstBounceDuration = BounceFirstBounce,
+            bounces = BounceBounces,
+            decay = BounceDecay,
+        )
+    }
 
-    LaunchedEffect(pageState, animations) {
+    LaunchedEffect(pageState, animations, bounceSpec) {
         // flow of the firstCardId while there is no active card
         snapshotFlow { pageState.visibleCards.firstOrNull().takeIf { pageState.activeCard == null }?.id }
             .collectLatest { cardId ->
@@ -291,17 +300,12 @@ private fun BounceFirstCardEffect(pageState: TractPageState, animations: TractPa
                     if (animatable != null && !animatable.isRunning) {
                         val baseY = animatable.value
                         try {
-                            val startNanos = withFrameNanos { it }
-                            var fraction = 0f
-                            while (fraction < 1f) {
-                                val nowNanos = withFrameNanos { it }
-                                fraction = ((nowNanos - startNanos).toFloat() / bounceDuration.inWholeNanoseconds)
-                                    .coerceIn(0f, 1f)
-                                animatable.snapTo(baseY - bounceHeightPx * bounceEasing.transform(fraction))
-                            }
-                        } finally {
-                            // runs even if this coroutine was canceled, so the offset is always restored
-                            withContext(NonCancellable) { animatable.snapTo(baseY) }
+                            // NonCancellable so tearing down this coroutine (e.g. disabling the bounce) completes
+                            // the running bounce instead of stopping it mid-air; other animations on this
+                            // Animatable still interrupt it immediately through the MutatorMutex
+                            withContext(NonCancellable) { animatable.animateTo(baseY, bounceSpec) }
+                        } catch (_: CancellationException) {
+                            ensureActive()
                         }
                     }
 
