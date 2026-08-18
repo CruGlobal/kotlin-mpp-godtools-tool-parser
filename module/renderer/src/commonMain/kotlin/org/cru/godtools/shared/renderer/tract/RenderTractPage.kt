@@ -26,6 +26,7 @@ import org.cru.godtools.shared.renderer.util.ProvideLayoutDirectionFromLocale
 import org.cru.godtools.shared.renderer.util.ProvideResumedLifecycleOwner
 import org.cru.godtools.shared.renderer.util.triggerScreenView
 import org.cru.godtools.shared.tool.analytics.ToolAnalyticsScreenNames
+import org.cru.godtools.shared.tool.parser.model.tract.Modal
 import org.cru.godtools.shared.tool.parser.model.tract.TractPage
 
 @Composable
@@ -45,7 +46,7 @@ fun RenderTractPage(
         if (pageState.activeCard?.dismissListeners?.contains(event) == true) pageState.dismissActiveCard()
         page.cards.firstOrNull { event in it.listeners }?.let { pageState.navigateToCard(it) }
         page.modals.firstOrNull { event in it.listeners }
-            ?.let { state.triggerEvent(State.Event.OpenModal(page.id, it.id)) }
+            ?.let { currentPageEvents(TractPageEvent.OpenModal(it)) }
     }
 
     // surface active card changes to the host (live share, host analytics)
@@ -108,6 +109,7 @@ fun RenderTractPage(
 
 sealed interface TractPageEvent {
     data class ActiveCardChanged(val card: TractPage.Card?) : TractPageEvent
+    data class OpenModal(val modal: Modal) : TractPageEvent
     data object GoToNextPage : TractPageEvent
     data object CardTapped : TractPageEvent
     data object CardSwiped : TractPageEvent

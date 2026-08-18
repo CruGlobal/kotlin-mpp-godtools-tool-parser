@@ -120,22 +120,24 @@ class RenderTractPageTest : BaseRendererTest() {
     }
 
     @Test
-    fun `Event - content event modal listener - emits OpenModal state event`() = runComposeUiTest {
+    fun `Event - content event modal listener - emits OpenModal page event`() = runComposeUiTest {
         val showModal = EventId(name = "show-modal")
         val page = TractPage(modals = { p -> listOf(Modal(p, listeners = setOf(showModal))) })
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderTractPage(page, state = state)
+                RenderTractPage(page, state = state, pageEvents = { events += it })
             }
         }
 
-        state.events.filterIsInstance<State.Event.OpenModal>().test {
-            state.triggerContentEvents(listOf(showModal))
-            testScope.runCurrent()
-            waitForIdle()
-            assertEquals(State.Event.OpenModal(page.id, page.modals[0].id), awaitItem())
-        }
+        state.triggerContentEvents(listOf(showModal))
+        testScope.runCurrent()
+        waitForIdle()
+        assertEquals(
+            listOf<TractPageEvent>(TractPageEvent.OpenModal(page.modals[0])),
+            events,
+            "modal listener content event should emit OpenModal to the page events callback",
+        )
     }
 
     @Test

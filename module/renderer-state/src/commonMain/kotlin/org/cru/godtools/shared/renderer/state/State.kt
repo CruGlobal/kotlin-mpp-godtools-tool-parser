@@ -65,7 +65,6 @@ class State internal constructor(
         }
         data class SubmitForm(val fields: Map<String, String>) : Event()
         data class OpenTip(val tipId: String) : Event()
-        data class OpenModal(val pageId: String, val modalId: String) : Event()
     }
 
     private val _events = MutableSharedFlow<Event>(extraBufferCapacity = Int.MAX_VALUE)
