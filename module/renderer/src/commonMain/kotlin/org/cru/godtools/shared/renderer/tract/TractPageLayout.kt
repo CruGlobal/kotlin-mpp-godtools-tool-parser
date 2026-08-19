@@ -76,19 +76,10 @@ internal fun TractPageLayout(
 
     // region Fling logic
     val flingThresholdPx = with(LocalDensity.current) { FlingVelocityThreshold.toPx() }
-    fun handleFling(velocityY: Float): Boolean = when {
-        velocityY >= flingThresholdPx && pageState.activeCardPosition >= 0 ->
-            pageState.previousCard().also { if (it) onCardSwipe() }
-
-        velocityY <= -flingThresholdPx && pageState.activeCardPosition < pageState.visibleCards.size - 1 ->
-            pageState.nextCard().also { if (it) onCardSwipe() }
-
-        else -> false
-    }
-    val nestedScrollConnection = remember(pageState) {
+    val nestedScrollConnection = remember(pageState, flingThresholdPx) {
         object : NestedScrollConnection {
             override suspend fun onPreFling(available: Velocity) =
-                if (handleFling(available.y)) available else Velocity.Zero
+                if (pageState.handleFling(available.y, flingThresholdPx, onCardSwipe)) available else Velocity.Zero
         }
     }
     // endregion Fling logic
@@ -116,7 +107,15 @@ internal fun TractPageLayout(
                         ignore = offset.y > size.height - gutter
                     },
                     onVerticalDrag = { change, _ -> velocityTracker.addPosition(change.uptimeMillis, change.position) },
-                    onDragEnd = { if (!ignore) handleFling(velocityTracker.calculateVelocity().y) },
+                    onDragEnd = {
+                        if (!ignore) {
+                            pageState.handleFling(
+                                velocityY = velocityTracker.calculateVelocity().y,
+                                thresholdPx = FlingVelocityThreshold.toPx(),
+                                onCardSwipe = onCardSwipe,
+                            )
+                        }
+                    },
                 )
             }
     ) { measurables, constraints ->
@@ -316,6 +315,13 @@ private fun BounceFirstCardEffect(pageState: TractPageState, animations: TractPa
 }
 // endregion Bounce Effect
 // endregion Animations
+
+/** Navigate to the previous/next card when [velocityY] crosses [thresholdPx], reporting successful navigation. */
+private fun TractPageState.handleFling(velocityY: Float, thresholdPx: Float, onCardSwipe: () -> Unit) = when {
+    velocityY >= thresholdPx -> previousCard()
+    velocityY <= -thresholdPx -> nextCard()
+    else -> false
+}.also { if (it) onCardSwipe() }
 
 private fun Measured.getOrElse(alignmentLine: AlignmentLine, defaultValue: Int) =
     get(alignmentLine).takeIf { it != AlignmentLine.Unspecified } ?: defaultValue
