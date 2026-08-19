@@ -47,7 +47,7 @@ class RenderTractPageTest : BaseRendererTest() {
     private val events = mutableListOf<TractPageEvent>()
 
     @Test
-    fun `Action - card label - tap opens the card and emits events`() = runComposeUiTest {
+    fun `Action - card label - tap opens the card and emits CardTapped event`() = runComposeUiTest {
         val page = TractPage(
             cards = { p -> listOf(TractPage.Card(p, 0, label = { c -> Text(c, text = "Card 1") })) },
         )
@@ -62,11 +62,7 @@ class RenderTractPageTest : BaseRendererTest() {
         onNodeWithText("Card 1").performClick()
         waitForIdle()
         assertEquals(page.cards[0], pageState.activeCard, "tapping the label should open the card")
-        assertEquals(
-            listOf(TractPageEvent.CardTapped, TractPageEvent.ActiveCardChanged(page.cards[0])),
-            events,
-            "toggle should emit CardTapped before the resulting ActiveCardChanged",
-        )
+        assertEquals(TractPageEvent.CardTapped, events.single(), "toggle should emit CardTapped event")
 
         onNodeWithText("Card 1").performClick()
         waitForIdle()

@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import kotlinx.coroutines.flow.drop
 import org.cru.godtools.shared.renderer.RenderBackground
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.tips.TipDownArrow
@@ -62,13 +59,6 @@ fun RenderTractPage(
         pageState.page.cards.firstOrNull { event in it.listeners }?.let { pageState.navigateToCard(it) }
         pageState.page.modals.firstOrNull { event in it.listeners }
             ?.let { currentPageEvents(TractPageEvent.OpenModal(it)) }
-    }
-
-    // surface active card changes to the host (live share, host analytics)
-    LaunchedEffect(pageState) {
-        snapshotFlow { pageState.activeCard }
-            .drop(1)
-            .collect { currentPageEvents(TractPageEvent.ActiveCardChanged(it)) }
     }
 
     Box(modifier) {
@@ -123,7 +113,6 @@ fun RenderTractPage(
 }
 
 sealed interface TractPageEvent {
-    data class ActiveCardChanged(val card: TractPage.Card?) : TractPageEvent
     data class OpenModal(val modal: Modal) : TractPageEvent
     data object GoToNextPage : TractPageEvent
     data object CardTapped : TractPageEvent
