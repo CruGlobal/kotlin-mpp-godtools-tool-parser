@@ -25,6 +25,7 @@ import org.cru.godtools.shared.renderer.generated.resources.Res
 import org.cru.godtools.shared.renderer.generated.resources.tract_card_action_next
 import org.cru.godtools.shared.renderer.generated.resources.tract_card_action_previous
 import org.cru.godtools.shared.renderer.state.State
+import org.cru.godtools.shared.tool.parser.model.AnalyticsEvent
 import org.cru.godtools.shared.tool.parser.model.Manifest
 import org.cru.godtools.shared.tool.parser.model.Text
 import org.cru.godtools.shared.tool.parser.model.tips.InlineTip
@@ -204,6 +205,29 @@ class RenderTractCardTest : BaseRendererTest() {
                 "tool-0a",
                 awaitItem().screenName,
                 "screen name should combine the tool code, page position, and card letter",
+            )
+        }
+    }
+
+    @Test
+    fun `Analytics - hidden events - pause triggers HIDDEN analytics events for the card`() = runComposeUiTest {
+        val hiddenEvent = AnalyticsEvent("card_hidden", trigger = AnalyticsEvent.Trigger.HIDDEN)
+        val page = page { listOf(TractPage.Card(it, 0, analyticsEvents = listOf(hiddenEvent))) }
+
+        setContent {
+            ProvideTestCompositionLocals {
+                RenderTractCard(page.cards.first(), state, {}, {}, {})
+            }
+        }
+
+        state.events.filterIsInstance<State.Event.AnalyticsEvent.ContentEvent>().test {
+            expectNoEvents()
+
+            lifecycleOwner.currentState = Lifecycle.State.STARTED
+            assertEquals(
+                hiddenEvent,
+                awaitItem().event,
+                "pausing the card should trigger its HIDDEN analytics events",
             )
         }
     }

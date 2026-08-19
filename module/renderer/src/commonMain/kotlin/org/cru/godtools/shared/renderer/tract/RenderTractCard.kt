@@ -74,7 +74,10 @@ internal fun RenderTractCard(
     LifecycleResumeEffect(card, state) {
         state.triggerScreenView(card.manifest, ToolAnalyticsScreenNames.forTractPage(card.page, card))
         val events = card.triggerAnalyticsEvents(AnalyticsEvent.Trigger.VISIBLE, state, coroutineScope)
-        onPauseOrDispose { events.forEach { it.cancel() } }
+        onPauseOrDispose {
+            events.forEach { it.cancel() }
+            card.triggerAnalyticsEvents(AnalyticsEvent.Trigger.HIDDEN, state, coroutineScope)
+        }
     }
 
     ElevatedCard(
