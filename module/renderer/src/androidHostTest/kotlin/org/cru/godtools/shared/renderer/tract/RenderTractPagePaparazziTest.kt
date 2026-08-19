@@ -287,6 +287,18 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     }
 
     @Test
+    fun `RenderTractPage() - Animation - Call to action fade out`() = animatedContentSnapshot(end = 1_000) {
+        val page = testPage()
+        val pageState = TractPageState(page).apply { navigateToCard(page.cards[2]) }
+        SnapshotTractPage(pageState = pageState)
+
+        LaunchedEffect(Unit) {
+            delay(300.milliseconds)
+            pageState.previousCard()
+        }
+    }
+
+    @Test
     fun `RenderTractPage() - Animation - Bounce hint`() = animatedContentSnapshot(end = 3_200) {
         val page = testPage()
         SnapshotTractPage(pageState = TractPageState(page).apply { isBounceFirstCard = true })

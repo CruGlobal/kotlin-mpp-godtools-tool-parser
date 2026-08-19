@@ -200,15 +200,19 @@ internal fun TractPageLayout(
                 heroPlaceable.placeIfVisible(heroOffset.value.roundToInt())
             }
 
+            // place the CTA before cards so cards layout on top of the CTA
+            val ctaAlpha = ctaAlpha.value
+            if (ctaAlpha > 0f) {
+                cta?.placeRelativeWithLayer(0, viewportHeight - ctaHeight) { alpha = ctaAlpha }
+            }
+
             cardPlaceables.forEachIndexed { i, placeable ->
                 placeable?.placeIfVisible(cardOffsets[i].value.roundToInt())
             }
 
-            val alpha = ctaAlpha.value
-            if (alpha > 0f) {
-                cta?.placeRelativeWithLayer(0, viewportHeight - ctaHeight) { this.alpha = alpha }
+            if (ctaAlpha > 0f) {
                 ctaTip?.placeRelativeWithLayer(ctaTipOffsetPx, viewportHeight - ctaHeight - ctaTip.height) {
-                    this.alpha = alpha
+                    alpha = ctaAlpha
                 }
             }
         }
