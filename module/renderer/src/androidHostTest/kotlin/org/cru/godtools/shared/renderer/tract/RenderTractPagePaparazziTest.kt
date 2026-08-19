@@ -102,15 +102,13 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
 
     @Composable
     private fun BoxScope.SnapshotTractPage(
-        page: TractPage,
-        pageState: TractPageState = TractPageState(page),
+        pageState: TractPageState,
         contentInsets: PaddingValues = PaddingValues(top = PseudoAppBarHeight),
     ) {
         RenderTractPage(
-            page,
+            pageState,
             contentInsets = contentInsets,
             state = state,
-            pageState = pageState,
             modifier = Modifier.fillMaxSize()
         )
         Box(
@@ -118,7 +116,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
                 .height(PseudoAppBarHeight)
-                .background(page.manifest.navBarColor.toComposeColor())
+                .background(pageState.page.manifest.navBarColor.toComposeColor())
         )
     }
 
@@ -138,27 +136,28 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
 
     @Test
     fun `RenderTractPage() - Hero with stacked cards`() {
-        contentSnapshot { SnapshotTractPage(testPage()) }
+        val page = testPage()
+        contentSnapshot { SnapshotTractPage(rememberTractPageState(page)) }
 
         state.showTips.value = true
         val bgPage = testPage(backgroundImage = "waterfall")
-        contentSnapshot("Background - Tips") { SnapshotTractPage(bgPage) }
+        contentSnapshot("Background - Tips") { SnapshotTractPage(rememberTractPageState(bgPage)) }
 
         val rtlPage = testPage(rtlManifest)
-        contentSnapshot("RTL - Tips") { SnapshotTractPage(rtlPage) }
+        contentSnapshot("RTL - Tips") { SnapshotTractPage(rememberTractPageState(rtlPage)) }
     }
 
     @Test
     fun `RenderTractPage() - Active first card with peek`() {
         val page = testPage()
         contentSnapshot {
-            SnapshotTractPage(page, pageState = TractPageState(page).apply { navigateToCard(page.cards[0]) })
+            SnapshotTractPage(pageState = TractPageState(page).apply { navigateToCard(page.cards[0]) })
         }
 
         val rtlPage = testPage(rtlManifest)
         contentSnapshot("RTL") {
             val pageState = TractPageState(rtlPage).apply { navigateToCard(rtlPage.cards[0]) }
-            SnapshotTractPage(rtlPage, pageState = pageState)
+            SnapshotTractPage(pageState = pageState)
         }
     }
 
@@ -166,18 +165,18 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Active middle card`() {
         val page = testPage(backgroundImage = "waterfall")
         contentSnapshot {
-            SnapshotTractPage(page, pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
+            SnapshotTractPage(pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
         }
 
         state.showTips.value = true
         contentSnapshot("Tips") {
-            SnapshotTractPage(page, pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
+            SnapshotTractPage(pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
         }
 
         val rtlPage = testPage(rtlManifest, backgroundImage = "waterfall")
         contentSnapshot("RTL - Tips") {
             val pageState = TractPageState(rtlPage).apply { navigateToCard(rtlPage.cards[1]) }
-            SnapshotTractPage(rtlPage, pageState = pageState)
+            SnapshotTractPage(pageState = pageState)
         }
     }
 
@@ -185,36 +184,36 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Active last card shows call to action`() {
         val page = testPage()
         contentSnapshot {
-            SnapshotTractPage(page, pageState = TractPageState(page).apply { navigateToCard(page.cards[2]) })
+            SnapshotTractPage(pageState = TractPageState(page).apply { navigateToCard(page.cards[2]) })
         }
 
         state.showTips.value = true
         val bgPage = testPage(backgroundImage = "waterfall")
         contentSnapshot("Background - Tips") {
             val pageState = TractPageState(bgPage).apply { navigateToCard(bgPage.cards[2]) }
-            SnapshotTractPage(bgPage, pageState = pageState)
+            SnapshotTractPage(pageState = pageState)
         }
 
         val rtlPage = testPage(rtlManifest)
         contentSnapshot("RTL - Tips") {
             val pageState = TractPageState(rtlPage).apply { navigateToCard(rtlPage.cards[2]) }
-            SnapshotTractPage(rtlPage, pageState = pageState)
+            SnapshotTractPage(pageState = pageState)
         }
     }
 
     @Test
     fun `RenderTractPage() - Revealed hidden card`() = contentSnapshot {
         val page = testPage(hiddenCards = setOf(1))
-        SnapshotTractPage(page, pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
+        SnapshotTractPage(pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) })
     }
 
     @Test
     fun `RenderTractPage() - No cards shows call to action under hero`() {
-        contentSnapshot { SnapshotTractPage(testPageWithoutCards()) }
+        contentSnapshot { SnapshotTractPage(rememberTractPageState(testPageWithoutCards())) }
 
         state.showTips.value = true
         val bgPage = testPageWithoutCards(backgroundImage = "waterfall")
-        contentSnapshot("Background - Tips") { SnapshotTractPage(bgPage) }
+        contentSnapshot("Background - Tips") { SnapshotTractPage(rememberTractPageState(bgPage)) }
     }
 
     @Test
@@ -223,13 +222,13 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
         val insets = PaddingValues(top = PseudoAppBarHeight, bottom = bottomInset)
 
         contentSnapshot {
-            SnapshotTractPage(testPage(), contentInsets = insets)
+            SnapshotTractPage(rememberTractPageState(testPage()), contentInsets = insets)
             BottomInsetBar(bottomInset)
         }
 
         val bgPage = testPage(backgroundImage = "waterfall")
         contentSnapshot("Background") {
-            SnapshotTractPage(bgPage, contentInsets = insets)
+            SnapshotTractPage(rememberTractPageState(bgPage), contentInsets = insets)
             BottomInsetBar(bottomInset)
         }
     }
@@ -239,7 +238,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Animation - Open first card`() = animatedContentSnapshot(end = 1_000) {
         val page = testPage()
         val pageState = TractPageState(page)
-        SnapshotTractPage(page, pageState = pageState)
+        SnapshotTractPage(pageState = pageState)
 
         val touchRobot = rememberTouchRobot()
         LaunchedEffect(Unit) {
@@ -252,7 +251,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Animation - Dismiss card`() = animatedContentSnapshot(end = 1_000) {
         val page = testPage()
         val pageState = TractPageState(page).apply { navigateToCard(page.cards[0]) }
-        SnapshotTractPage(page, pageState = pageState)
+        SnapshotTractPage(pageState = pageState)
 
         val touchRobot = rememberTouchRobot()
         LaunchedEffect(Unit) {
@@ -265,7 +264,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Animation - Next card`() = animatedContentSnapshot(end = 1_300) {
         val page = testPage()
         val pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) }
-        SnapshotTractPage(page, pageState = pageState)
+        SnapshotTractPage(pageState = pageState)
 
         val touchRobot = rememberTouchRobot()
         LaunchedEffect(Unit) {
@@ -278,7 +277,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     fun `RenderTractPage() - Animation - Previous card`() = animatedContentSnapshot(end = 1_000) {
         val page = testPage()
         val pageState = TractPageState(page).apply { navigateToCard(page.cards[1]) }
-        SnapshotTractPage(page, pageState = pageState)
+        SnapshotTractPage(pageState = pageState)
 
         val touchRobot = rememberTouchRobot()
         LaunchedEffect(Unit) {
@@ -290,7 +289,7 @@ class RenderTractPagePaparazziTest : BasePaparazziTest() {
     @Test
     fun `RenderTractPage() - Animation - Bounce hint`() = animatedContentSnapshot(end = 3_200) {
         val page = testPage()
-        SnapshotTractPage(page, pageState = TractPageState(page).apply { isBounceFirstCard = true })
+        SnapshotTractPage(pageState = TractPageState(page).apply { isBounceFirstCard = true })
     }
     // endregion RenderTractPage() - Animations
 }

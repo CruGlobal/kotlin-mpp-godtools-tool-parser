@@ -35,17 +35,32 @@ fun RenderTractPage(
     modifier: Modifier = Modifier,
     contentInsets: PaddingValues = PaddingValues(0.dp),
     state: State = remember { State() },
-    pageState: TractPageState = rememberTractPageState(page),
     pageEvents: (TractPageEvent) -> Unit = {},
-) = ProvideLayoutDirectionFromLocale(page.manifest.locale) {
+) = RenderTractPage(
+    pageState = rememberTractPageState(page),
+    modifier = modifier,
+    contentInsets = contentInsets,
+    state = state,
+    pageEvents = pageEvents,
+)
+
+@Composable
+fun RenderTractPage(
+    pageState: TractPageState,
+    modifier: Modifier = Modifier,
+    contentInsets: PaddingValues = PaddingValues(0.dp),
+    state: State = remember { State() },
+    pageEvents: (TractPageEvent) -> Unit = {},
+) = ProvideLayoutDirectionFromLocale(pageState.page.manifest.locale) {
+    val page = pageState.page
     val currentPageEvents by rememberUpdatedState(pageEvents)
 
     // content event wiring: dismiss/reveal cards and surface modal-open requests to the host. Dismiss is
     // checked against the original active card before reveal can replace it with a newly revealed card.
-    ContentEventListener(state, page, pageState) { event ->
+    ContentEventListener(state, pageState) { event ->
         if (pageState.activeCard?.dismissListeners?.contains(event) == true) pageState.dismissActiveCard()
-        page.cards.firstOrNull { event in it.listeners }?.let { pageState.navigateToCard(it) }
-        page.modals.firstOrNull { event in it.listeners }
+        pageState.page.cards.firstOrNull { event in it.listeners }?.let { pageState.navigateToCard(it) }
+        pageState.page.modals.firstOrNull { event in it.listeners }
             ?.let { currentPageEvents(TractPageEvent.OpenModal(it)) }
     }
 

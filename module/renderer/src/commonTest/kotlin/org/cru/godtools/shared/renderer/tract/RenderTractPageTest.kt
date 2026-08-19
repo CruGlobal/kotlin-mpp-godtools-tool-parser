@@ -55,7 +55,7 @@ class RenderTractPageTest : BaseRendererTest() {
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderTractPage(page, state = state, pageState = pageState, pageEvents = { events += it })
+                RenderTractPage(pageState, state = state, pageEvents = { events += it })
             }
         }
 
@@ -87,7 +87,7 @@ class RenderTractPageTest : BaseRendererTest() {
         val pageState = TractPageState(page)
         setContent {
             ProvideTestCompositionLocals {
-                RenderTractPage(page, state = state, pageState = pageState, pageEvents = { events += it })
+                RenderTractPage(pageState, state = state, pageEvents = { events += it })
             }
         }
 
@@ -107,7 +107,7 @@ class RenderTractPageTest : BaseRendererTest() {
         val pageState = TractPageState(page)
         setContent {
             ProvideTestCompositionLocals {
-                RenderTractPage(page, state = state, pageState = pageState, pageEvents = { events += it })
+                RenderTractPage(pageState, state = state, pageEvents = { events += it })
             }
         }
         pageState.navigateToCard(page.cards[0])
@@ -185,9 +185,8 @@ class RenderTractPageTest : BaseRendererTest() {
             ProvideTestCompositionLocals {
                 Box(Modifier.size(300.dp, 450.dp)) {
                     RenderTractPage(
-                        page,
+                        pageState,
                         state = state,
-                        pageState = pageState,
                         pageEvents = { events += it },
                         modifier = Modifier
                             .fillMaxSize()
@@ -216,7 +215,7 @@ class RenderTractPageTest : BaseRendererTest() {
 
         setContent {
             ProvideTestCompositionLocals {
-                RenderTractPage(page, state = state, pageState = pageState)
+                RenderTractPage(pageState, state = state)
             }
         }
         mainClock.advanceTimeBy(1_000)
