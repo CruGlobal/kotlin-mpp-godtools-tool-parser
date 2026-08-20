@@ -59,6 +59,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.compose.ui.test.manifest)
 
+                implementation(project.dependencies.testFixtures(libs.gtoSupport.androidx.compose))
                 implementation(libs.testparameterinjector)
                 implementation(libs.touchrobot.paparazzi)
             }

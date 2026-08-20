@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import org.cru.godtools.shared.renderer.content.extensions.painterTip
+import org.cru.godtools.shared.renderer.content.extensions.stringTipType
 import org.cru.godtools.shared.renderer.content.extensions.tipBackground
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
@@ -79,6 +80,30 @@ internal fun TipUpArrow(tip: Tip, state: State, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+internal fun TipDownArrow(tip: Tip, state: State, modifier: Modifier = Modifier) {
+    val isComplete by tip.produceIsComplete()
+
+    Surface(
+        onClick = { state.triggerEvent(State.Event.OpenTip(tip.id)) },
+        shape = TipDownArrowShape,
+        shadowElevation = TipElevation,
+        modifier = modifier
+            .requiredSize(width = TipSize, height = TipArrowHeight)
+    ) {
+        Image(
+            painterTip(tip, isComplete = isComplete),
+            contentDescription = stringTipType(tip.type),
+            modifier = Modifier
+                .fillMaxSize()
+                .tipBackground(isComplete = isComplete)
+                .padding(bottom = TipArrowHeight - TipSize)
+                .wrapContentSize()
+                .size(TipIconSize)
+        )
+    }
+}
+
 private object TipUpArrowShape : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
         val width = size.width
@@ -93,6 +118,36 @@ private object TipUpArrowShape : Shape {
                 width, arrowHeight, // top right
                 width / 2, 0f, // point
                 0f, arrowHeight, // top left
+            ),
+            perVertexRounding = listOf(
+                roundedCorner,
+                roundedCorner,
+                roundedCorner,
+                CornerRounding.Unrounded,
+                roundedCorner,
+            ),
+            centerX = width / 2,
+            centerY = height / 2,
+        )
+
+        return Outline.Generic(polygon.toComposePath())
+    }
+}
+
+private object TipDownArrowShape : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        val width = size.width
+        val height = size.height
+        val arrowHeight = with(density) { TipArrowSize.toPx() }
+        val roundedCorner = CornerRounding(TipCornerSize.toPx(size, density), 1f)
+
+        val polygon = RoundedPolygon(
+            vertices = floatArrayOf(
+                0f, 0f, // top left
+                width, 0f, // top right
+                width, height - arrowHeight, // bottom right
+                width / 2, height, // point
+                0f, height - arrowHeight, // bottom left
             ),
             perVertexRounding = listOf(
                 roundedCorner,

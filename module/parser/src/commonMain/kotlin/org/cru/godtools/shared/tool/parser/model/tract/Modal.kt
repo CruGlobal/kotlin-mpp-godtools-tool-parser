@@ -78,12 +78,13 @@ class Modal : BaseModel, Parent, Styles {
     @RestrictTo(RestrictTo.Scope.TESTS)
     constructor(
         page: TractPage = TractPage(),
+        listeners: Set<EventId> = emptySet(),
         dismissListeners: Set<EventId> = emptySet(),
         title: ((Modal) -> Text?)? = null,
         content: ((Modal) -> List<Content>)? = null,
     ) : super(page) {
         this.page = page
-        listeners = emptySet()
+        this.listeners = listeners
         this.dismissListeners = dismissListeners
         this.title = title?.invoke(this)
         this.content = content?.invoke(this).orEmpty()

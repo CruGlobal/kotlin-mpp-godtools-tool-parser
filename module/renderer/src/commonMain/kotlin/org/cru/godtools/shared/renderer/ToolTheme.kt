@@ -37,6 +37,11 @@ internal object ToolTheme {
         fontSize = 30.sp,
         lineHeight = 34.sp
     )
+    internal val TractCardLabelTextStyle = Typography().titleMedium.copy(
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 22.sp,
+    )
 
     @Composable
     fun cardElevation() = CardDefaults.elevatedCardElevation(

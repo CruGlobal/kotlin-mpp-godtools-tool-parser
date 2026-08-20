@@ -247,6 +247,8 @@ class TractPage : Page {
             backgroundImageGravity: Gravity = DEFAULT_BACKGROUND_IMAGE_GRAVITY,
             backgroundImageScaleType: ImageScaleType = DEFAULT_BACKGROUND_IMAGE_SCALE_TYPE,
             isHidden: Boolean = false,
+            listeners: Set<EventId> = emptySet(),
+            dismissListeners: Set<EventId> = emptySet(),
             analyticsEvents: List<AnalyticsEvent> = emptyList(),
             label: ((Base) -> Text?)? = null,
             content: ((Card) -> List<Content>?)? = null
@@ -255,8 +257,8 @@ class TractPage : Page {
             this.position = position
 
             this.isHidden = isHidden
-            listeners = emptySet()
-            dismissListeners = emptySet()
+            this.listeners = listeners
+            this.dismissListeners = dismissListeners
             this.analyticsEvents = analyticsEvents
 
             _backgroundColor = backgroundColor

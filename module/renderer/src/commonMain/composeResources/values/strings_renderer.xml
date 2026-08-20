@@ -29,4 +29,11 @@
     <string name="tool_renderer_accordion_section_action_expand">Expand</string>
     <string name="tool_renderer_input_error_required">%1$s is required</string>
     <string name="tool_renderer_input_error_invalid_email">Please enter a valid email address</string>
+
+    <!-- Tract Strings -->
+    <eat-comment />
+    <string name="tract_accessibility_action_next_page">Next Page</string>
+    <string name="tract_card_action_previous">Previous</string>
+    <string name="tract_card_action_next">Next</string>
+    <string name="tract_card_position">%1$d/%2$d</string>
 </resources>
