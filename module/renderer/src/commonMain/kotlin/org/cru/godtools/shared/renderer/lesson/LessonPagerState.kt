@@ -36,6 +36,7 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
 
     private val _pagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
     val pagerState: PagerState get() = _pagerState
+    val settledPage by derivedStateOf { pages.getOrNull(_pagerState.settledPage) }
 
     fun updateManifest(manifest: Manifest) = updatePages(manifest.pages.filterIsInstance<LessonPage>())
     fun updatePages(pages: List<LessonPage>) {
