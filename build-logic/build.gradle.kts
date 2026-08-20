@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.kotlin.gradle)
     implementation(libs.kotlin.kover.gradle)
     implementation(libs.ktlint.gradle)
+    implementation(libs.paparazzi.gradle)
 }
 
 ktlint {

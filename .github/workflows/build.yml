@@ -130,6 +130,52 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version-file: ".tool-versions"
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Cache Konan
+        uses: actions/cache@v6
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-konan-
+      - name: Cache Maven
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: Run Android Unit Tests
+        run: ./gradlew testAndroidHostTest koverXmlReportAndroid --scan --no-build-cache
+      - name: Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-unit-test-results
+          path: "**/build/reports/tests/"
+      - name: Archive kover results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: kover-results
+          path: "**/build/reports/kover/"
+
+  paparazzi_tests:
+    name: Paparazzi Screenshot Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
         with:
           lfs: 'true'
       - name: Setup Java JDK
@@ -151,28 +197,22 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
-      - name: Run Android Unit Tests
-        run: ./gradlew testAndroidHostTest verifyPaparazzi koverXmlReportAndroid --scan --no-build-cache
+      - name: Run Paparazzi Screenshot Tests
+        run: ./gradlew verifyPaparazzi koverXmlReportPaparazzi -Ppaparazzi --scan --no-build-cache
       - name: Codecov
         uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-      - name: Archive test results
+      - name: Archive Paparazzi results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: android-unit-test-results
+          name: paparazzi-results
           path: |
             **/build/paparazzi/failures/
-            **/build/reports/tests/
-      - name: Archive kover results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: kover-results
-          path: "**/build/reports/kover/"
+            **/build/reports/kover/
 
   ios_tests:
     name: iOS Unit Tests
@@ -250,7 +290,7 @@ jobs:
     name: Tag Release & Bump Version
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && inputs.triggerRelease && github.ref == 'refs/heads/main'
-    needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
+    needs: [ build, check_metadata, ktlint, lint, android_tests, paparazzi_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -282,7 +322,7 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Publish PR SNAPSHOT: Maven')) ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
-    needs: [ build, check_metadata, ktlint, lint, android_tests, ios_tests, js_tests, check_version ]
+    needs: [ build, check_metadata, ktlint, lint, android_tests, paparazzi_tests, ios_tests, js_tests, check_version ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v7

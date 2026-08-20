@@ -1,8 +1,8 @@
 plugins {
     id("godtools-shared.module-conventions")
+    id("paparazzi-conventions")
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.paparazzi)
 }
 
 compose.resources {

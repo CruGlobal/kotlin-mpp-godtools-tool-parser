@@ -14,8 +14,8 @@ The XML content format is defined by XSD schemas in the [`mobile-content-api` re
 # Build all targets
 ./gradlew assemble
 
-# Run Android unit tests with snapshot verification and code coverage
-./gradlew testAndroidHostTest verifyPaparazzi koverXmlReportAndroid
+# Run Android unit tests with code coverage (Paparazzi tests are excluded by default)
+./gradlew testAndroidHostTest koverXmlReportAndroid
 
 # Run a single test class (Android)
 ./gradlew :module:parser:testAndroidHostTest --tests "org.cru.godtools.shared.parser.FooTest"
@@ -34,7 +34,8 @@ The XML content format is defined by XSD schemas in the [`mobile-content-api` re
 ./gradlew lint
 
 # Snapshot testing (Android) — recording only happens in CI
-./gradlew verifyPaparazzi                # Verify snapshots
+# Paparazzi tests are excluded from testAndroidHostTest by default; pass -Ppaparazzi to include them
+./gradlew verifyPaparazzi -Ppaparazzi    # Verify snapshots
 # To record new/updated snapshots: trigger the "Record Snapshots" workflow_dispatch
 # in GitHub Actions on the target branch — it commits the updated snapshot images back to the branch
 

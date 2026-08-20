@@ -31,7 +31,9 @@ import org.cru.godtools.shared.tool.parser.model.Resource
 import org.cru.godtools.shared.tool.parser.model.tips.Tip
 import org.jetbrains.compose.resources.PreviewContextConfigurationEffect
 import org.junit.Rule
+import org.junit.experimental.categories.Category
 
+@Category(BasePaparazziTest::class)
 @OptIn(ExperimentalUuidApi::class)
 abstract class BasePaparazziTest(
     protected val accessibilityMode: AccessibilityMode = AccessibilityMode.NO_ACCESSIBILITY,
