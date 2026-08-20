@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Record snapshots
-        run: ./gradlew cleanRecordPaparazzi --scan
+        run: ./gradlew cleanRecordPaparazzi -Ppaparazzi --scan
       - name: Commit snapshots
         run: |
           git config --global user.name '${{ github.actor }}'

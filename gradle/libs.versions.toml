@@ -66,6 +66,7 @@ kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref =
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+paparazzi-gradle = "app.cash.paparazzi:paparazzi-gradle-plugin:2.0.0-alpha05"
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.22"
 touchrobot-paparazzi = "me.saket.touchrobot:touchrobot-paparazzi:0.2.0"
@@ -87,4 +88,3 @@ grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.11" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradle" }
 npm-publish = { id = "org.jetbrains.kotlin.npm-publish", version = "3.7.0" }
-paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha05" }
