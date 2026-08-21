@@ -72,7 +72,7 @@ class LessonPagerStateTest : BaseRendererTest() {
 
     // region constructor(manifest, initialPage)
     @Test
-    fun `constructor(initialPage) - starts on the initial page`() {
+    fun `LessonPagerState - initialPage - starts on the initial page`() {
         val manifest = Manifest(type = Type.LESSON) {
             listOf(
                 LessonPage(it, id = "page1"),
@@ -85,7 +85,7 @@ class LessonPagerStateTest : BaseRendererTest() {
     }
 
     @Test
-    fun `constructor(initialPage) - hidden initial page should be visible`() {
+    fun `LessonPagerState - initialPage - hidden initial page should be visible`() {
         val manifest = Manifest(type = Type.LESSON) {
             listOf(
                 LessonPage(it, id = "page1"),
@@ -104,7 +104,7 @@ class LessonPagerStateTest : BaseRendererTest() {
     }
 
     @Test
-    fun `constructor(initialPage) - null initial page starts on the first page`() {
+    fun `LessonPagerState - initialPage - null initial page starts on the first page`() {
         val manifest = Manifest(type = Type.LESSON) {
             listOf(
                 LessonPage(it, id = "page1"),
@@ -117,7 +117,7 @@ class LessonPagerStateTest : BaseRendererTest() {
     }
 
     @Test
-    fun `constructor(initialPage) - initial page missing from the manifest starts on the first page`() {
+    fun `LessonPagerState - initialPage - initial page missing from the manifest starts on the first page`() {
         val manifest = Manifest(type = Type.LESSON) {
             listOf(
                 LessonPage(it, id = "page1"),
