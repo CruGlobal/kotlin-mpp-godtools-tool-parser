@@ -39,7 +39,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -61,7 +60,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -83,7 +81,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -111,7 +108,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -133,7 +129,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -178,7 +173,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -222,7 +216,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -244,7 +237,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -328,7 +320,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -354,7 +345,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
@@ -377,7 +367,6 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "temurin"
           java-version-file: ".tool-versions"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
