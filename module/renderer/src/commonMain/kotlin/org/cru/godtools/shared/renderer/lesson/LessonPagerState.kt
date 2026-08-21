@@ -21,6 +21,11 @@ fun rememberLessonPagerState(manifest: Manifest, initialPage: Int = 0) =
     rememberSaveable(saver = LessonPagerState.Saver) { LessonPagerState(manifest, initialPage) }
         .apply { updateManifest(manifest) }
 
+@Composable
+fun rememberLessonPagerState(manifest: Manifest, initialPage: LessonPage?) =
+    rememberSaveable(saver = LessonPagerState.Saver) { LessonPagerState(manifest, initialPage) }
+        .apply { updateManifest(manifest) }
+
 @Stable
 class LessonPagerState private constructor(visiblePages: Collection<String>, pagerState: SaveablePagerState?) {
     constructor(manifest: Manifest? = null, currentPage: Int = 0) : this(
@@ -28,6 +33,17 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
         pagerState = SaveablePagerState(currentPage, 0f) { currentPage + 1 },
     ) {
         if (manifest != null) updateManifest(manifest) else updatePages(emptyList())
+    }
+
+    /**
+     * Create a LessonPagerState that starts on [initialPage], making [initialPage] initially visible when it's a
+     * hidden page. A `null` or unrecognized [initialPage] starts on the first page.
+     */
+    constructor(manifest: Manifest, initialPage: LessonPage?) : this(
+        visiblePages = setOfNotNull(initialPage?.id),
+        pagerState = initialPagerState(manifest, initialPage),
+    ) {
+        updateManifest(manifest)
     }
 
     internal var allPages: ImmutableList<LessonPage> by mutableStateOf(persistentListOf())
@@ -45,6 +61,18 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
     }
 
     companion object {
+        private fun initialPagerState(manifest: Manifest, initialPage: LessonPage?): SaveablePagerState {
+            val index = when (initialPage) {
+                null -> 0
+
+                else -> manifest.pages.filterIsInstance<LessonPage>()
+                    .filter { it.id == initialPage.id || !it.isHidden }
+                    .indexOfFirst { it.id == initialPage.id }
+                    .coerceAtLeast(0)
+            }
+            return SaveablePagerState(index, 0f) { index + 1 }
+        }
+
         val Saver = listSaver(
             save = {
                 listOf(
