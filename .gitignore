@@ -1,14 +1,15 @@
+# Android Studio
+captures/
+.idea/
+*.iml
+local.properties
+out/
+
 # Gradle
-.gradle/
 build/
+.gradle/
+gradle/gradle-daemon-jvm.properties
 *.podspec
 
 # Kotlin
 .kotlin/
-
-# Android Studio
-.idea/
-*.iml
-captures/
-out/
-local.properties

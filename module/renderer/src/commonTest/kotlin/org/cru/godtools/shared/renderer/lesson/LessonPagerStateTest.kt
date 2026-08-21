@@ -14,6 +14,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.ccci.gto.support.androidx.test.junit.runners.AndroidJUnit4
@@ -47,6 +49,58 @@ class LessonPagerStateTest : BaseRendererTest() {
 
         onNodeWithText("Page: 1").assertExists()
     }
+
+    // region settledPage
+    @Test
+    fun `settledPage - returns the page the pager is settled on`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, currentPage = 1)
+        assertEquals("page2", state.settledPage?.id, "settledPage should be the page at the pager's settled index")
+    }
+
+    @Test
+    fun `settledPage - indexes into visible pages only`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2", isHidden = true),
+                LessonPage(it, id = "page3"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, currentPage = 1)
+        assertEquals("page3", state.settledPage?.id, "hidden pages are excluded from pages, shifting the index")
+
+        state.visiblePages += "page2"
+        assertEquals("page2", state.settledPage?.id, "settledPage should update when a hidden page becomes visible")
+    }
+
+    @Test
+    fun `settledPage - null when there are no pages`() {
+        val state = LessonPagerState()
+        assertNull(state.settledPage, "settledPage should be null when the pager has no pages")
+    }
+
+    @Test
+    fun `settledPage - null when the settled index is beyond the available pages`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, currentPage = 1)
+        state.updatePages(emptyList())
+        assertNull(state.settledPage, "settledPage should be null when pages shrink below the settled index")
+    }
+    // endregion settledPage
 
     @Test
     @IgnoreOnIos // TODO: https://youtrack.jetbrains.com/issue/CMP-6836
