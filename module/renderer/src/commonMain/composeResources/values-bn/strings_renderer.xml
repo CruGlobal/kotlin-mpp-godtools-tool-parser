@@ -8,4 +8,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s দরকার</string>
     <string name="tool_renderer_input_error_invalid_email">দয়া করে একটি বৈধ ইমেইল এড্রেস প্রবেশ করান</string>
+    <!-- Tract Strings -->
 </resources>

@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s là bắt buộc</string>
     <string name="tool_renderer_input_error_invalid_email">Vui lòng nhập địa chỉ email hợp lệ</string>
+    <!-- Tract Strings -->
 </resources>

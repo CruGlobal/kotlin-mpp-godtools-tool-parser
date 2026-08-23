@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">Lauks \"%1$s\" aizpildāms obligāti</string>
     <string name="tool_renderer_input_error_invalid_email">Lūdzu, ievadi derīgu e-pasta adresi</string>
+    <!-- Tract Strings -->
 </resources>

@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s galchuun dirqama</string>
     <string name="tool_renderer_input_error_invalid_email">Maaloo iimeelii sirrii galchaa</string>
+    <!-- Tract Strings -->
 </resources>

@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s को आवश्यकता छ</string>
     <string name="tool_renderer_input_error_invalid_email">कृपया मान्य हुने इमेल ठेगाना राख्नुहोस्</string>
+    <!-- Tract Strings -->
 </resources>

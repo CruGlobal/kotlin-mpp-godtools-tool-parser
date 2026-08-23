@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">Необходимо ввести %1$s</string>
     <string name="tool_renderer_input_error_invalid_email">Введите правильный адрес эл. почты</string>
+    <!-- Tract Strings -->
 </resources>
