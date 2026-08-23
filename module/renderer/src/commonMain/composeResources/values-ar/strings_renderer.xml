@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s مطلوب</string>
     <string name="tool_renderer_input_error_invalid_email">يرجى إدخال عنوان إلكتروني صالح</string>
+    <!-- Tract Strings -->
 </resources>

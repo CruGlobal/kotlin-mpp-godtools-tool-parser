@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s este necesar</string>
     <string name="tool_renderer_input_error_invalid_email">Introdu o adresă de e-mail validă</string>
+    <!-- Tract Strings -->
 </resources>

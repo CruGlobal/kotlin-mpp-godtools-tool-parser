@@ -15,4 +15,5 @@
     <string name="tool_renderer_accordion_section_action_expand">Abrir</string>
     <string name="tool_renderer_input_error_required">Se requiere %1$s</string>
     <string name="tool_renderer_input_error_invalid_email">Por favor, introduce una dirección de correo electrónico válida</string>
+    <!-- Tract Strings -->
 </resources>

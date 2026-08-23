@@ -9,4 +9,5 @@
     <!-- Tool Content Strings -->
     <string name="tool_renderer_input_error_required">%1$s Inahitajika</string>
     <string name="tool_renderer_input_error_invalid_email">Tafadhali weka anwani halali ya barua pepe</string>
+    <!-- Tract Strings -->
 </resources>
