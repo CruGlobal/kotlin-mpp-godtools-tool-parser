@@ -48,7 +48,7 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
 
     internal var allPages: ImmutableList<LessonPage> by mutableStateOf(persistentListOf())
     internal val visiblePages = mutableStateSetOf(*visiblePages.toTypedArray())
-    val pages by derivedStateOf { allPages.filter { it.id in this.visiblePages || !it.isHidden }.toImmutableList() }
+    val pages by derivedStateOf { allPages.filterVisiblePages(this.visiblePages).toImmutableList() }
 
     private val _pagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
     val pagerState: PagerState get() = _pagerState
@@ -66,7 +66,7 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
                 null -> 0
 
                 else -> manifest.pages.filterIsInstance<LessonPage>()
-                    .filter { it.id == initialPage.id || !it.isHidden }
+                    .filterVisiblePages(setOf(initialPage.id))
                     .indexOfFirst { it.id == initialPage.id }
                     .coerceAtLeast(0)
             }
@@ -90,6 +90,9 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
         )
     }
 }
+
+private fun List<LessonPage>.filterVisiblePages(revealedHiddenPages: Set<String>) =
+    filter { !it.isHidden || it.id in revealedHiddenPages }
 
 private class SaveablePagerState(
     currentPage: Int,
