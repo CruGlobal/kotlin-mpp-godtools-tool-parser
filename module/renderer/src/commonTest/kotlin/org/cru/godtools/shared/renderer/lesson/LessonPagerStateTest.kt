@@ -70,7 +70,7 @@ class LessonPagerStateTest : BaseRendererTest() {
         onNodeWithText("Page: 1 of 3").assertExists()
     }
 
-    // region constructor(manifest, initialPage)
+    // region LessonPagerState(manifest, initialPage: LessonPage?)
     @Test
     fun `LessonPagerState - initialPage - starts on the initial page`() {
         val manifest = Manifest(type = Type.LESSON) {
@@ -129,7 +129,7 @@ class LessonPagerStateTest : BaseRendererTest() {
         val state = LessonPagerState(manifest, initialPage = otherManifest.lessonPage("other"))
         assertEquals("page1", state.settledPage?.id)
     }
-    // endregion constructor(manifest, initialPage)
+    // endregion LessonPagerState(manifest, initialPage: LessonPage?)
 
     // region settledPage
     @Test
