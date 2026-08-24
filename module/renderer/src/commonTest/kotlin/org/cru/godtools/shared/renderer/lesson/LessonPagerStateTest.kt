@@ -124,9 +124,8 @@ class LessonPagerStateTest : BaseRendererTest() {
                 LessonPage(it, id = "page2"),
             )
         }
-        val otherManifest = Manifest(type = Type.LESSON) { listOf(LessonPage(it, id = "other")) }
 
-        val state = LessonPagerState(manifest, initialPage = otherManifest.lessonPage("other"))
+        val state = LessonPagerState(manifest, initialPage = LessonPage(id = "other"))
         assertEquals("page1", state.settledPage?.id)
     }
     // endregion LessonPagerState(manifest, initialPage: LessonPage?)
