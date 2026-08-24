@@ -168,13 +168,13 @@ private fun RenderLessonPager(
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.settledPage }
             .mapNotNull { lessonPagerState.pages.getOrNull(it)?.id }
-            .collect { pageId -> lessonPagerState.visiblePages.removeAll { it != pageId } }
+            .collect { pageId -> lessonPagerState.revealedPages.removeAll { it != pageId } }
     }
 
     // handle page listeners
     ContentEventListener(state) { eventId ->
         val page = lessonPagerState.allPages.firstOrNull { eventId in it.listeners } ?: return@ContentEventListener
-        lessonPagerState.visiblePages += page.id
+        lessonPagerState.revealedPages += page.id
         val index = lessonPagerState.pages.indexOf(page).takeUnless { it == -1 } ?: return@ContentEventListener
         pagerState.animateScrollToPage(index)
     }

@@ -27,72 +27,68 @@ fun rememberLessonPagerState(manifest: Manifest, initialPage: LessonPage?) =
         .apply { updateManifest(manifest) }
 
 @Stable
-class LessonPagerState private constructor(visiblePages: Collection<String>, pagerState: SaveablePagerState?) {
+class LessonPagerState private constructor(revealedPages: Collection<String>, pagerState: SaveablePagerState?) {
     constructor(manifest: Manifest? = null, currentPage: Int = 0) : this(
-        visiblePages = emptySet(),
+        revealedPages = emptySet(),
         pagerState = SaveablePagerState(currentPage, 0f) { currentPage + 1 },
     ) {
         if (manifest != null) updateManifest(manifest) else updatePages(emptyList())
     }
 
-    /**
-     * Create a LessonPagerState that starts on [initialPage], making [initialPage] initially visible when it's a
-     * hidden page. A `null` or unrecognized [initialPage] starts on the first page.
-     */
-    constructor(manifest: Manifest, initialPage: LessonPage?) : this(
-        visiblePages = setOfNotNull(initialPage?.id),
-        pagerState = initialPagerState(manifest, initialPage),
+    constructor(manifest: Manifest, currentPage: LessonPage?) : this(
+        revealedPages = setOfNotNull(currentPage?.id),
+        pagerState = createPagerState(manifest, currentPage),
     ) {
         updateManifest(manifest)
     }
 
     internal var allPages: ImmutableList<LessonPage> by mutableStateOf(persistentListOf())
-    internal val visiblePages = mutableStateSetOf(*visiblePages.toTypedArray())
-    val pages by derivedStateOf { allPages.filterVisiblePages(this.visiblePages).toImmutableList() }
+    internal val revealedPages = mutableStateSetOf(*revealedPages.toTypedArray())
+    val pages by derivedStateOf { allPages.filterVisiblePages(this.revealedPages).toImmutableList() }
 
-    private val _pagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
-    val pagerState: PagerState get() = _pagerState
-    val settledPage by derivedStateOf { pages.getOrNull(_pagerState.settledPage) }
+    val pagerState: PagerState
+        field: SaveablePagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
+    val settledPage by derivedStateOf { pages.getOrNull(this.pagerState.settledPage) }
 
     fun updateManifest(manifest: Manifest) = updatePages(manifest.pages.filterIsInstance<LessonPage>())
     fun updatePages(pages: List<LessonPage>) {
         allPages = pages.toImmutableList()
-        _pagerState.pageCountState.value = { this.pages.size }
+        pagerState.pageCountState.value = { this.pages.size }
     }
 
     companion object {
-        private fun initialPagerState(manifest: Manifest, initialPage: LessonPage?): SaveablePagerState {
-            val index = when (initialPage) {
-                null -> 0
-
-                else -> manifest.pages.filterIsInstance<LessonPage>()
-                    .filterVisiblePages(setOf(initialPage.id))
-                    .indexOfFirst { it.id == initialPage.id }
-                    .coerceAtLeast(0)
-            }
-            return SaveablePagerState(index, 0f) { index + 1 }
-        }
-
         val Saver = listSaver(
             save = {
                 listOf(
-                    ArrayList(it.visiblePages),
-                    with(SaveablePagerState.Saver) { save(it._pagerState) },
+                    ArrayList(it.revealedPages),
+                    with(SaveablePagerState.Saver) { save(it.pagerState) },
                 )
             },
             restore = {
                 @Suppress("UNCHECKED_CAST")
                 LessonPagerState(
-                    visiblePages = it[0] as List<String>,
+                    revealedPages = it[0] as List<String>,
                     pagerState = SaveablePagerState.Saver.restore(it[1] as List<Any>),
                 )
             },
         )
+
+        private fun createPagerState(manifest: Manifest, currentPage: LessonPage?): SaveablePagerState {
+            val index = when (currentPage) {
+                null -> 0
+
+                else -> manifest.pages.filterIsInstance<LessonPage>()
+                    .filterVisiblePages(setOf(currentPage.id))
+                    .indexOfFirst { it.id == currentPage.id }
+                    .coerceAtLeast(0)
+            }
+            return SaveablePagerState(index, 0f) { index + 1 }
+        }
+
+        private fun List<LessonPage>.filterVisiblePages(revealedPages: Set<String>) =
+            filter { !it.isHidden || it.id in revealedPages }
     }
 }
-
-private fun List<LessonPage>.filterVisiblePages(revealedHiddenPages: Set<String>) =
-    filter { !it.isHidden || it.id in revealedHiddenPages }
 
 private class SaveablePagerState(
     currentPage: Int,

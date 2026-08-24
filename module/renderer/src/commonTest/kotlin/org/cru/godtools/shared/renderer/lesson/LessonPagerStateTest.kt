@@ -70,7 +70,7 @@ class LessonPagerStateTest : BaseRendererTest() {
         onNodeWithText("Page: 1 of 3").assertExists()
     }
 
-    // region LessonPagerState(manifest, initialPage: LessonPage?)
+    // region LessonPagerState(manifest, currentPage: LessonPage?)
     @Test
     fun `LessonPagerState - initialPage - starts on the initial page`() {
         val manifest = Manifest(type = Type.LESSON) {
@@ -80,7 +80,7 @@ class LessonPagerStateTest : BaseRendererTest() {
             )
         }
 
-        val state = LessonPagerState(manifest, initialPage = manifest.lessonPage("page2"))
+        val state = LessonPagerState(manifest, currentPage = manifest.lessonPage("page2"))
         assertEquals("page2", state.settledPage?.id, "the pager should start on the initial page")
     }
 
@@ -94,7 +94,7 @@ class LessonPagerStateTest : BaseRendererTest() {
             )
         }
 
-        val state = LessonPagerState(manifest, initialPage = manifest.lessonPage("page2"))
+        val state = LessonPagerState(manifest, currentPage = manifest.lessonPage("page2"))
         assertEquals(
             listOf("page1", "page2", "page3"),
             state.pages.map { it.id },
@@ -112,7 +112,7 @@ class LessonPagerStateTest : BaseRendererTest() {
             )
         }
 
-        val state = LessonPagerState(manifest, initialPage = null)
+        val state = LessonPagerState(manifest, currentPage = null)
         assertEquals("page1", state.settledPage?.id)
     }
 
@@ -125,10 +125,10 @@ class LessonPagerStateTest : BaseRendererTest() {
             )
         }
 
-        val state = LessonPagerState(manifest, initialPage = LessonPage(id = "other"))
+        val state = LessonPagerState(manifest, currentPage = LessonPage(id = "other"))
         assertEquals("page1", state.settledPage?.id)
     }
-    // endregion LessonPagerState(manifest, initialPage: LessonPage?)
+    // endregion LessonPagerState(manifest, currentPage: LessonPage?)
 
     // region settledPage
     @Test
@@ -157,7 +157,7 @@ class LessonPagerStateTest : BaseRendererTest() {
         val state = LessonPagerState(manifest, currentPage = 1)
         assertEquals("page3", state.settledPage?.id, "hidden pages are excluded from pages, shifting the index")
 
-        state.visiblePages += "page2"
+        state.revealedPages += "page2"
         assertEquals("page2", state.settledPage?.id, "settledPage should update when a hidden page becomes visible")
     }
 
@@ -206,11 +206,11 @@ class LessonPagerStateTest : BaseRendererTest() {
                     Text("Current Page: ${lessonPagerState.pagerState.currentPage}")
                     val pageCount by remember { derivedStateOf { lessonPagerState.pagerState.pageCount } }
                     Text("Page Count: $pageCount")
-                    Text("Visible: ${lessonPagerState.visiblePages.toSet()}")
+                    Text("Visible: ${lessonPagerState.revealedPages.toSet()}")
 
                     Button(
                         onClick = {
-                            lessonPagerState.visiblePages += "page2"
+                            lessonPagerState.revealedPages += "page2"
                             coroutineScope.launch { lessonPagerState.pagerState.animateScrollToPage(1) }
                         }
                     ) {
