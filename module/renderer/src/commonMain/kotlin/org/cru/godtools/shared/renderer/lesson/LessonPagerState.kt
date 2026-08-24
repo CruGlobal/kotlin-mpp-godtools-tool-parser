@@ -35,13 +35,9 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
         if (manifest != null) updateManifest(manifest) else updatePages(emptyList())
     }
 
-    /**
-     * Create a LessonPagerState that starts on [initialPage], making [initialPage] initially visible when it's a
-     * hidden page. A `null` or unrecognized [initialPage] starts on the first page.
-     */
-    constructor(manifest: Manifest, initialPage: LessonPage?) : this(
-        visiblePages = setOfNotNull(initialPage?.id),
-        pagerState = initialPagerState(manifest, initialPage),
+    constructor(manifest: Manifest, currentPage: LessonPage?) : this(
+        visiblePages = setOfNotNull(currentPage?.id),
+        pagerState = createPagerState(manifest, currentPage),
     ) {
         updateManifest(manifest)
     }
@@ -61,18 +57,6 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
     }
 
     companion object {
-        private fun initialPagerState(manifest: Manifest, initialPage: LessonPage?): SaveablePagerState {
-            val index = when (initialPage) {
-                null -> 0
-
-                else -> manifest.pages.filterIsInstance<LessonPage>()
-                    .filterVisiblePages(setOf(initialPage.id))
-                    .indexOfFirst { it.id == initialPage.id }
-                    .coerceAtLeast(0)
-            }
-            return SaveablePagerState(index, 0f) { index + 1 }
-        }
-
         val Saver = listSaver(
             save = {
                 listOf(
@@ -88,11 +72,23 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
                 )
             },
         )
+
+        private fun createPagerState(manifest: Manifest, currentPage: LessonPage?): SaveablePagerState {
+            val index = when (currentPage) {
+                null -> 0
+
+                else -> manifest.pages.filterIsInstance<LessonPage>()
+                    .filterVisiblePages(setOf(currentPage.id))
+                    .indexOfFirst { it.id == currentPage.id }
+                    .coerceAtLeast(0)
+            }
+            return SaveablePagerState(index, 0f) { index + 1 }
+        }
+
+        private fun List<LessonPage>.filterVisiblePages(revealedHiddenPages: Set<String>) =
+            filter { !it.isHidden || it.id in revealedHiddenPages }
     }
 }
-
-private fun List<LessonPage>.filterVisiblePages(revealedHiddenPages: Set<String>) =
-    filter { !it.isHidden || it.id in revealedHiddenPages }
 
 private class SaveablePagerState(
     currentPage: Int,
