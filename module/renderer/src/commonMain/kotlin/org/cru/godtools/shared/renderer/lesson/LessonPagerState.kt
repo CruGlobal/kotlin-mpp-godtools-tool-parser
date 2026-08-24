@@ -46,14 +46,14 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
     internal val visiblePages = mutableStateSetOf(*visiblePages.toTypedArray())
     val pages by derivedStateOf { allPages.filterVisiblePages(this.visiblePages).toImmutableList() }
 
-    private val _pagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
-    val pagerState: PagerState get() = _pagerState
-    val settledPage by derivedStateOf { pages.getOrNull(_pagerState.settledPage) }
+    val pagerState: PagerState
+        field: SaveablePagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
+    val settledPage by derivedStateOf { pages.getOrNull(this.pagerState.settledPage) }
 
     fun updateManifest(manifest: Manifest) = updatePages(manifest.pages.filterIsInstance<LessonPage>())
     fun updatePages(pages: List<LessonPage>) {
         allPages = pages.toImmutableList()
-        _pagerState.pageCountState.value = { this.pages.size }
+        pagerState.pageCountState.value = { this.pages.size }
     }
 
     companion object {
@@ -61,7 +61,7 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
             save = {
                 listOf(
                     ArrayList(it.visiblePages),
-                    with(SaveablePagerState.Saver) { save(it._pagerState) },
+                    with(SaveablePagerState.Saver) { save(it.pagerState) },
                 )
             },
             restore = {
