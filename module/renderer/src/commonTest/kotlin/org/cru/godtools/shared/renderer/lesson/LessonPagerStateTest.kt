@@ -50,6 +50,86 @@ class LessonPagerStateTest : BaseRendererTest() {
         onNodeWithText("Page: 1").assertExists()
     }
 
+    @Test
+    fun `rememberLessonPagerState - Initial LessonPage - Hidden`() = runComposeUiTest {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2", isHidden = true),
+                LessonPage(it, id = "page3"),
+            )
+        }
+
+        setContent {
+            ProvideTestCompositionLocals {
+                val pagerState = rememberLessonPagerState(manifest, initialPage = manifest.lessonPage("page2"))
+                Text("Page: ${pagerState.pagerState.currentPage} of ${pagerState.pages.size}")
+            }
+        }
+
+        onNodeWithText("Page: 1 of 3").assertExists()
+    }
+
+    // region LessonPagerState(manifest, initialPage: LessonPage?)
+    @Test
+    fun `LessonPagerState - initialPage - starts on the initial page`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, initialPage = manifest.lessonPage("page2"))
+        assertEquals("page2", state.settledPage?.id, "the pager should start on the initial page")
+    }
+
+    @Test
+    fun `LessonPagerState - initialPage - hidden initial page should be visible`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2", isHidden = true),
+                LessonPage(it, id = "page3"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, initialPage = manifest.lessonPage("page2"))
+        assertEquals(
+            listOf("page1", "page2", "page3"),
+            state.pages.map { it.id },
+            "a hidden initial page should be initially visible",
+        )
+        assertEquals("page2", state.settledPage?.id, "the pager should start on the hidden initial page")
+    }
+
+    @Test
+    fun `LessonPagerState - initialPage - null initial page starts on the first page`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, initialPage = null)
+        assertEquals("page1", state.settledPage?.id)
+    }
+
+    @Test
+    fun `LessonPagerState - initialPage - initial page missing from the manifest starts on the first page`() {
+        val manifest = Manifest(type = Type.LESSON) {
+            listOf(
+                LessonPage(it, id = "page1"),
+                LessonPage(it, id = "page2"),
+            )
+        }
+
+        val state = LessonPagerState(manifest, initialPage = LessonPage(id = "other"))
+        assertEquals("page1", state.settledPage?.id)
+    }
+    // endregion LessonPagerState(manifest, initialPage: LessonPage?)
+
     // region settledPage
     @Test
     fun `settledPage - returns the page the pager is settled on`() {
@@ -150,4 +230,6 @@ class LessonPagerStateTest : BaseRendererTest() {
         onNodeWithText("Page Count: 3").assertExists()
         onNodeWithText("Visible: [page2]").assertExists()
     }
+
+    private fun Manifest.lessonPage(id: String) = pages.filterIsInstance<LessonPage>().first { it.id == id }
 }
