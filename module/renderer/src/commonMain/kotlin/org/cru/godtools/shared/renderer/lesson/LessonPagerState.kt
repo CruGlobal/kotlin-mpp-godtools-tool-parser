@@ -27,24 +27,24 @@ fun rememberLessonPagerState(manifest: Manifest, initialPage: LessonPage?) =
         .apply { updateManifest(manifest) }
 
 @Stable
-class LessonPagerState private constructor(visiblePages: Collection<String>, pagerState: SaveablePagerState?) {
+class LessonPagerState private constructor(revealedPages: Collection<String>, pagerState: SaveablePagerState?) {
     constructor(manifest: Manifest? = null, currentPage: Int = 0) : this(
-        visiblePages = emptySet(),
+        revealedPages = emptySet(),
         pagerState = SaveablePagerState(currentPage, 0f) { currentPage + 1 },
     ) {
         if (manifest != null) updateManifest(manifest) else updatePages(emptyList())
     }
 
     constructor(manifest: Manifest, currentPage: LessonPage?) : this(
-        visiblePages = setOfNotNull(currentPage?.id),
+        revealedPages = setOfNotNull(currentPage?.id),
         pagerState = createPagerState(manifest, currentPage),
     ) {
         updateManifest(manifest)
     }
 
     internal var allPages: ImmutableList<LessonPage> by mutableStateOf(persistentListOf())
-    internal val visiblePages = mutableStateSetOf(*visiblePages.toTypedArray())
-    val pages by derivedStateOf { allPages.filterVisiblePages(this.visiblePages).toImmutableList() }
+    internal val revealedPages = mutableStateSetOf(*revealedPages.toTypedArray())
+    val pages by derivedStateOf { allPages.filterVisiblePages(this.revealedPages).toImmutableList() }
 
     val pagerState: PagerState
         field: SaveablePagerState = pagerState ?: SaveablePagerState(0, 0f) { pages.size }
@@ -60,14 +60,14 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
         val Saver = listSaver(
             save = {
                 listOf(
-                    ArrayList(it.visiblePages),
+                    ArrayList(it.revealedPages),
                     with(SaveablePagerState.Saver) { save(it.pagerState) },
                 )
             },
             restore = {
                 @Suppress("UNCHECKED_CAST")
                 LessonPagerState(
-                    visiblePages = it[0] as List<String>,
+                    revealedPages = it[0] as List<String>,
                     pagerState = SaveablePagerState.Saver.restore(it[1] as List<Any>),
                 )
             },
@@ -85,8 +85,8 @@ class LessonPagerState private constructor(visiblePages: Collection<String>, pag
             return SaveablePagerState(index, 0f) { index + 1 }
         }
 
-        private fun List<LessonPage>.filterVisiblePages(revealedHiddenPages: Set<String>) =
-            filter { !it.isHidden || it.id in revealedHiddenPages }
+        private fun List<LessonPage>.filterVisiblePages(revealedPages: Set<String>) =
+            filter { !it.isHidden || it.id in revealedPages }
     }
 }
 

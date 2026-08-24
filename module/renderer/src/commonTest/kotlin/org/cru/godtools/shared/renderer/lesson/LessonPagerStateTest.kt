@@ -157,7 +157,7 @@ class LessonPagerStateTest : BaseRendererTest() {
         val state = LessonPagerState(manifest, currentPage = 1)
         assertEquals("page3", state.settledPage?.id, "hidden pages are excluded from pages, shifting the index")
 
-        state.visiblePages += "page2"
+        state.revealedPages += "page2"
         assertEquals("page2", state.settledPage?.id, "settledPage should update when a hidden page becomes visible")
     }
 
@@ -206,11 +206,11 @@ class LessonPagerStateTest : BaseRendererTest() {
                     Text("Current Page: ${lessonPagerState.pagerState.currentPage}")
                     val pageCount by remember { derivedStateOf { lessonPagerState.pagerState.pageCount } }
                     Text("Page Count: $pageCount")
-                    Text("Visible: ${lessonPagerState.visiblePages.toSet()}")
+                    Text("Visible: ${lessonPagerState.revealedPages.toSet()}")
 
                     Button(
                         onClick = {
-                            lessonPagerState.visiblePages += "page2"
+                            lessonPagerState.revealedPages += "page2"
                             coroutineScope.launch { lessonPagerState.pagerState.animateScrollToPage(1) }
                         }
                     ) {
