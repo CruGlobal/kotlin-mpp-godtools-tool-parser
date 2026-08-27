@@ -6,6 +6,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.cru.godtools.shared.tool.parser.model.Gravity.Companion.toGravityOrNull
+import org.cru.godtools.shared.tool.parser.model.Gravity.Vertical.Companion.toVerticalGravityOrNull
 
 class GravityTest {
     @Test
@@ -85,4 +86,21 @@ class GravityTest {
         assertNull("top bottom end".toGravityOrNull())
         assertNull("bottom top end".toGravityOrNull())
     }
+
+    // region Gravity.Vertical
+    @Test
+    fun `Vertical - toVerticalGravityOrNull - parses vertical gravity values`() {
+        assertEquals(Gravity.Vertical.TOP, "top".toVerticalGravityOrNull())
+        assertEquals(Gravity.Vertical.CENTER, "center".toVerticalGravityOrNull())
+        assertEquals(Gravity.Vertical.BOTTOM, "bottom".toVerticalGravityOrNull())
+    }
+
+    @Test
+    fun `Vertical - toVerticalGravityOrNull - returns null for invalid values`() {
+        assertNull("start".toVerticalGravityOrNull(), "horizontal gravity values are not valid vertical gravities")
+        assertNull("end".toVerticalGravityOrNull(), "horizontal gravity values are not valid vertical gravities")
+        assertNull("top bottom".toVerticalGravityOrNull(), "gravity sequences are not valid vertical gravities")
+        assertNull("jasdf".toVerticalGravityOrNull(), "unrecognized values are not valid vertical gravities")
+    }
+    // endregion Gravity.Vertical
 }
