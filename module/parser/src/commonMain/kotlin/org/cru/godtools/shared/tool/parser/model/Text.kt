@@ -16,6 +16,7 @@ import kotlin.native.HiddenFromObjC
 import org.cru.godtools.shared.tool.parser.internal.AndroidDimension
 import org.cru.godtools.shared.tool.parser.internal.DP
 import org.cru.godtools.shared.tool.parser.internal.toColorOrNull
+import org.cru.godtools.shared.tool.parser.model.Gravity.Vertical.Companion.toVerticalGravityOrNull
 import org.cru.godtools.shared.tool.parser.model.Styles.Companion.DEFAULT_TEXT_SCALE
 import org.cru.godtools.shared.tool.parser.model.Text.Align.Companion.toTextAlignOrNull
 import org.cru.godtools.shared.tool.parser.model.Text.Style.Companion.toTextStyles
@@ -26,8 +27,10 @@ import org.cru.godtools.shared.tool.parser.xml.parseChildren
 
 private const val XML_START_IMAGE = "start-image"
 private const val XML_START_IMAGE_SIZE = "start-image-size"
+private const val XML_START_IMAGE_ALIGN = "start-image-align"
 private const val XML_END_IMAGE = "end-image"
 private const val XML_END_IMAGE_SIZE = "end-image-size"
+private const val XML_END_IMAGE_ALIGN = "end-image-align"
 private const val XML_MINIMUM_LINES = "minimum-lines"
 private const val XML_TEXT_ALIGN = "text-align"
 private const val XML_TEXT_ALIGN_START = "start"
@@ -48,6 +51,7 @@ class Text : Content {
         @VisibleForTesting
         @AndroidDimension(unit = DP)
         internal const val DEFAULT_IMAGE_SIZE = 40
+        private val DEFAULT_IMAGE_ALIGN = Gravity.Vertical.CENTER
         @VisibleForTesting
         internal const val DEFAULT_MINIMUM_LINES = 0
 
@@ -77,11 +81,13 @@ class Text : Content {
     val startImage get() = getResource(startImageName)
     @AndroidDimension(unit = DP)
     val startImageSize: Int
+    val startImageAlign: Gravity.Vertical
     @VisibleForTesting
     internal val endImageName: String?
     val endImage get() = getResource(endImageName)
     @AndroidDimension(unit = DP)
     val endImageSize: Int
+    val endImageAlign: Gravity.Vertical
 
     internal constructor(parent: Base, parser: XmlPullParser) : super(parent, parser) {
         parser.require(XmlPullParser.START_TAG, XMLNS_CONTENT, XML_TEXT)
@@ -105,9 +111,13 @@ class Text : Content {
         startImageName = parser.getAttributeValue(XML_START_IMAGE)
         startImageSize = parser.getDeviceAttributeValue(manifest.config, XML_START_IMAGE_SIZE)?.toIntOrNull()
             ?: DEFAULT_IMAGE_SIZE
+        startImageAlign = parser.getDeviceAttributeValue(manifest.config, XML_START_IMAGE_ALIGN)
+            ?.toVerticalGravityOrNull() ?: DEFAULT_IMAGE_ALIGN
         endImageName = parser.getAttributeValue(XML_END_IMAGE)
         endImageSize = parser.getDeviceAttributeValue(manifest.config, XML_END_IMAGE_SIZE)?.toIntOrNull()
             ?: DEFAULT_IMAGE_SIZE
+        endImageAlign = parser.getDeviceAttributeValue(manifest.config, XML_END_IMAGE_ALIGN)
+            ?.toVerticalGravityOrNull() ?: DEFAULT_IMAGE_ALIGN
 
         text = parser.nextText()
     }
@@ -125,8 +135,10 @@ class Text : Content {
         minimumLines: Int = DEFAULT_MINIMUM_LINES,
         startImage: String? = null,
         startImageSize: Int = DEFAULT_IMAGE_SIZE,
+        startImageAlign: Gravity.Vertical = DEFAULT_IMAGE_ALIGN,
         endImage: String? = null,
         endImageSize: Int = DEFAULT_IMAGE_SIZE,
+        endImageAlign: Gravity.Vertical = DEFAULT_IMAGE_ALIGN,
         invisibleIf: String? = null,
         goneIf: String? = null,
     ) : super(parent, invisibleIf = invisibleIf, goneIf = goneIf) {
@@ -140,8 +152,10 @@ class Text : Content {
 
         startImageName = startImage
         this.startImageSize = startImageSize
+        this.startImageAlign = startImageAlign
         endImageName = endImage
         this.endImageSize = endImageSize
+        this.endImageAlign = endImageAlign
     }
 
     @Suppress("ktlint:standard:blank-line-between-when-conditions")
@@ -158,8 +172,10 @@ class Text : Content {
         minimumLines != other.minimumLines -> false
         startImage != other.startImage -> false
         startImageSize != other.startImageSize -> false
+        startImageAlign != other.startImageAlign -> false
         endImage != other.endImage -> false
         endImageSize != other.endImageSize -> false
+        endImageAlign != other.endImageAlign -> false
 
         // TODO: these should be compared in a Content.equals() method once we add it.
         //       I'm waiting on adding it until more Content types implement equals
@@ -178,8 +194,10 @@ class Text : Content {
         result = 31 * result + minimumLines
         result = 31 * result + (startImage?.hashCode() ?: 0)
         result = 31 * result + startImageSize
+        result = 31 * result + startImageAlign.hashCode()
         result = 31 * result + (endImage?.hashCode() ?: 0)
         result = 31 * result + endImageSize
+        result = 31 * result + endImageAlign.hashCode()
         return result
     }
 
