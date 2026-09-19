@@ -67,7 +67,7 @@ materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 paparazzi-gradle = "app.cash.paparazzi:paparazzi-gradle-plugin:2.0.0-alpha05"
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.22"
+testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.23"
 touchrobot-paparazzi = "me.saket.touchrobot:touchrobot-paparazzi:0.2.0"
 turbine = "app.cash.turbine:turbine:1.2.1"
 
