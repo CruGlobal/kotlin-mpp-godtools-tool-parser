@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import com.github.ajalt.colormath.model.RGB
 import kotlin.test.Test
 import org.cru.godtools.shared.renderer.BasePaparazziTest
+import org.cru.godtools.shared.tool.parser.model.Gravity
 import org.cru.godtools.shared.tool.parser.model.Spacer
 import org.cru.godtools.shared.tool.parser.model.Text
 
@@ -198,6 +199,96 @@ class RenderTextPaparazziTest : BasePaparazziTest() {
                     endImage = "bruce",
                     endImageSize = 80,
                 )
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Start & End Images - Vertical Alignment - Shorter Than Text`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Top Align",
+                    textScale = 3.0,
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.TOP,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.TOP,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Center Align",
+                    textScale = 3.0,
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.CENTER,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.CENTER,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Bottom Align",
+                    textScale = 3.0,
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.BOTTOM,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.BOTTOM,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Mixed Align",
+                    textScale = 3.0,
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.TOP,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.BOTTOM,
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `RenderText() - Start & End Images - Vertical Alignment - Taller Than Text`() = contentSnapshot {
+        RenderContentStack(
+            listOf(
+                Text(
+                    manifest,
+                    text = "Top Align",
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.TOP,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.TOP,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Center Align",
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.CENTER,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.CENTER,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Bottom Align",
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.BOTTOM,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.BOTTOM,
+                ),
+                Spacer(mode = Spacer.Mode.FIXED, height = 20),
+                Text(
+                    manifest,
+                    text = "Mixed Align",
+                    startImage = "bruce",
+                    startImageAlign = Gravity.Vertical.TOP,
+                    endImage = "bruce",
+                    endImageAlign = Gravity.Vertical.BOTTOM,
+                ),
             ),
         )
     }

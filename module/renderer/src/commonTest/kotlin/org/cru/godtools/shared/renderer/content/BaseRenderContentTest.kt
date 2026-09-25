@@ -1,5 +1,6 @@
 package org.cru.godtools.shared.renderer.content
 
+import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
@@ -32,6 +33,12 @@ abstract class BaseRenderContentTest : BaseRendererTest() {
     protected abstract val testModel: Content
     protected abstract fun SemanticsNodeInteractionsProvider.onModelNode(): SemanticsNodeInteraction
 
+    protected fun ComposeUiTest.renderContent(vararg content: Content, state: State = super.state) = setContent {
+        ProvideTestCompositionLocals {
+            RenderContentStack(content.toList(), state = state)
+        }
+    }
+
     // region Clickable
     protected val clickableEvents = listOf(EventId(name = "test"), EventId(name = "test2"))
     protected val clickableUrl = TestConstants.TEST_URL
@@ -41,14 +48,7 @@ abstract class BaseRenderContentTest : BaseRendererTest() {
         // short-circuit if we don't have a clickableModel to test
         if (testModel !is Clickable) return@runComposeUiTest
 
-        setContent {
-            ProvideTestCompositionLocals {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
-            }
-        }
+        renderContent(testModel)
 
         testScope.runTest {
             turbineScope {
@@ -70,14 +70,7 @@ abstract class BaseRenderContentTest : BaseRendererTest() {
         // short-circuit if we don't have a clickableModel to test
         if (testModel !is Clickable) return@runComposeUiTest
 
-        setContent {
-            ProvideTestCompositionLocals {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
-            }
-        }
+        renderContent(testModel)
 
         onModelNode().assertHasClickAction()
         state.setVar(INVISIBLE, listOf("value"))
@@ -93,14 +86,7 @@ abstract class BaseRenderContentTest : BaseRendererTest() {
 
     @Test
     fun `UI - Visibility - goneIf`() = runComposeUiTest {
-        setContent {
-            ProvideTestCompositionLocals {
-                RenderContentStack(
-                    listOf(testModel),
-                    state = state,
-                )
-            }
-        }
+        renderContent(testModel)
 
         onModelNode().assertExists()
         state.setVar(GONE, listOf("value"))
