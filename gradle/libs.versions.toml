@@ -65,7 +65,7 @@ kustomExport-compiler = { module = "deezer.kustomexport:compiler", version.ref =
 kustomExport-coroutines = { module = "deezer.kustomexport:lib-coroutines", version.ref = "kustomExport" }
 materialColorUtilities = "org.cru.mobile.fork.material-color-utilities:material-color-utilities:0.2.0_75"
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
-paparazzi-gradle = "app.cash.paparazzi:paparazzi-gradle-plugin:2.0.0-alpha05"
+paparazzi-gradle = "app.cash.paparazzi:paparazzi-gradle-plugin:2.0.0-alpha05.1"
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 testparameterinjector = "com.google.testparameterinjector:test-parameter-injector:1.24"
 touchrobot-paparazzi = "me.saket.touchrobot:touchrobot-paparazzi:0.2.0"
