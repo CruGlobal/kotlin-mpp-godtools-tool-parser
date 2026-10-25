@@ -30,7 +30,9 @@ class TextTest : UsesResources() {
         assertEquals(manifest.textAlign, text.textAlign)
         assertEquals(Text.DEFAULT_MINIMUM_LINES, text.minimumLines)
         assertEquals(Text.DEFAULT_IMAGE_SIZE, text.startImageSize)
+        assertEquals(Gravity.Vertical.CENTER, text.startImageAlign)
         assertEquals(Text.DEFAULT_IMAGE_SIZE, text.endImageSize)
+        assertEquals(Gravity.Vertical.CENTER, text.endImageAlign)
         assertTrue(text.textStyles.isEmpty())
         assertNull(text.fontWeight)
     }
@@ -48,8 +50,10 @@ class TextTest : UsesResources() {
         assertEquals(5, text.minimumLines)
         assertEquals("start.png", text.startImageName)
         assertEquals(5, text.startImageSize)
+        assertEquals(Gravity.Vertical.TOP, text.startImageAlign)
         assertEquals("end.png", text.endImageName)
         assertEquals(11, text.endImageSize)
+        assertEquals(Gravity.Vertical.BOTTOM, text.endImageAlign)
         assertEquals(setOf(Text.Style.ITALIC, Text.Style.UNDERLINE), text.textStyles)
         assertEquals(300, text.fontWeight)
     }
@@ -163,7 +167,15 @@ class TextTest : UsesResources() {
         assertNotEquals(Text(textStyles = setOf(Text.Style.BOLD)), Text(textStyles = setOf(Text.Style.ITALIC)))
         assertNotEquals(Text(minimumLines = 1), Text(minimumLines = 2))
         assertNotEquals(Text(startImageSize = 30), Text(startImageSize = 40))
+        assertNotEquals(
+            Text(startImageAlign = Gravity.Vertical.TOP),
+            Text(startImageAlign = Gravity.Vertical.BOTTOM),
+        )
         assertNotEquals(Text(endImageSize = 30), Text(endImageSize = 40))
+        assertNotEquals(
+            Text(endImageAlign = Gravity.Vertical.TOP),
+            Text(endImageAlign = Gravity.Vertical.BOTTOM),
+        )
     }
 
     @Test

@@ -6,8 +6,12 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.annotation.DelicateCoilApi
 import kotlin.test.BeforeTest
 import kotlinx.coroutines.test.TestScope
+import org.cru.godtools.shared.renderer.internal.coil.TestPlatformContext
 import org.cru.godtools.shared.renderer.internal.compose.resources.PreviewContextConfigurationEffect
 import org.cru.godtools.shared.renderer.state.State
 import org.cru.godtools.shared.renderer.tips.InMemoryTipsRepository
@@ -33,5 +37,15 @@ abstract class BaseRendererTest {
     @BeforeTest
     fun setup() {
         state.setTestCoroutineScope(testScope.backgroundScope)
+    }
+
+    @BeforeTest
+    @OptIn(DelicateCoilApi::class)
+    fun setupCoil() {
+        SingletonImageLoader.setUnsafe(
+            ImageLoader.Builder(TestPlatformContext)
+                .components { add(TestResources.coilEngine) }
+                .build()
+        )
     }
 }

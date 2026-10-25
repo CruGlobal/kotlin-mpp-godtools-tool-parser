@@ -66,5 +66,18 @@ class Gravity @VisibleForTesting constructor(val horizontal: Horizontal, val ver
     }
 
     enum class Horizontal { START, CENTER, END }
-    enum class Vertical { TOP, CENTER, BOTTOM }
+    enum class Vertical {
+        TOP,
+        CENTER,
+        BOTTOM;
+
+        internal companion object {
+            internal fun String.toVerticalGravityOrNull() = when (this) {
+                XML_TOP -> TOP
+                XML_CENTER -> CENTER
+                XML_BOTTOM -> BOTTOM
+                else -> null
+            }
+        }
+    }
 }
