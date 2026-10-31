@@ -22,7 +22,7 @@ robolectric = "4.16.1"
 [libraries]
 android-gradle = "com.android.tools.build:gradle:9.5.0"
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
-androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.12.1"
+androidx-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.12.2"
 androidx-graphics-shapes = "androidx.graphics:graphics-shapes:1.1.0"
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidx-lifecycle" }
@@ -36,11 +36,11 @@ coil-test = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 colormath-android-colorint = { module = "com.github.ajalt.colormath:colormath-ext-android-colorint", version.ref = "colormath" }
 colormath-jetpack-compose = { module = "com.github.ajalt.colormath:colormath-ext-jetpack-compose", version.ref = "colormath" }
-compose-components-resources = "org.jetbrains.compose.components:components-resources:1.12.1"
+compose-components-resources = "org.jetbrains.compose.components:components-resources:1.12.2"
 compose-material-icons-extended = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 compose-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
 compose-media-player = "network.chaintech:compose-multiplatform-media-player:1.0.53"
-compose-runtime = "org.jetbrains.compose.runtime:runtime:1.12.1"
+compose-runtime = "org.jetbrains.compose.runtime:runtime:1.12.2"
 compose-ui-test = "org.jetbrains.compose.ui:ui-test:1.12.1"
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
@@ -80,7 +80,7 @@ common-test-framework = ["kotlin-coroutines-test"]
 ktlint-rulesets = ["ktlint-rules-compose"]
 
 [plugins]
-compose = { id = "org.jetbrains.compose", version = "1.12.1" }
+compose = { id = "org.jetbrains.compose", version = "1.12.2" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilvaResources" }
 grgit = { id = "org.ajoberstar.grgit", version = "5.3.3" }
